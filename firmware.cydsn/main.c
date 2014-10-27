@@ -85,7 +85,6 @@ void main()
     COUNTER_ENC_Start();
     SHIFTREG_ENC_1_Start();
     SHIFTREG_ENC_2_Start();
-    SHIFTREG_ENC_3_Start();
         
     // ADC
     

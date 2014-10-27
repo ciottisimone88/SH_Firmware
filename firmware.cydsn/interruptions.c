@@ -156,7 +156,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
 //==============================================================================
 
 void function_scheduler(void) {
-    // Base frequency 5000 Hz
+    // Base frequency 4000 Hz
 
     static uint8 counter_analog_measurements    = DIV_INIT_VALUE;
     static uint8 counter_encoder_read           = DIV_INIT_VALUE;
@@ -168,28 +168,28 @@ void function_scheduler(void) {
 
     static uint16 timer_counter = 1;
 
-    // Divider 1, freq = 5000 Hz
+    // Divider 1, freq = 4000 Hz
     if (counter_analog_measurements == ANALOG_MEASUREMENTS_DIV) {
         analog_measurements();
         counter_analog_measurements = 0;
     }
     counter_analog_measurements++;
 
-    // Divider 5, freq = 1000 Hz
+    // Divider 8, freq = 500 Hz
     if (counter_encoder_read == ENCODER_READ_DIV) {
         encoder_reading();
         counter_encoder_read = 0;
     }
     counter_encoder_read++;
 
-    // Divider 10, freq = 500 Hz
+    // Divider 8, freq = 500 Hz
     if (counter_motor_control == MOTOR_CONTROL_DIV) {
         motor_control();
         counter_motor_control = 0;
     }
     counter_motor_control++;
 
-    // Divider 10, freq = 500 Hz
+    // Divider 8, freq = 500 Hz
     if (counter_overcurrent == OVERCURRENT_DIV) {
         overcurrent_control();
         counter_overcurrent = 0;
@@ -211,9 +211,9 @@ void function_scheduler(void) {
 
     // Use MY_TIMER to store the execution time of 5000 executions
     // to check the base frequency
-    if (timer_counter < 5000) {
+    if (timer_counter < 4000) {
         timer_counter++;
-    } else if (timer_counter == 5000) {
+    } else if (timer_counter == 4000) {
         timer_value = (uint16)MY_TIMER_ReadCounter();
         MY_TIMER_WriteCounter(65535);
         timer_counter = 1;
@@ -437,7 +437,7 @@ void encoder_reading(void) {
                     break;
                 }
                 case 2: {
-                    data_encoder[i] = SHIFTREG_ENC_3_ReadData();
+                    data_encoder[i] = 0;
                     break;
                 }
             }
@@ -457,7 +457,7 @@ void encoder_reading(void) {
                 break;
             }
             case 2: {
-                data_encoder[i] = SHIFTREG_ENC_3_ReadData();
+                data_encoder[i] = 0;
                 break;
             }
         }
@@ -580,25 +580,8 @@ void analog_measurements(void) {
                 }
                 break;
 
-            // --- Current motor 2 ---
-            case 2:
-                if (g_ref.onoff == 0x03) {
-                    if (i_counter > 0) {
-                        i_mean_value_2 += value;
-                        if (i_counter == 1) {
-                            i_mean_value_2 = i_mean_value_2 / SAMPLES_FOR_MEAN;
-                        }
-                        i_counter--;
-                    } else {    
-                        g_meas.curr[1] =  filter_i2(abs(((value - 1638) * 4000) / (1638)));
-                    }
-                } else {
-                    g_meas.curr[1] = 0; 
-                }
-                break;
-
             // --- EMG 1 ---
-            case 3:
+            case 2:
                 if (emg_counter_1 > SAMPLES_FOR_EMG_MEAN) {
                     // normal execution
                     // f_aux = ((float)value * (5000.0 / 4096.0));
@@ -634,7 +617,7 @@ void analog_measurements(void) {
                 break;
 
             // --- EMG 2 ---
-            case 4:
+            case 3:
                 if (emg_counter_2 > SAMPLES_FOR_EMG_MEAN) {
                     // normal execution
                     // f_aux = ((float)value * (5000.0 / 4096.0));

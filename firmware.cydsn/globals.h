@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION         "THE v3.1.1"
+#define VERSION         "THE v3.1.2"
 
 #define NUM_OF_MOTORS   2
 #define NUM_OF_SENSORS  3
@@ -53,13 +53,13 @@
 //                                                               SYNCHRONIZATION
 //==============================================================================
 
-//Main frequency 5000 Hz
+//Main frequency 4000 Hz
 
-#define ANALOG_MEASUREMENTS_DIV 1       // 5000 Hz
-#define ENCODER_READ_DIV        10      // 500 Hz
-#define MOTOR_CONTROL_DIV       10      // 500 Hz
-#define OVERCURRENT_DIV         10      // 500 Hz
-#define CALIBRATION_DIV         50      // 100 Hz
+#define ANALOG_MEASUREMENTS_DIV 1      // 4000 Hz
+#define ENCODER_READ_DIV        8      // 500 Hz
+#define MOTOR_CONTROL_DIV       8      // 500 Hz
+#define OVERCURRENT_DIV         8      // 500 Hz
+#define CALIBRATION_DIV         40     // 100 Hz
 
 #define DIV_INIT_VALUE          1
 
