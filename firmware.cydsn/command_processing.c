@@ -319,7 +319,7 @@ void infoSend(void){
 //                                                              COMMAND GET INFO
 //==============================================================================
 
-void infoGet(uint16 info_type, uint8 page){
+void infoGet(uint16 info_type, uint8 page) {
     static unsigned char packet_lenght;
     static unsigned char packet_data[1300];
     static unsigned char packet_string[1100];
@@ -333,28 +333,13 @@ void infoGet(uint16 info_type, uint8 page){
         switch (info_type) {
         case INFO_ALL:
             infoPrepare(packet_string);
+            UART_RS485_PutString(packet_string);
             break;
 
         default:
             break;
         }
     }
-
-//======================================================     packet and transmit
-
-    aux_int = strlen(packet_string);
-    pages = aux_int / (250 - 4) + (aux_int % (250 - 4) > 0);
-    if (page >= pages) return;
-
-    packet_data[0] = CMD_GET_INFO;
-    packet_data[1] = pages;
-
-    strcpy(packet_data + 2, "");
-    strncpy(packet_data + 2, packet_string + ((250 - 4) * page), (250 - 4));
-    packet_lenght = strlen(packet_data + 2) + 4;
-    packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
-
-    commWrite(packet_data, packet_lenght);
 }
 
 //==============================================================================
@@ -781,8 +766,8 @@ void commWrite(uint8 *packet_data, uint16 packet_lenght)
 //==============================================================================
 
 uint8 LCRChecksum(uint8 *data_array, uint8 data_length) {
-    static uint8 i;
-    static uint8 checksum = 0x00;
+    uint8 i;
+    uint8 checksum = 0x00;
     for(i = 0; i < data_length; ++i) {
        checksum = checksum ^ data_array[i];
     }

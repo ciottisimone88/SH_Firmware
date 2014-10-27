@@ -715,3 +715,9 @@ firmware.cydsn/DP8051_Keil_951/Release/VOLTAGE_SENSE.obj
 firmware.cydsn/DP8051_Keil_951/Release/.deps/C_FILE.P
 firmware.cydsn/DP8051_Keil_951/Release/.deps/DP8051_C_FILE.P
 firmware.cydsn/DP8051_Keil_951/Release/.deps/KEIL_8051_ASM_FILE.P
+firmware.cydsn/DP8051_Keil_951/Release/firmware-DP8051_Keil_951-Release-REBUILD.log
+firmware.cydsn/DP8051_Keil_951/Release/status_LED.lst
+firmware.cydsn/DP8051_Keil_951/Release/status_LED.obj
+firmware.cydsn/Generated_Source/PSoC3/status_LED.c
+firmware.cydsn/Generated_Source/PSoC3/status_LED.h
+firmware.cydsn/Generated_Source/PSoC3/status_LED_aliases.h
