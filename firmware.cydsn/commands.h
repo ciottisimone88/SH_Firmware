@@ -126,7 +126,11 @@ enum qbmove_parameter
     PARAM_POS_RESOLUTION         = 11,  ///< Angle resolution for inputs and
                                         ///  measurements. Used during
                                         ///  communication.
-    PARAM_CURRENT_LIMIT          = 12   ///< Limit for absorbed current
+    PARAM_CURRENT_LIMIT          = 12,  ///< Limit for absorbed current
+
+    PARAM_EMG_CALIB_FLAG         = 13,  ///< Enable calibration on startup
+    PARAM_EMG_THRESHOLD          = 14,  ///< Minimum value to have effect
+    PARAM_EMG_MAX_VALUE          = 15   ///< Maximum value of EMG
 };
 
 

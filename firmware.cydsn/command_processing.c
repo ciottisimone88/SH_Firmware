@@ -459,6 +459,26 @@ void paramSet(uint16 param_type)
             g_mem.current_limit = *((int16*) &g_rx.buffer[3]);
             break;
 
+//=======================================================     set_emg_calib_flag
+
+        case PARAM_EMG_CALIB_FLAG:
+            g_mem.emg_calibration_flag = *((uint8*) &g_rx.buffer[3]);
+            break;
+
+//========================================================     set_emg_threshold
+
+        case PARAM_EMG_THRESHOLD:
+            g_mem.emg_threshold[0] = *((uint16*) &g_rx.buffer[3]);
+            g_mem.emg_threshold[1] = *((uint16*) &g_rx.buffer[5]);
+            break;
+
+//========================================================     set_emg_max_value
+
+        case PARAM_EMG_MAX_VALUE:
+            g_mem.emg_max_value[0] = *((uint32*) &g_rx.buffer[3]);
+            g_mem.emg_max_value[1] = *((uint32*) &g_rx.buffer[7]);
+            break;
+
     }
     sendAcknowledgment();
 }
@@ -572,9 +592,34 @@ void paramGet(uint16 param_type)
 
         case PARAM_CURRENT_LIMIT:
             *((int16 *)(packet_data + 1)) = c_mem.current_limit;
+            packet_lenght = 4;
+            break;
+
+//=======================================================     get_emg_calib_flag
+
+        case PARAM_EMG_CALIB_FLAG:
+            *((uint8 *)(packet_data + 1)) = c_mem.emg_calibration_flag;
+            packet_lenght = 3;
+            break;
+
+//========================================================     get_emg_threshold
+
+        case PARAM_EMG_THRESHOLD:
+            *((uint16 *)(packet_data + 1)) = c_mem.emg_threshold[0];
+            *((uint16 *)(packet_data + 3)) = c_mem.emg_threshold[1];
             packet_lenght = 6;
             break;
 
+//========================================================     get_emg_max_value
+
+        case PARAM_EMG_MAX_VALUE:
+            *((uint32 *)(packet_data + 1)) = c_mem.emg_max_value[0];
+            *((uint32 *)(packet_data + 5)) = c_mem.emg_max_value[1];
+            packet_lenght = 10;
+            break;
+
+        default:
+            break;
     }
 
     packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
@@ -674,6 +719,9 @@ void infoPrepare(unsigned char *info_string)
         case 3:
             strcat(info_string, "Input mode: EMG integral\r\n");
             break;
+        case 4:
+            strcat(info_string, "Input mode: EMG FCFS\r\n");
+            break;
     }
 
 
@@ -727,6 +775,20 @@ void infoPrepare(unsigned char *info_string)
     sprintf(str, "Current limit: %d", (int)g_mem.current_limit);
     strcat(info_string, str);
     strcat(info_string,"\r\n");
+
+    sprintf(str, "EMG thresholds [0 - 1024]: %u, %u", g_mem.emg_threshold[0], g_mem.emg_threshold[1]);
+    strcat(info_string, str);
+    strcat(info_string,"\r\n");
+
+    sprintf(str, "EMG max values [0 - 4096]: %lu, %lu", g_mem.emg_max_value[0], g_mem.emg_max_value[1]);
+    strcat(info_string, str);
+    strcat(info_string,"\r\n");
+
+    if (g_mem.emg_calibration_flag) {
+        strcat(info_string,"Calibration enabled: YES\r\n");
+    } else {
+        strcat(info_string,"Calibration enabled: NO\r\n");
+    }
 
     sprintf(str, "timer_value: %ld", 65536 - (uint32)timer_value);
     strcat(info_string, str);
@@ -910,7 +972,7 @@ void memInit(void)
     g_mem.k_i           =    0 * 65536;
     g_mem.k_d           =  0.2 * 65536;
     g_mem.activ         = 0;
-    g_mem.input_mode    = 0;
+    g_mem.input_mode    = INPUT_MODE_EXTERNAL;
 
     g_mem.pos_lim_flag = 1;
 
@@ -934,8 +996,18 @@ void memInit(void)
 
     g_mem.current_limit = DEFAULT_CURRENT_LIMIT;
 
-    //set the initialized flag to show EEPROM has been populated
+    // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;
+
+    // EMG calibration enabled by default
+    g_mem.emg_calibration_flag = 1;
+
+    g_mem.emg_max_value[0] = 0;
+    g_mem.emg_max_value[1] = 0;
+
+    g_mem.emg_threshold[0] = 100;
+    g_mem.emg_threshold[1] = 100;
+
 
     //write that configuration to EEPROM
     memStore(0);
