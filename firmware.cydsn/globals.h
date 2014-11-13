@@ -26,11 +26,12 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION         "THE v3.2.0"
+#define VERSION         "SH-PRO v4.0.0"
 
-#define NUM_OF_MOTORS   2
-#define NUM_OF_SENSORS  3
-#define NUM_OF_EMGS     2
+#define NUM_OF_MOTORS           2
+#define NUM_OF_SENSORS          3
+#define NUM_OF_EMGS             2
+#define NUM_OF_ANALOG_INPUTS    4
 
 //==============================================================================
 //                                                                       CONTROL
@@ -53,13 +54,13 @@
 //                                                               SYNCHRONIZATION
 //==============================================================================
 
-//Main frequency 4000 Hz
+//Main frequency 1000 Hz
 
-#define ANALOG_MEASUREMENTS_DIV 1      // 4000 Hz
-#define ENCODER_READ_DIV        8      // 500 Hz
-#define MOTOR_CONTROL_DIV       8      // 500 Hz
-#define OVERCURRENT_DIV         8      // 500 Hz
-#define CALIBRATION_DIV         40     // 100 Hz
+#define ANALOG_MEASUREMENTS_DIV 1      // 1000 Hz
+#define ENCODER_READ_DIV        1      // 1000 Hz
+#define MOTOR_CONTROL_DIV       1      // 1000 Hz
+#define OVERCURRENT_DIV         1      // 1000 Hz
+#define CALIBRATION_DIV         10     // 100 Hz
 
 #define DIV_INIT_VALUE          1
 
@@ -67,27 +68,27 @@
 //                                                                         OTHER
 //==============================================================================
 
-#define FALSE           0
-#define TRUE            1
+#define FALSE                   0
+#define TRUE                    1
 
 #define DEFAULT_EEPROM_DISPLACEMENT 8   // in pages
 
-#define PWM_MAX_VALUE   100             // PWM is from 0 to 100
-#define PWM_DEAD        0               // deadband value, is directly added to the
+#define PWM_MAX_VALUE           100     // PWM is from 0 to 100
+#define PWM_DEAD                0       // deadband value, is directly added to the
                                         // value of PWM always limited to 100
 
-#define ANTI_WINDUP     1000
+#define ANTI_WINDUP             1000
 #define DEFAULT_CURRENT_LIMIT   1000    // Current limit for hand closing
                                         // 0 means unlimited
-#define CURRENT_HYSTERESIS 10           // mA of hysteresis for current control
+#define CURRENT_HYSTERESIS      10      // mA of hysteresis for current control
 
-#define EMG_SAMPLE_TO_DISCARD 500       // Number of sample to discard before calibration
-#define SAMPLES_FOR_MEAN 100
+#define EMG_SAMPLE_TO_DISCARD   500     // Number of sample to discard before calibration
+#define SAMPLES_FOR_MEAN        100
 
-#define SAMPLES_FOR_EMG_MEAN 1000
+#define SAMPLES_FOR_EMG_MEAN    1000
 
-#define CALIB_DECIMATION 1
-#define NUM_OF_CLOSURES  5
+#define CALIB_DECIMATION        1
+#define NUM_OF_CLOSURES         5
 
 //==============================================================================
 //                                                        structures definitions
@@ -189,7 +190,7 @@ extern int8 dx_sx_hand;
 
 extern float tau_feedback;
 
-extern uint16 timer_value;
+extern uint32 timer_value;
 
 // -----------------------------------------------------------------------------
 

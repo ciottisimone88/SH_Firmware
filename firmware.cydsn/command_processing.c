@@ -284,6 +284,9 @@ void commProcess(void){
 
         case CMD_BOOTLOADER:
             sendAcknowledgment();
+            CyDelay(1000);
+            FTDI_ENABLE_REG_Write(0x00);
+            CyDelay(1000);
             Bootloadable_Load();
             break;
 
@@ -320,12 +323,8 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type, uint8 page) {
-    static unsigned char packet_lenght;
-    static unsigned char packet_data[1300];
     static unsigned char packet_string[1100];
 
-    static uint8 pages;
-    static uint32 aux_int;
 
 //======================================     choose info type and prepare string
 
@@ -644,15 +643,13 @@ void infoPrepare(unsigned char *info_string)
     strcat(info_string,"DEVICE INFO\r\n");
     sprintf(str,"ID: %d\r\n",(int) c_mem.id);
     strcat(info_string,str);
-    sprintf(str,"Number of sensors: %d\r\n",(int) NUM_OF_SENSORS);
-    strcat(info_string,str);
     sprintf(str,"PWM Limit: %d\r\n",(int) device.pwm_limit);
     strcat(info_string,str);
     strcat(info_string,"\r\n");
 
-    strcat(info_string,"MOTORS INFO\r\n");
-    strcat(info_string, "Motor references: ");
-    for (i = 0; i < NUM_OF_MOTORS; i++) {
+    strcat(info_string,"MOTOR INFO\r\n");
+    strcat(info_string, "Motor reference: ");
+    for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
         sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
         strcat(info_string,str);
     }
@@ -665,11 +662,10 @@ void infoPrepare(unsigned char *info_string)
         strcat(str,"NO\r\n");
     }
     strcat(info_string, str);
-    strcat(info_string,"\r\n");
 
     strcat(info_string,"\r\nMEASUREMENTS INFO\r\n");
     strcat(info_string, "Sensor value:\r\n");
-    for (i = 0; i < NUM_OF_SENSORS; i++) {
+    for (i = 0; i < NUM_OF_SENSORS - 1; i++) {
         sprintf(str,"%d -> %d", i+1,
             (int)(g_meas.pos[i] >> c_mem.res[i]));
         strcat(info_string, str);
@@ -680,11 +676,7 @@ void infoPrepare(unsigned char *info_string)
     strcat(info_string, str);
     strcat(info_string,"\r\n");
 
-    sprintf(str,"Current 1 (mA): %ld", (int32) g_meas.curr[0] );
-    strcat(info_string, str);
-    strcat(info_string,"\r\n");
-
-    sprintf(str,"Current 2 (mA): %ld", (int32) g_meas.curr[1] );
+    sprintf(str,"Current (mA): %ld", (int32) g_meas.curr[0] );
     strcat(info_string, str);
     strcat(info_string,"\r\n");
 
@@ -727,7 +719,7 @@ void infoPrepare(unsigned char *info_string)
 
 
     strcat(info_string, "Sensor resolution:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS; ++i) {
+    for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
         sprintf(str,"%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
@@ -735,14 +727,14 @@ void infoPrepare(unsigned char *info_string)
 
 
     strcat(info_string, "Measurement Offset:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS; ++i) {
+    for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
         sprintf(str,"%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
         strcat(info_string, str); 
         strcat(info_string,"\r\n");
     }
 
     strcat(info_string, "Measurement Multiplier:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS; ++i) {
+    for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
         sprintf(str,"%d -> %f", (int)(i + 1), (double) c_mem.m_mult[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
@@ -752,7 +744,7 @@ void infoPrepare(unsigned char *info_string)
     strcat(info_string, str); 
     strcat(info_string,"\r\n");
 
-    for (i = 0; i < NUM_OF_MOTORS; i++) {
+    for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
         sprintf(str, "Position limit motor %d: inf -> %ld  ", (int)(i + 1),
                 (int32)g_mem.pos_lim_inf[i] >> g_mem.res[i]);
         strcat(info_string, str);
@@ -790,7 +782,7 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string,"Calibration enabled: NO\r\n");
     }
 
-    sprintf(str, "timer_value: %ld", 65536 - (uint32)timer_value);
+    sprintf(str, "debug: %ld", 5000001 - (uint32)timer_value);
     strcat(info_string, str);
     strcat(info_string,"\r\n");
 }

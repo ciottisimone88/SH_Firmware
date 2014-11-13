@@ -91,8 +91,6 @@ void main()
     ADC_Start();                            // start ADC
     ADC_StartConvert();
 
-    AMUXSEQ_MOTORS_Start();                 // start mux
-
     // Temporization
 
     MY_TIMER_Start();

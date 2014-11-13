@@ -721,3 +721,9 @@ firmware.cydsn/DP8051_Keil_951/Release/status_LED.obj
 firmware.cydsn/Generated_Source/PSoC3/status_LED.c
 firmware.cydsn/Generated_Source/PSoC3/status_LED.h
 firmware.cydsn/Generated_Source/PSoC3/status_LED_aliases.h
+firmware.cydsn/codegentemp/AMUX.c
+firmware.cydsn/codegentemp/AMUX.h
+firmware.cydsn/DP8051_Keil_951/Release/AMUX.lst
+firmware.cydsn/DP8051_Keil_951/Release/AMUX.obj
+firmware.cydsn/Generated_Source/PSoC3/AMUX.c
+firmware.cydsn/Generated_Source/PSoC3/AMUX.h

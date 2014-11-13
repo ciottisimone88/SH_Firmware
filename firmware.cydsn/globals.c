@@ -33,6 +33,6 @@ float tau_feedback;
 
 // utility timer value for display
 
-uint16 timer_value;
+uint32 timer_value;
 
 /* END OF FILE */

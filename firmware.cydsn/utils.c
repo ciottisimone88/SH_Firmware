@@ -132,15 +132,12 @@ void calibration(void) {
 
     // closing
     if (direction == 0) {
-        g_ref.pos[0] += dx_sx_hand * calib.speed;
-        // if (abs(g_ref.pos[0]) > closed_hand_pos) {
-        //  direction = 1;
-        // }
+        g_ref.pos[0] += dx_sx_hand * (calib.speed << g_mem.res[0]);
         if ((g_ref.pos[0] * dx_sx_hand) > closed_hand_pos) {
             direction = 1;
         }
     } else { //opening
-        g_ref.pos[0] -= dx_sx_hand * calib.speed;
+        g_ref.pos[0] -= dx_sx_hand * (calib.speed << g_mem.res[0]);
         if (SIGN(g_ref.pos[0]) != dx_sx_hand) {
             direction = 0;
             closure_counter++;
