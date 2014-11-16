@@ -478,6 +478,12 @@ void paramSet(uint16 param_type)
             g_mem.emg_max_value[1] = *((uint32*) &g_rx.buffer[7]);
             break;
 
+//============================================================     set_emg_speed
+
+        case PARAM_EMG_SPEED:
+            g_mem.emg_speed = *((uint8*) &g_rx.buffer[3]);
+            break;
+
     }
     sendAcknowledgment();
 }
@@ -615,6 +621,13 @@ void paramGet(uint16 param_type)
             *((uint32 *)(packet_data + 1)) = c_mem.emg_max_value[0];
             *((uint32 *)(packet_data + 5)) = c_mem.emg_max_value[1];
             packet_lenght = 10;
+            break;
+
+//============================================================     get_emg_speed
+
+        case PARAM_EMG_SPEED:
+            *((uint8 *)(packet_data + 1)) = c_mem.emg_speed;
+            packet_lenght = 3;
             break;
 
         default:
@@ -781,6 +794,10 @@ void infoPrepare(unsigned char *info_string)
     } else {
         strcat(info_string,"Calibration enabled: NO\r\n");
     }
+
+    sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
+    strcat(info_string, str);
+    strcat(info_string,"\r\n");
 
     sprintf(str, "debug: %ld", 5000001 - (uint32)timer_value);
     strcat(info_string, str);
@@ -1000,6 +1017,7 @@ void memInit(void)
     g_mem.emg_threshold[0] = 100;
     g_mem.emg_threshold[1] = 100;
 
+    g_mem.emg_speed = 100;
 
     //write that configuration to EEPROM
     memStore(0);

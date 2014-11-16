@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION         "SH-PRO v4.0.0"
+#define VERSION         "SH-PRO v4.0.1"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -153,7 +153,10 @@ struct st_mem {
 
     uint8   emg_calibration_flag;       // Enable emg calibration on startup        1
     uint32  emg_max_value[NUM_OF_EMGS]; // Maximum value for EMG                    4
-                                                                    //TOT           79
+
+    uint8   emg_speed;                  // Maximum closure speed when using emg     1
+
+                                                                    //TOT           80
 };
 
 //=================================================     device related variables

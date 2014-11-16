@@ -277,10 +277,10 @@ void motor_control(void) {
 
         case INPUT_MODE_EMG_INTEGRAL:
             if (g_meas.emg[0] > g_mem.emg_threshold[0]) {
-                g_ref.pos[0] += ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * closed_hand_pos) / 500000;
+                g_ref.pos[0] += ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[0]);
             }
             if (g_meas.emg[1] > g_mem.emg_threshold[1]) {
-                g_ref.pos[0] -= ((g_meas.emg[1] - g_mem.emg_threshold[1]) * dx_sx_hand * closed_hand_pos) / 500000;
+                g_ref.pos[0] -= ((g_meas.emg[1] - g_mem.emg_threshold[1]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[1]);
             }
             break;
 
@@ -305,7 +305,7 @@ void motor_control(void) {
                         break;
                     }
 
-                    g_ref.pos[0] += ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * closed_hand_pos) / 500000;
+                    g_ref.pos[0] += ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[0]);
                     break;
 
                 case 2:
@@ -315,7 +315,7 @@ void motor_control(void) {
                         break;
                     }
 
-                    g_ref.pos[0] -= ((g_meas.emg[1] - g_mem.emg_threshold[1]) * dx_sx_hand * closed_hand_pos) / 500000;
+                    g_ref.pos[0] -= ((g_meas.emg[1] - g_mem.emg_threshold[1]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[1]);
                     break;
 
                 default:
