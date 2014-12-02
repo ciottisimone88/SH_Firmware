@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 
-/** 
+/**
 * \file         main.c
 *
 * \brief        Firmware main file.
@@ -52,9 +52,9 @@ int i;              //iterator
 void main()
 {
 //====================================     initializations - psoc and components
-    
+
     // EEPROM
-    
+
     EEPROM_Start();
     memRecall();                                        // recall configuration
 
@@ -62,7 +62,7 @@ void main()
 
     CyDelay(100);
     FTDI_ENABLE_REG_Write(0x01);
-    
+
     UART_RS485_Stop();                                  // stop UART
     UART_RS485_Start();                                 // start UART
     UART_RS485_Init();
@@ -73,21 +73,21 @@ void main()
     ISR_RS485_RX_StartEx(ISR_RS485_RX_ExInterrupt);     // RS485 isr function
 
     // PWM
-    
+
     PWM_MOTORS_Start();
     PWM_MOTORS_WriteCompare1(0);
     PWM_MOTORS_WriteCompare2(0);
     MOTOR_DIR_Write(0);
-    MOTOR_ON_OFF_Write(0x00);   
-    
+    MOTOR_ON_OFF_Write(0x00);
+
     // SSI encoder initializations
-    
+
     COUNTER_ENC_Start();
     SHIFTREG_ENC_1_Start();
     SHIFTREG_ENC_2_Start();
-        
+
     // ADC
-    
+
     ADC_Start();                            // start ADC
     ADC_StartConvert();
 
@@ -104,7 +104,7 @@ void main()
 
 
     for (i = 0; i < NUM_OF_MOTORS; i++) {
-        g_ref.pos[i] = 0;   
+        g_ref.pos[i] = 0;
     }
 
     if (c_mem.emg_calibration_flag) {

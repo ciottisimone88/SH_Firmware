@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 
-/** 
+/**
 * \file         command_processing.c
 *
 
@@ -23,7 +23,7 @@
 //================================================================     variables
 
 reg8 * EEPROM_ADDR = (reg8 *) CYDEV_EE_BASE;
- 
+
 //==============================================================================
 //                                                            RX DATA PROCESSING
 //==============================================================================
@@ -69,7 +69,7 @@ void commProcess(void){
 
             break;
 //===========================================================     CMD_SET_INPUTS
-            
+
         case CMD_SET_INPUTS:
             g_ref.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
             g_ref.pos[0] = g_ref.pos[0] << g_mem.res[0];
@@ -105,7 +105,7 @@ void commProcess(void){
                 (g_meas.pos[i] >> g_mem.res[i]);
             }
 
-            packet_data[packet_lenght - 1] = 
+            packet_data[packet_lenght - 1] =
                     LCRChecksum (packet_data, packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
@@ -122,7 +122,7 @@ void commProcess(void){
 
             *((int16 *) &packet_data[1]) = (int16) g_meas.curr[0];
             *((int16 *) &packet_data[3]) = (int16) g_meas.curr[1];
-            
+
             packet_data[packet_lenght - 1] =
                     LCRChecksum (packet_data, packet_lenght - 1);
 
@@ -134,12 +134,12 @@ void commProcess(void){
         case CMD_GET_EMG:
             //Packt: header + measure(int16) + CRC
             packet_lenght = 6;
-            
-            packet_data[0] = CMD_GET_EMG;              
-            
+
+            packet_data[0] = CMD_GET_EMG;
+
             *((int16 *) &packet_data[1]) = (int16) g_meas.emg[0];
             *((int16 *) &packet_data[3]) = (int16) g_meas.emg[1];
-            
+
             packet_data[packet_lenght - 1] =
                     LCRChecksum (packet_data, packet_lenght - 1);
 
@@ -173,7 +173,7 @@ void commProcess(void){
         break;
 
 //=========================================================     CMD_GET_ACTIVATE
-        
+
         case CMD_GET_ACTIVATE:
             packet_lenght = 3;
 
@@ -183,8 +183,8 @@ void commProcess(void){
 
             commWrite(packet_data, packet_lenght);
 
-            break; 
-        
+            break;
+
 //============================================================     CMD_GET_INPUT
 
         case CMD_GET_INPUTS:
@@ -213,7 +213,7 @@ void commProcess(void){
 
 //============================================================     CMD_GET_PARAM
 
-        case CMD_GET_PARAM:        
+        case CMD_GET_PARAM:
             paramGet( *((uint16 *) &g_rx.buffer[1]) );
             break;
 
@@ -236,7 +236,7 @@ void commProcess(void){
                 off_2 = c_mem.m_off[1];
                 mult_1 = c_mem.m_mult[0];
                 mult_2 = c_mem.m_mult[1];
- 
+
                 g_ref.pos[0] = (int32)((float)g_ref.pos[0] / mult_1);
                 g_ref.pos[1] = (int32)((float)g_ref.pos[1] / mult_2);
 
@@ -273,13 +273,13 @@ void commProcess(void){
             sendAcknowledgment();
             break;
 
-//=============================================================     CMD_INIT_MEM        
+//=============================================================     CMD_INIT_MEM
 
         case CMD_INIT_MEM:
             memInit();
             sendAcknowledgment();
             break;
-            
+
 //===========================================================     CMD_BOOTLOADER
 
         case CMD_BOOTLOADER:
@@ -740,7 +740,7 @@ void infoPrepare(unsigned char *info_string)
     strcat(info_string, "Measurement Offset:\r\n");
     for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
         sprintf(str,"%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
-        strcat(info_string, str); 
+        strcat(info_string, str);
         strcat(info_string,"\r\n");
     }
 
@@ -752,7 +752,7 @@ void infoPrepare(unsigned char *info_string)
     }
 
     sprintf(str, "Position limit active: %d", (int)g_mem.pos_lim_flag);
-    strcat(info_string, str); 
+    strcat(info_string, str);
     strcat(info_string,"\r\n");
 
     for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
@@ -991,7 +991,7 @@ void memInit(void)
     g_mem.res[0] = 3;
     g_mem.res[1] = 3;
     g_mem.res[2] = 0;
-    
+
     for(i = 0; i < NUM_OF_SENSORS; ++i)
     {
         g_mem.m_mult[i] = 1;
