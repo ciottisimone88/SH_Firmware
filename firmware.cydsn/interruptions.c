@@ -3,7 +3,7 @@
 // www.qbrobotics.com
 // ----------------------------------------------------------------------------
 
-/** 
+/**
 * \file         interruptions.c
 *
 * \brief        Interruption functions are in this file.
@@ -24,7 +24,7 @@
 //                                                            RS485 RX INTERRUPT
 //==============================================================================
 // Processing RS-485 data frame:
-// 
+//
 // - 0:     Waits for beggining characters
 // - 1:     Waits for ID;
 // - 2:     Data length;
@@ -112,7 +112,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
                 data_packet.buffer[data_packet.ind] = rx_data;
                 data_packet.ind++;
 
-                // check end of transmission                
+                // check end of transmission
                 if (data_packet.ind >= data_packet.length) {
                     // verify if frame ID corresponded to the device ID
                     if (rx_data_type == 0) {
@@ -141,7 +141,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
         }
     }
 
-    /* PSoC3 ES1, ES2 RTC ISR PATCH  */ 
+    /* PSoC3 ES1, ES2 RTC ISR PATCH  */
     #if(CYDEV_CHIP_FAMILY_USED == CYDEV_CHIP_FAMILY_PSOC3)
         #if((CYDEV_CHIP_REVISION_USED <= CYDEV_CHIP_REVISION_3A_ES2) && (ISR_RS485_RX__ES2_PATCH ))
             ISR_MOTORS_CONTROL_ISR_PATCH();
@@ -156,7 +156,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
 //==============================================================================
 
 void function_scheduler(void) {
-    // Base frequency 4000 Hz
+    // Base frequency 1000 Hz
 
     static uint8 counter_analog_measurements    = DIV_INIT_VALUE;
     static uint8 counter_encoder_read           = DIV_INIT_VALUE;
@@ -257,7 +257,7 @@ void motor_control(void) {
 
             // Feedback on motor 2 (if present)
             if (tau_feedback < 0) {
-                g_ref.pos[1] = 0;   
+                g_ref.pos[1] = 0;
             } else if ((tau_feedback * (50 << 8)) > c_mem.pos_lim_sup[1]) {
                 g_ref.pos[1] = c_mem.pos_lim_sup[1];
             } else {
@@ -573,11 +573,13 @@ void analog_measurements(void) {
                         emg_1_status = 1;   // reset status
                         emg_2_status = 1;
 
-                        if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
-                            (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                            (c_mem.input_mode == INPUT_MODE_EMG_FCFS)) {
-                            g_ref.onoff = 0x00; 
-                            MOTOR_ON_OFF_Write(g_ref.onoff);
+                        if (c_mem.emg_calibration_flag) {
+                            if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
+                                (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
+                                (c_mem.input_mode == INPUT_MODE_EMG_FCFS)) {
+                                g_ref.onoff = 0x00;
+                                MOTOR_ON_OFF_Write(g_ref.onoff);
+                            }
                         }
                     }
                     break;
@@ -694,7 +696,7 @@ void analog_measurements(void) {
                                         g_ref.pos[0] = g_meas.pos[0];
                                         g_ref.pos[1] = g_meas.pos[1];
                                     #endif
-                                    g_ref.onoff = c_mem.activ; 
+                                    g_ref.onoff = c_mem.activ;
                                     MOTOR_ON_OFF_Write(g_ref.onoff);
                                 }
 

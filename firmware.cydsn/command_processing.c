@@ -328,8 +328,7 @@ void infoGet(uint16 info_type, uint8 page) {
 
 //======================================     choose info type and prepare string
 
-    if(!page) {      // Only process string for the first page (page = 0)
-        switch (info_type) {
+    switch (info_type) {
         case INFO_ALL:
             infoPrepare(packet_string);
             UART_RS485_PutString(packet_string);
@@ -337,7 +336,6 @@ void infoGet(uint16 info_type, uint8 page) {
 
         default:
             break;
-        }
     }
 }
 

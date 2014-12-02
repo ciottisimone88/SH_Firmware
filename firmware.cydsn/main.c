@@ -106,8 +106,13 @@ void main()
     for (i = 0; i < NUM_OF_MOTORS; i++) {
         g_ref.pos[i] = 0;   
     }
-    if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) || (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL)) {
-        g_ref.onoff = 0x00;
+
+    if (c_mem.emg_calibration_flag) {
+        if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
+            (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
+            (c_mem.input_mode == INPUT_MODE_EMG_FCFS)) {
+            g_ref.onoff = 0x00;
+        }
     } else {
         g_ref.onoff = c_mem.activ;
     }
