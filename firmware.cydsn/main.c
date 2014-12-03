@@ -110,7 +110,8 @@ void main()
     if (c_mem.emg_calibration_flag) {
         if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
             (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-            (c_mem.input_mode == INPUT_MODE_EMG_FCFS)) {
+            (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+            (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
             g_ref.onoff = 0x00;
         }
     } else {

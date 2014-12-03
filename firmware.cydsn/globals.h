@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION         "SH-PRO v4.0.2"
+#define VERSION         "SH-PRO v4.1.0"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -133,30 +133,30 @@ struct st_mem {
     int32   k_d;                        // Integrative constant                     4
 
     uint8   activ;                      // Activation upon startup                  1
-    uint8   input_mode;                 // Input mode                               1
+    uint8   input_mode;                 // Input mode                               1  16
 
     uint8   res[NUM_OF_SENSORS];        // Angle resolution                         3
     int32   m_off[NUM_OF_SENSORS];      // Measurement offset                       12
     float   m_mult[NUM_OF_SENSORS];     // Measurement multiplier                   12
 
                                         // Absolute position limits
-    uint8   pos_lim_flag;               // Position limit active/inactive           1
+    uint8   pos_lim_flag;               // Position limit active/inactive           1  28
     int32   pos_lim_inf[NUM_OF_MOTORS]; // Inferior position limit for motors       8
     int32   pos_lim_sup[NUM_OF_MOTORS]; // Superior position limit for motors       8
 
     int32   max_step_pos;               // Maximum number of step per cylce when    4
-    int32   max_step_neg;               // using sensor 2 as input                  4
+    int32   max_step_neg;               // using sensor 2 as input                  4  24
 
     int16   current_limit;              // Limit for absorbed current               2
 
     uint16  emg_threshold[NUM_OF_EMGS]; // Minimum value for activation             4
 
     uint8   emg_calibration_flag;       // Enable emg calibration on startup        1
-    uint32  emg_max_value[NUM_OF_EMGS]; // Maximum value for EMG                    4
+    uint32  emg_max_value[NUM_OF_EMGS]; // Maximum value for EMG                    8
 
-    uint8   emg_speed;                  // Maximum closure speed when using emg     1
+    uint8   emg_speed;                  // Maximum closure speed when using emg     1  16
 
-                                                                    //TOT           80
+                                                                    //TOT           84
 };
 
 //=================================================     device related variables

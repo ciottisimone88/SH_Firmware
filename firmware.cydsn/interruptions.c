@@ -229,17 +229,21 @@ void motor_control(void) {
     static int32 input_2 = 0;
 
     static int32 pos_prec_1, pos_prec_2;
-    int32 error_1, error_2;
+    static int32 error_1, error_2;
 
     static int32 err_sum_1, err_sum_2;
 
-    static int32 cuff_k_p  = -0.001 * 65536;
-    static int32 cuff_k_i  = 0 * 65536;
-    static int32 cuff_k_d  = -0.002 * 65536;
+    static int32 err_emg_1, err_emg_2;
 
     static uint8 current_emg = 0;   // 0 NONE
                                     // 1 EMG 1
                                     // 2 EMG 2
+                                    // wait for both to get down
+
+
+    err_emg_1 = g_meas.emg[0] - c_mem.emg_threshold[0];
+    err_emg_2 = g_meas.emg[1] - c_mem.emg_threshold[1];
+
 
     switch(c_mem.input_mode) {
 
@@ -254,21 +258,12 @@ void motor_control(void) {
             } else {
                 g_ref.pos[0] = g_meas.pos[2];
             }
-
-            // Feedback on motor 2 (if present)
-            if (tau_feedback < 0) {
-                g_ref.pos[1] = 0;
-            } else if ((tau_feedback * (50 << 8)) > c_mem.pos_lim_sup[1]) {
-                g_ref.pos[1] = c_mem.pos_lim_sup[1];
-            } else {
-                g_ref.pos[1] = (tau_feedback * (50 << 8));
-            }
             break;
 
 
         case INPUT_MODE_EMG_PROPORTIONAL:
-            if (g_meas.emg[0] > g_mem.emg_threshold[0]) {
-            g_ref.pos[0] = ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * closed_hand_pos) / (1024 - g_mem.emg_threshold[0]);
+            if (err_emg_1 > 0) {
+            g_ref.pos[0] = (err_emg_1 * dx_sx_hand * closed_hand_pos) / (1024 - c_mem.emg_threshold[0]);
             } else {
                 g_ref.pos[0] = 0;
             }
@@ -276,11 +271,11 @@ void motor_control(void) {
 
 
         case INPUT_MODE_EMG_INTEGRAL:
-            if (g_meas.emg[0] > g_mem.emg_threshold[0]) {
-                g_ref.pos[0] += ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[0]);
+            if (err_emg_1 > 0) {
+                g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
             }
-            if (g_meas.emg[1] > g_mem.emg_threshold[1]) {
-                g_ref.pos[0] -= ((g_meas.emg[1] - g_mem.emg_threshold[1]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[1]);
+            if (err_emg_2 > 0) {
+                g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
             }
             break;
 
@@ -288,11 +283,11 @@ void motor_control(void) {
             switch (current_emg) {
                 case 0:
                     // Look for the first EMG passing the threshold
-                    if (g_meas.emg[0] > g_mem.emg_threshold[0]) {
+                    if (err_emg_1 > 0) {
                         current_emg = 1;
                         break;
                     }
-                    if (g_meas.emg[1] > g_mem.emg_threshold[1]) {
+                    if (err_emg_2 > 0) {
                         current_emg = 2;
                         break;
                     }
@@ -300,22 +295,22 @@ void motor_control(void) {
 
                 case 1:
                     // EMG 1 is first
-                    if (g_meas.emg[0] < g_mem.emg_threshold[0]) {
+                    if (err_emg_1 < 0) {
                         current_emg = 0;
                         break;
                     }
 
-                    g_ref.pos[0] += ((g_meas.emg[0] - g_mem.emg_threshold[0]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[0]);
+                    g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
                     break;
 
                 case 2:
                     // EMG 2 is first
-                    if (g_meas.emg[1] < g_mem.emg_threshold[1]) {
+                    if (err_emg_2 < 0) {
                         current_emg = 0;
                         break;
                     }
 
-                    g_ref.pos[0] -= ((g_meas.emg[1] - g_mem.emg_threshold[1]) * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - g_mem.emg_threshold[1]);
+                    g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
                     break;
 
                 default:
@@ -323,6 +318,52 @@ void motor_control(void) {
             }
 
             break;
+
+        case INPUT_MODE_EMG_FCFS_ADV:
+            switch (current_emg) {
+                // Look for the first EMG passing the threshold
+                case 0:
+                    if (err_emg_1 > 0) {
+                        current_emg = 1;
+                        break;
+                    }
+                    if (err_emg_2 > 0) {
+                        current_emg = 2;
+                        break;
+                    }
+                    break;
+
+                // EMG 1 is first
+                case 1:
+                    // If both signals are under threshold go back to status 0
+                    if ((err_emg_1 < 0) && (err_emg_2 < 0)) {
+                        current_emg = 0;
+                        break;
+                    }
+
+                    // but if the current signal come back over threshold, continue using it
+                    if (err_emg_1 > 0) {
+                        g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
+                    }
+                    break;
+
+                // EMG 2 is first
+                case 2:
+                    // If both signals are under threshold go back to status 0
+                    if ((err_emg_1 < 0) && (err_emg_2 < 0)) {
+                        current_emg = 0;
+                        break;
+                    }
+
+                    // but if the current signal come back over threshold, continue using it
+                    if (err_emg_2 > 0) {
+                        g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * c_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
 
 
         default:
@@ -333,20 +374,16 @@ void motor_control(void) {
     // Position limit
     if (c_mem.pos_lim_flag) {
         if (g_ref.pos[0] < c_mem.pos_lim_inf[0]) g_ref.pos[0] = c_mem.pos_lim_inf[0];
-        if (g_ref.pos[1] < c_mem.pos_lim_inf[1]) g_ref.pos[1] = c_mem.pos_lim_inf[1];
 
         if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) g_ref.pos[0] = c_mem.pos_lim_sup[0];
-        if (g_ref.pos[1] > c_mem.pos_lim_sup[1]) g_ref.pos[1] = c_mem.pos_lim_sup[1];
     }
 
     //////////////////////////////////////////////////////////     CONTROL_ANGLE
 
     #if (CONTROL_MODE == CONTROL_ANGLE)
         error_1 = g_ref.pos[0] - g_meas.pos[0];
-        error_2 = g_ref.pos[1] - g_meas.pos[1];
 
         err_sum_1 += error_1;
-        err_sum_2 += error_2;
 
         // anti-windup (for integral control)
         if (err_sum_1 > ANTI_WINDUP) {
@@ -355,33 +392,23 @@ void motor_control(void) {
             err_sum_1 = -ANTI_WINDUP;
         }
 
-        if (err_sum_2 > ANTI_WINDUP) {
-            err_sum_2 = ANTI_WINDUP;
-        } else if (err_sum_2 < -ANTI_WINDUP) {
-            err_sum_2 = -ANTI_WINDUP;
-        }
-
         // Proportional
         if (c_mem.k_p != 0) {
             input_1 = (int32)(c_mem.k_p * error_1) >> 16;
-            input_2 = (int32)(cuff_k_p * error_2) >> 16;
         }
 
         // Integral
         if (c_mem.k_i != 0) {
             input_1 += (int32)(c_mem.k_i * err_sum_1) >> 16;
-            input_2 += (int32)(cuff_k_i * err_sum_2) >> 16;
         }
 
         // Derivative
         if (c_mem.k_d != 0) {
             input_1 += (int32)(c_mem.k_d * (pos_prec_1 - g_meas.pos[0])) >> 16;
-            input_2 += (int32)(cuff_k_d * (pos_prec_2 - g_meas.pos[1])) >> 16;
         }
 
         // Update measure
         pos_prec_1 = g_meas.pos[0];
-        pos_prec_2 = g_meas.pos[1];
 
     #endif
 
@@ -390,16 +417,12 @@ void motor_control(void) {
     #if (CONTROL_MODE == CONTROL_CURRENT)
         if(g_ref.onoff & 1) {
             error_1 = g_ref.pos[0] - g_meas.curr[0];
-            error_2 = g_ref.pos[1] - g_meas.curr[1];
 
             err_sum_1 += error_1;
-            err_sum_2 += error_2;
 
             input_1 += ((c_mem.k_p * (error_1)) / 65536) + err_sum_1;
-            input_2 += ((c_mem.k_p * (error_2)) / 65536) + err_sum_2;
         } else {
             input_1 = 0;
-            input_2 = 0;
         }
     #endif
 
@@ -408,7 +431,6 @@ void motor_control(void) {
     #if (CONTROL_MODE == CONTROL_PWM)
         // Shift right by resolution to have the real input number
         input_1 = g_ref.pos[0] >> g_mem.res[0];
-        input_2 = g_ref.pos[1] >> g_mem.res[1];
     #endif
 
     ////////////////////////////////////////////////////////////////////////////
@@ -422,20 +444,16 @@ void motor_control(void) {
     #endif
 
     if(input_1 >  PWM_MAX_VALUE) input_1 =  PWM_MAX_VALUE;
-    if(input_2 >  PWM_MAX_VALUE) input_2 =  PWM_MAX_VALUE;
     if(input_1 < -PWM_MAX_VALUE) input_1 = -PWM_MAX_VALUE;
-    if(input_2 < -PWM_MAX_VALUE) input_2 = -PWM_MAX_VALUE;
 
     MOTOR_DIR_Write((input_1 >= 0) + ((input_2 >= 0) << 1));
     //MOTOR_DIR_Write((input_1 <= 0) + ((input_2 <= 0) << 1));
 
     #if (CONTROL_MODE != CONTROL_PWM)
         input_1 = (((input_1 * 1024) / PWM_MAX_VALUE) * device.pwm_limit) / 1024;
-        input_2 = (((input_2 * 1024) / PWM_MAX_VALUE) * device.pwm_limit) / 1024;
     #endif
 
     PWM_MOTORS_WriteCompare1(abs(input_1));
-    PWM_MOTORS_WriteCompare2(abs(input_2));
 }
 
 
@@ -576,7 +594,8 @@ void analog_measurements(void) {
                         if (c_mem.emg_calibration_flag) {
                             if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
                                 (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                                (c_mem.input_mode == INPUT_MODE_EMG_FCFS)) {
+                                (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+                                (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
                                 g_ref.onoff = 0x00;
                                 MOTOR_ON_OFF_Write(g_ref.onoff);
                             }
@@ -691,7 +710,8 @@ void analog_measurements(void) {
                                 // if EMG control mode active, activate motors accordingly with startup value
                                 if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
                                     (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                                    (c_mem.input_mode == INPUT_MODE_EMG_FCFS)) {
+                                    (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+                                    (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
                                     #if (CONTROL_MODE == CONTROL_ANGLE)
                                         g_ref.pos[0] = g_meas.pos[0];
                                         g_ref.pos[1] = g_meas.pos[1];

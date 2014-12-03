@@ -710,20 +710,23 @@ void infoPrepare(unsigned char *info_string)
     }
 
     switch(c_mem.input_mode) {
-        case 0:
+        case INPUT_MODE_EXTERNAL:
             strcat(info_string, "Input mode: USB\r\n");
             break;
-        case 1:
+        case INPUT_MODE_ENCODER3:
             strcat(info_string, "Input mode: Sensor 3\r\n");
             break;
-        case 2:
+        case INPUT_MODE_EMG_PROPORTIONAL:
             strcat(info_string, "Input mode: EMG proportional\r\n");
             break;
-        case 3:
+        case INPUT_MODE_EMG_INTEGRAL:
             strcat(info_string, "Input mode: EMG integral\r\n");
             break;
-        case 4:
+        case INPUT_MODE_EMG_FCFS:
             strcat(info_string, "Input mode: EMG FCFS\r\n");
+            break;
+        case INPUT_MODE_EMG_FCFS_ADV:
+            strcat(info_string, "Input mode: EMG FCFS ADV\r\n");
             break;
     }
 

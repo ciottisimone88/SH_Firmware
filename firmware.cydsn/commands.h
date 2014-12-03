@@ -162,8 +162,11 @@ enum qbmove_mode
                                         ///  drive the position of the motor 1
     INPUT_MODE_EMG_INTEGRAL     = 3,    ///< Use 2 EMG signals to drive motor
                                         ///  position
-    INPUT_MODE_EMG_FCFS         = 4     ///< Use 2 EMG. First reaching threshold
+    INPUT_MODE_EMG_FCFS         = 4,    ///< Use 2 EMG. First reaching threshold
                                         ///  wins and its value defines hand closure
+    INPUT_MODE_EMG_FCFS_ADV     = 5     ///< Use 2 EMG. First reaching threshold
+                                        ///  wins and its value defines hand closure
+                                        ///  Wait for both EMG to lower under threshold
 };
 
 /** \} */
