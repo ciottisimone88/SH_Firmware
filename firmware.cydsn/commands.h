@@ -105,7 +105,7 @@ enum qbmove_parameter
 {
 
     PARAM_ID                     = 0,   ///< Device's ID number
-    PARAM_PID_CONTROL            = 1,   ///< PID Control proportional constant
+    PARAM_PID_CONTROL            = 1,   ///< PID parameters
     PARAM_STARTUP_ACTIVATION     = 2,   ///< Start up activation byte
     PARAM_INPUT_MODE             = 3,   ///< Input mode
 
@@ -132,7 +132,9 @@ enum qbmove_parameter
     PARAM_EMG_THRESHOLD          = 14,  ///< Minimum value to have effect
     PARAM_EMG_MAX_VALUE          = 15,  ///< Maximum value of EMG
 
-    PARAM_EMG_SPEED              = 16   ///< Closure speed when using EMG
+    PARAM_EMG_SPEED              = 16,  ///< Closure speed when using EMG
+
+    PARAM_PID_CURR_CONTROL       = 18   ///< PID current control
 };
 
 

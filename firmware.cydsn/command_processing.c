@@ -365,6 +365,14 @@ void paramSet(uint16 param_type)
             g_mem.k_d = *((double *) &g_rx.buffer[3 + 8]) * 65536;
             break;
 
+//==================================================     set_curr_pid_parameters
+
+        case PARAM_PID_CURR_CONTROL:
+            g_mem.k_p_c = *((double *) &g_rx.buffer[3]) * 65536;
+            g_mem.k_i_c = *((double *) &g_rx.buffer[3 + 4]) * 65536;
+            g_mem.k_d_c = *((double *) &g_rx.buffer[3 + 8]) * 65536;
+            break;
+
 //===================================================     set_startup_activation
 
         case PARAM_STARTUP_ACTIVATION:
@@ -693,13 +701,23 @@ void infoPrepare(unsigned char *info_string)
 
 
     strcat(info_string,"\r\nDEVICE PARAMETERS\r\n");
+
     strcat(info_string, "PID Controller:\r\n");
-    sprintf(str,"P -> %f\r\n", ((double) c_mem.k_p / 65536));
+    sprintf(str,"P -> %f  ", ((double) c_mem.k_p / 65536));
     strcat(info_string, str);
-    sprintf(str,"I -> %f\r\n", ((double) c_mem.k_i / 65536));
+    sprintf(str,"I -> %f  ", ((double) c_mem.k_i / 65536));
     strcat(info_string, str);
     sprintf(str,"D -> %f\r\n", ((double) c_mem.k_d / 65536));
     strcat(info_string, str);
+
+    strcat(info_string, "Current PID Controller:\r\n");
+    sprintf(str,"P -> %f  ", ((double) c_mem.k_p_c / 65536));
+    strcat(info_string, str);
+    sprintf(str,"I -> %f  ", ((double) c_mem.k_i_c / 65536));
+    strcat(info_string, str);
+    sprintf(str,"D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
+    strcat(info_string, str);
+
     strcat(info_string,"\r\n");
 
 
@@ -727,6 +745,23 @@ void infoPrepare(unsigned char *info_string)
             break;
         case INPUT_MODE_EMG_FCFS_ADV:
             strcat(info_string, "Input mode: EMG FCFS ADV\r\n");
+            break;
+    }
+
+    switch(CONTROL_MODE) {
+        case CONTROL_ANGLE:
+            strcat(info_string, "Control mode: Position\r\n");
+            break;
+        case CONTROL_PWM:
+            strcat(info_string, "Control mode: PWM\r\n");
+            break;
+        case CONTROL_CURRENT:
+            strcat(info_string, "Control mode: Current\r\n");
+            break;
+        case CURR_AND_POS_CONTROL:
+            strcat(info_string, "Control mode: Current and Position\r\n");
+            break;
+        default:
             break;
     }
 
@@ -978,9 +1013,14 @@ void memInit(void)
 
     //initialize memory settings
     g_mem.id            = 1;
+
     g_mem.k_p           = 0.01 * 65536;
     g_mem.k_i           =    0 * 65536;
     g_mem.k_d           =  0.2 * 65536;
+    g_mem.k_p_c         =    1 * 65536;
+    g_mem.k_i_c         =    0 * 65536;
+    g_mem.k_d_c         =    0 * 65536;
+
     g_mem.activ         = 0;
     g_mem.input_mode    = INPUT_MODE_EXTERNAL;
 

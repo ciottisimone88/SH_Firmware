@@ -42,12 +42,14 @@
 #define CONTROL_ANGLE           0
 #define CONTROL_PWM             1
 #define CONTROL_CURRENT         2
+#define CURR_AND_POS_CONTROL    3
 
 //==================================================     control type definition
 
-#define CONTROL_MODE           CONTROL_ANGLE
+#define CONTROL_MODE         CONTROL_ANGLE
 // #define CONTROL_MODE         CONTROL_CURRENT
 // #define CONTROL_MODE         CONTROL_PWM
+// #define CONTROL_MODE            CURR_AND_POS_CONTROL
 
 
 //==============================================================================
@@ -90,6 +92,10 @@
 #define CALIB_DECIMATION        1
 #define NUM_OF_CLOSURES         5
 
+#define POS_INTEGRAL_SAT_LIMIT  50000000
+#define CURR_INTEGRAL_SAT_LIMIT 10000
+
+#define MIN_CURR_SAT_LIMIT      30
 //==============================================================================
 //                                                        structures definitions
 //==============================================================================
@@ -122,7 +128,7 @@ struct st_data {
     uint8   ready;                  // Flag
 };
 
-//============================================     settings stored on the memory 
+//============================================     settings stored on the memory
 
 struct st_mem {
     uint8   flag;                       // Device has been configured               1
@@ -132,15 +138,19 @@ struct st_mem {
     int32   k_i;                        // Derivative constant                      4
     int32   k_d;                        // Integrative constant                     4
 
+    int32   k_p_c;                      // Proportional constant curr               4
+    int32   k_i_c;                      // Derivative constant curr                 4
+    int32   k_d_c;                      // Integrative constant curr                4 26
+
     uint8   activ;                      // Activation upon startup                  1
-    uint8   input_mode;                 // Input mode                               1  16
+    uint8   input_mode;                 // Input mode                               1
 
     uint8   res[NUM_OF_SENSORS];        // Angle resolution                         3
     int32   m_off[NUM_OF_SENSORS];      // Measurement offset                       12
     float   m_mult[NUM_OF_SENSORS];     // Measurement multiplier                   12
 
                                         // Absolute position limits
-    uint8   pos_lim_flag;               // Position limit active/inactive           1  28
+    uint8   pos_lim_flag;               // Position limit active/inactive           1  30
     int32   pos_lim_inf[NUM_OF_MOTORS]; // Inferior position limit for motors       8
     int32   pos_lim_sup[NUM_OF_MOTORS]; // Superior position limit for motors       8
 
@@ -154,9 +164,9 @@ struct st_mem {
     uint8   emg_calibration_flag;       // Enable emg calibration on startup        1
     uint32  emg_max_value[NUM_OF_EMGS]; // Maximum value for EMG                    8
 
-    uint8   emg_speed;                  // Maximum closure speed when using emg     1  16
+    uint8   emg_speed;                  // Maximum closure speed when using emg     1
 
-                                                                    //TOT           84
+                                                                    //TOT           98
 };
 
 //=================================================     device related variables

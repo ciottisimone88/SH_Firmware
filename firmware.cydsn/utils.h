@@ -29,7 +29,6 @@ int32 filter_v(int32 new_value);
 int32 filter_ch1(int32 value);
 int32 filter_ch2(int32 value);
 int32 filter_i1(int32 value);
-int32 filter_i2(int32 value);
 
 uint8 BITChecksum(uint32);
 int round(double x);
