@@ -260,7 +260,6 @@ void motor_control(void) {
             }
             break;
 
-
         case INPUT_MODE_EMG_PROPORTIONAL:
             if (err_emg_1 > 0) {
             g_ref.pos[0] = (err_emg_1 * dx_sx_hand * closed_hand_pos) / (1024 - c_mem.emg_threshold[0]);
@@ -268,7 +267,6 @@ void motor_control(void) {
                 g_ref.pos[0] = 0;
             }
             break;
-
 
         case INPUT_MODE_EMG_INTEGRAL:
             if (err_emg_1 > 0) {
