@@ -18,12 +18,23 @@
 //--------------------------------------------------------------     DEFINITIONS
 
 #define ALPHA 50 // emg filter
-#define BETA  8 // current filter
+#define BETA  32 // current filter
 
 #define SIGN(A) (((A) > 0) ? (1) : ((((A) < 0) ? (-1) : (0))))
 
 
 int32 filter_v(int32 new_value) {
+
+    static int32 old_value, aux;
+
+    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
+
+    old_value = aux;
+
+    return aux;
+}
+
+int32 filter_i1(int32 new_value) {
 
     static int32 old_value, aux;
 
@@ -51,17 +62,6 @@ int32 filter_ch2(int32 new_value) {
     static int32 old_value, aux;
 
     aux = (old_value * (1024 - ALPHA) + new_value * (ALPHA)) / 1024;
-
-    old_value = aux;
-
-    return aux;
-}
-
-int32 filter_i1(int32 new_value) {
-
-    static int32 old_value, aux;
-
-    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
 
     old_value = aux;
 

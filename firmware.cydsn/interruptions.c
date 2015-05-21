@@ -361,7 +361,6 @@ void motor_control(void) {
                     break;
             }
 
-
         default:
             break;
     }
@@ -373,188 +372,217 @@ void motor_control(void) {
         if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) g_ref.pos[0] = c_mem.pos_lim_sup[0];
     }
 
-    // ======================= CURRENT AND POSITION CONTROL ====================
-    #if (CONTROL_MODE == CURR_AND_POS_CONTROL)
-        pos_error = g_ref.pos[0] - g_meas.pos[0];
+    switch(c_mem.control_mode) {
+        // ======================= CURRENT AND POSITION CONTROL ================
+        case CURR_AND_POS_CONTROL:
+            pos_error = g_ref.pos[0] - g_meas.pos[0];
 
-        // ------ position PID control -----
+            // ------ position PID control -----
 
-        i_ref = 0;
+            i_ref = 0;
 
-        // Proportional
-        if (c_mem.k_p != 0) {
-            i_ref += (int32)(c_mem.k_p * pos_error) >> 16;
-        }
+            // Proportional
+            if (c_mem.k_p != 0) {
+                i_ref += (int32)(c_mem.k_p * pos_error) >> 16;
+            }
 
-        // Integral
-        if (c_mem.k_i != 0) {
-            i_ref += (int32)(c_mem.k_i * pos_error_sum) >> 16;
-        }
+            // Integral
+            if (c_mem.k_i != 0) {
+                i_ref += (int32)(c_mem.k_i * pos_error_sum) >> 16;
+            }
 
-        // Derivative
-        if (c_mem.k_d != 0) {
-            i_ref += (int32)(c_mem.k_d * (prev_pos - g_meas.pos[0])) >> 16;
-        }
+            // Derivative
+            if (c_mem.k_d != 0) {
+                i_ref += (int32)(c_mem.k_d * (prev_pos - g_meas.pos[0])) >> 16;
+            }
 
-        // // current set through position reference
-        // i_ref = g_ref.pos[0] >> g_mem.res[0];
+            // // current set through position reference
+            // i_ref = g_ref.pos[0] >> g_mem.res[0];
 
-        // motor direction depends on i_ref
-        if (i_ref >= 0) {
-            motor_dir = 0x02;
-        } else {
-            motor_dir = 0x00;
-        }
+            // motor direction depends on i_ref
+            if (i_ref >= 0) {
+                motor_dir = 0x02;
+            } else {
+                motor_dir = 0x00;
+            }
 
-        // current ref must be positive
-        i_ref = abs(i_ref);
+            // current ref must be positive
+            i_ref = abs(i_ref);
 
-        // saturate max current
-        if (i_ref > c_mem.current_limit) {
-            i_ref = c_mem.current_limit;
-        }
+            // saturate max current
+            if (i_ref > c_mem.current_limit) {
+                i_ref = c_mem.current_limit;
+            }
 
-        // saturate min current
-        if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
-            i_ref = MIN_CURR_SAT_LIMIT;
-        }
+            // saturate min current
+            if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
+                i_ref = MIN_CURR_SAT_LIMIT;
+            }
 
-        // write i_ref on meas curr 2
-        g_meas.curr[1] = i_ref;
+            // write i_ref on meas curr 2
+            g_meas.curr[1] = i_ref;
 
-        // current error
-        curr_error = i_ref - g_meas.curr[0];
+            // current error
+            curr_error = i_ref - g_meas.curr[0];
 
 
-        // ----- current PID control -----
+            // ----- current PID control -----
 
-        pwm_input = 0;
-
-        // Proportional
-        if (c_mem.k_p_c != 0) {
-            pwm_input += (int32)(c_mem.k_p_c * curr_error) >> 16;
-        }
-
-        // Integral
-        if (c_mem.k_i_c != 0) {
-            pwm_input += (int32)(c_mem.k_i_c * curr_error_sum) >> 16;
-        }
-
-        // Derivative
-        if (c_mem.k_d_c != 0) {
-            pwm_input += (int32)(c_mem.k_d_c * (prev_curr - g_meas.curr[0])) >> 16;
-        }
-
-        // pwm_input saturation
-        if (pwm_input < 0) {
             pwm_input = 0;
-        } else if (pwm_input > PWM_MAX_VALUE) {
-            pwm_input = PWM_MAX_VALUE;
-        }
 
-        // update error sum for both errors
-        pos_error_sum += pos_error;
-        curr_error_sum += curr_error;
+            // Proportional
+            if (c_mem.k_p_c != 0) {
+                pwm_input += (int32)(c_mem.k_p_c * curr_error) >> 16;
+            }
 
-        // error_sum saturation
-        if (pos_error_sum > POS_INTEGRAL_SAT_LIMIT) {
-            pos_error_sum = POS_INTEGRAL_SAT_LIMIT;
-        } else if (pos_error_sum < -POS_INTEGRAL_SAT_LIMIT) {
-            pos_error_sum = -POS_INTEGRAL_SAT_LIMIT;
-        }
+            // Integral
+            if (c_mem.k_i_c != 0) {
+                pwm_input += (int32)(c_mem.k_i_c * curr_error_sum) >> 16;
+            }
 
-        if (curr_error_sum > CURR_INTEGRAL_SAT_LIMIT) {
-            curr_error_sum = CURR_INTEGRAL_SAT_LIMIT;
-        } else if (curr_error_sum < -CURR_INTEGRAL_SAT_LIMIT) {
-            curr_error_sum = -CURR_INTEGRAL_SAT_LIMIT;
-        }
+            // Derivative
+            if (c_mem.k_d_c != 0) {
+                pwm_input += (int32)(c_mem.k_d_c * (prev_curr - g_meas.curr[0])) >> 16;
+            }
 
-        // Update position
-        prev_pos = g_meas.pos[0];
+            // pwm_input saturation
+            if (pwm_input < 0) {
+                pwm_input = 0;
+            } else if (pwm_input > PWM_MAX_VALUE) {
+                pwm_input = PWM_MAX_VALUE;
+            }
 
-        // Update current
-        prev_curr = g_meas.curr[0];
+            // update error sum for both errors
+            pos_error_sum += pos_error;
+            curr_error_sum += curr_error;
 
-    #endif
+            // error_sum saturation
+            if (pos_error_sum > POS_INTEGRAL_SAT_LIMIT) {
+                pos_error_sum = POS_INTEGRAL_SAT_LIMIT;
+            } else if (pos_error_sum < -POS_INTEGRAL_SAT_LIMIT) {
+                pos_error_sum = -POS_INTEGRAL_SAT_LIMIT;
+            }
 
-    // ============================== POSITION CONTROL =========================
+            if (curr_error_sum > CURR_INTEGRAL_SAT_LIMIT) {
+                curr_error_sum = CURR_INTEGRAL_SAT_LIMIT;
+            } else if (curr_error_sum < -CURR_INTEGRAL_SAT_LIMIT) {
+                curr_error_sum = -CURR_INTEGRAL_SAT_LIMIT;
+            }
 
-    #if (CONTROL_MODE == CONTROL_ANGLE)
-        pos_error = g_ref.pos[0] - g_meas.pos[0];
+            // Update position
+            prev_pos = g_meas.pos[0];
 
-        pos_error_sum += pos_error;
+            // Update current
+            prev_curr = g_meas.curr[0];
 
-        // anti-windup (for integral control)
-        if (pos_error_sum > ANTI_WINDUP) {
-            pos_error_sum = ANTI_WINDUP;
-        } else if (pos_error_sum < -ANTI_WINDUP) {
-            pos_error_sum = -ANTI_WINDUP;
-        }
+            break;
 
-        // Proportional
-        if (c_mem.k_p != 0) {
-            pwm_input = (int32)(c_mem.k_p * pos_error) >> 16;
-        }
+        // ============================== POSITION CONTROL =====================
+        case CONTROL_ANGLE:
+            pos_error = g_ref.pos[0] - g_meas.pos[0];
 
-        // Integral
-        if (c_mem.k_i != 0) {
-            pwm_input += (int32)(c_mem.k_i * pos_error_sum) >> 16;
-        }
+            pos_error_sum += pos_error;
 
-        // Derivative
-        if (c_mem.k_d != 0) {
-            pwm_input += (int32)(c_mem.k_d * (prev_pos - g_meas.pos[0])) >> 16;
-        }
+            // anti-windup (for integral control)
+            if (pos_error_sum > ANTI_WINDUP) {
+                pos_error_sum = ANTI_WINDUP;
+            } else if (pos_error_sum < -ANTI_WINDUP) {
+                pos_error_sum = -ANTI_WINDUP;
+            }
 
-        // Update measure
-        prev_pos = g_meas.pos[0];
+            // Proportional
+            if (c_mem.k_p != 0) {
+                pwm_input = (int32)(c_mem.k_p * pos_error) >> 16;
+            }
 
-        if (pwm_input > 0) {
-            motor_dir = 1;
-        } else {
-            motor_dir = 0;
-        }
+            // Integral
+            if (c_mem.k_i != 0) {
+                pwm_input += (int32)(c_mem.k_i * pos_error_sum) >> 16;
+            }
 
-    #endif
+            // Derivative
+            if (c_mem.k_d != 0) {
+                pwm_input += (int32)(c_mem.k_d * (prev_pos - g_meas.pos[0])) >> 16;
+            }
 
-    // ========================== CURRENT CONTROL ==============================
+            // Update measure
+            prev_pos = g_meas.pos[0];
 
-    #if (CONTROL_MODE == CONTROL_CURRENT)
-        if(g_ref.onoff & 1) {
-            curr_error = g_ref.pos[0] - g_meas.curr[0];
+            if (pwm_input > 0) {
+                motor_dir = 1;
+            } else {
+                motor_dir = 0;
+            }
 
-            pos_error_sum += curr_error;
+            break;
 
-            pwm_input += ((c_mem.k_p * (curr_error)) / 65536) + pos_error_sum;
-        } else {
+        // ========================== CURRENT CONTROL ==========================
+        case CONTROL_CURRENT:
+            i_ref = g_ref.pos[0] >> g_mem.res[0];
+
+            // current error
+            curr_error = abs(i_ref) - g_meas.curr[0];
+
             pwm_input = 0;
-        }
-    #endif
 
-    // ================= DIRECT PWM CONTROL ====================================
+            // Proportional
+            if (c_mem.k_p_c != 0) {
+                pwm_input += (int32)(c_mem.k_p_c * curr_error) >> 16;
+            }
 
-    #if (CONTROL_MODE == CONTROL_PWM)
-        // Shift right by resolution to have the real input number
-        pwm_input = g_ref.pos[0] >> g_mem.res[0];
-    #endif
+            // Integral
+            if (c_mem.k_i_c != 0) {
+                pwm_input += (int32)(c_mem.k_i_c * curr_error_sum) >> 16;
+            }
+
+            // Derivative
+            if (c_mem.k_d_c != 0) {
+                pwm_input += (int32)(c_mem.k_d_c * (prev_curr - g_meas.curr[0])) >> 16;
+            }
+
+            // pwm_input saturation
+            if (pwm_input < 0) {
+                pwm_input = 0;
+            } else if (pwm_input > PWM_MAX_VALUE) {
+                pwm_input = PWM_MAX_VALUE;
+            }
+
+            // update error sum for both errors
+            curr_error_sum += curr_error;
+
+            if (curr_error_sum > CURR_INTEGRAL_SAT_LIMIT) {
+                curr_error_sum = CURR_INTEGRAL_SAT_LIMIT;
+            } else if (curr_error_sum < -CURR_INTEGRAL_SAT_LIMIT) {
+                curr_error_sum = -CURR_INTEGRAL_SAT_LIMIT;
+            }
+
+            // Update current
+            prev_curr = g_meas.curr[0];
+
+        // ================= DIRECT PWM CONTROL ================================
+        case CONTROL_PWM:
+            // Shift right by resolution to have the real input number
+            pwm_input = g_ref.pos[0] >> g_mem.res[0];
+
+            // pwm_input saturation
+            if (pwm_input < 0) {
+                pwm_input = 0;
+            } else if (pwm_input > PWM_MAX_VALUE) {
+                pwm_input = PWM_MAX_VALUE;
+            }
+
+            break;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
-
-    #if PWM_DEAD != 0
-        if (pwm_input > 0) {
-            pwm_input += PWM_DEAD;
-        } else if (pwm_input < 0) {
-            pwm_input -= PWM_DEAD;
-        }
-    #endif
 
     if(pwm_input >  PWM_MAX_VALUE) pwm_input =  PWM_MAX_VALUE;
     if(pwm_input < -PWM_MAX_VALUE) pwm_input = -PWM_MAX_VALUE;
 
 
-    #if ((CONTROL_MODE != CONTROL_PWM) || (CONTROL_MODE != CURR_AND_POS_CONTROL))
+    if ((g_mem.control_mode != CONTROL_PWM) || (g_mem.control_mode != CURR_AND_POS_CONTROL)) {
         pwm_input = (((pwm_input * 1024) / PWM_MAX_VALUE) * device.pwm_limit) / 1024;
-    #endif
+    }
 
 
     MOTOR_DIR_Write(motor_dir);
@@ -817,10 +845,10 @@ void analog_measurements(void) {
                                     (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
                                     (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
                                     (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
-                                    #if (CONTROL_MODE == CONTROL_ANGLE)
+                                    if (c_mem.control_mode == CONTROL_ANGLE) {
                                         g_ref.pos[0] = g_meas.pos[0];
                                         g_ref.pos[1] = g_meas.pos[1];
-                                    #endif
+                                    }
                                     g_ref.onoff = c_mem.activ;
                                     MOTOR_ON_OFF_Write(g_ref.onoff);
                                 }

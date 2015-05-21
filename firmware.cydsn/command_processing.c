@@ -61,10 +61,10 @@ void commProcess(void){
         case CMD_ACTIVATE:
             g_ref.onoff = g_rx.buffer[1];
 
-            #if (CONTROL_MODE == CONTROL_ANGLE)
+            if ((g_mem.control_mode == CONTROL_ANGLE) || (g_mem.control_mode == CURR_AND_POS_CONTROL)) {
                 g_ref.pos[0] = g_meas.pos[0];
                 g_ref.pos[1] = g_meas.pos[1];
-            #endif
+            }
             MOTOR_ON_OFF_Write(g_ref.onoff);
 
             break;
@@ -202,7 +202,7 @@ void commProcess(void){
 //=============================================================     CMD_GET_INFO
 
         case CMD_GET_INFO:
-            infoGet( *((uint16 *) &g_rx.buffer[1]), g_rx.buffer[3]);
+            infoGet( *((uint16 *) &g_rx.buffer[1]));
             break;
 
 //============================================================     CMD_SET_PARAM
@@ -322,11 +322,10 @@ void infoSend(void){
 //                                                              COMMAND GET INFO
 //==============================================================================
 
-void infoGet(uint16 info_type, uint8 page) {
+void infoGet(uint16 info_type) {
     static unsigned char packet_string[1100];
 
-
-//======================================     choose info type and prepare string
+    //==================================     choose info type and prepare string
 
     switch (info_type) {
         case INFO_ALL:
@@ -383,6 +382,12 @@ void paramSet(uint16 param_type)
 
         case PARAM_INPUT_MODE:
             g_mem.input_mode = g_rx.buffer[3];
+            break;
+
+//=========================================================     set_control_mode
+
+        case PARAM_CONTROL_MODE:
+            g_mem.control_mode = g_rx.buffer[3];
             break;
 
 //===========================================================     set_resolution
@@ -525,6 +530,15 @@ void paramGet(uint16 param_type)
             packet_lenght = 14;
             break;
 
+//=======================================================     get_pid_parameters
+
+        case PARAM_PID_CURR_CONTROL:
+            *((double *) (packet_data + 1)) = (double) c_mem.k_p_c / 65536;
+            *((double *) (packet_data + 5)) = (double) c_mem.k_i_c / 65536;
+            *((double *) (packet_data + 9)) = (double) c_mem.k_d_c / 65536;
+            packet_lenght = 14;
+            break;
+
 //===================================================     get_startup_activation
 
         case PARAM_STARTUP_ACTIVATION:
@@ -536,6 +550,13 @@ void paramGet(uint16 param_type)
 
         case PARAM_INPUT_MODE:
             packet_data[1] = c_mem.input_mode;
+            packet_lenght = 3;
+            break;
+
+//=========================================================     get_control_mode
+
+        case PARAM_CONTROL_MODE:
+            packet_data[1] = c_mem.control_mode;
             packet_lenght = 3;
             break;
 
@@ -748,7 +769,7 @@ void infoPrepare(unsigned char *info_string)
             break;
     }
 
-    switch(CONTROL_MODE) {
+    switch(c_mem.control_mode) {
         case CONTROL_ANGLE:
             strcat(info_string, "Control mode: Position\r\n");
             break;
@@ -1023,6 +1044,7 @@ void memInit(void)
 
     g_mem.activ         = 0;
     g_mem.input_mode    = INPUT_MODE_EXTERNAL;
+    g_mem.control_mode  = CONTROL_ANGLE;
 
     g_mem.pos_lim_flag = 1;
 

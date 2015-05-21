@@ -109,9 +109,9 @@ enum qbmove_parameter
     PARAM_STARTUP_ACTIVATION     = 2,   ///< Start up activation byte
     PARAM_INPUT_MODE             = 3,   ///< Input mode
 
-    PARAM_CONTROL_MODE           = 4,   ///< Angle resolution for inputs and
-                                        ///  measurements. Used during
-                                        ///  communication.
+    PARAM_CONTROL_MODE           = 4,   ///< Choose the kind of control between
+                                        ///  position control, current control,
+                                        ///  direct PWM value or current+position control
     PARAM_MEASUREMENT_OFFSET     = 5,   ///< Adds a constant offset to the
                                         ///  measurements
     PARAM_MEASUREMENT_MULTIPLIER = 6,   ///< Adds a multiplier to the
@@ -155,7 +155,7 @@ enum qbmove_resolution
 
 //==============================================================     input modes
 
-enum qbmove_mode
+enum qbmove_input_mode
 {
     INPUT_MODE_EXTERNAL         = 0,    ///< References through external
                                         ///  commands (default)
@@ -169,6 +169,17 @@ enum qbmove_mode
     INPUT_MODE_EMG_FCFS_ADV     = 5     ///< Use 2 EMG. First reaching threshold
                                         ///  wins and its value defines hand closure
                                         ///  Wait for both EMG to lower under threshold
+};
+
+//============================================================     control modes
+
+enum qbmove_control_mode {
+
+    CONTROL_ANGLE           = 0,        ///< Classic position control
+    CONTROL_PWM             = 1,        ///< Direct PWM value
+    CONTROL_CURRENT         = 2,        ///< Current control (beta)
+    CURR_AND_POS_CONTROL    = 3         ///< Current control (beta)
+
 };
 
 /** \} */
