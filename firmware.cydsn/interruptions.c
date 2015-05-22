@@ -602,7 +602,7 @@ void encoder_reading(void) {
     static int32 value_encoder;
     static int32 aux;
 
-    static int32 last_value_encoder[NUM_OF_SENSORS - 2];
+    static int32 last_value_encoder[NUM_OF_SENSORS];
 
     static uint8 only_first_time = 1;
     static uint8 one_time_execute = 0;
@@ -612,16 +612,19 @@ void encoder_reading(void) {
 
     // Discard first reading
     if (only_first_time) {
-        for (i = 0; i < NUM_OF_SENSORS - 2; i++) {
+        for (i = 0; i < NUM_OF_SENSORS; i++) {
             switch(i) {
-                case 0: {
+                case 0:
                     data_encoder = SHIFTREG_ENC_1_ReadData();
                     break;
-                }
-                case 1: {
+
+                case 1:
                     data_encoder = SHIFTREG_ENC_2_ReadData();
                     break;
-                }
+
+                case 2:
+                    data_encoder = SHIFTREG_ENC_3_ReadData();
+                    break;
             }
         }
         only_first_time = 0;
@@ -629,16 +632,19 @@ void encoder_reading(void) {
     }
 
     // Normal execution
-    for (i = 0; i < NUM_OF_SENSORS - 2; i++) {
+    for (i = 0; i < NUM_OF_SENSORS; i++) {
         switch(i) {
-            case 0: {
+            case 0:
                 data_encoder = SHIFTREG_ENC_1_ReadData();
                 break;
-            }
-            case 1: {
+
+            case 1:
                 data_encoder = SHIFTREG_ENC_2_ReadData();
                 break;
-            }
+
+            case 2:
+                data_encoder = SHIFTREG_ENC_3_ReadData();
+                break;
         }
 
 

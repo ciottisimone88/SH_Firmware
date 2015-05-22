@@ -705,7 +705,7 @@ void infoPrepare(unsigned char *info_string)
 
     strcat(info_string,"\r\nMEASUREMENTS INFO\r\n");
     strcat(info_string, "Sensor value:\r\n");
-    for (i = 0; i < NUM_OF_SENSORS - 1; i++) {
+    for (i = 0; i < NUM_OF_SENSORS; i++) {
         sprintf(str,"%d -> %d", i+1,
             (int)(g_meas.pos[i] >> c_mem.res[i]));
         strcat(info_string, str);

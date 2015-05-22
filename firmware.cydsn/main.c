@@ -82,9 +82,12 @@ void main()
 
     // SSI encoder initializations
 
-    COUNTER_ENC_Start();
+    COUNTER_ENC_1_Start();
+    COUNTER_ENC_2_Start();
+    COUNTER_ENC_3_Start();
     SHIFTREG_ENC_1_Start();
     SHIFTREG_ENC_2_Start();
+    SHIFTREG_ENC_3_Start();
 
     // ADC
 
