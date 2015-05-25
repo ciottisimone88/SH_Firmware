@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION         "SH-PRO v5.1.1"
+#define VERSION                 "SH-PRO v5.1.2"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -38,11 +38,6 @@
 //==============================================================================
 
 //Main frequency 1000 Hz
-
-#define ANALOG_MEASUREMENTS_DIV 1      // 1000 Hz
-#define ENCODER_READ_DIV        1      // 1000 Hz
-#define MOTOR_CONTROL_DIV       1      // 1000 Hz
-#define OVERCURRENT_DIV         1      // 1000 Hz
 #define CALIBRATION_DIV         10     // 100 Hz
 
 #define DIV_INIT_VALUE          1
@@ -75,6 +70,8 @@
 #define CURR_INTEGRAL_SAT_LIMIT 10000
 
 #define MIN_CURR_SAT_LIMIT      30
+
+#define ENC_READ_LAST_VAL_RESET 10
 //==============================================================================
 //                                                        structures definitions
 //==============================================================================
@@ -155,6 +152,7 @@ struct st_dev{
     int32   tension;                // Power supply tension
     float   tension_conv_factor;    // Used to calculate input tension
     int8    pwm_limit;
+    uint8   tension_valid;
 };
 
 

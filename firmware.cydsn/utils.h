@@ -30,9 +30,9 @@ int32 filter_ch1(int32 value);
 int32 filter_ch2(int32 value);
 int32 filter_i1(int32 value);
 
-uint8 BITChecksum(uint32);
 int round(double x);
 int32 my_mod(int32 val, int32 divisor);
+uint8 check_enc_data(uint32*);
 
 void calibration(void);
 

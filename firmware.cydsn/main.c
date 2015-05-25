@@ -139,6 +139,7 @@ void main()
     // Calculate conversion factor
     device.tension_conv_factor = ((0.25 * 101.0 * 1000) / 1638.4); //derives from datasheet calculations
     device.pwm_limit = PWM_MAX_VALUE;
+    device.tension_valid = FALSE;
 
 
 //=========================================================     application loop

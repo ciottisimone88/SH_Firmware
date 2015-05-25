@@ -68,20 +68,24 @@ int32 filter_ch2(int32 new_value) {
     return aux;
 }
 
-
 //==============================================================================
-//                                                                  BIT CHECKSUM
+//                                                                CHECK ENC DATA
 //==============================================================================
 
+// Returns 1 if the encoder data is correct, 0 otherwise
 
-uint8 BITChecksum(uint32 mydata) {
-    uint8 i;
-    uint8 checksum = 0;
-    for(i = 0; i < 31; ++i) {
-        checksum = checksum ^ (mydata & 1);
-        mydata = mydata >> 1;
-    }
-    return checksum;
+uint8 check_enc_data(uint32 *value) {
+
+    const uint8* p = (const uint8*)value;
+    uint8 a = *p;
+
+    a = a ^ *(++p);
+    a = a ^ *(++p);
+    a = a ^ *(++p);
+    a = (a & 0x0F) ^ (a>>4);
+
+    return (0x9669 >> a) & 0x01;
+    //0x9669 is a bit vector representing the !(bitwise XOR) of 4bits
 }
 
 //==============================================================================

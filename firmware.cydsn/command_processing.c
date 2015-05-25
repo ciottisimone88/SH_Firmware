@@ -16,9 +16,11 @@
 
 //=================================================================     includes
 #include <command_processing.h>
-#include "commands.h"
+#include <interruptions.h>
 #include <stdio.h>
 #include <utils.h>
+
+#include "commands.h"
 
 //================================================================     variables
 
@@ -407,6 +409,7 @@ void paramSet(uint16 param_type)
 
                 g_meas.rot[i] = 0;
             }
+            encoder_reading(ENC_READ_LAST_VAL_RESET);
             break;
 
 //===========================================================     set_multiplier
@@ -789,7 +792,7 @@ void infoPrepare(unsigned char *info_string)
 
 
     strcat(info_string, "Sensor resolution:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
+    for(i = 0; i < NUM_OF_SENSORS; ++i) {
         sprintf(str,"%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
@@ -797,14 +800,14 @@ void infoPrepare(unsigned char *info_string)
 
 
     strcat(info_string, "Measurement Offset:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
+    for(i = 0; i < NUM_OF_SENSORS; ++i) {
         sprintf(str,"%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
     }
 
     strcat(info_string, "Measurement Multiplier:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS - 1; ++i) {
+    for(i = 0; i < NUM_OF_SENSORS; ++i) {
         sprintf(str,"%d -> %f", (int)(i + 1), (double) c_mem.m_mult[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
