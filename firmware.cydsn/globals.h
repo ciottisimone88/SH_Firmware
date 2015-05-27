@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.1.2"
+#define VERSION                 "SH-PRO v5.2.0"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -141,9 +141,13 @@ struct st_mem {
     uint8   emg_calibration_flag;       // Enable emg calibration on startup        1
     uint32  emg_max_value[NUM_OF_EMGS]; // Maximum value for EMG                    8
 
-    uint8   emg_speed;                  // Maximum closure speed when using emg     1 16
+    uint8   emg_speed;                  // Maximum closure speed when using emg     1
 
-                                                                    //TOT           97
+    uint8   double_encoder_on_off;      // Double encoder ON/OFF                    1
+
+    int8    motor_handle_ratio;         // Discrete multiplier for handle           1 18
+
+                                                                    //TOT           99
 };
 
 //=================================================     device related variables

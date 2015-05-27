@@ -220,6 +220,8 @@ void motor_control(void) {
                                     // 2 EMG 2
                                     // wait for both to get down
 
+    static int32 handle_value;
+
 
     err_emg_1 = g_meas.emg[0] - c_mem.emg_threshold[0];
     err_emg_2 = g_meas.emg[1] - c_mem.emg_threshold[1];
@@ -231,12 +233,21 @@ void motor_control(void) {
 
         case INPUT_MODE_ENCODER3:
 
-            if (((g_meas.pos[2] - g_ref.pos[0]) > c_mem.max_step_pos)   &&   (c_mem.max_step_pos != 0)) {
+            // Calculate handle value based on position of handle in the
+            // sensor chain and multiplication factor between handle and motor position
+            if (c_mem.double_encoder_on_off) {
+                handle_value = g_meas.pos[2] * c_mem.motor_handle_ratio;
+            } else {
+                handle_value = g_meas.pos[1] * c_mem.motor_handle_ratio;
+            }
+
+            // Read handle and use it as reference for the motor
+            if (((handle_value - g_ref.pos[0]) > c_mem.max_step_pos)   &&   (c_mem.max_step_pos != 0)) {
                 g_ref.pos[0] += c_mem.max_step_pos;
-            } else if (((g_meas.pos[2] - g_ref.pos[0]) < c_mem.max_step_neg)   &&   (c_mem.max_step_neg != 0)) {
+            } else if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg)   &&   (c_mem.max_step_neg != 0)) {
                 g_ref.pos[0] += c_mem.max_step_neg;
             } else {
-                g_ref.pos[0] = g_meas.pos[2];
+                g_ref.pos[0] = handle_value;
             }
             break;
 
@@ -667,7 +678,7 @@ void encoder_reading(uint8 index) {
 
         last_value_encoder[index] = value_encoder;
 
-        value_encoder += g_meas.rot[index] << 16;
+        value_encoder += (int32)g_meas.rot[index] << 16;
 
         if (c_mem.m_mult[index] != 1.0) {
             value_encoder *= c_mem.m_mult[index];

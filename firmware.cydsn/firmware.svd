@@ -9,7 +9,7 @@
     <peripheral>
       <name>RS485_CTS</name>
       <description>No description available</description>
-      <baseAddress>0x6474</baseAddress>
+      <baseAddress>0x647B</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -28,30 +28,9 @@
       </registers>
     </peripheral>
     <peripheral>
-      <name>FTDI_ENABLE_REG</name>
-      <description>No description available</description>
-      <baseAddress>0x657A</baseAddress>
-      <addressBlock>
-        <offset>0</offset>
-        <size>0x0</size>
-        <usage>registers</usage>
-      </addressBlock>
-      <registers>
-        <register>
-          <name>FTDI_ENABLE_REG_CONTROL_REG</name>
-          <description>No description available</description>
-          <addressOffset>0x0</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-      </registers>
-    </peripheral>
-    <peripheral>
       <name>MOTOR_ON_OFF</name>
       <description>No description available</description>
-      <baseAddress>0x6476</baseAddress>
+      <baseAddress>0x6576</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -4097,6 +4076,27 @@
       </registers>
     </peripheral>
     <peripheral>
+      <name>LED_REG</name>
+      <description>No description available</description>
+      <baseAddress>0x6471</baseAddress>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x0</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>LED_REG_CONTROL_REG</name>
+          <description>No description available</description>
+          <addressOffset>0x0</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>COUNTER_ENC_2</name>
       <description>No description available</description>
       <baseAddress>0x0</baseAddress>
@@ -4109,7 +4109,7 @@
         <register>
           <name>COUNTER_ENC_2_COUNTER</name>
           <description>UDB.A0 - Current Counter Value</description>
-          <addressOffset>0x6403</addressOffset>
+          <addressOffset>0x6402</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -4118,7 +4118,7 @@
         <register>
           <name>COUNTER_ENC_2_PERIOD</name>
           <description>UDB.D0 - Assigned Period</description>
-          <addressOffset>0x6423</addressOffset>
+          <addressOffset>0x6422</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -4127,16 +4127,48 @@
         <register>
           <name>COUNTER_ENC_2_COMPARE</name>
           <description>UDB.D1 - Assigned Compare Value</description>
-          <addressOffset>0x6433</addressOffset>
+          <addressOffset>0x6432</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
           <resetMask>0</resetMask>
         </register>
         <register>
+          <name>COUNTER_ENC_2_Control_Reg</name>
+          <description>UDB Control Register - Assigned Control Register Value</description>
+          <addressOffset>0x6475</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>CTRL_ENABLE</name>
+              <description>Enable Counter</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CTRL_CAPMODE</name>
+              <description>Capture mode</description>
+              <lsb>3</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CTRL_CMPMODE</name>
+              <description>Compare mode</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>COUNTER_ENC_2_STATUS_MASK</name>
           <description>UDB Status bits Interrupt Mask Enable Register</description>
-          <addressOffset>0x6483</addressOffset>
+          <addressOffset>0x6485</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -4196,7 +4228,7 @@
         <register>
           <name>COUNTER_ENC_2_STATUS_AUX_CTRL</name>
           <description>UDB Auxilliary Control Register</description>
-          <addressOffset>0x6493</addressOffset>
+          <addressOffset>0x6495</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -4318,44 +4350,12 @@
             </field>
           </fields>
         </register>
-        <register>
-          <name>COUNTER_ENC_2_Control_Reg</name>
-          <description>UDB Control Register - Assigned Control Register Value</description>
-          <addressOffset>0x6577</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>CTRL_ENABLE</name>
-              <description>Enable Counter</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CTRL_CAPMODE</name>
-              <description>Capture mode</description>
-              <lsb>3</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CTRL_CMPMODE</name>
-              <description>Compare mode</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
       </registers>
     </peripheral>
     <peripheral>
-      <name>LED_REG</name>
+      <name>FTDI_ENABLE_REG</name>
       <description>No description available</description>
-      <baseAddress>0x6475</baseAddress>
+      <baseAddress>0x6477</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -4363,7 +4363,7 @@
       </addressBlock>
       <registers>
         <register>
-          <name>LED_REG_CONTROL_REG</name>
+          <name>FTDI_ENABLE_REG_CONTROL_REG</name>
           <description>No description available</description>
           <addressOffset>0x0</addressOffset>
           <size>8</size>
@@ -4376,7 +4376,7 @@
     <peripheral>
       <name>FF_STATUS</name>
       <description>No description available</description>
-      <baseAddress>0x6464</baseAddress>
+      <baseAddress>0x6467</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -4559,7 +4559,7 @@
         <register>
           <name>MY_TIMER_Control_Reg</name>
           <description>UDB Control Register - Assigned Control Register Value</description>
-          <addressOffset>0x6576</addressOffset>
+          <addressOffset>0x6575</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -4769,9 +4769,30 @@
       </registers>
     </peripheral>
     <peripheral>
+      <name>RESET_COUNTERS</name>
+      <description>No description available</description>
+      <baseAddress>0x6470</baseAddress>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x0</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>RESET_COUNTERS_CONTROL_REG</name>
+          <description>No description available</description>
+          <addressOffset>0x0</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>RESET_FF</name>
       <description>No description available</description>
-      <baseAddress>0x6477</baseAddress>
+      <baseAddress>0x6577</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -5082,153 +5103,6 @@
       </registers>
     </peripheral>
     <peripheral>
-      <name>UART_RS485</name>
-      <description>UART</description>
-      <baseAddress>0x0</baseAddress>
-      <addressBlock>
-        <offset>0</offset>
-        <size>0x0</size>
-        <usage>registers</usage>
-      </addressBlock>
-      <registers>
-        <register>
-          <name>TX_UART_RS485_TX_DATA</name>
-          <description>TX Data Register</description>
-          <addressOffset>0x6442</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>TX_UART_RS485_TX_STATUS</name>
-          <description>TX status register</description>
-          <addressOffset>0x6462</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>UART_RS485_TX_STS_COMPLETE</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_TX_STS_FIFO_EMPTY</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_TX_STS_FIFO_FULL</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_TX_STS_FIFO_NOT_FULL</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_UART_RS485_RX_ADDRESS1</name>
-          <description>RX Address1 Register</description>
-          <addressOffset>0x652B</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>RX_UART_RS485_RX_ADDRESS2</name>
-          <description>RX Address2 Register</description>
-          <addressOffset>0x653B</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>RX_UART_RS485_RX_DATA</name>
-          <description>RX Data Register</description>
-          <addressOffset>0x654B</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>RX_UART_RS485_RX_STATUS</name>
-          <description>RX status register</description>
-          <addressOffset>0x6568</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>UART_RS485_RX_STS_MRKSPC</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_RX_STS_BREAK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_RX_STS_PAR_ERROR</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_RX_STS_STOP_ERROR</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_RX_STS_OVERRUN</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_RX_STS_FIFO_NOTEMPTY</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>UART_RS485_RX_STS_ADDR_MATCH</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-      </registers>
-    </peripheral>
-    <peripheral>
       <name>PWM_MOTORS</name>
       <description>No description available</description>
       <baseAddress>0x0</baseAddress>
@@ -5241,7 +5115,7 @@
         <register>
           <name>PWM_MOTORS__COMPARE1</name>
           <description>UDB.D0 - Assigned Compare1 Value</description>
-          <addressOffset>0x642E</addressOffset>
+          <addressOffset>0x652B</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5250,7 +5124,7 @@
         <register>
           <name>PWM_MOTORS__COMPARE2</name>
           <description>UDB.D1 - Assigned Compare2 Value</description>
-          <addressOffset>0x643E</addressOffset>
+          <addressOffset>0x653B</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5259,7 +5133,7 @@
         <register>
           <name>PWM_MOTORS_Control_Reg</name>
           <description>UDB Control Register - Assigned Control Register Value</description>
-          <addressOffset>0x647E</addressOffset>
+          <addressOffset>0x657B</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5291,7 +5165,7 @@
         <register>
           <name>PWM_MOTORS_STATUS_AUX_CTRL</name>
           <description>UDB Auxilliary Control Register</description>
-          <addressOffset>0x649E</addressOffset>
+          <addressOffset>0x659B</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5416,6 +5290,153 @@
       </registers>
     </peripheral>
     <peripheral>
+      <name>UART_RS485</name>
+      <description>UART</description>
+      <baseAddress>0x0</baseAddress>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x0</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>RX_UART_RS485_RX_ADDRESS1</name>
+          <description>RX Address1 Register</description>
+          <addressOffset>0x642D</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>RX_UART_RS485_RX_ADDRESS2</name>
+          <description>RX Address2 Register</description>
+          <addressOffset>0x643D</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>RX_UART_RS485_RX_DATA</name>
+          <description>RX Data Register</description>
+          <addressOffset>0x644D</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>TX_UART_RS485_TX_DATA</name>
+          <description>TX Data Register</description>
+          <addressOffset>0x644E</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>RX_UART_RS485_RX_STATUS</name>
+          <description>RX status register</description>
+          <addressOffset>0x6469</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>UART_RS485_RX_STS_MRKSPC</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_RX_STS_BREAK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_RX_STS_PAR_ERROR</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_RX_STS_STOP_ERROR</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_RX_STS_OVERRUN</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_RX_STS_FIFO_NOTEMPTY</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_RX_STS_ADDR_MATCH</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_UART_RS485_TX_STATUS</name>
+          <description>TX status register</description>
+          <addressOffset>0x646E</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>UART_RS485_TX_STS_COMPLETE</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_TX_STS_FIFO_EMPTY</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_TX_STS_FIFO_FULL</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>UART_RS485_TX_STS_FIFO_NOT_FULL</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>COUNTER_ENC_3</name>
       <description>No description available</description>
       <baseAddress>0x0</baseAddress>
@@ -5428,7 +5449,7 @@
         <register>
           <name>COUNTER_ENC_3_COUNTER</name>
           <description>UDB.A0 - Current Counter Value</description>
-          <addressOffset>0x6507</addressOffset>
+          <addressOffset>0x6400</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5437,7 +5458,7 @@
         <register>
           <name>COUNTER_ENC_3_PERIOD</name>
           <description>UDB.D0 - Assigned Period</description>
-          <addressOffset>0x6527</addressOffset>
+          <addressOffset>0x6420</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5446,7 +5467,7 @@
         <register>
           <name>COUNTER_ENC_3_COMPARE</name>
           <description>UDB.D1 - Assigned Compare Value</description>
-          <addressOffset>0x6537</addressOffset>
+          <addressOffset>0x6430</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5455,7 +5476,7 @@
         <register>
           <name>COUNTER_ENC_3_Control_Reg</name>
           <description>UDB Control Register - Assigned Control Register Value</description>
-          <addressOffset>0x6574</addressOffset>
+          <addressOffset>0x6473</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5487,7 +5508,7 @@
         <register>
           <name>COUNTER_ENC_3_STATUS_MASK</name>
           <description>UDB Status bits Interrupt Mask Enable Register</description>
-          <addressOffset>0x6587</addressOffset>
+          <addressOffset>0x6483</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5547,7 +5568,7 @@
         <register>
           <name>COUNTER_ENC_3_STATUS_AUX_CTRL</name>
           <description>UDB Auxilliary Control Register</description>
-          <addressOffset>0x6597</addressOffset>
+          <addressOffset>0x6493</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5674,7 +5695,7 @@
     <peripheral>
       <name>MOTOR_DIR</name>
       <description>No description available</description>
-      <baseAddress>0x647F</baseAddress>
+      <baseAddress>0x6574</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -5705,7 +5726,7 @@
         <register>
           <name>COUNTER_ENC_1_COUNTER</name>
           <description>UDB.A0 - Current Counter Value</description>
-          <addressOffset>0x6406</addressOffset>
+          <addressOffset>0x6401</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5714,7 +5735,7 @@
         <register>
           <name>COUNTER_ENC_1_PERIOD</name>
           <description>UDB.D0 - Assigned Period</description>
-          <addressOffset>0x6426</addressOffset>
+          <addressOffset>0x6421</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5723,16 +5744,48 @@
         <register>
           <name>COUNTER_ENC_1_COMPARE</name>
           <description>UDB.D1 - Assigned Compare Value</description>
-          <addressOffset>0x6436</addressOffset>
+          <addressOffset>0x6431</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
           <resetMask>0</resetMask>
         </register>
         <register>
+          <name>COUNTER_ENC_1_Control_Reg</name>
+          <description>UDB Control Register - Assigned Control Register Value</description>
+          <addressOffset>0x6474</addressOffset>
+          <size>8</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>CTRL_ENABLE</name>
+              <description>Enable Counter</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CTRL_CAPMODE</name>
+              <description>Capture mode</description>
+              <lsb>3</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CTRL_CMPMODE</name>
+              <description>Compare mode</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>COUNTER_ENC_1_STATUS_MASK</name>
           <description>UDB Status bits Interrupt Mask Enable Register</description>
-          <addressOffset>0x6486</addressOffset>
+          <addressOffset>0x6482</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5792,7 +5845,7 @@
         <register>
           <name>COUNTER_ENC_1_STATUS_AUX_CTRL</name>
           <description>UDB Auxilliary Control Register</description>
-          <addressOffset>0x6496</addressOffset>
+          <addressOffset>0x6492</addressOffset>
           <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
@@ -5911,38 +5964,6 @@
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>COUNTER_ENC_1_Control_Reg</name>
-          <description>UDB Control Register - Assigned Control Register Value</description>
-          <addressOffset>0x6575</addressOffset>
-          <size>8</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>CTRL_ENABLE</name>
-              <description>Enable Counter</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CTRL_CAPMODE</name>
-              <description>Capture mode</description>
-              <lsb>3</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CTRL_CMPMODE</name>
-              <description>Compare mode</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
             </field>
           </fields>
         </register>

@@ -116,6 +116,8 @@ void main()
             (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
             (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
             g_ref.onoff = 0x00;
+        } else {
+            g_ref.onoff = c_mem.activ;
         }
     } else {
         g_ref.onoff = c_mem.activ;
@@ -141,6 +143,8 @@ void main()
     device.pwm_limit = PWM_MAX_VALUE;
     device.tension_valid = FALSE;
 
+
+    RESET_COUNTERS_Write(0x00);
 
 //=========================================================     application loop
 

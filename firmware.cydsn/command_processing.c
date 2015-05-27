@@ -349,6 +349,7 @@ void paramSet(uint16 param_type)
 {
     uint8 i;        // iterator
     int32 aux_int;  // auxiliary variable
+    uint8 aux_uchar;
 
     switch(param_type) {
 
@@ -496,6 +497,21 @@ void paramSet(uint16 param_type)
 
         case PARAM_EMG_SPEED:
             g_mem.emg_speed = *((uint8*) &g_rx.buffer[3]);
+            break;
+
+//================================================     set_double_encoder_on_off
+        case PARAM_DOUBLE_ENC_ON_OFF:
+            aux_uchar = *((uint8*) &g_rx.buffer[3]);
+            if (aux_uchar) {
+                g_mem.double_encoder_on_off = 1;
+            } else {
+                g_mem.double_encoder_on_off = 0;
+            }
+            break;
+
+//===================================================     set_motor_handle_ratio
+        case PARAM_MOT_HANDLE_RATIO:
+            g_mem.motor_handle_ratio = *((int8*) &g_rx.buffer[3]);
             break;
 
     }
@@ -660,6 +676,18 @@ void paramGet(uint16 param_type)
             packet_lenght = 3;
             break;
 
+//================================================     get_double_encoder_on_off
+        case PARAM_DOUBLE_ENC_ON_OFF:
+            *((uint8 *)(packet_data + 1)) = c_mem.double_encoder_on_off;
+            packet_lenght = 3;
+            break;
+
+//===================================================     get_motor_handle_ratio
+        case PARAM_MOT_HANDLE_RATIO:
+            *((int8 *)(packet_data + 1)) = c_mem.motor_handle_ratio;
+            packet_lenght = 3;
+            break;
+
         default:
             break;
     }
@@ -756,7 +784,7 @@ void infoPrepare(unsigned char *info_string)
             strcat(info_string, "Input mode: USB\r\n");
             break;
         case INPUT_MODE_ENCODER3:
-            strcat(info_string, "Input mode: Sensor 3\r\n");
+            strcat(info_string, "Input mode: Handle\r\n");
             break;
         case INPUT_MODE_EMG_PROPORTIONAL:
             strcat(info_string, "Input mode: EMG proportional\r\n");
@@ -789,10 +817,19 @@ void infoPrepare(unsigned char *info_string)
             break;
     }
 
+    if (c_mem.double_encoder_on_off) {
+        strcat(info_string, "Double Encoder: YES\r\n");
+    } else {
+        strcat(info_string, "Double Encoder: NO\r\n");
+    }
+
+    sprintf(str, "Motor-Handle Ratio: %d\r\n", (int)c_mem.motor_handle_ratio);
+    strcat(info_string, str);
+
 
 
     strcat(info_string, "Sensor resolution:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS; ++i) {
+    for (i = 0; i < NUM_OF_SENSORS; ++i) {
         sprintf(str,"%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
@@ -800,14 +837,14 @@ void infoPrepare(unsigned char *info_string)
 
 
     strcat(info_string, "Measurement Offset:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS; ++i) {
+    for (i = 0; i < NUM_OF_SENSORS; ++i) {
         sprintf(str,"%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
     }
 
     strcat(info_string, "Measurement Multiplier:\r\n");
-    for(i = 0; i < NUM_OF_SENSORS; ++i) {
+    for (i = 0; i < NUM_OF_SENSORS; ++i) {
         sprintf(str,"%d -> %f", (int)(i + 1), (double) c_mem.m_mult[i]);
         strcat(info_string, str);
         strcat(info_string,"\r\n");
@@ -1058,7 +1095,7 @@ void memInit(void)
 
     g_mem.res[0] = 3;
     g_mem.res[1] = 3;
-    g_mem.res[2] = 0;
+    g_mem.res[2] = 3;
 
     for(i = 0; i < NUM_OF_SENSORS; ++i)
     {
@@ -1084,6 +1121,9 @@ void memInit(void)
     g_mem.emg_threshold[1] = 100;
 
     g_mem.emg_speed = 100;
+
+    g_mem.double_encoder_on_off = 0;
+    g_mem.motor_handle_ratio = 20;
 
     //write that configuration to EEPROM
     memStore(0);

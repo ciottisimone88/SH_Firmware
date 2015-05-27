@@ -134,7 +134,11 @@ enum qbmove_parameter
 
     PARAM_EMG_SPEED              = 16,  ///< Closure speed when using EMG
 
-    PARAM_PID_CURR_CONTROL       = 18   ///< PID current control
+    PARAM_PID_CURR_CONTROL       = 18,  ///< PID current control
+
+    PARAM_DOUBLE_ENC_ON_OFF      = 19,  ///< Double Encoder Y/N
+
+    PARAM_MOT_HANDLE_RATIO       = 20   ///< Multiplier between handle and motor
 };
 
 
