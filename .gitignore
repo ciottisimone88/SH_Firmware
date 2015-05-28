@@ -825,3 +825,13 @@ firmware.cydsn/DP8051_Keil_951/Release/RESET_COUNTERS_PM.obj
 firmware.cydsn/Generated_Source/PSoC3/RESET_COUNTERS.c
 firmware.cydsn/Generated_Source/PSoC3/RESET_COUNTERS.h
 firmware.cydsn/Generated_Source/PSoC3/RESET_COUNTERS_PM.c
+firmware.cydsn/DP8051_Keil_951/Release/csn2.lst
+firmware.cydsn/DP8051_Keil_951/Release/csn2.obj
+firmware.cydsn/DP8051_Keil_951/Release/csn3.lst
+firmware.cydsn/DP8051_Keil_951/Release/csn3.obj
+firmware.cydsn/Generated_Source/PSoC3/csn2.c
+firmware.cydsn/Generated_Source/PSoC3/csn2.h
+firmware.cydsn/Generated_Source/PSoC3/csn2_aliases.h
+firmware.cydsn/Generated_Source/PSoC3/csn3.c
+firmware.cydsn/Generated_Source/PSoC3/csn3.h
+firmware.cydsn/Generated_Source/PSoC3/csn3_aliases.h
