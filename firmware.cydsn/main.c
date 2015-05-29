@@ -104,6 +104,9 @@ void main()
 
 //========================================     initializations - clean variables
 
+    // Activate encoder counters
+    RESET_COUNTERS_Write(0x00);
+    CyDelay(10);
 
     for (i = 0; i < NUM_OF_MOTORS; i++) {
         g_ref.pos[i] = 0;
@@ -132,18 +135,11 @@ void main()
 
     g_rx.length   = 0;
 
-    // Activating motors
-    g_ref.pos[0] = g_meas.pos[0];
-    g_ref.pos[1] = g_meas.pos[1];
-    MOTOR_ON_OFF_Write(g_ref.onoff);
-
     // Calculate conversion factor
     device.tension_conv_factor = ((0.25 * 101.0 * 1000) / 1638.4); //derives from datasheet calculations
     device.pwm_limit = PWM_MAX_VALUE;
     device.tension_valid = FALSE;
 
-
-    RESET_COUNTERS_Write(0x00);
 
 //=========================================================     application loop
 

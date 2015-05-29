@@ -1088,14 +1088,14 @@ void memInit(void)
 
     g_mem.pos_lim_flag = 1;
 
-    for (i = 0; i < NUM_OF_MOTORS; i++) {
-        g_mem.pos_lim_inf[i] = -30000;
-        g_mem.pos_lim_sup[i] =  30000;
-    }
-
     g_mem.res[0] = 3;
     g_mem.res[1] = 3;
     g_mem.res[2] = 3;
+
+    for (i = 0; i < NUM_OF_MOTORS; i++) {
+        g_mem.pos_lim_inf[i] = 0;
+        g_mem.pos_lim_sup[i] = (int32)19000 << g_mem.res[0];
+    }
 
     for(i = 0; i < NUM_OF_SENSORS; ++i)
     {
@@ -1123,11 +1123,13 @@ void memInit(void)
     g_mem.emg_speed = 100;
 
     g_mem.double_encoder_on_off = 0;
-    g_mem.motor_handle_ratio = 20;
+    g_mem.motor_handle_ratio = 22;
 
     //write that configuration to EEPROM
     memStore(0);
     memStore(DEFAULT_EEPROM_DISPLACEMENT);
+
+    encoder_reading(ENC_READ_LAST_VAL_RESET);
 }
 
 /* [] END OF FILE */

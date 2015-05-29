@@ -411,8 +411,8 @@ void motor_control(void) {
                 i_ref = MIN_CURR_SAT_LIMIT;
             }
 
-            // write i_ref on meas curr 2
-            g_meas.curr[1] = i_ref;
+            // // write i_ref on meas curr 2 for DEBUG
+            // g_meas.curr[1] = i_ref;
 
             // current error
             curr_error = i_ref - g_meas.curr[0];
@@ -610,6 +610,8 @@ void encoder_reading(uint8 index) {
     static uint8 only_first_time = 1;
     static uint8 one_time_execute = 0;
 
+    static uint8 error[NUM_OF_SENSORS];
+
     // int calc_turns;
 
     // check index value. Eventually reset last_vale_encoder
@@ -620,28 +622,6 @@ void encoder_reading(uint8 index) {
             last_value_encoder[jj] = 0;
         }
         return;
-    }
-
-
-    // Discard first readings
-    if (only_first_time) {
-        for (jj = 0; jj < NUM_OF_SENSORS; jj++) {
-            switch(jj) {
-                case 0:
-                    data_encoder = SHIFTREG_ENC_1_ReadData();
-                    break;
-
-                case 1:
-                    data_encoder = SHIFTREG_ENC_2_ReadData();
-                    break;
-
-                case 2:
-                    data_encoder = SHIFTREG_ENC_3_ReadData();
-                    break;
-            }
-        }
-        only_first_time = 0;
-        CyDelay(1); //Wait to be sure the shift register is updated with a new valid measure
     }
 
     // Normal execution
@@ -659,6 +639,9 @@ void encoder_reading(uint8 index) {
             break;
     }
 
+    // Shift 1 right to erase Dummy bit of chain
+    data_encoder = data_encoder >> 1;
+
     data_encoder = data_encoder & 0x3FFFF;          // reset first 14 bits
 
     if (check_enc_data(&data_encoder)) {
@@ -667,14 +650,34 @@ void encoder_reading(uint8 index) {
         value_encoder = (aux - 0x20000) >> 2;    // subtract half of max value
                                                     // and shift to have 16 bit val
 
+        // Add offset and crop to 16bit
         value_encoder  = (int16)(value_encoder + g_mem.m_off[index]);
+
+        // Initialize last_value_encoder
+        if (only_first_time) {
+            last_value_encoder[index] = value_encoder;
+            if (index == 2) {
+                only_first_time = 0;
+            }
+        }
 
         // take care of rotations
         aux = value_encoder - last_value_encoder[index];
-        if (aux > 32768)
+
+        if (aux > 49152) {
             g_meas.rot[index]--;
-        if (aux < -32768)
+        } else  if (aux < -49152) {
             g_meas.rot[index]++;
+        } else if (abs(aux) > 16384) { // if two measure are too far
+            error[index]++;
+            if (error[index] < 10) {
+                // Discard
+                return;
+            }
+            error[index] = 0;
+        }
+
+        error[index] = 0;
 
         last_value_encoder[index] = value_encoder;
 
@@ -687,10 +690,15 @@ void encoder_reading(uint8 index) {
         g_meas.pos[index] = value_encoder;
     }
 
-    // if (one_time_execute < 10) {
-    //     if (one_time_execute < 9) {
-    //         one_time_execute++;
-    //     } else {
+    if (one_time_execute < 35) {
+        if (one_time_execute < 34) {
+            one_time_execute++;
+        } else {
+            // If necessary activate motors
+            g_ref.pos[0] = g_meas.pos[0];
+            MOTOR_ON_OFF_Write(g_ref.onoff);
+
+            // Double encoder translation
     //         calc_turns = my_mod(round(((my_mod((g_meas.pos[0] + g_meas.pos[1]), 65536) * 28) - g_meas.pos[0]) / 65536.0), 28);
 
     //         if (calc_turns == 27) {
@@ -699,9 +707,9 @@ void encoder_reading(uint8 index) {
     //             g_meas.rot[0] = calc_turns;
     //         }
 
-    //         one_time_execute = 10;
-    //     }
-    // }
+            one_time_execute = 35;
+        }
+    }
 }
 
 //==============================================================================
