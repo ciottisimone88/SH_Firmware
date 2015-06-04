@@ -31,8 +31,10 @@ int32 filter_ch2(int32 value);
 int32 filter_i1(int32 value);
 
 int round(double x);
-int32 my_mod(int32 val, int32 divisor);
+uint32 my_mod(int32 val, int32 divisor);
 uint8 check_enc_data(uint32*);
+
+int calc_turns_fcn(int32 pos1, int32 pos2);
 
 void calibration(void);
 

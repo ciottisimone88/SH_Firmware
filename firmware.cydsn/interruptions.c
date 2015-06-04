@@ -612,7 +612,7 @@ void encoder_reading(uint8 index) {
 
     static uint8 error[NUM_OF_SENSORS];
 
-    // int calc_turns;
+    int rot;
 
     // check index value. Eventually reset last_vale_encoder
     if ((index >= NUM_OF_SENSORS) && (index != ENC_READ_LAST_VAL_RESET)) {
@@ -699,13 +699,16 @@ void encoder_reading(uint8 index) {
             MOTOR_ON_OFF_Write(g_ref.onoff);
 
             // Double encoder translation
-    //         calc_turns = my_mod(round(((my_mod((g_meas.pos[0] + g_meas.pos[1]), 65536) * 28) - g_meas.pos[0]) / 65536.0), 28);
+            if (c_mem.double_encoder_on_off) {
+                rot = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
 
-    //         if (calc_turns == 27) {
-    //             g_meas.rot[0] = -1;
-    //         } else {
-    //             g_meas.rot[0] = calc_turns;
-    //         }
+                if (rot > 13) {
+                    g_meas.rot[0] = -27 + rot;
+                } else {
+                    g_meas.rot[0] = rot;
+                }
+
+            }
 
             one_time_execute = 35;
         }
