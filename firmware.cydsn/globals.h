@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.2.3"
+#define VERSION                 "SH-PRO v5.2.4"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3

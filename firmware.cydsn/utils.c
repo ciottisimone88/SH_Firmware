@@ -148,7 +148,7 @@ void calibration(void) {
 //                                                      DOUBLE ENCODER CALC TURN
 //==============================================================================
 
-// Use this function to calculate I1 and I2
+// Use this matlab function to calculate I1 and I2
 //
 // function [inv_a, inv_b] = mod_mul_inv(a, b)
 //     a = int32(a);
