@@ -664,6 +664,24 @@ void encoder_reading(uint8 index) {
         // take care of rotations
         aux = value_encoder - last_value_encoder[index];
 
+        // ====================== 1 TURN ======================
+        // -32768                    0                    32767 -32768                   0                     32767
+        // |-------------------------|-------------------------|-------------------------|-------------------------|
+        //              |                         |      |           |      |                         |
+        //           -16384                     16383    |           |   -16384                     16383
+        //                                               |           |
+        //                                           24575           -24576
+        //                                               |___________|
+        //                                                   49152
+
+        // if we are in the right interval, take care of rotation
+        // and update the variable only if the difference between
+        // one measure and another is less than 1/4 of turn
+
+        // Considering we are sampling at 1kHz, this means that our shaft needs
+        // to go slower than 1/4 turn every ms -> 1 turn every 4ms
+        // equal to 250 turn/s -> 15000 RPM
+
         if (aux > 49152) {
             g_meas.rot[index]--;
         } else  if (aux < -49152) {
@@ -690,6 +708,7 @@ void encoder_reading(uint8 index) {
         g_meas.pos[index] = value_encoder;
     }
 
+    // wait at least 3 * max_num_of_error (10) + 5 = 35 cylces to reconstruct the right turn
     if (one_time_execute < 35) {
         if (one_time_execute < 34) {
             one_time_execute++;
