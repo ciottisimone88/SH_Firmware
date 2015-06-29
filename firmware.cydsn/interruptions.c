@@ -99,7 +99,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
                 } else {
                     data_packet.ind = 0;
                     if(rx_data_type == 0) {
-                        state = 3;          // packet for me or boradcast
+                        state = 3;          // packet for me or broadcast
                     } else {
                         state = 4;          // packet for others
                     }
@@ -133,7 +133,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
                 if(!(--data_packet.length)) {
                     data_packet.ind    = 0;
                     data_packet.length = -1;
-                    RS485_CTS_Write(1);
+                    RS485_CTS_Write(1);             //CTS on falling edge
                     RS485_CTS_Write(0);
                     state              = 0;
                 }
@@ -288,7 +288,6 @@ void motor_control(void) {
                         current_emg = 0;
                         break;
                     }
-
                     g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
                     break;
 
@@ -298,7 +297,6 @@ void motor_control(void) {
                         current_emg = 0;
                         break;
                     }
-
                     g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
                     break;
 
@@ -329,7 +327,6 @@ void motor_control(void) {
                         current_emg = 0;
                         break;
                     }
-
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_1 > 0) {
                         g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
@@ -343,7 +340,6 @@ void motor_control(void) {
                         current_emg = 0;
                         break;
                     }
-
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_2 > 0) {
                         g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * c_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
@@ -365,11 +361,11 @@ void motor_control(void) {
     }
 
     switch(c_mem.control_mode) {
-        // ======================= CURRENT AND POSITION CONTROL ================
+        // ======================= CURRENT AND POSITION CONTROL =======================
         case CURR_AND_POS_CONTROL:
             pos_error = g_ref.pos[0] - g_meas.pos[0];
 
-            // ------ position PID control -----
+            // ------ position PID control ------
 
             i_ref = 0;
 
@@ -416,7 +412,6 @@ void motor_control(void) {
 
             // current error
             curr_error = i_ref - g_meas.curr[0];
-
 
             // ----- current PID control -----
 
@@ -822,6 +817,7 @@ void analog_read_end(uint8 index) {
                         i_aux = filter_ch1(value);
                         i_aux = (1024 * i_aux) / g_mem.emg_max_value[0];
 
+                        //Saturation
                         if (i_aux < 0) {
                             i_aux = 0;
                         } else if (i_aux > 1024) {

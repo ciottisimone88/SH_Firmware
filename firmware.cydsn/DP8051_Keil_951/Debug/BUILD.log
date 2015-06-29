@@ -1,0 +1,7 @@
+--------------- Build Started: 06/24/2015 17:48:53 Project: firmware, Configuration: DP8051 Keil 9.51 Debug ---------------
+The code generation step is up to date.
+The compile step is up to date, no work needs to be done.
+The link step is up to date, no work needs to be done.
+Flash used: 44544 of 65536 bytes (68,0%). Bootloader: 9728 bytes. Application: 34560 bytes. Metadata: 256 bytes.
+SRAM used: 3221 of 8192 bytes (39,3%).
+--------------- Build Succeeded: 06/24/2015 17:48:56 ---------------
