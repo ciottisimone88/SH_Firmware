@@ -132,7 +132,7 @@ struct st_mem {
     int32   pos_lim_sup[NUM_OF_MOTORS]; // Superior position limit for motors       8
 
     int32   max_step_pos;               // Maximum number of step per cylce when    4
-    int32   max_step_neg;               // using sensor 2 as input                  4  25
+    int32   max_step_neg;               // using sensor 2 as input                  4 25
 
     int16   current_limit;              // Limit for absorbed current               2
 
@@ -147,7 +147,7 @@ struct st_mem {
 
     int8    motor_handle_ratio;         // Discrete multiplier for handle           1 18
 
-                                                                    //TOT           99
+                                                                    //TOT           99 bytes
 };
 
 //=================================================     device related variables
