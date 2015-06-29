@@ -103,7 +103,8 @@ void commProcess(void){
             packet_data[0] = CMD_GET_MEASUREMENTS;   //header
 
             for (i = 0; i < NUM_OF_SENSORS; i++) {
-                *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
+                *((int16 *) &packet_data[(i*2) + 1]) = (int16)
+                (g_meas.pos[i] >> g_mem.res[i]);
             }
 
             packet_data[packet_lenght - 1] =
@@ -116,7 +117,7 @@ void commProcess(void){
 //=========================================================     CMD_GET_CURRENTS
 
         case CMD_GET_CURRENTS:
-            //Packet: header + measure(int16) + CRC
+            //Packt: header + measure(int16) + CRC
             packet_lenght = 6;
 
             packet_data[0] = CMD_GET_CURRENTS;
@@ -124,7 +125,8 @@ void commProcess(void){
             *((int16 *) &packet_data[1]) = (int16) g_meas.curr[0];
             *((int16 *) &packet_data[3]) = (int16) g_meas.curr[1];
 
-            packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
+            packet_data[packet_lenght - 1] =
+                    LCRChecksum (packet_data, packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
             break;
@@ -132,7 +134,7 @@ void commProcess(void){
 //=========================================================     CMD_GET_EMG
 
         case CMD_GET_EMG:
-            //Packet: header + measure(int16) + CRC
+            //Packt: header + measure(int16) + CRC
             packet_lenght = 6;
 
             packet_data[0] = CMD_GET_EMG;
@@ -140,7 +142,8 @@ void commProcess(void){
             *((int16 *) &packet_data[1]) = (int16) g_meas.emg[0];
             *((int16 *) &packet_data[3]) = (int16) g_meas.emg[1];
 
-            packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
+            packet_data[packet_lenght - 1] =
+                    LCRChecksum (packet_data, packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
             break;
@@ -164,7 +167,8 @@ void commProcess(void){
                         (int16)(g_meas.pos[i] >> g_mem.res[i]);
             }
 
-            packet_data[packet_lenght - 1] = LCRChecksum (packet_data,packet_lenght - 1);
+            packet_data[packet_lenght - 1] =
+                    LCRChecksum (packet_data,packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
 
@@ -177,7 +181,7 @@ void commProcess(void){
 
             packet_data[0] = CMD_GET_ACTIVATE;
             packet_data[1] = g_ref.onoff;
-            packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
+            packet_data[2] = LCRChecksum(packet_data,packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
 
@@ -191,7 +195,8 @@ void commProcess(void){
             *((int16 *) &packet_data[1]) = (int16)(g_ref.pos[0] >> g_mem.res[0]);
             *((int16 *) &packet_data[3]) = (int16)(g_ref.pos[1] >> g_mem.res[1]);
 
-            packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
+            packet_data[packet_lenght - 1] =
+                    LCRChecksum(packet_data,packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
             break;
@@ -251,44 +256,36 @@ void commProcess(void){
                     if (g_ref.pos[1] > c_mem.pos_lim_sup[1]) g_ref.pos[1] = c_mem.pos_lim_sup[1];
                 }
             }
-            if(memStore(0))
-                sendAcknowledgment(ACK_OK);
-            else
-                sendAcknowledgment(ACK_ERROR);
+
+            memStore(0);
+            sendAcknowledgment();
             break;
 
 //=================================================     CMD_STORE_DEFAULT_PARAMS
 
         case CMD_STORE_DEFAULT_PARAMS:
-            if(memStore(DEFAULT_EEPROM_DISPLACEMENT))
-                sendAcknowledgment(ACK_OK);
-            else
-                sendAcknowledgment(ACK_ERROR);
+            memStore(DEFAULT_EEPROM_DISPLACEMENT);
+            sendAcknowledgment();
             break;
 
 //=======================================================     CMD_RESTORE_PARAMS
 
         case CMD_RESTORE_PARAMS:
-            if(memRestore())
-                sendAcknowledgment(ACK_OK);
-            else
-                sendAcknowledgment(ACK_ERROR);
+            memRestore();
+            sendAcknowledgment();
             break;
 
 //=============================================================     CMD_INIT_MEM
 
         case CMD_INIT_MEM:
-            if(memInit())
-                sendAcknowledgment(ACK_OK);
-            else
-                sendAcknowledgment(ACK_ERROR);
+            memInit();
+            sendAcknowledgment();
             break;
 
 //===========================================================     CMD_BOOTLOADER
 
         case CMD_BOOTLOADER:
-            //Not sure if ACK_OK is correct, should check
-            sendAcknowledgment(ACK_OK);
+            sendAcknowledgment();
             CyDelay(1000);
             FTDI_ENABLE_REG_Write(0x00);
             CyDelay(1000);
@@ -518,8 +515,7 @@ void paramSet(uint16 param_type)
             break;
 
     }
-    //Not sure if ACK_OK is correct, should check
-    sendAcknowledgment(ACK_OK);
+    sendAcknowledgment();
 }
 
 
@@ -715,66 +711,66 @@ void infoPrepare(unsigned char *info_string)
     strcat(info_string, VERSION);
     strcat(info_string, ".\r\n\r\n");
 
-    strcat(info_string, "DEVICE INFO\r\n");
-    sprintf(str, "ID: %d\r\n", (int) c_mem.id);
-    strcat(info_string, str);
-    sprintf(str, "PWM Limit: %d\r\n", (int) device.pwm_limit);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"DEVICE INFO\r\n");
+    sprintf(str,"ID: %d\r\n",(int) c_mem.id);
+    strcat(info_string,str);
+    sprintf(str,"PWM Limit: %d\r\n",(int) device.pwm_limit);
+    strcat(info_string,str);
+    strcat(info_string,"\r\n");
 
-    strcat(info_string, "MOTOR INFO\r\n");
+    strcat(info_string,"MOTOR INFO\r\n");
     strcat(info_string, "Motor reference: ");
     for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
         sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
-        strcat(info_string, str);
+        strcat(info_string,str);
     }
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     sprintf(str, "Motor enabled: ");
     if (g_ref.onoff & 0x03) {
-        strcat(str, "YES\r\n");
+        strcat(str,"YES\r\n");
     } else {
-        strcat(str, "NO\r\n");
+        strcat(str,"NO\r\n");
     }
     strcat(info_string, str);
 
-    strcat(info_string, "\r\nMEASUREMENTS INFO\r\n");
+    strcat(info_string,"\r\nMEASUREMENTS INFO\r\n");
     strcat(info_string, "Sensor value:\r\n");
     for (i = 0; i < NUM_OF_SENSORS; i++) {
-        sprintf(str, "%d -> %d", i+1,
+        sprintf(str,"%d -> %d", i+1,
             (int)(g_meas.pos[i] >> c_mem.res[i]));
         strcat(info_string, str);
         strcat(info_string, "\r\n");
     }
 
-    sprintf(str, "Voltage (mV): %ld", (int32) device.tension );
+    sprintf(str,"Voltage (mV): %ld", (int32) device.tension );
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
-    sprintf(str, "Current (mA): %ld", (int32) g_meas.curr[0] );
+    sprintf(str,"Current (mA): %ld", (int32) g_meas.curr[0] );
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
 
-    strcat(info_string, "\r\nDEVICE PARAMETERS\r\n");
+    strcat(info_string,"\r\nDEVICE PARAMETERS\r\n");
 
     strcat(info_string, "PID Controller:\r\n");
-    sprintf(str, "P -> %f  ", ((double) c_mem.k_p / 65536));
+    sprintf(str,"P -> %f  ", ((double) c_mem.k_p / 65536));
     strcat(info_string, str);
-    sprintf(str, "I -> %f  ", ((double) c_mem.k_i / 65536));
+    sprintf(str,"I -> %f  ", ((double) c_mem.k_i / 65536));
     strcat(info_string, str);
-    sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d / 65536));
+    sprintf(str,"D -> %f\r\n", ((double) c_mem.k_d / 65536));
     strcat(info_string, str);
 
     strcat(info_string, "Current PID Controller:\r\n");
-    sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c / 65536));
+    sprintf(str,"P -> %f  ", ((double) c_mem.k_p_c / 65536));
     strcat(info_string, str);
-    sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c / 65536));
+    sprintf(str,"I -> %f  ", ((double) c_mem.k_i_c / 65536));
     strcat(info_string, str);
-    sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
+    sprintf(str,"D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
     strcat(info_string, str);
 
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
 
     if (c_mem.activ == 0x03) {
@@ -834,17 +830,17 @@ void infoPrepare(unsigned char *info_string)
 
     strcat(info_string, "Sensor resolution:\r\n");
     for (i = 0; i < NUM_OF_SENSORS; ++i) {
-        sprintf(str, "%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
+        sprintf(str,"%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
         strcat(info_string, str);
-        strcat(info_string, "\r\n");
+        strcat(info_string,"\r\n");
     }
 
 
     strcat(info_string, "Measurement Offset:\r\n");
     for (i = 0; i < NUM_OF_SENSORS; ++i) {
-        sprintf(str, "%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
+        sprintf(str,"%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
         strcat(info_string, str);
-        strcat(info_string, "\r\n");
+        strcat(info_string,"\r\n");
     }
 
     strcat(info_string, "Measurement Multiplier:\r\n");
@@ -856,7 +852,7 @@ void infoPrepare(unsigned char *info_string)
 
     sprintf(str, "Position limit active: %d", (int)g_mem.pos_lim_flag);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
         sprintf(str, "Position limit motor %d: inf -> %ld  ", (int)(i + 1),
@@ -872,37 +868,37 @@ void infoPrepare(unsigned char *info_string)
             (int32)(opened_hand_pos >> g_mem.res[0]),
             (int32)(closed_hand_pos >> g_mem.res[0]));
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     sprintf(str, "Max step pos and neg: %d %d", (int)g_mem.max_step_pos, (int)g_mem.max_step_neg);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     sprintf(str, "Current limit: %d", (int)g_mem.current_limit);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     sprintf(str, "EMG thresholds [0 - 1024]: %u, %u", g_mem.emg_threshold[0], g_mem.emg_threshold[1]);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     sprintf(str, "EMG max values [0 - 4096]: %lu, %lu", g_mem.emg_max_value[0], g_mem.emg_max_value[1]);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     if (g_mem.emg_calibration_flag) {
-        strcat(info_string, "Calibration enabled: YES\r\n");
+        strcat(info_string,"Calibration enabled: YES\r\n");
     } else {
-        strcat(info_string, "Calibration enabled: NO\r\n");
+        strcat(info_string,"Calibration enabled: NO\r\n");
     }
 
     sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 
     sprintf(str, "debug: %ld", 5000001 - (uint32)timer_value);
     strcat(info_string, str);
-    strcat(info_string, "\r\n");
+    strcat(info_string,"\r\n");
 }
 
 //==============================================================================
@@ -917,7 +913,7 @@ void commWrite(uint8 *packet_data, uint16 packet_lenght)
     UART_RS485_PutChar(':');
     UART_RS485_PutChar(':');
     // frame - ID
-    UART_RS485_PutChar(g_mem.id);
+    UART_RS485_PutChar (g_mem.id);
     // frame - length
     UART_RS485_PutChar((uint8)packet_lenght);
     // frame - packet data
@@ -951,14 +947,12 @@ uint8 LCRChecksum(uint8 *data_array, uint8 data_length) {
 //                                                       ACKNOWLEDGMENT FUNCTION
 //==============================================================================
 
-void sendAcknowledgment(uint8 value) {
+void sendAcknowledgment() {
     int packet_lenght = 2;
-    uint8 packet_data[packet_lenght];
-    if(!value)
-        printf("ACKNOWLEDGMENT ERROR\n");
+    uint8 packet_data[2];
 
-    packet_data[0] = value;
-    packet_data[1] = value;
+    packet_data[0] = 1;
+    packet_data[1] = 1;
 
     commWrite(packet_data, packet_lenght);
 }
@@ -972,12 +966,11 @@ void sendAcknowledgment(uint8 value) {
 * displacement
 **/
 
-uint8 memStore(int displacement)
+void memStore(int displacement)
 {
     int i;  // iterator
     uint8 writeStatus;
     int pages;
-    uint8 ret_val = 1;
 
     // Disable Interrupt
     ISR_RS485_RX_Disable();
@@ -996,7 +989,7 @@ uint8 memStore(int displacement)
     for(i = 0; i < pages; ++i) {
         writeStatus = EEPROM_Write(&g_mem.flag + 16 * i, i + displacement);
         if(writeStatus != CYRET_SUCCESS) {
-            ret_val = 0;
+            // we should return an insuccess to the caller
             break;
         }
     }
@@ -1005,8 +998,6 @@ uint8 memStore(int displacement)
 
     // Re-Enable Interrupt
     ISR_RS485_RX_Enable();
-
-    return ret_val;
 }
 
 
@@ -1054,7 +1045,7 @@ void memRecall(void)
 * This function loads default settings from the eeprom.
 **/
 
-uint8 memRestore(void) {
+void memRestore(void) {
     uint16 i;
 
     for (i = 0; i < sizeof(g_mem); i++) {
@@ -1063,9 +1054,9 @@ uint8 memRestore(void) {
 
     //check for initialization
     if (g_mem.flag == FALSE) {
-        return memInit();
+        memInit();
     } else {
-        return memStore(0);
+        memStore(0);
     }
 }
 
@@ -1077,7 +1068,7 @@ uint8 memRestore(void) {
 * This function initialize memory when eeprom is compromised.
 **/
 
-uint8 memInit(void)
+void memInit(void)
 {
     uint8 i;
 
@@ -1134,16 +1125,11 @@ uint8 memInit(void)
     g_mem.double_encoder_on_off = 0;
     g_mem.motor_handle_ratio = 22;
 
-    /*
     //write that configuration to EEPROM
     memStore(0);
     memStore(DEFAULT_EEPROM_DISPLACEMENT);
-    */
 
     encoder_reading(ENC_READ_LAST_VAL_RESET);
-    
-    //write that configuration to EEPROM
-    return ( memStore(0) && memStore(DEFAULT_EEPROM_DISPLACEMENT) );
 }
 
 /* [] END OF FILE */

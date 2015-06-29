@@ -186,13 +186,6 @@ enum qbmove_control_mode {
 
 };
 
-enum acknowledgment_values
-{
-    ACK_ERROR           = 0,
-    ACK_OK              = 1
-};
-
-
 /** \} */
 
 //==============================================================================

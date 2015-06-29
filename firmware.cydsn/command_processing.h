@@ -41,11 +41,11 @@ void    infoSend           (void);
 void    infoGet            (uint16 info_typea);
 void    commProcess        (void);
 void    commWrite          (uint8 *packet_data, uint16 packet_lenght);
-uint8   memStore           (int);
-void    sendAcknowledgment (uint8);
+void    memStore           (int);
+void    sendAcknowledgment (void);
 void    memRecall          (void);
-uint8   memRestore         (void);
-uint8   memInit            (void);
+void    memRestore         (void);
+void    memInit            (void);
 uint8   LCRChecksum        (uint8 *data_array, uint8 data_length);
 
 #endif
