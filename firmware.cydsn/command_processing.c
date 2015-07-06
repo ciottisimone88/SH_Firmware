@@ -300,11 +300,19 @@ void commProcess(void){
         case CMD_CALIBRATE:
             calib.speed = *((int16 *) &g_rx.buffer[1]);
             calib.repetitions = *((int16 *) &g_rx.buffer[3]);
+            
+            // Speed & repetitions saturations
             if (calib.speed < 0) {
                 calib.speed = 0;
             } else if (calib.speed > 200) {
                 calib.speed = 200;
             }
+            if (calib.repetitions < 0) {
+                calib.repetitions = 0;
+            } else if (calib.repetitions > 32767) {
+                calib.repetitions = 32767;
+            }
+            
             g_ref.pos[0] = 0;
             calib.enabled = TRUE;
             break;
@@ -953,9 +961,7 @@ uint8 LCRChecksum(uint8 *data_array, uint8 data_length) {
 
 void sendAcknowledgment(uint8 value) {
     int packet_lenght = 2;
-    uint8 packet_data[packet_lenght];
-    if(!value)
-        printf("ACKNOWLEDGMENT ERROR\n");
+    uint8 packet_data[2];
 
     packet_data[0] = value;
     packet_data[1] = value;

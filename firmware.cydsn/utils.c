@@ -120,8 +120,8 @@ uint32 my_mod(int32 val, int32 divisor) {
 //==============================================================================
 
 void calibration(void) {
-    static uint8 direction; //0 closing, 1 opening
-    static uint8 closure_counter;
+    static uint8 direction;                 //0 closing, 1 opening
+    static uint16 closure_counter;          //Range [0 - 2^16]
 
 
     // closing

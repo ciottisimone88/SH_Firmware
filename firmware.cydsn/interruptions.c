@@ -637,13 +637,14 @@ void encoder_reading(uint8 index) {
     // Shift 1 right to erase Dummy bit of chain
     data_encoder = data_encoder >> 1;
 
-    data_encoder = data_encoder & 0x3FFFF;          // reset first 14 bits
+    data_encoder = data_encoder & 0x3FFFF;          //0x0003FFFF reset first 14 bits
 
     if (check_enc_data(&data_encoder)) {
 
-        aux = data_encoder & 0x3FFC0;            // reset last 6 bit
-        value_encoder = (aux - 0x20000) >> 2;    // subtract half of max value
-                                                    // and shift to have 16 bit val
+        aux = data_encoder & 0x3FFC0;           // reset last 6 bit 
+                                                // -> |:|:|id|dim|CMD|CHK|(data---
+        value_encoder = (aux - 0x20000) >> 2;   // subtract half of max value
+                                                // and shift to have 16 bit val
 
         // Add offset and crop to 16bit
         value_encoder  = (int16)(value_encoder + g_mem.m_off[index]);
@@ -679,7 +680,7 @@ void encoder_reading(uint8 index) {
 
         if (aux > 49152) {
             g_meas.rot[index]--;
-        } else  if (aux < -49152) {
+        } else if (aux < -49152) {
             g_meas.rot[index]++;
         } else if (abs(aux) > 16384) { // if two measure are too far
             error[index]++;
