@@ -610,13 +610,14 @@ void encoder_reading(uint8 index) {
     int rot;
 
     // check index value. Eventually reset last_vale_encoder
-    if ((index >= NUM_OF_SENSORS) && (index != ENC_READ_LAST_VAL_RESET)) {
+    if (index >= NUM_OF_SENSORS)
         return;
-    } else if (index == ENC_READ_LAST_VAL_RESET) {
-        for (jj = 0; jj < NUM_OF_SENSORS; jj++) {
+    
+    if(reset_last_value_flag) {
+        for(jj=0; jj<NUM_OF_SENSORS; jj++){
             last_value_encoder[jj] = 0;
         }
-        return;
+        reset_last_value_flag = 0;
     }
 
     // Normal execution

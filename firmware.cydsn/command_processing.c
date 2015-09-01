@@ -421,7 +421,7 @@ void paramSet(uint16 param_type)
 
                 g_meas.rot[i] = 0;
             }
-            encoder_reading(ENC_READ_LAST_VAL_RESET);
+            reset_last_value_flag  = 1;
             break;
 
 //===========================================================     set_multiplier
@@ -715,202 +715,203 @@ void paramGet(uint16 param_type)
 void infoPrepare(unsigned char *info_string)
 {
     int i;
+    if(c_mem.id != 250){
+        unsigned char str[100];
+        strcpy(info_string, "");
+        strcat(info_string, "\r\n");
+        strcat(info_string, "Firmware version: ");
+        strcat(info_string, VERSION);
+        strcat(info_string, ".\r\n\r\n");
 
-    unsigned char str[100];
-    strcpy(info_string, "");
-    strcat(info_string, "\r\n");
-    strcat(info_string, "Firmware version: ");
-    strcat(info_string, VERSION);
-    strcat(info_string, ".\r\n\r\n");
-
-    strcat(info_string, "DEVICE INFO\r\n");
-    sprintf(str, "ID: %d\r\n", (int) c_mem.id);
-    strcat(info_string, str);
-    sprintf(str, "PWM Limit: %d\r\n", (int) device.pwm_limit);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
-
-    strcat(info_string, "MOTOR INFO\r\n");
-    strcat(info_string, "Motor reference: ");
-    for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
-        sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
+        strcat(info_string, "DEVICE INFO\r\n");
+        sprintf(str, "ID: %d\r\n", (int) c_mem.id);
         strcat(info_string, str);
-    }
-    strcat(info_string, "\r\n");
+        sprintf(str, "PWM Limit: %d\r\n", (int) device.pwm_limit);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
 
-    sprintf(str, "Motor enabled: ");
-    if (g_ref.onoff & 0x03) {
-        strcat(str, "YES\r\n");
-    } else {
-        strcat(str, "NO\r\n");
-    }
-    strcat(info_string, str);
+        strcat(info_string, "MOTOR INFO\r\n");
+        strcat(info_string, "Motor reference: ");
+        for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
+            sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
+            strcat(info_string, str);
+        }
+        strcat(info_string, "\r\n");
 
-    strcat(info_string, "\r\nMEASUREMENTS INFO\r\n");
-    strcat(info_string, "Sensor value:\r\n");
-    for (i = 0; i < NUM_OF_SENSORS; i++) {
-        sprintf(str, "%d -> %d", i+1,
+        sprintf(str, "Motor enabled: ");
+        if (g_ref.onoff & 0x03) {
+            strcat(str, "YES\r\n");
+        } else {
+            strcat(str, "NO\r\n");
+        }
+        strcat(info_string, str);
+
+        strcat(info_string, "\r\nMEASUREMENTS INFO\r\n");
+        strcat(info_string, "Sensor value:\r\n");
+        for (i = 0; i < NUM_OF_SENSORS; i++) {
+            sprintf(str, "%d -> %d", i+1,
             (int)(g_meas.pos[i] >> c_mem.res[i]));
+            strcat(info_string, str);
+            strcat(info_string, "\r\n");
+        }
+
+        sprintf(str, "Voltage (mV): %ld", (int32) device.tension );
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-    }
 
-    sprintf(str, "Voltage (mV): %ld", (int32) device.tension );
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
-
-    sprintf(str, "Current (mA): %ld", (int32) g_meas.curr[0] );
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
-
-
-    strcat(info_string, "\r\nDEVICE PARAMETERS\r\n");
-
-    strcat(info_string, "PID Controller:\r\n");
-    sprintf(str, "P -> %f  ", ((double) c_mem.k_p / 65536));
-    strcat(info_string, str);
-    sprintf(str, "I -> %f  ", ((double) c_mem.k_i / 65536));
-    strcat(info_string, str);
-    sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d / 65536));
-    strcat(info_string, str);
-
-    strcat(info_string, "Current PID Controller:\r\n");
-    sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c / 65536));
-    strcat(info_string, str);
-    sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c / 65536));
-    strcat(info_string, str);
-    sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
-    strcat(info_string, str);
-
-    strcat(info_string, "\r\n");
-
-
-    if (c_mem.activ == 0x03) {
-        strcat(info_string, "Startup activation: YES\r\n");
-    } else {
-        strcat(info_string, "Startup activation: NO\r\n");
-    }
-
-    switch(c_mem.input_mode) {
-        case INPUT_MODE_EXTERNAL:
-            strcat(info_string, "Input mode: USB\r\n");
-            break;
-        case INPUT_MODE_ENCODER3:
-            strcat(info_string, "Input mode: Handle\r\n");
-            break;
-        case INPUT_MODE_EMG_PROPORTIONAL:
-            strcat(info_string, "Input mode: EMG proportional\r\n");
-            break;
-        case INPUT_MODE_EMG_INTEGRAL:
-            strcat(info_string, "Input mode: EMG integral\r\n");
-            break;
-        case INPUT_MODE_EMG_FCFS:
-            strcat(info_string, "Input mode: EMG FCFS\r\n");
-            break;
-        case INPUT_MODE_EMG_FCFS_ADV:
-            strcat(info_string, "Input mode: EMG FCFS ADV\r\n");
-            break;
-    }
-
-    switch(c_mem.control_mode) {
-        case CONTROL_ANGLE:
-            strcat(info_string, "Control mode: Position\r\n");
-            break;
-        case CONTROL_PWM:
-            strcat(info_string, "Control mode: PWM\r\n");
-            break;
-        case CONTROL_CURRENT:
-            strcat(info_string, "Control mode: Current\r\n");
-            break;
-        case CURR_AND_POS_CONTROL:
-            strcat(info_string, "Control mode: Current and Position\r\n");
-            break;
-        default:
-            break;
-    }
-
-    if (c_mem.double_encoder_on_off) {
-        strcat(info_string, "Double Encoder: YES\r\n");
-    } else {
-        strcat(info_string, "Double Encoder: NO\r\n");
-    }
-
-    sprintf(str, "Motor-Handle Ratio: %d\r\n", (int)c_mem.motor_handle_ratio);
-    strcat(info_string, str);
-
-
-
-    strcat(info_string, "Sensor resolution:\r\n");
-    for (i = 0; i < NUM_OF_SENSORS; ++i) {
-        sprintf(str, "%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
+        sprintf(str, "Current (mA): %ld", (int32) g_meas.curr[0] );
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-    }
 
 
-    strcat(info_string, "Measurement Offset:\r\n");
-    for (i = 0; i < NUM_OF_SENSORS; ++i) {
-        sprintf(str, "%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
+        strcat(info_string, "\r\nDEVICE PARAMETERS\r\n");
+
+        strcat(info_string, "PID Controller:\r\n");
+        sprintf(str, "P -> %f  ", ((double) c_mem.k_p / 65536));
+        strcat(info_string, str);
+        sprintf(str, "I -> %f  ", ((double) c_mem.k_i / 65536));
+        strcat(info_string, str);
+        sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d / 65536));
+        strcat(info_string, str);
+
+        strcat(info_string, "Current PID Controller:\r\n");
+        sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c / 65536));
+        strcat(info_string, str);
+        sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c / 65536));
+        strcat(info_string, str);
+        sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
+        strcat(info_string, str);
+
+        strcat(info_string, "\r\n");
+
+
+        if (c_mem.activ == 0x03) {
+            strcat(info_string, "Startup activation: YES\r\n");
+        } else {
+            strcat(info_string, "Startup activation: NO\r\n");
+        }
+
+        switch(c_mem.input_mode) {
+            case INPUT_MODE_EXTERNAL:
+                strcat(info_string, "Input mode: USB\r\n");
+                break;
+            case INPUT_MODE_ENCODER3:
+                strcat(info_string, "Input mode: Handle\r\n");
+                break;
+            case INPUT_MODE_EMG_PROPORTIONAL:
+                strcat(info_string, "Input mode: EMG proportional\r\n");
+                break;
+            case INPUT_MODE_EMG_INTEGRAL:
+                strcat(info_string, "Input mode: EMG integral\r\n");
+                break;
+            case INPUT_MODE_EMG_FCFS:
+                strcat(info_string, "Input mode: EMG FCFS\r\n");
+                break;
+            case INPUT_MODE_EMG_FCFS_ADV:
+                strcat(info_string, "Input mode: EMG FCFS ADV\r\n");
+                break;
+        }
+
+        switch(c_mem.control_mode) {
+            case CONTROL_ANGLE:
+                strcat(info_string, "Control mode: Position\r\n");
+                break;
+            case CONTROL_PWM:
+                strcat(info_string, "Control mode: PWM\r\n");
+                break;
+            case CONTROL_CURRENT:
+                strcat(info_string, "Control mode: Current\r\n");
+                break;
+            case CURR_AND_POS_CONTROL:
+                strcat(info_string, "Control mode: Current and Position\r\n");
+                break;
+            default:
+                break;
+        }
+
+        if (c_mem.double_encoder_on_off) {
+            strcat(info_string, "Double Encoder: YES\r\n");
+        } else {
+            strcat(info_string, "Double Encoder: NO\r\n");
+        }
+
+        sprintf(str, "Motor-Handle Ratio: %d\r\n", (int)c_mem.motor_handle_ratio);
+        strcat(info_string, str);
+
+
+
+        strcat(info_string, "Sensor resolution:\r\n");
+        for (i = 0; i < NUM_OF_SENSORS; ++i) {
+            sprintf(str, "%d -> %d", (int) (i + 1), (int) c_mem.res[i]);
+            strcat(info_string, str);
+            strcat(info_string, "\r\n");
+        }
+
+
+        strcat(info_string, "Measurement Offset:\r\n");
+        for (i = 0; i < NUM_OF_SENSORS; ++i) {
+            sprintf(str, "%d -> %ld", (int) (i + 1), (int32) c_mem.m_off[i] >> c_mem.res[i]);
+            strcat(info_string, str);
+            strcat(info_string, "\r\n");
+        }
+
+        strcat(info_string, "Measurement Multiplier:\r\n");
+        for (i = 0; i < NUM_OF_SENSORS; ++i) {
+            sprintf(str,"%d -> %f", (int)(i + 1), (double) c_mem.m_mult[i]);
+            strcat(info_string, str);
+            strcat(info_string,"\r\n");
+        }
+
+        sprintf(str, "Position limit active: %d", (int)g_mem.pos_lim_flag);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-    }
 
-    strcat(info_string, "Measurement Multiplier:\r\n");
-    for (i = 0; i < NUM_OF_SENSORS; ++i) {
-        sprintf(str,"%d -> %f", (int)(i + 1), (double) c_mem.m_mult[i]);
+        for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
+            sprintf(str, "Position limit motor %d: inf -> %ld  ", (int)(i + 1),
+            (int32)g_mem.pos_lim_inf[i] >> g_mem.res[i]);
+            strcat(info_string, str);
+
+            sprintf(str, "sup -> %ld\r\n",
+            (int32)g_mem.pos_lim_sup[i] >> g_mem.res[i]);
+            strcat(info_string, str);
+        }
+
+        sprintf(str, "Open hand pos: %ld \nClosed hand pos: %ld",
+        (int32)(opened_hand_pos >> g_mem.res[0]),
+        (int32)(closed_hand_pos >> g_mem.res[0]));
         strcat(info_string, str);
-        strcat(info_string,"\r\n");
-    }
+        strcat(info_string, "\r\n");
 
-    sprintf(str, "Position limit active: %d", (int)g_mem.pos_lim_flag);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
-
-    for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
-        sprintf(str, "Position limit motor %d: inf -> %ld  ", (int)(i + 1),
-                (int32)g_mem.pos_lim_inf[i] >> g_mem.res[i]);
+        sprintf(str, "Max step pos and neg: %d %d", (int)g_mem.max_step_pos, (int)g_mem.max_step_neg);
         strcat(info_string, str);
+        strcat(info_string, "\r\n");
 
-        sprintf(str, "sup -> %ld\r\n",
-                (int32)g_mem.pos_lim_sup[i] >> g_mem.res[i]);
+        sprintf(str, "Current limit: %d", (int)g_mem.current_limit);
         strcat(info_string, str);
-    }
+        strcat(info_string, "\r\n");
 
-    sprintf(str, "Open hand pos: %ld \nClosed hand pos: %ld",
-            (int32)(opened_hand_pos >> g_mem.res[0]),
-            (int32)(closed_hand_pos >> g_mem.res[0]));
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
+        sprintf(str, "EMG thresholds [0 - 1024]: %u, %u", g_mem.emg_threshold[0], g_mem.emg_threshold[1]);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
 
-    sprintf(str, "Max step pos and neg: %d %d", (int)g_mem.max_step_pos, (int)g_mem.max_step_neg);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
+        sprintf(str, "EMG max values [0 - 4096]: %lu, %lu", g_mem.emg_max_value[0], g_mem.emg_max_value[1]);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
 
-    sprintf(str, "Current limit: %d", (int)g_mem.current_limit);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
+        if (g_mem.emg_calibration_flag) {
+            strcat(info_string, "Calibration enabled: YES\r\n");
+        } else {
+            strcat(info_string, "Calibration enabled: NO\r\n");
+        }
 
-    sprintf(str, "EMG thresholds [0 - 1024]: %u, %u", g_mem.emg_threshold[0], g_mem.emg_threshold[1]);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
+        sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
 
-    sprintf(str, "EMG max values [0 - 4096]: %lu, %lu", g_mem.emg_max_value[0], g_mem.emg_max_value[1]);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
-
-    if (g_mem.emg_calibration_flag) {
-        strcat(info_string, "Calibration enabled: YES\r\n");
-    } else {
-        strcat(info_string, "Calibration enabled: NO\r\n");
-    }
-
-    sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
-
-    sprintf(str, "debug: %ld", 5000001 - (uint32)timer_value);
-    strcat(info_string, str);
-    strcat(info_string, "\r\n");
+        sprintf(str, "debug: %ld", 5000001 - (uint32)timer_value);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+    }        
 }
 
 //==============================================================================
@@ -1139,14 +1140,6 @@ uint8 memInit(void)
 
     g_mem.double_encoder_on_off = 0;
     g_mem.motor_handle_ratio = 22;
-
-    /*
-    //write that configuration to EEPROM
-    memStore(0);
-    memStore(DEFAULT_EEPROM_DISPLACEMENT);
-    */
-
-    encoder_reading(ENC_READ_LAST_VAL_RESET);
     
     //write that configuration to EEPROM
     return ( memStore(0) && memStore(DEFAULT_EEPROM_DISPLACEMENT) );

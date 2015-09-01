@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.2.5"
+#define VERSION                 "SH-PRO v5.2.6"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -71,7 +71,6 @@
 
 #define MIN_CURR_SAT_LIMIT      30
 
-#define ENC_READ_LAST_VAL_RESET 10
 //==============================================================================
 //                                                        structures definitions
 //==============================================================================
@@ -186,6 +185,8 @@ extern int8 dx_sx_hand;
 extern float tau_feedback;
 
 extern uint32 timer_value;
+
+extern uint8 reset_last_value_flag;
 
 // -----------------------------------------------------------------------------
 

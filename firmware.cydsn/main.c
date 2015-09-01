@@ -140,6 +140,8 @@ void main()
     device.pwm_limit = PWM_MAX_VALUE;
     device.tension_valid = FALSE;
 
+    reset_last_value_flag = 0;
+
 
 //=========================================================     application loop
 

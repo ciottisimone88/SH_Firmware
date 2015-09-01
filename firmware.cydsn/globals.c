@@ -35,4 +35,6 @@ float tau_feedback;
 
 uint32 timer_value;
 
+uint8 reset_last_value_flag;
+
 /* END OF FILE */
