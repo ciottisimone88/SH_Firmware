@@ -103,11 +103,30 @@ void commProcess(void){
             packet_data[0] = CMD_GET_MEASUREMENTS;   //header
 
             for (i = 0; i < NUM_OF_SENSORS; i++) {
-                *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
+                if(c_mem.input_mode == INPUT_MODE_ENCODER3) {
+                    if(c_mem.double_encoder_on_off) {
+                        if(i == NUM_OF_SENSORS - 1) {
+                            *((int16 *) &packet_data[(i*2) + 1]) = (int16) ((g_meas.pos[i] >> g_mem.res[i]) * g_mem.motor_handle_ratio);
+                        }
+                        else {
+                            *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
+                        }
+                    }
+                    else {
+                        if (i == NUM_OF_SENSORS - 2) {
+                           *((int16 *) &packet_data[(i*2) + 1]) = (int16) ((g_meas.pos[i] >> g_mem.res[i]) * g_mem.motor_handle_ratio);
+                        }
+                        else {
+                            *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
+                        }
+                    }                
+                }
+                else {
+                    *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
+                }
             }
 
-            packet_data[packet_lenght - 1] =
-                    LCRChecksum (packet_data, packet_lenght - 1);
+            packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
 
@@ -421,7 +440,7 @@ void paramSet(uint16 param_type)
 
                 g_meas.rot[i] = 0;
             }
-            reset_last_value_flag  = 1;
+            reset_last_value_flag = 1;
             break;
 
 //===========================================================     set_multiplier
@@ -830,9 +849,9 @@ void infoPrepare(unsigned char *info_string)
         }
 
         if (c_mem.double_encoder_on_off) {
-            strcat(info_string, "Double Encoder: YES\r\n");
+            strcat(info_string, "Encoder turn memory: YES\r\n");
         } else {
-            strcat(info_string, "Double Encoder: NO\r\n");
+            strcat(info_string, "Encoder turn memory: NO\r\n");
         }
 
         sprintf(str, "Motor-Handle Ratio: %d\r\n", (int)c_mem.motor_handle_ratio);
@@ -1124,11 +1143,8 @@ uint8 memInit(void)
 
     g_mem.current_limit = DEFAULT_CURRENT_LIMIT;
 
-    // set the initialized flag to show EEPROM has been populated
-    g_mem.flag = TRUE;
-
     // EMG calibration enabled by default
-    g_mem.emg_calibration_flag = 1;
+    g_mem.emg_calibration_flag = 0;
 
     g_mem.emg_max_value[0] = 0;
     g_mem.emg_max_value[1] = 0;
@@ -1138,8 +1154,11 @@ uint8 memInit(void)
 
     g_mem.emg_speed = 100;
 
-    g_mem.double_encoder_on_off = 0;
+    g_mem.double_encoder_on_off = 1;
     g_mem.motor_handle_ratio = 22;
+
+    // set the initialized flag to show EEPROM has been populated
+    g_mem.flag = TRUE;
     
     //write that configuration to EEPROM
     return ( memStore(0) && memStore(DEFAULT_EEPROM_DISPLACEMENT) );
