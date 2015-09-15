@@ -389,7 +389,7 @@ void motor_control(void) {
 
             // motor direction depends on i_ref
             if (i_ref >= 0) {
-                motor_dir = 0x02;
+                motor_dir = 0x01;
             } else {
                 motor_dir = 0x00;
             }
