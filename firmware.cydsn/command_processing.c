@@ -103,27 +103,7 @@ void commProcess(void){
             packet_data[0] = CMD_GET_MEASUREMENTS;   //header
 
             for (i = 0; i < NUM_OF_SENSORS; i++) {
-                if(c_mem.input_mode == INPUT_MODE_ENCODER3) {
-                    if(c_mem.double_encoder_on_off) {
-                        if(i == NUM_OF_SENSORS - 1) {
-                            *((int16 *) &packet_data[(i*2) + 1]) = (int16) ((g_meas.pos[i] >> g_mem.res[i]) * g_mem.motor_handle_ratio);
-                        }
-                        else {
-                            *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
-                        }
-                    }
-                    else {
-                        if (i == NUM_OF_SENSORS - 2) {
-                           *((int16 *) &packet_data[(i*2) + 1]) = (int16) ((g_meas.pos[i] >> g_mem.res[i]) * g_mem.motor_handle_ratio);
-                        }
-                        else {
-                            *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
-                        }
-                    }                
-                }
-                else {
-                    *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
-                }
+            	*((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
             }
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
@@ -849,9 +829,9 @@ void infoPrepare(unsigned char *info_string)
         }
 
         if (c_mem.double_encoder_on_off) {
-            strcat(info_string, "Encoder turn memory: YES\r\n");
+            strcat(info_string, "Absolute encoder position: YES\r\n");
         } else {
-            strcat(info_string, "Encoder turn memory: NO\r\n");
+            strcat(info_string, "Absolute encoder position: NO\r\n");
         }
 
         sprintf(str, "Motor-Handle Ratio: %d\r\n", (int)c_mem.motor_handle_ratio);
@@ -930,7 +910,7 @@ void infoPrepare(unsigned char *info_string)
         sprintf(str, "debug: %ld", 5000001 - (uint32)timer_value);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-    }        
+    }
 }
 
 //==============================================================================

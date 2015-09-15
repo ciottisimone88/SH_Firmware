@@ -939,7 +939,7 @@ void analog_read_end(uint8 index) {
                     default:
                         break;
                 }
-                break; // main switch break
+                break; // emg switch break
 
             default:
                 break; // main switch break
