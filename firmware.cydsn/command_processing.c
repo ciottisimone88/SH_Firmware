@@ -1090,12 +1090,12 @@ uint8 memInit(void)
     //initialize memory settings
     g_mem.id            = 1;
 
-    g_mem.k_p           = 0.01 * 65536;
-    g_mem.k_i           =    0 * 65536;
-    g_mem.k_d           =  0.2 * 65536;
-    g_mem.k_p_c         =    1 * 65536;
-    g_mem.k_i_c         =    0 * 65536;
-    g_mem.k_d_c         =    0 * 65536;
+    g_mem.k_p           =  0.01 * 65536;
+    g_mem.k_i           =     0 * 65536;
+    g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter
+    g_mem.k_p_c         =     1 * 65536;
+    g_mem.k_i_c         =     0 * 65536;
+    g_mem.k_d_c         =     0 * 65536;
 
     g_mem.activ         = 0;
     g_mem.input_mode    = INPUT_MODE_EXTERNAL;
