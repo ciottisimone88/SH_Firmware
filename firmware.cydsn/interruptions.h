@@ -28,6 +28,7 @@ void analog_read_init(uint8 index);
 void analog_read_end(uint8 index);
 void encoder_reading(uint8 index);
 void motor_control(void);
+void pwm_limit_search(void);
 
 void overcurrent_control(void);
 

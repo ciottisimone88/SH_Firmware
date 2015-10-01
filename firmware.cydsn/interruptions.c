@@ -33,6 +33,38 @@
 //
 //==============================================================================
 
+// PWM values needed to obtain 11.5 V given a certain input tension
+// Numbers are sperimentally calculated //[index] (millivolts)
+static const uint8 pwm_preload_values[29] = {100,    //0 (11500)
+                                              83,
+                                              78,
+                                              76,
+                                              74,
+                                              72,    //5 (14000)
+                                              70,
+                                              68,
+                                              67,
+                                              65,
+                                              64,    //10 (16500)
+                                              63,
+                                              62,
+                                              61,
+                                              60,
+                                              59,    //15 (19000)
+                                              58,
+                                              57,
+                                              56,
+                                              56,
+                                              55,    //20 (21500)
+                                              54,
+                                              54,
+                                              53,
+                                              52,
+                                              52,    //25 (24000)
+                                              52,
+                                              51,
+                                              51};   //28 (25500)
+
 CY_ISR(ISR_RS485_RX_ExInterrupt){
 
 //===============================================     local variables definition
@@ -789,6 +821,8 @@ void analog_read_end(uint8 index) {
                     }
                 } else {
                     device.tension_valid = TRUE;
+                    if(g_mem.activate_pwm_rescaling)        //pwm rescaling is activated
+                        pwm_limit_search();                 //only for 12V motors
                 }
                 break;
 
@@ -972,4 +1006,18 @@ void overcurrent_control(void) {
     }
 }
 
+void pwm_limit_search() {
+    uint8 index;
+    uint16 max_tension = 25500; 
+    uint16 min_tension = 11500;
+
+    if (device.tension > max_tension) {
+        device.pwm_limit = 0;
+    } else if (device.tension < min_tension) {
+        device.pwm_limit = 100;
+    } else {
+        index = (uint8)((device.tension - min_tension) / 500);
+        device.pwm_limit = pwm_preload_values[index];
+    }
+}
 /* [] END OF FILE */

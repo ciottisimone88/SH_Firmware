@@ -138,7 +138,9 @@ enum qbmove_parameter
 
     PARAM_DOUBLE_ENC_ON_OFF      = 19,  ///< Double Encoder Y/N
 
-    PARAM_MOT_HANDLE_RATIO       = 20   ///< Multiplier between handle and motor
+    PARAM_MOT_HANDLE_RATIO       = 20,  ///< Multiplier between handle and motor
+
+    PARAM_MOTOR_SUPPLY           = 21   ///< Motor supply voltage of the hand
 };
 
 
@@ -184,6 +186,13 @@ enum qbmove_control_mode {
     CONTROL_CURRENT         = 2,        ///< Current control (beta)
     CURR_AND_POS_CONTROL    = 3         ///< Current control (beta)
 
+};
+
+//======================================================== motor supply voltage values
+
+enum motor_supply_tipe {
+    MAXON_24V               = 0,
+    MAXON_12V               = 1
 };
 
 enum acknowledgment_values

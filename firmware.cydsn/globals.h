@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.2.7"
+#define VERSION                 "SH-PRO v5.3.0"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -144,9 +144,11 @@ struct st_mem {
 
     uint8   double_encoder_on_off;      // Double encoder ON/OFF                    1
 
-    int8    motor_handle_ratio;         // Discrete multiplier for handle           1 18
+    int8    motor_handle_ratio;         // Discrete multiplier for handle           1 
 
-                                                                    //TOT           99 bytes
+    uint8   activate_pwm_rescaling;     // PWM rescaling for 12V motors             1 19
+
+                                                                    //TOT           100 bytes
 };
 
 //=================================================     device related variables

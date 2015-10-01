@@ -524,6 +524,11 @@ void paramSet(uint16 param_type)
             g_mem.motor_handle_ratio = *((int8*) &g_rx.buffer[3]);
             break;
 
+//===================================================     set_motor_supply_type
+        case PARAM_MOTOR_SUPPLY:
+            g_mem.activate_pwm_rescaling = g_rx.buffer[3];
+            break;
+
     }
     //Not sure if ACK_OK is correct, should check
     sendAcknowledgment(ACK_OK);
@@ -699,6 +704,13 @@ void paramGet(uint16 param_type)
             packet_lenght = 3;
             break;
 
+//===================================================     get_motor_supply_type
+        case PARAM_MOTOR_SUPPLY:
+            *((uint8 *)(packet_data + 1)) = c_mem.activate_pwm_rescaling;
+            packet_lenght = 3;
+            break;
+
+//===================================================     default
         default:
             break;
     }
@@ -714,7 +726,7 @@ void paramGet(uint16 param_type)
 void infoPrepare(unsigned char *info_string)
 {
     int i;
-    if(c_mem.id != 250){
+    if(c_mem.id != 250){                //To avoid dummy board ping
         unsigned char str[100];
         strcpy(info_string, "");
         strcat(info_string, "\r\n");
@@ -725,6 +737,12 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, "DEVICE INFO\r\n");
         sprintf(str, "ID: %d\r\n", (int) c_mem.id);
         strcat(info_string, str);
+        strcat(info_string, "PWM rescaling activation: ");
+        if(c_mem.activate_pwm_rescaling == MAXON_12V)
+            strcat(info_string, "YES\n");
+        else
+            strcat(info_string, "NO\n");
+        
         sprintf(str, "PWM Limit: %d\r\n", (int) device.pwm_limit);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
@@ -1092,7 +1110,7 @@ uint8 memInit(void)
 
     g_mem.k_p           =  0.01 * 65536;
     g_mem.k_i           =     0 * 65536;
-    g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter
+    g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter previous value 0.2
     g_mem.k_p_c         =     1 * 65536;
     g_mem.k_i_c         =     0 * 65536;
     g_mem.k_d_c         =     0 * 65536;
@@ -1102,6 +1120,8 @@ uint8 memInit(void)
     g_mem.control_mode  = CONTROL_ANGLE;
 
     g_mem.pos_lim_flag = 1;
+
+    g_mem.activate_pwm_rescaling = MAXON_12V;           //rescaling active for 12V motors
 
     g_mem.res[0] = 3;
     g_mem.res[1] = 3;
