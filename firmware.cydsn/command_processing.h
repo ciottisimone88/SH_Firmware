@@ -40,7 +40,7 @@ void    infoPrepare        (unsigned char *info_string);
 void    infoSend           (void);
 void    infoGet            (uint16 info_typea);
 void    commProcess        (void);
-void    commWrite          (uint8 *packet_data, uint16 packet_lenght);
+void    commWrite          (uint8*, uint16, uint8);
 uint8   memStore           (int);
 void    sendAcknowledgment (uint8);
 void    memRecall          (void);

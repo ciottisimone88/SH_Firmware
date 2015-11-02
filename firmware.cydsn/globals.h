@@ -71,6 +71,8 @@
 
 #define MIN_CURR_SAT_LIMIT      30
 
+#define LOOKUP_DIM              6
+
 //==============================================================================
 //                                                        structures definitions
 //==============================================================================
@@ -92,6 +94,8 @@ struct st_meas {
     int16 rot[NUM_OF_SENSORS];      // sensor rotations
 
     int32 emg[NUM_OF_EMGS];         // EMG values
+    int32 vel[NUM_OF_SENSORS];      // sensor velocity
+    int32 acc[NUM_OF_SENSORS];      // sensor acceleration
 };
 
 //==============================================================     data packet
@@ -148,7 +152,9 @@ struct st_mem {
 
     uint8   activate_pwm_rescaling;     // PWM rescaling for 12V motors             1 19
 
-                                                                    //TOT           100 bytes
+    float   curr_lookup[LOOKUP_DIM];    // Table of values to get estimated curr    24 
+
+                                                                    //TOT           124 bytes
 };
 
 //=================================================     device related variables
