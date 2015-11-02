@@ -134,6 +134,7 @@ void main()
     g_meas.emg[1] = 0;
 
     g_rx.length   = 0;
+    calib.ext_drive = FALSE;
 
     // Calculate conversion factor
     device.tension_conv_factor = ((0.25 * 101.0 * 1000) / 1638.4); //derives from datasheet calculations

@@ -89,9 +89,10 @@ enum qbmove_command
                                     ///  current measurements
     CMD_GET_CURR_AND_MEAS   = 134,  ///< Command for asking device's
                                     ///  measurements and currents
-    CMD_SET_POS_STIFF       = 135,
-
-    CMD_GET_EMG             = 136
+    CMD_SET_POS_STIFF       = 135,  ///< Command used to set shaft positon and stiffness
+    CMD_GET_EMG             = 136,  ///< Command used to get emg sensors's values
+    CMD_GET_VELOCITIES      = 137,  ///< Command used to get motor and shaft velocities
+    CMD_EXT_DRIVE           = 138   ///< Command used to drive an external device
 };
 
 /** \} */

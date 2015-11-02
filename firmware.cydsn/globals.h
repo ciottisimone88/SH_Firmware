@@ -168,6 +168,7 @@ struct st_calib {
     uint8   direction;
     int16   speed;
     int16   repetitions;
+    uint8   ext_drive;
 };
 
 

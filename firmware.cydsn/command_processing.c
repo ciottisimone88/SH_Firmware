@@ -103,12 +103,12 @@ void commProcess(void){
             packet_data[0] = CMD_GET_MEASUREMENTS;   //header
 
             for (i = 0; i < NUM_OF_SENSORS; i++) {
-            	*((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
+                *((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
             }
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
-            commWrite(packet_data, packet_lenght);
+            commWrite(packet_data, packet_lenght, FALSE);
 
             break;
 
@@ -125,7 +125,7 @@ void commProcess(void){
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
-            commWrite(packet_data, packet_lenght);
+            commWrite(packet_data, packet_lenght, FALSE);
             break;
 
 //=========================================================     CMD_GET_EMG
@@ -141,7 +141,7 @@ void commProcess(void){
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
-            commWrite(packet_data, packet_lenght);
+            commWrite(packet_data, packet_lenght, FALSE);
             break;
 
 //====================================================     CMD_GET_CURR_AND_MEAS
@@ -165,7 +165,7 @@ void commProcess(void){
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data,packet_lenght - 1);
 
-            commWrite(packet_data, packet_lenght);
+            commWrite(packet_data, packet_lenght, FALSE);
 
         break;
 
@@ -178,7 +178,7 @@ void commProcess(void){
             packet_data[1] = g_ref.onoff;
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
 
-            commWrite(packet_data, packet_lenght);
+            commWrite(packet_data, packet_lenght, FALSE);
 
             break;
 
@@ -192,7 +192,7 @@ void commProcess(void){
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
 
-            commWrite(packet_data, packet_lenght);
+            commWrite(packet_data, packet_lenght, FALSE);
             break;
 
 //=============================================================     CMD_GET_INFO
@@ -220,8 +220,8 @@ void commProcess(void){
 
             packet_data[0] = CMD_PING;
             packet_data[1] = CMD_PING;
-
-            commWrite(packet_data, packet_lenght);
+            
+            commWrite(packet_data, packet_lenght, FALSE);
             break;
 
 //=========================================================     CMD_STORE_PARAMS
@@ -315,6 +315,12 @@ void commProcess(void){
             g_ref.pos[0] = 0;
             calib.enabled = TRUE;
             break;
+
+//============================================================     CMD_EXT_DRIVE
+
+        case CMD_EXT_DRIVE:
+            calib.ext_drive =  g_rx.buffer[1];
+            break;
     }
 }
 
@@ -329,6 +335,25 @@ void infoSend(void){
     UART_RS485_PutString(packet_string);
 }
 
+//==============================================================================
+//                                                                 EXT_DRIVE_CMD
+//==============================================================================
+/* This function is used to drive an external device with id greater by one 
+respect to the device that drives */
+void ext_drive_cmd(){ 
+    static uint8 packet_data[6];    // output packet
+    static uint8 packet_lenght;     // output packet length;
+
+    packet_lenght = 6;
+    packet_data[0] = CMD_SET_INPUTS;
+    *((int16 *) &packet_data[1]) = (int16) g_meas.pos[0];
+    packet_data[3] = 0;
+    packet_data[4] = 0;
+    packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
+    
+    commWrite(packet_data, packet_lenght, TRUE);
+
+}
 
 //==============================================================================
 //                                                              COMMAND GET INFO
@@ -716,7 +741,7 @@ void paramGet(uint16 param_type)
     }
 
     packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
-    commWrite(packet_data, packet_lenght);
+    commWrite(packet_data, packet_lenght, FALSE);
 }
 
 //==============================================================================
@@ -935,7 +960,7 @@ void infoPrepare(unsigned char *info_string)
 //                                                      WRITE FUNCTION FOR RS485
 //==============================================================================
 
-void commWrite(uint8 *packet_data, uint16 packet_lenght)
+void commWrite(uint8 *packet_data, uint16 packet_lenght, uint8 next)
 {
     static uint16 i;    // iterator
 
@@ -943,7 +968,11 @@ void commWrite(uint8 *packet_data, uint16 packet_lenght)
     UART_RS485_PutChar(':');
     UART_RS485_PutChar(':');
     // frame - ID
-    UART_RS485_PutChar(g_mem.id);
+    if(next)
+        UART_RS485_PutChar(g_mem.id);
+    else
+        UART_RS485_PutChar((uint8) (g_mem.id + 1));
+
     // frame - length
     UART_RS485_PutChar((uint8)packet_lenght);
     // frame - packet data
@@ -954,9 +983,10 @@ void commWrite(uint8 *packet_data, uint16 packet_lenght)
     i = 0;
 
     while(!(UART_RS485_ReadTxStatus() & UART_RS485_TX_STS_COMPLETE) && i++ <= 1000){}
-
-    RS485_CTS_Write(1);
-    RS485_CTS_Write(0);
+    if(!next) {
+        RS485_CTS_Write(1);
+        RS485_CTS_Write(0);
+    }
 }
 
 //==============================================================================
@@ -984,7 +1014,7 @@ void sendAcknowledgment(uint8 value) {
     packet_data[0] = value;
     packet_data[1] = value;
 
-    commWrite(packet_data, packet_lenght);
+    commWrite(packet_data, packet_lenght, FALSE);
 }
 
 //==============================================================================

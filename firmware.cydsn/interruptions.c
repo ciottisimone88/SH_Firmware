@@ -220,6 +220,16 @@ void function_scheduler(void) {
         }
         counter_calibration++;
     }
+    
+    //The external drive, if the flag is set will be driven at a lower frequency
+    if(calib.ext_drive){
+        if (counter_calibration == CALIBRATION_DIV) {
+            ext_drive_cmd();
+            counter_calibration = 0;
+        }
+        counter_calibration++;
+    }
+        
 
     timer_value = (uint32)MY_TIMER_ReadCounter();
 }
