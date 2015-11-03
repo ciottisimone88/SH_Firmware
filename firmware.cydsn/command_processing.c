@@ -602,7 +602,7 @@ void paramSet(uint16 param_type)
 
 void paramGet(uint16 param_type)
 {
-    uint8 packet_data[20];
+    uint8 packet_data[26];
     uint16 packet_lenght;
     uint8 i;                // iterator
 
@@ -774,7 +774,7 @@ void paramGet(uint16 param_type)
 //===================================================     get_current_lookup_table
         case PARAM_CURRENT_LOOKUP:
             for (i = 0; i < LOOKUP_DIM; ++i) {
-                *((double *) ( packet_data + 1 + (i * 4) )) = c_mem.curr_lookup[i];
+                *((float *) ( packet_data + 1 + (i * 4) )) = c_mem.curr_lookup[i];
             }
             packet_lenght = 2 + LOOKUP_DIM * 4;
             break;            
@@ -949,10 +949,10 @@ void infoPrepare(unsigned char *info_string)
         }
 
         strcat(info_string, "Current lookup table:\n");
-        sprintf(str, "%f, %f, %f", c_mem.curr_lookup[0], c_mem.curr_lookup[1], c_mem.curr_lookup[2]);
+        sprintf(str, "p(0) - p(2): %f, %f, %f", c_mem.curr_lookup[0], c_mem.curr_lookup[1], c_mem.curr_lookup[2]);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-        sprintf(str, "%f, %f, %f", c_mem.curr_lookup[3], c_mem.curr_lookup[4], c_mem.curr_lookup[5]);
+        sprintf(str, "P(3) - p(5): %f, %f, %f", c_mem.curr_lookup[3], c_mem.curr_lookup[4], c_mem.curr_lookup[5]);
         strcat(info_string, str);
         strcat(info_string, "\r\n\n");
 
