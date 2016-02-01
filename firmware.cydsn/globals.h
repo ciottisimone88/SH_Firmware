@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.3.0"
+#define VERSION                 "SH-PRO v5.3.0 - CUFF MOD"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3

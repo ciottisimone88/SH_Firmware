@@ -102,9 +102,13 @@ void commProcess(void){
 
             packet_data[0] = CMD_GET_MEASUREMENTS;   //header
 
-            for (i = 0; i < NUM_OF_SENSORS; i++) {
+            /*for (i = 0; i < NUM_OF_SENSORS; i++) {
             	*((int16 *) &packet_data[(i*2) + 1]) = (int16) (g_meas.pos[i] >> g_mem.res[i]);
-            }
+            }*/
+
+            *((int16 *) &packet_data[1]) = (int16) g_meas.emg[0];
+            *((int16 *) &packet_data[3]) = (int16) g_meas.emg[1];
+            *((int16 *) &packet_data[5]) = (int16) (g_meas.pos[0] >> g_mem.res[0]);
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
@@ -121,7 +125,9 @@ void commProcess(void){
             packet_data[0] = CMD_GET_CURRENTS;
 
             *((int16 *) &packet_data[1]) = (int16) g_meas.curr[0];
-            *((int16 *) &packet_data[3]) = (int16) g_meas.curr[1];
+            // *((int16 *) &packet_data[3]) = (int16) g_meas.curr[1];
+            *((int16 *) &packet_data[3]) = (int16)
+                filter_curr_diff((int32) g_meas.curr[0] - curr_estim(g_meas.pos[0], g_meas.vel[0], g_meas.acc[0]));
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
@@ -388,7 +394,7 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type) {
-    static unsigned char packet_string[1100];
+    static unsigned char packet_string[1500];
 
     //==================================     choose info type and prepare string
 
@@ -474,6 +480,12 @@ void paramSet(uint16 param_type)
 
                 g_meas.rot[i] = 0;
             }
+
+            g_mem.m_off[0] = *((int16 *) &g_rx.buffer[7]);   
+            g_mem.m_off[0] = g_mem.m_off[0] << g_mem.res[0];
+            //first motor encoder is on third measurement
+            //the first two meas are reserved to emgs
+
             reset_last_value_flag = 1;
             break;
 
@@ -834,12 +846,23 @@ void infoPrepare(unsigned char *info_string)
 
         strcat(info_string, "\r\nMEASUREMENTS INFO\r\n");
         strcat(info_string, "Sensor value:\r\n");
-        for (i = 0; i < NUM_OF_SENSORS; i++) {
+        
+        sprintf(str, "1 -> %d", (int)(g_meas.emg[0]));
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        sprintf(str, "2 -> %d", (int)(g_meas.emg[1]));
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        sprintf(str, "3 -> %d", (int)(g_meas.pos[0] >> c_mem.res[0]));
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+
+        /*for (i = 0; i < NUM_OF_SENSORS; i++) {
             sprintf(str, "%d -> %d", i+1,
             (int)(g_meas.pos[i] >> c_mem.res[i]));
             strcat(info_string, str);
             strcat(info_string, "\r\n");
-        }
+        }*/
 
         sprintf(str, "Voltage (mV): %ld", (int32) device.tension );
         strcat(info_string, str);
@@ -1199,13 +1222,13 @@ uint8 memInit(void)
     g_mem.k_i_c         =     0 * 65536;
     g_mem.k_d_c         =     0 * 65536;
 
-    g_mem.activ         = 0;
+    g_mem.activ         = 1;
     g_mem.input_mode    = INPUT_MODE_EXTERNAL;
     g_mem.control_mode  = CONTROL_ANGLE;
 
     g_mem.pos_lim_flag = 1;
 
-    g_mem.activate_pwm_rescaling = MAXON_12V;           //rescaling active for 12V motors
+    g_mem.activate_pwm_rescaling = 0;           
 
     g_mem.res[0] = 3;
     g_mem.res[1] = 3;
@@ -1230,20 +1253,24 @@ uint8 memInit(void)
     // EMG calibration enabled by default
     g_mem.emg_calibration_flag = 0;
 
-    g_mem.emg_max_value[0] = 0;
-    g_mem.emg_max_value[1] = 0;
+    g_mem.emg_max_value[0] = 1024;
+    g_mem.emg_max_value[1] = 1024;
 
     g_mem.emg_threshold[0] = 100;
     g_mem.emg_threshold[1] = 100;
 
     g_mem.emg_speed = 100;
 
-    g_mem.double_encoder_on_off = 1;
+    g_mem.double_encoder_on_off = 0;
     g_mem.motor_handle_ratio = 22;
 
-    for(i = 0; i < LOOKUP_DIM; i++)
-        g_mem.curr_lookup[i] = 0;
-
+    g_mem.curr_lookup[0] =  2.2502;
+    g_mem.curr_lookup[1] = -0.0463;
+    g_mem.curr_lookup[2] =  0.0003;
+    g_mem.curr_lookup[3] =  2.6610;
+    g_mem.curr_lookup[4] = -0.0039;
+    g_mem.curr_lookup[5] = -0.2109;
+    
     // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;
     
