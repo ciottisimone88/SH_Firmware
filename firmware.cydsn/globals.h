@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.3.0"
+#define VERSION                 "SH-PRO v5.3.1"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -67,7 +67,7 @@
 #define NUM_OF_CLOSURES         5
 
 #define POS_INTEGRAL_SAT_LIMIT  50000000
-#define CURR_INTEGRAL_SAT_LIMIT 10000
+#define CURR_INTEGRAL_SAT_LIMIT 100000
 
 #define MIN_CURR_SAT_LIMIT      30
 
@@ -79,6 +79,8 @@
 
 struct st_ref {
     int32 pos[NUM_OF_MOTORS];       // motor reference position
+    int32 curr[NUM_OF_MOTORS];
+    int32 pwm[NUM_OF_MOTORS];
     uint8 onoff;                    // enable flags
 };
 
@@ -110,13 +112,20 @@ struct st_mem {
     uint8   id;                         // device id                                1
 
     int32   k_p;                        // Proportional constant                    4
-    int32   k_i;                        // Derivative constant                      4
-    int32   k_d;                        // Integrative constant                     4
+    int32   k_i;                        // Integrative constant                     4
+    int32   k_d;                        // Derivative constant                      4
 
     int32   k_p_c;                      // Proportional constant curr               4
-    int32   k_i_c;                      // Derivative constant curr                 4
-    int32   k_d_c;                      // Integrative constant curr                4 26
+    int32   k_i_c;                      // Integrative constant curr                4
+    int32   k_d_c;                      // Derivative constant curr                 4 26
 
+    int32   k_p_dl;                     // Double loop proportional constant 
+    int32   k_i_dl;                     // Double loop integrative constant
+    int32   k_d_dl;                     // Double loop derivative constant
+    int32   k_p_c_dl;                   // Double loop current prop. costant
+    int32   k_i_c_dl;                   // Double loop current integr. costant
+    int32   k_d_c_dl;                   // Double loop current deriv. costant
+    
     uint8   activ;                      // Activation upon startup                  1
     uint8   input_mode;                 // Input mode                               1
     uint8   control_mode;               // Control mode                             1
@@ -189,6 +198,7 @@ extern float tau_feedback;
 extern uint32 timer_value;
 
 extern uint8 reset_last_value_flag;
+extern int8 pwm_sign;
 
 // -----------------------------------------------------------------------------
 

@@ -22,6 +22,10 @@
 
 #define TIMER_CLOCK 10000
 
+#define ALPHA 3
+#define BETA 50
+
+#define SIGN(A) (((A) >=0) ? (1) : (-1))
 
 //-------------------------------------------------------------     DECLARATIONS
 

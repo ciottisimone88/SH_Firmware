@@ -120,27 +120,22 @@ enum qbmove_parameter
     PARAM_POS_LIMIT              = 8,   ///< Position limit values
                                         ///  | int32     | int32     | int32     | int32     |
                                         ///  | INF_LIM_1 | SUP_LIM_1 | INF_LIM_2 | SUP_LIM_2 |
-
     PARAM_MAX_STEP_POS           = 9,
     PARAM_MAX_STEP_NEG           = 10,
     PARAM_POS_RESOLUTION         = 11,  ///< Angle resolution for inputs and
                                         ///  measurements. Used during
                                         ///  communication.
     PARAM_CURRENT_LIMIT          = 12,  ///< Limit for absorbed current
-
     PARAM_EMG_CALIB_FLAG         = 13,  ///< Enable calibration on startup
     PARAM_EMG_THRESHOLD          = 14,  ///< Minimum value to have effect
     PARAM_EMG_MAX_VALUE          = 15,  ///< Maximum value of EMG
-
     PARAM_EMG_SPEED              = 16,  ///< Closure speed when using EMG
-
     PARAM_PID_CURR_CONTROL       = 18,  ///< PID current control
-
     PARAM_DOUBLE_ENC_ON_OFF      = 19,  ///< Double Encoder Y/N
-
     PARAM_MOT_HANDLE_RATIO       = 20,  ///< Multiplier between handle and motor
-
-    PARAM_MOTOR_SUPPLY           = 21   ///< Motor supply voltage of the hand
+    PARAM_MOTOR_SUPPLY           = 21,   ///< Motor supply voltage of the hand
+    PARAM_DL_POS_PID             = 22,
+    PARAM_DL_CURR_PID            = 23
 };
 
 

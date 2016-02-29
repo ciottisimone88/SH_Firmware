@@ -36,5 +36,6 @@ float tau_feedback;
 uint32 timer_value;
 
 uint8 reset_last_value_flag;
+int8 pwm_sign;
 
 /* END OF FILE */

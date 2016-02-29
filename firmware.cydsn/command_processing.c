@@ -73,18 +73,37 @@ void commProcess(void){
 //===========================================================     CMD_SET_INPUTS
 
         case CMD_SET_INPUTS:
-            g_ref.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
-            g_ref.pos[0] = g_ref.pos[0] << g_mem.res[0];
+            if(g_mem.control_mode == CONTROL_CURRENT) {
+                g_ref.curr[0] = *((int16 *) &g_rx.buffer[1]);
+                g_ref.curr[1] = *((int16 *) &g_rx.buffer[3]);
+            }
+            else {
+                if(g_mem.control_mode == CONTROL_PWM) {
+                    g_ref.pwm[0] = *((int16 *) &g_rx.buffer[1]);
+                    g_ref.pwm[1] = *((int16 *) &g_rx.buffer[3]);
+                }
+                else {
+                    g_ref.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
+                    g_ref.pos[0] = g_ref.pos[0] << g_mem.res[0];
 
-            g_ref.pos[1] = *((int16 *) &g_rx.buffer[3]);   // motor 2
-            g_ref.pos[1] = g_ref.pos[1] << g_mem.res[1];
+                    g_ref.pos[1] = *((int16 *) &g_rx.buffer[3]);   // motor 2
+                    g_ref.pos[1] = g_ref.pos[1] << g_mem.res[1];
+                }
+            }
+            
+            if (c_mem.pos_lim_flag && 
+                (g_mem.control_mode == CURR_AND_POS_CONTROL
+                || g_mem.control_mode == CONTROL_ANGLE)) {                      // pos limiting
+                
+                if (g_ref.pos[0] < c_mem.pos_lim_inf[0]) 
+                    g_ref.pos[0] = c_mem.pos_lim_inf[0];
+                if (g_ref.pos[1] < c_mem.pos_lim_inf[1]) 
+                    g_ref.pos[1] = c_mem.pos_lim_inf[1];
 
-            if (c_mem.pos_lim_flag) {                      // pos limiting
-                if (g_ref.pos[0] < c_mem.pos_lim_inf[0]) g_ref.pos[0] = c_mem.pos_lim_inf[0];
-                if (g_ref.pos[1] < c_mem.pos_lim_inf[1]) g_ref.pos[1] = c_mem.pos_lim_inf[1];
-
-                if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) g_ref.pos[0] = c_mem.pos_lim_sup[0];
-                if (g_ref.pos[1] > c_mem.pos_lim_sup[1]) g_ref.pos[1] = c_mem.pos_lim_sup[1];
+                if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) 
+                    g_ref.pos[0] = c_mem.pos_lim_sup[0];
+                if (g_ref.pos[1] > c_mem.pos_lim_sup[1]) 
+                    g_ref.pos[1] = c_mem.pos_lim_sup[1];
             }
 
             break;
@@ -372,17 +391,31 @@ void paramSet(uint16 param_type)
 //=======================================================     set_pid_parameters
 
         case PARAM_PID_CONTROL:
-            g_mem.k_p = *((double *) &g_rx.buffer[3]) * 65536;
-            g_mem.k_i = *((double *) &g_rx.buffer[3 + 4]) * 65536;
-            g_mem.k_d = *((double *) &g_rx.buffer[3 + 8]) * 65536;
+            if(c_mem.control_mode != CURR_AND_POS_CONTROL) {
+                g_mem.k_p = *((double *) &g_rx.buffer[3]) * 65536;
+                g_mem.k_i = *((double *) &g_rx.buffer[3 + 4]) * 65536;
+                g_mem.k_d = *((double *) &g_rx.buffer[3 + 8]) * 65536;
+            }
+            else {
+                g_mem.k_p_dl = *((double *) &g_rx.buffer[3]) * 65536;
+                g_mem.k_i_dl = *((double *) &g_rx.buffer[3 + 4]) * 65536;
+                g_mem.k_d_dl = *((double *) &g_rx.buffer[3 + 8]) * 65536;
+            }
             break;
 
 //==================================================     set_curr_pid_parameters
 
         case PARAM_PID_CURR_CONTROL:
-            g_mem.k_p_c = *((double *) &g_rx.buffer[3]) * 65536;
-            g_mem.k_i_c = *((double *) &g_rx.buffer[3 + 4]) * 65536;
-            g_mem.k_d_c = *((double *) &g_rx.buffer[3 + 8]) * 65536;
+            if(c_mem.control_mode != CURR_AND_POS_CONTROL){
+                g_mem.k_p_c = *((double *) &g_rx.buffer[3]) * 65536;
+                g_mem.k_i_c = *((double *) &g_rx.buffer[3 + 4]) * 65536;
+                g_mem.k_d_c = *((double *) &g_rx.buffer[3 + 8]) * 65536;
+            }   
+            else {
+                g_mem.k_p_c_dl = *((double *) &g_rx.buffer[3]) * 65536;
+                g_mem.k_i_c_dl = *((double *) &g_rx.buffer[3 + 4]) * 65536;
+                g_mem.k_d_c_dl = *((double *) &g_rx.buffer[3 + 8]) * 65536; 
+            }
             break;
 
 //===================================================     set_startup_activation
@@ -559,18 +592,32 @@ void paramGet(uint16 param_type)
 //=======================================================     get_pid_parameters
 
         case PARAM_PID_CONTROL:
-            *((double *) (packet_data + 1)) = (double) c_mem.k_p / 65536;
-            *((double *) (packet_data + 5)) = (double) c_mem.k_i / 65536;
-            *((double *) (packet_data + 9)) = (double) c_mem.k_d / 65536;
+            if(c_mem.control_mode != CURR_AND_POS_CONTROL) {
+                *((double *) (packet_data + 1)) = (double) c_mem.k_p / 65536;
+                *((double *) (packet_data + 5)) = (double) c_mem.k_i / 65536;
+                *((double *) (packet_data + 9)) = (double) c_mem.k_d / 65536;
+            }
+            else {
+                *((double *) (packet_data + 1)) = (double) c_mem.k_p_dl / 65536;
+                *((double *) (packet_data + 5)) = (double) c_mem.k_i_dl / 65536;
+                *((double *) (packet_data + 9)) = (double) c_mem.k_d_dl / 65536;
+            }
             packet_lenght = 14;
             break;
 
 //=======================================================     get_pid_parameters
 
         case PARAM_PID_CURR_CONTROL:
-            *((double *) (packet_data + 1)) = (double) c_mem.k_p_c / 65536;
-            *((double *) (packet_data + 5)) = (double) c_mem.k_i_c / 65536;
-            *((double *) (packet_data + 9)) = (double) c_mem.k_d_c / 65536;
+            if(c_mem.control_mode != CURR_AND_POS_CONTROL) {
+                *((double *) (packet_data + 1)) = (double) c_mem.k_p_c / 65536;
+                *((double *) (packet_data + 5)) = (double) c_mem.k_i_c / 65536;
+                *((double *) (packet_data + 9)) = (double) c_mem.k_d_c / 65536;
+            }
+            else {
+                *((double *) (packet_data + 1)) = (double) c_mem.k_p_c_dl / 65536;
+                *((double *) (packet_data + 5)) = (double) c_mem.k_i_c_dl / 65536;
+                *((double *) (packet_data + 9)) = (double) c_mem.k_d_c_dl / 65536;
+            }    
             packet_lenght = 14;
             break;
 
@@ -748,11 +795,34 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, "\r\n");
 
         strcat(info_string, "MOTOR INFO\r\n");
-        strcat(info_string, "Motor reference: ");
-        for (i = 0; i < NUM_OF_MOTORS - 1; i++) {
-            sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
-            strcat(info_string, str);
+        strcat(info_string, "Motor reference");
+        
+        if(g_mem.control_mode == CONTROL_CURRENT)
+            strcat(info_string," - Currents: ");
+        else {
+            if (g_mem.control_mode == CONTROL_PWM)
+                strcat(info_string," - Pwm: ");
+            else
+                strcat(info_string," - Position: ");
         }
+    
+        for (i = 0; i < NUM_OF_MOTORS; i++) {
+            if(g_mem.control_mode == CONTROL_CURRENT) {
+                sprintf(str, "%d ", (int)(g_ref.curr[i]));
+                strcat(info_string,str);
+            }
+        else {
+            if(g_mem.control_mode == CONTROL_PWM) {
+                sprintf(str, "%d ", (int)(g_ref.pwm[i]));
+                strcat(info_string,str);
+            }
+            else {
+                sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
+                strcat(info_string,str);
+            }
+        }
+    }
+    strcat(info_string,"\r\n");
         strcat(info_string, "\r\n");
 
         sprintf(str, "Motor enabled: ");
@@ -1108,11 +1178,11 @@ uint8 memInit(void)
     //initialize memory settings
     g_mem.id            = 1;
 
-    g_mem.k_p           =  0.01 * 65536;
-    g_mem.k_i           =     0 * 65536;
+    g_mem.k_p           = 0.015 * 65536;
+    g_mem.k_i           =  0.02 * 65536;
     g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter previous value 0.2
     g_mem.k_p_c         =     1 * 65536;
-    g_mem.k_i_c         =     0 * 65536;
+    g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
 
     g_mem.activ         = 0;
