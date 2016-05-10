@@ -25,10 +25,6 @@ struct st_mem   g_mem, c_mem;           // memory
 struct st_dev   device;                 // device related variables
 struct st_calib calib;
 
-int32 opened_hand_pos;
-int32 closed_hand_pos;
-int8 dx_sx_hand;            //-1 dx, 1 sx
-
 float tau_feedback;
 
 // utility timer value for display

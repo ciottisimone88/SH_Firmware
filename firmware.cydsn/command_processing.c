@@ -480,15 +480,6 @@ void paramSet(uint16 param_type)
                 g_mem.pos_lim_inf[i] = g_mem.pos_lim_inf[i] << g_mem.res[i];
                 g_mem.pos_lim_sup[i] = g_mem.pos_lim_sup[i] << g_mem.res[i];
 
-                if (g_mem.pos_lim_inf[0] == 0) {
-                    closed_hand_pos = g_mem.pos_lim_sup[0];
-                    opened_hand_pos = 0;
-                    dx_sx_hand = 1;   //sx hand
-                } else {
-                    closed_hand_pos = -g_mem.pos_lim_inf[0];
-                    opened_hand_pos = 0;
-                    dx_sx_hand = -1;   //dx hand
-                }
             }
             break;
 
@@ -963,12 +954,6 @@ void infoPrepare(unsigned char *info_string)
             strcat(info_string, str);
         }
 
-        sprintf(str, "Open hand pos: %ld \nClosed hand pos: %ld",
-        (int32)(opened_hand_pos >> g_mem.res[0]),
-        (int32)(closed_hand_pos >> g_mem.res[0]));
-        strcat(info_string, str);
-        strcat(info_string, "\r\n");
-
         sprintf(str, "Max step pos and neg: %d %d", (int)g_mem.max_step_pos, (int)g_mem.max_step_neg);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
@@ -1126,17 +1111,6 @@ void memRecall(void)
     } else {
         memcpy( &c_mem, &g_mem, sizeof(g_mem) );
     }
-
-    // hand settings
-    if (g_mem.pos_lim_inf[0] == 0) {
-        closed_hand_pos = g_mem.pos_lim_sup[0];
-        opened_hand_pos = 0;
-        dx_sx_hand = 1; //sx hand
-    } else {
-        closed_hand_pos = -g_mem.pos_lim_inf[0];
-        opened_hand_pos = 0;
-        dx_sx_hand = -1; //dx hand
-    }
 }
 
 
@@ -1191,7 +1165,7 @@ uint8 memInit(void)
 
     g_mem.pos_lim_flag = 1;
 
-    g_mem.activate_pwm_rescaling = MAXON_12V;           //rescaling active for 12V motors
+    g_mem.activate_pwm_rescaling = MAXON_24V;           //rescaling active for 12V motors
 
     g_mem.res[0] = 3;
     g_mem.res[1] = 3;

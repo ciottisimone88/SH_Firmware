@@ -274,9 +274,9 @@ void motor_control(void) {
             }
 
             // Read handle and use it as reference for the motor
-            if (((handle_value - g_ref.pos[0]) > c_mem.max_step_pos)   &&   (c_mem.max_step_pos != 0)) {
+            if (((handle_value - g_ref.pos[0]) > c_mem.max_step_pos) && (c_mem.max_step_pos != 0)) {
                 g_ref.pos[0] += c_mem.max_step_pos;
-            } else if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg)   &&   (c_mem.max_step_neg != 0)) {
+            } else if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg) && (c_mem.max_step_neg != 0)) {
                 g_ref.pos[0] += c_mem.max_step_neg;
             } else {
                 g_ref.pos[0] = handle_value;
@@ -285,7 +285,7 @@ void motor_control(void) {
 
         case INPUT_MODE_EMG_PROPORTIONAL:
             if (err_emg_1 > 0) {
-            g_ref.pos[0] = (err_emg_1 * dx_sx_hand * closed_hand_pos) / (1024 - c_mem.emg_threshold[0]);
+            g_ref.pos[0] = (err_emg_1 * g_mem.pos_lim_sup[0]) / (1024 - c_mem.emg_threshold[0]);
             } else {
                 g_ref.pos[0] = 0;
             }
@@ -293,10 +293,10 @@ void motor_control(void) {
 
         case INPUT_MODE_EMG_INTEGRAL:
             if (err_emg_1 > 0) {
-                g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
+                g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
             }
             if (err_emg_2 > 0) {
-                g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+                g_ref.pos[0] -= (err_emg_2 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
             }
             break;
 
@@ -320,7 +320,7 @@ void motor_control(void) {
                         current_emg = 0;
                         break;
                     }
-                    g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
+                    g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
                     break;
 
                 case 2:
@@ -329,7 +329,7 @@ void motor_control(void) {
                         current_emg = 0;
                         break;
                     }
-                    g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+                    g_ref.pos[0] -= (err_emg_2 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
                     break;
 
                 default:
@@ -361,7 +361,7 @@ void motor_control(void) {
                     }
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_1 > 0) {
-                        g_ref.pos[0] += (err_emg_1 * dx_sx_hand * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
+                        g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
                     }
                     break;
 
@@ -374,7 +374,7 @@ void motor_control(void) {
                     }
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_2 > 0) {
-                        g_ref.pos[0] -= (err_emg_2 * dx_sx_hand * c_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+                        g_ref.pos[0] -= (err_emg_2 * c_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
                     }
                     break;
 
@@ -635,8 +635,6 @@ void encoder_reading(uint8 index) {
 
     static uint8 error[NUM_OF_SENSORS];
 
-    int rot;
-
     // check index value. Eventually reset last_vale_encoder
     if (index >= NUM_OF_SENSORS)
         return;
@@ -676,7 +674,7 @@ void encoder_reading(uint8 index) {
                                                 // and shift to have 16 bit val
 
         // Add offset and crop to 16bit
-        value_encoder  = (int16)(value_encoder + g_mem.m_off[index]);
+        value_encoder  = (int32)((int16)(value_encoder + g_mem.m_off[index]));
 
         // Initialize last_value_encoder
         if (only_first_time) {
@@ -733,27 +731,20 @@ void encoder_reading(uint8 index) {
         g_meas.pos[index] = value_encoder;
     }
 
-    // wait at least 3 * max_num_of_error (10) + 5 = 35 cylces to reconstruct the right turn
+    // wait at least 3 * max_num_of_error (10) + 5 = 35 cycles to reconstruct the right turn
     if (one_time_execute < 35) {
         if (one_time_execute < 34) {
             one_time_execute++;
         } else {
+            //Double encoder translation
+            if (c_mem.double_encoder_on_off)
+                g_meas.rot[0] = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
+
+            g_meas.pos[0] += (int32) g_meas.rot[0] << 16;
             // If necessary activate motors
             g_ref.pos[0] = g_meas.pos[0];
             MOTOR_ON_OFF_Write(g_ref.onoff);
-
-            // Double encoder translation
-            if (c_mem.double_encoder_on_off) {
-                rot = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
-
-                if (rot > 13) {
-                    g_meas.rot[0] = -27 + rot;
-                } else {
-                    g_meas.rot[0] = rot;
-                }
-
-            }
-
+            
             one_time_execute = 35;
         }
     }
@@ -1003,17 +994,17 @@ void overcurrent_control(void) {
 }
 
 void pwm_limit_search() {
-    /*uint8 index;
+    uint8 index;
     uint16 max_tension = 25500; 
     uint16 min_tension = 11500;
 
     if (device.tension > max_tension) {
         device.pwm_limit = 0;
-    } else if (device.tension < min_tension) {*/
+    } else if (device.tension < min_tension) {
         device.pwm_limit = 100;
-    /*} else {
+    } else {
         index = (uint8)((device.tension - min_tension) / 500);
         device.pwm_limit = pwm_preload_values[index];
-    }*/
+    }
 }
 /* [] END OF FILE */

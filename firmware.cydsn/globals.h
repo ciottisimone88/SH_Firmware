@@ -189,10 +189,6 @@ extern struct st_mem    g_mem, c_mem;   // memory
 extern struct st_dev    device;         // device related variables
 extern struct st_calib  calib;
 
-extern int32 opened_hand_pos;
-extern int32 closed_hand_pos;
-extern int8 dx_sx_hand;
-
 extern float tau_feedback;
 
 extern uint32 timer_value;

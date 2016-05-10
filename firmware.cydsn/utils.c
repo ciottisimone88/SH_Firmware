@@ -121,13 +121,13 @@ void calibration(void) {
 
     // closing
     if (direction == 0) {
-        g_ref.pos[0] += dx_sx_hand * (calib.speed << g_mem.res[0]);
-        if ((g_ref.pos[0] * dx_sx_hand) > closed_hand_pos) {
+        g_ref.pos[0] += (calib.speed << g_mem.res[0]);
+        if ((g_ref.pos[0]) > g_mem.pos_lim_sup[0]) {
             direction = 1;
         }
     } else { //opening
-        g_ref.pos[0] -= dx_sx_hand * (calib.speed << g_mem.res[0]);
-        if (SIGN(g_ref.pos[0]) != dx_sx_hand) {
+        g_ref.pos[0] -= (calib.speed << g_mem.res[0]);
+        if (SIGN(g_ref.pos[0]) != 1) {
             direction = 0;
             closure_counter++;
             if (closure_counter == calib.repetitions) {
@@ -161,7 +161,7 @@ void calibration(void) {
 //     inv_b = s - q * t;
 // return
 
-// Number of teeth of the two weels
+// Number of teeth of the two wheels
 #define N1 28
 #define N2 27
 
@@ -173,13 +173,12 @@ void calibration(void) {
 
 
 int calc_turns_fcn(int32 pos1, int32 pos2) {
+    
+    int32 x = (my_mod( - N2*pos2 - N1*pos1, M*N2) + M/2) / M;
 
-    uint32 a1 = my_mod(pos1 - 32768, M);
-    uint32 a2 = my_mod(pos2 - ((32768 * N1) / N2), M);
-
-    int32 x = (my_mod( - N2*a2 - N1*a1, M*N2) + M/2) / M;
-
-    return my_mod(x*I1, N2);
+    int32 aux = my_mod(x*I1, N2);
+    
+    return (my_mod(aux + N2/2, N2) - N2/2);
 }
 
 /* [] END OF FILE */
