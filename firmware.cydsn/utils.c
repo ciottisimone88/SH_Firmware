@@ -15,15 +15,28 @@
 #include <utils.h>
 #include <math.h>
 
-//--------------------------------------------------------------     DEFINITIONS
+//==============================================================================
+//                                                            Current Estimation
+//==============================================================================
 
+int32 curr_estim (int32 pos, int32 vel, int32 acc) {
+    return (abs(g_mem.curr_lookup[0]*pos +
+                g_mem.curr_lookup[1]*pow(pos,2) + 
+                g_mem.curr_lookup[2]*pow(pos,3) + 
+                g_mem.curr_lookup[3]*vel + 
+                g_mem.curr_lookup[4]*pow(vel,2) + 
+                g_mem.curr_lookup[5]*acc));
+}
 
+//==============================================================================
+//                                                   Voltage and current filters
+//==============================================================================
 
 int32 filter_v(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
+    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) >> 10;
 
     old_value = aux;
 
@@ -34,19 +47,22 @@ int32 filter_i1(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
+    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) >> 10;
 
     old_value = aux;
 
     return (aux >> 6);
 }
 
+//==============================================================================
+//                                                                   Emg Filters
+//==============================================================================
 
 int32 filter_ch1(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
+    aux = (old_value * (1024 - ALPHA) + new_value * (ALPHA)) / 1024;
 
     old_value = aux;
 
@@ -57,9 +73,99 @@ int32 filter_ch2(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
+    aux = (old_value * (1024 - ALPHA) + new_value * (ALPHA)) / 1024;
 
     old_value = aux;
+
+    return aux;
+}
+
+//==============================================================================
+//                                                              Velocity filters
+//==============================================================================
+
+int32 filter_vel_1(int32 new_value) {
+
+    static int32 old_out, aux;
+
+    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
+
+    old_out = aux;
+
+    return aux;
+}
+
+int32 filter_vel_2(int32 new_value) {
+
+    static int32 old_out, aux;
+
+    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
+
+    old_out = aux;
+
+    return aux;
+}
+
+int32 filter_vel_3(int32 new_value) {
+
+    static int32 old_out, aux;
+
+    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
+
+    old_out = aux;
+
+    return aux;
+}
+
+//==============================================================================
+//                                                     Current difference filter
+//==============================================================================
+
+int32 filter_curr_diff(int32 curr_diff) {
+
+    static int32 old_out, aux, old_input;
+
+    aux = (old_out * (1024 - 2) + (curr_diff + old_input) * (0.8)) / 1024;
+
+    old_out = aux;
+    old_input = curr_diff;
+
+    return aux;
+}
+
+//==============================================================================
+//                                                          Acceleration filters
+//==============================================================================
+
+int32 filter_acc_1(int32 new_value) {
+
+    static int32 old_out, aux;
+
+    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
+
+    old_out = aux;
+
+    return aux;
+}
+
+int32 filter_acc_2(int32 new_value) {
+
+    static int32 old_out, aux;
+
+    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
+
+    old_out = aux;
+
+    return aux;
+}
+
+int32 filter_acc_3(int32 new_value) {
+
+    static int32 old_out, aux;
+
+    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
+
+    old_out = aux;
 
     return aux;
 }
@@ -117,7 +223,6 @@ uint32 my_mod(int32 val, int32 divisor) {
 void calibration(void) {
     static uint8 direction;                 //0 closing, 1 opening
     static uint16 closure_counter;          //Range [0 - 2^16]
-
 
     // closing
     if (direction == 0) {

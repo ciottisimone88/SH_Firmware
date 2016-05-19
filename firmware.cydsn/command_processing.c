@@ -140,12 +140,66 @@ void commProcess(void){
             packet_data[0] = CMD_GET_CURRENTS;
 
             *((int16 *) &packet_data[1]) = (int16) g_meas.curr[0];
-            *((int16 *) &packet_data[3]) = (int16) g_meas.curr[1];
+            *((int16 *) &packet_data[3]) = (int16) 
+                filter_curr_diff((int32) g_meas.curr[0] - curr_estim(g_meas.pos[0],g_meas.vel[0], g_meas.acc[0]));
+            packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
+
+            commWrite(packet_data, packet_lenght);
+            break;
+
+
+//=========================================================     CMD_GET_CURR_DIFF
+
+        case CMD_GET_CURR_DIFF:         //Command sent from Cuff device. The hand replies back with a filtered current
+                                        //difference from a measured one and an estimated one.
+            packet_lenght = 4;
+
+            packet_data[0] = CMD_GET_CURR_DIFF;
+
+            *((int16 *) &packet_data[1]) = (int16)
+                filter_curr_diff((int32) g_meas.curr[0] - curr_estim(g_meas.pos[0], g_meas.vel[0], g_meas.acc[0]));
 
             packet_data[packet_lenght - 1] = LCRChecksum (packet_data, packet_lenght - 1);
 
             commWrite(packet_data, packet_lenght);
             break;
+
+//=======================================================     CMD_GET_VELOCITIES
+
+        case CMD_GET_VELOCITIES:
+            // Packet: header + measure(int16) + crc
+            packet_lenght = 1 + (NUM_OF_SENSORS * 2) + 1;
+
+            packet_data[0] = CMD_GET_VELOCITIES;   //header
+
+            for(i = 0; i< NUM_OF_SENSORS; i++)
+                *((int16 *) &packet_data[(i*2 + 1)]) = (int16) (g_meas.vel[i] >> g_mem.res[i]);
+
+            packet_data[packet_lenght - 1] =
+                    LCRChecksum (packet_data,packet_lenght - 1);
+
+            commWrite(packet_data, packet_lenght);
+
+        break;
+
+//=======================================================     CMD_GET_ACCEL
+
+        case CMD_GET_ACCEL:
+            // Packet: header + measure(int16) + crc
+            packet_lenght = 1 + (NUM_OF_SENSORS * 2) + 1;
+
+            packet_data[0] = CMD_GET_ACCEL;   //header
+
+            for(i = 0; i< NUM_OF_SENSORS; i++)
+                *((int16 *) &packet_data[(i*2 + 1)]) = (int16) (g_meas.acc[i] >> g_mem.res[i]);
+
+            packet_data[packet_lenght - 1] =
+                    LCRChecksum (packet_data,packet_lenght - 1);
+
+            commWrite(packet_data, packet_lenght);
+
+        break;   
+
 
 //=========================================================     CMD_GET_EMG
 
@@ -217,19 +271,19 @@ void commProcess(void){
 //=============================================================     CMD_GET_INFO
 
         case CMD_GET_INFO:
-            infoGet( *((uint16 *) &g_rx.buffer[1]));
+            infoGet(*((uint16 *) &g_rx.buffer[1]));
             break;
 
 //============================================================     CMD_SET_PARAM
 
         case CMD_SET_PARAM:
-            paramSet( *((uint16 *) &g_rx.buffer[1]) );
+            paramSet(*((uint16 *) &g_rx.buffer[1]));
             break;
 
 //============================================================     CMD_GET_PARAM
 
         case CMD_GET_PARAM:
-            paramGet( *((uint16 *) &g_rx.buffer[1]) );
+            paramGet(*((uint16 *) &g_rx.buffer[1]));
             break;
 
 //=================================================================     CMD_PING
@@ -343,7 +397,7 @@ void commProcess(void){
 //==============================================================================
 
 void infoSend(void){
-    unsigned char packet_string[1100];
+    unsigned char packet_string[1300];
     infoPrepare(packet_string);
     UART_RS485_PutString(packet_string);
 }
@@ -354,7 +408,7 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type) {
-    static unsigned char packet_string[1100];
+    static unsigned char packet_string[1300];
 
     //==================================     choose info type and prepare string
 
@@ -379,6 +433,7 @@ void paramSet(uint16 param_type)
     uint8 i;        // iterator
     int32 aux_int;  // auxiliary variable
     uint8 aux_uchar;
+    float aux_float;
 
     switch(param_type) {
 
@@ -553,6 +608,14 @@ void paramSet(uint16 param_type)
             g_mem.activate_pwm_rescaling = g_rx.buffer[3];
             break;
 
+//=================================================     set_current_lookup_table
+        case PARAM_CURRENT_LOOKUP:
+            for(i = 0; i < LOOKUP_DIM; i++) {
+                aux_float = *((float *) &g_rx.buffer[3 + i*4]);
+                g_mem.curr_lookup[i] = aux_float;
+            }
+            break;
+
     }
     //Not sure if ACK_OK is correct, should check
     sendAcknowledgment(ACK_OK);
@@ -565,7 +628,7 @@ void paramSet(uint16 param_type)
 
 void paramGet(uint16 param_type)
 {
-    uint8 packet_data[20];
+    uint8 packet_data[40];
     uint16 packet_lenght;
     uint8 i;                // iterator
 
@@ -748,6 +811,14 @@ void paramGet(uint16 param_type)
             packet_lenght = 3;
             break;
 
+//===================================================     get_current_lookup_table
+        case PARAM_CURRENT_LOOKUP:
+            for (i = 0; i < LOOKUP_DIM; ++i) {
+                *((float *) ( packet_data + 1 + (i * 4) )) = c_mem.curr_lookup[i];
+            }
+            packet_lenght = 2 + LOOKUP_DIM * 4;
+            break;
+
 //===================================================     default
         default:
             break;
@@ -838,6 +909,10 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, "\r\n");
 
         sprintf(str, "Current (mA): %ld", (int32) g_meas.curr[0] );
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+
+        sprintf(str, "Estimated Current (mA): %d", (int32) g_meas.curr[1]);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
 
@@ -939,6 +1014,15 @@ void infoPrepare(unsigned char *info_string)
             strcat(info_string, str);
             strcat(info_string,"\r\n");
         }
+
+        strcat(info_string, "Current lookup table:\n");
+        sprintf(str, "p(0) - p(2): %f, %f, %f", c_mem.curr_lookup[0], c_mem.curr_lookup[1], c_mem.curr_lookup[2]);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        sprintf(str, "P(3) - p(5): %f, %f, %f", c_mem.curr_lookup[3], c_mem.curr_lookup[4], c_mem.curr_lookup[5]);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n\n");
+
 
         sprintf(str, "Position limit active: %d", (int)g_mem.pos_lim_flag);
         strcat(info_string, str);
@@ -1200,6 +1284,13 @@ uint8 memInit(void)
 
     g_mem.double_encoder_on_off = 1;
     g_mem.motor_handle_ratio = 22;
+
+    g_mem.curr_lookup[0] = 0;
+    g_mem.curr_lookup[1] = 0;
+    g_mem.curr_lookup[2] = 0;
+    g_mem.curr_lookup[3] = 0;
+    g_mem.curr_lookup[4] = 0;
+    g_mem.curr_lookup[5] = 0;
 
     // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;

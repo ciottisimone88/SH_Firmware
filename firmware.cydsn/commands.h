@@ -63,17 +63,16 @@ enum qbmove_command
                                         ///  loads them
     CMD_STORE_DEFAULT_PARAMS    = 4,    ///< Store current parameters as factory parameters
     CMD_RESTORE_PARAMS          = 5,    ///< Restore default factory parameters
-    CMD_GET_INFO                = 6,    ///< Asks for a string of information about
+    CMD_GET_INFO                = 6,    ///< Asks for a string of information about the device
 
-    CMD_SET_VALUE               = 7,
-    CMD_GET_VALUE               = 8,
+    CMD_SET_VALUE               = 7,    ///< Not Used
+    CMD_GET_VALUE               = 8,    ///< Not Used
 
-    CMD_BOOTLOADER              = 9,
-
-    CMD_INIT_MEM                = 10,
-
-    CMD_CALIBRATE               = 11,
-
+    CMD_BOOTLOADER              = 9,    ///< Sets the bootloader modality to update the
+                                        ///  firmware
+    CMD_INIT_MEM                = 10,   ///< Initialize the memory with the defalut values
+    CMD_CALIBRATE               = 11,   ///< Starts the stiffness calibration of the qbMove
+                                        ///  or the hand closure and opening calibration
 
 //=========================================================     QB Move commands
 
@@ -89,9 +88,22 @@ enum qbmove_command
                                     ///  current measurements
     CMD_GET_CURR_AND_MEAS   = 134,  ///< Command for asking device's
                                     ///  measurements and currents
-    CMD_SET_POS_STIFF       = 135,
-
-    CMD_GET_EMG             = 136
+    CMD_SET_POS_STIFF       = 135,  ///< Not used in the softhand firmware
+    CMD_GET_EMG             = 136,  ///< Command for asking device's emg sensors 
+                                    ///  measurements
+    CMD_GET_VELOCITIES      = 137,  ///< Command for asking device's
+                                    ///  velocity measurements
+    CMD_GET_COUNTERS        = 138,  ///< Command for asking device's counters
+                                    ///  (mostly used for debugging sent commands)
+    CMD_GET_ACCEL           = 139,  ///< Command for asking device's
+                                    ///  acceleration measurements
+    CMD_GET_CURR_DIFF       = 140,  ///< Command for asking device's 
+                                    ///  current difference between a measured
+                                    ///  one and an estimated one (Only for SoftHand)
+    CMD_SET_CURR_DIFF       = 141,  ///< Command used to set current difference modality
+                                    ///  (Only for Cuff device)
+    CMD_SET_CUFF_INPUTS     = 142   ///< Command used to set Cuff device inputs 
+                                    ///  (Only for Cuff device)
 };
 
 /** \} */
@@ -133,9 +145,11 @@ enum qbmove_parameter
     PARAM_PID_CURR_CONTROL       = 18,  ///< PID current control
     PARAM_DOUBLE_ENC_ON_OFF      = 19,  ///< Double Encoder Y/N
     PARAM_MOT_HANDLE_RATIO       = 20,  ///< Multiplier between handle and motor
-    PARAM_MOTOR_SUPPLY           = 21,   ///< Motor supply voltage of the hand
-    PARAM_DL_POS_PID             = 22,
-    PARAM_DL_CURR_PID            = 23
+    PARAM_MOTOR_SUPPLY           = 21,  ///< Motor supply voltage of the hand
+    PARAM_CURRENT_LOOKUP         = 23,  ///< Table of values used to calculate 
+                                        ///  an estimated current of the SoftHand
+    PARAM_DL_POS_PID             = 24,
+    PARAM_DL_CURR_PID            = 25,
 };
 
 
@@ -178,8 +192,8 @@ enum qbmove_control_mode {
 
     CONTROL_ANGLE           = 0,        ///< Classic position control
     CONTROL_PWM             = 1,        ///< Direct PWM value
-    CONTROL_CURRENT         = 2,        ///< Current control (beta)
-    CURR_AND_POS_CONTROL    = 3         ///< Current control (beta)
+    CONTROL_CURRENT         = 2,        ///< Current control
+    CURR_AND_POS_CONTROL    = 3         ///< Current and position control (beta)
 
 };
 
@@ -202,7 +216,7 @@ enum acknowledgment_values
 //==============================================================================
 //                                                                   INFORMATION
 //==============================================================================
-/** \name QB Move Information Strings */
+/** \name Softhand Information Strings */
 /** \{ */
 #define INFO_ALL        0 ///< All system information.
 

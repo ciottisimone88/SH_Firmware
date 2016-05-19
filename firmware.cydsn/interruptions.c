@@ -626,12 +626,22 @@ void encoder_reading(uint8 index) {
 
     static uint32 data_encoder;
     static int32 value_encoder;
+    static int32 speed_encoder;
+    static int32 accel_encoder;
     static int32 aux;
 
     static int32 last_value_encoder[NUM_OF_SENSORS];
 
     static uint8 only_first_time = 1;
     static uint8 one_time_execute = 0;
+
+    static int32 l_value[NUM_OF_SENSORS];   //last value for vel
+    static int32 ll_value[NUM_OF_SENSORS];  //last last value for vel
+    static int32 lll_value[NUM_OF_SENSORS];  //last last last value for vel
+
+    static int32 a_value[NUM_OF_SENSORS];   //last value for acc
+    static int32 aa_value[NUM_OF_SENSORS];  //last last value for acc
+    static int32 aaa_value[NUM_OF_SENSORS];  //last last last value for acc
 
     static uint8 error[NUM_OF_SENSORS];
 
@@ -730,6 +740,51 @@ void encoder_reading(uint8 index) {
 
         g_meas.pos[index] = value_encoder;
     }
+
+    //Encoder rotational velocity calculation
+    switch(index) {
+        case 0: {
+            speed_encoder = (int16)filter_vel_1((3*value_encoder + l_value[0] - ll_value[0] - 3*lll_value[0])*10);
+            break;
+        }
+        case 1: {
+            speed_encoder = (int16)filter_vel_2((3*value_encoder + l_value[1] - ll_value[1] - 3*lll_value[1])*10);
+            break;
+        }
+        case 2: {
+            speed_encoder = (int16)filter_vel_3((3*value_encoder + l_value[2] - ll_value[2] - 3*lll_value[2])*10);
+            break;
+        }
+    }
+    //Update velocity measure with actual value 
+    g_meas.vel[index] = speed_encoder;
+
+    //Encoder rotational acceleration calculation
+    switch(index) {
+        case 0:
+            accel_encoder = (int16)filter_acc_1((3*speed_encoder + a_value[0] - aa_value[0] - 3*aaa_value[0])*10);
+            break;
+        
+        case 1:
+            accel_encoder = (int16)filter_acc_2((3*speed_encoder + a_value[1] - aa_value[1] - 3*aaa_value[1])*10);
+            break;
+        
+        case 2:
+            accel_encoder = (int16)filter_acc_3((3*speed_encoder + a_value[2] - aa_value[2] - 3*aaa_value[2])*10);
+            break;
+    }
+    // Update acceleration measure with actual value
+    g_meas.acc[index] = accel_encoder;
+
+    // update old velocity and acceleration values
+    lll_value[index] = ll_value[index];
+    ll_value[index] = l_value[index];
+    l_value[index] = value_encoder;
+
+    aaa_value[index] = aa_value[index];
+    aa_value[index] = a_value[index];
+    a_value[index] = speed_encoder;
+
 
     // wait at least 3 * max_num_of_error (10) + 5 = 35 cycles to reconstruct the right turn
     if (one_time_execute < 35) {

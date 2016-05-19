@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.3.1"
+#define VERSION                 "SH-PRO v5.3.3"
 
 #define NUM_OF_MOTORS           2
 #define NUM_OF_SENSORS          3
@@ -71,6 +71,8 @@
 
 #define MIN_CURR_SAT_LIMIT      30
 
+#define LOOKUP_DIM              6
+
 //==============================================================================
 //                                                        structures definitions
 //==============================================================================
@@ -88,12 +90,12 @@ struct st_ref {
 
 struct st_meas {
     int32 pos[NUM_OF_SENSORS];      // sensor position
-
-    int32 curr[NUM_OF_MOTORS];      // motor currents
-
+    int32 curr[NUM_OF_MOTORS];      // motor current and current estimation
     int16 rot[NUM_OF_SENSORS];      // sensor rotations
 
     int32 emg[NUM_OF_EMGS];         // EMG values
+    int32 vel[NUM_OF_SENSORS];      // motor velocity
+    int32 acc[NUM_OF_SENSORS];      // motor acceleration
 };
 
 //==============================================================     data packet
@@ -119,12 +121,12 @@ struct st_mem {
     int32   k_i_c;                      // Integrative constant curr                4
     int32   k_d_c;                      // Derivative constant curr                 4 26
 
-    int32   k_p_dl;                     // Double loop proportional constant 
-    int32   k_i_dl;                     // Double loop integrative constant
-    int32   k_d_dl;                     // Double loop derivative constant
-    int32   k_p_c_dl;                   // Double loop current prop. costant
-    int32   k_i_c_dl;                   // Double loop current integr. costant
-    int32   k_d_c_dl;                   // Double loop current deriv. costant
+    int32   k_p_dl;                     // Double loop proportional constant        4
+    int32   k_i_dl;                     // Double loop integrative constant         4
+    int32   k_d_dl;                     // Double loop derivative constant          4
+    int32   k_p_c_dl;                   // Double loop current prop. constant       4
+    int32   k_i_c_dl;                   // Double loop current integr. constant     4
+    int32   k_d_c_dl;                   // Double loop current deriv. constant      4 24
     
     uint8   activ;                      // Activation upon startup                  1
     uint8   input_mode;                 // Input mode                               1
@@ -157,7 +159,9 @@ struct st_mem {
 
     uint8   activate_pwm_rescaling;     // PWM rescaling for 12V motors             1 19
 
-                                                                    //TOT           100 bytes
+    float   curr_lookup[LOOKUP_DIM];    // Table of values to get estimated curr    24
+
+                                                                    //TOT           148 bytes
 };
 
 //=================================================     device related variables
