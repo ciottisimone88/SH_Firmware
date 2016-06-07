@@ -7,8 +7,8 @@
 * \file         globals.c
 *
 * \brief        Global variables.
-* \date         Feb 06, 2012
-* \author       qbrobotics
+* \date         June 06, 2016
+* \author       _qbrobotics_
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 

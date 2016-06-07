@@ -6,9 +6,9 @@
 /**
 * \file         interruptions.c
 *
-* \brief        Interruption functions are in this file.
-* \date         Feb 06, 2012
-* \author       qbrobotics
+* \brief        Interruption handling and firmware core functions
+* \date         June 06, 2016
+* \author       _qbrobotics_
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
@@ -184,7 +184,7 @@ CY_ISR(ISR_RS485_RX_ExInterrupt){
 //==============================================================================
 //                                                            FUNCTION SCHEDULER
 //==============================================================================
-// Call all the function with the right frequency
+// Call all the functions with the right frequency
 //==============================================================================
 
 void function_scheduler(void) {

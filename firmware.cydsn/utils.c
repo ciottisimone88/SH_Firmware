@@ -4,11 +4,11 @@
 // -----------------------------------------------------------------------------
 
 /**
-* \file         utils.h
+* \file         utils.c
 *
 * \brief        Definition of utility functions.
-* \date         Feb 16, 2014
-* \author       qbrobotics
+* \date         June 06, 2016
+* \author       _qbrobotics_
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
@@ -267,14 +267,14 @@ void calibration(void) {
 // return
 
 // Number of teeth of the two wheels
-#define N1 28
-#define N2 27
+#define N1 28           ///< Teeth of the first encoder wheel
+#define N2 27           ///< Teeth of the second encoder wheel
 
-#define I1 1
-#define I2 (-1)
+#define I1 1            ///< First wheel invariant value
+#define I2 (-1)         ///< Second wheel invariant value
 
 // Number of ticks per turn
-#define M 65536
+#define M 65536         ///< Number of encoder ticks per turn
 
 
 int calc_turns_fcn(int32 pos1, int32 pos2) {

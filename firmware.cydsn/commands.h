@@ -25,10 +25,10 @@
 /**
  *  \file       commands.h
  *
- *  \brief      Definitions for QB Move commands, parameters and packages.
+ *  \brief      Definitions for qbMove and qbHand commands, parameters and packages.
  *
  *  \details
- *  This file is included in the QB Move firmware, in its libraries and
+ *  This file is included in the qbMove and qbHand firmware, in its libraries and
  *  applications. It contains all definitions that are necessary for the
  *  contruction of communication packages.
  *
@@ -46,7 +46,7 @@
 //==============================================================================
 
 
-/** \name QB Move Commands
+/** \name qbMove and qbHand Commands
  * \{
 **/
 
@@ -110,7 +110,7 @@ enum qbmove_command
 //==============================================================================
 //                                                                    PARAMETERS
 //==============================================================================
-/** \name QB Move Parameters */
+/** \name qbMove and qbHand Parameters */
 /** \{ */
 
 enum qbmove_parameter
@@ -132,8 +132,8 @@ enum qbmove_parameter
     PARAM_POS_LIMIT              = 8,   ///< Position limit values
                                         ///  | int32     | int32     | int32     | int32     |
                                         ///  | INF_LIM_1 | SUP_LIM_1 | INF_LIM_2 | SUP_LIM_2 |
-    PARAM_MAX_STEP_POS           = 9,
-    PARAM_MAX_STEP_NEG           = 10,
+    PARAM_MAX_STEP_POS           = 9,   ///< Used to slow down movements for positive values
+    PARAM_MAX_STEP_NEG           = 10,  ///< Used to slow down movements for negative values
     PARAM_POS_RESOLUTION         = 11,  ///< Angle resolution for inputs and
                                         ///  measurements. Used during
                                         ///  communication.
@@ -148,8 +148,8 @@ enum qbmove_parameter
     PARAM_MOTOR_SUPPLY           = 21,  ///< Motor supply voltage of the hand
     PARAM_CURRENT_LOOKUP         = 23,  ///< Table of values used to calculate 
                                         ///  an estimated current of the SoftHand
-    PARAM_DL_POS_PID             = 24,
-    PARAM_DL_CURR_PID            = 25,
+    PARAM_DL_POS_PID             = 24,  ///< Double loop position PID
+    PARAM_DL_CURR_PID            = 25   ///< Double loop current PID
 };
 
 
@@ -216,7 +216,7 @@ enum acknowledgment_values
 //==============================================================================
 //                                                                   INFORMATION
 //==============================================================================
-/** \name Softhand Information Strings */
+/** \name qbhand Information Strings */
 /** \{ */
 #define INFO_ALL        0 ///< All system information.
 

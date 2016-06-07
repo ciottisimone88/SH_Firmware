@@ -8,21 +8,23 @@
 * \file         main.c
 *
 * \brief        Firmware main file.
-* \date         May 16, 2012
+* \date         June 06, 2016
 * \author       qbrobotics
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
 /**
 * \mainpage     Firmware
-* \brief        This is the firmware of the qb move.
-* \version      0.1 beta 4
+* \brief        This is the firmware of the qbHand.
+* \version      5.3.4
 *
 * \author       _qbrobotics_
 *
-* \date         May 16, 2012
+* \date         June 06, 2016
 *
-* \details      This is the firmware of the qb move.
+* \details      This is the firmware of the qbHand. It can control a motor and
+*               read its encoder. Also can read and convert analog measurements
+*               connected to the PSoC microcontroller.                
 *
 * \copyright    (C)  qbrobotics. All rights reserved.
 *

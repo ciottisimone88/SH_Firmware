@@ -9,8 +9,8 @@
 *
 
 * \brief        Command processing functions.
-* \date         Feb 06, 2012
-* \author       qbrobotics
+* \date         June 06, 2016
+* \author       _qbrobotics_
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
@@ -1130,11 +1130,6 @@ void sendAcknowledgment(uint8 value) {
 //                                                                  STORE MEMORY
 //==============================================================================
 
-/**
-* This function stores current memory settings on the eeprom with the specified
-* displacement
-**/
-
 uint8 memStore(int displacement)
 {
     int i;  // iterator
@@ -1177,10 +1172,6 @@ uint8 memStore(int displacement)
 //                                                                 RECALL MEMORY
 //==============================================================================
 
-/**
-* This function loads user settings from the eeprom.
-**/
-
 void memRecall(void)
 {
     uint16 i;
@@ -1202,10 +1193,6 @@ void memRecall(void)
 //                                                                RESTORE MEMORY
 //==============================================================================
 
-/**
-* This function loads default settings from the eeprom.
-**/
-
 uint8 memRestore(void) {
     uint16 i;
 
@@ -1224,10 +1211,6 @@ uint8 memRestore(void) {
 //==============================================================================
 //                                                                   MEMORY INIT
 //==============================================================================
-
-/**
-* This function initialize memory when eeprom is compromised.
-**/
 
 uint8 memInit(void)
 {
