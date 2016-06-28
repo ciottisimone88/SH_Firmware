@@ -920,20 +920,40 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, "\r\nDEVICE PARAMETERS\r\n");
 
         strcat(info_string, "PID Controller:\r\n");
-        sprintf(str, "P -> %f  ", ((double) c_mem.k_p / 65536));
-        strcat(info_string, str);
-        sprintf(str, "I -> %f  ", ((double) c_mem.k_i / 65536));
-        strcat(info_string, str);
-        sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d / 65536));
-        strcat(info_string, str);
+        if(c_mem.control_mode != CURR_AND_POS_CONTROL) {
+            sprintf(str, "P -> %f  ", ((double) c_mem.k_p / 65536));
+            strcat(info_string, str);
+            sprintf(str, "I -> %f  ", ((double) c_mem.k_i / 65536));
+            strcat(info_string, str);
+            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d / 65536));
+            strcat(info_string, str);
+        }
+        else {
+            sprintf(str, "P -> %f  ", ((double) c_mem.k_p_dl / 65536));
+            strcat(info_string, str);
+            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_dl / 65536));
+            strcat(info_string, str);
+            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_dl / 65536));
+            strcat(info_string, str);
+        }
 
         strcat(info_string, "Current PID Controller:\r\n");
-        sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c / 65536));
-        strcat(info_string, str);
-        sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c / 65536));
-        strcat(info_string, str);
-        sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
-        strcat(info_string, str);
+        if(c_mem.control_mode != CURR_AND_POS_CONTROL) {
+                sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c / 65536));
+            strcat(info_string, str);
+            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c / 65536));
+            strcat(info_string, str);
+            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c / 65536));
+            strcat(info_string, str);
+        }
+        else {
+            sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c_dl / 65536));
+            strcat(info_string, str);
+            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c_dl / 65536));
+            strcat(info_string, str);
+            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c_dl / 65536));
+            strcat(info_string, str);
+        }
 
         strcat(info_string, "\r\n");
 
@@ -976,7 +996,7 @@ void infoPrepare(unsigned char *info_string)
                 strcat(info_string, "Control mode: Current\r\n");
                 break;
             case CURR_AND_POS_CONTROL:
-                strcat(info_string, "Control mode: Current and Position\r\n");
+                strcat(info_string, "Control mode: Position and Current\r\n");
                 break;
             default:
                 break;
@@ -1225,6 +1245,13 @@ uint8 memInit(void)
     g_mem.k_p_c         =     1 * 65536;
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
+
+    g_mem.k_p_dl        =  0.15 * 65536;
+    g_mem.k_i_dl        =     0 * 65536;
+    g_mem.k_d_dl        =  0.07 * 65536;
+    g_mem.k_p_c_dl      =     1 * 65536;
+    g_mem.k_i_c_dl      =     0 * 65536;
+    g_mem.k_d_c_dl      =     0 * 65536;
 
     g_mem.activ         = 0;
     g_mem.input_mode    = INPUT_MODE_EXTERNAL;

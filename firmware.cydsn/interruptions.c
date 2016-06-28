@@ -426,18 +426,6 @@ void motor_control(void) {
             // Update previous position
             prev_pos_err = pos_error;
 
-            // // current set through position reference
-            // i_ref = g_ref.pos[0] >> g_mem.res[0];
-
-            // motor direction depends on i_ref
-            if (i_ref >= 0)
-                motor_dir = 0x01;
-            else
-                motor_dir = 0x00;
-
-            // current ref must be positive
-            //i_ref = abs(i_ref);
-
             // saturate max current
             if (i_ref > c_mem.current_limit)
                 i_ref = c_mem.current_limit;
@@ -445,14 +433,6 @@ void motor_control(void) {
                 if (i_ref < -c_mem.current_limit)
                     i_ref = -c_mem.current_limit;
             }
-
-            // saturate min current
-            /*if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
-                i_ref = MIN_CURR_SAT_LIMIT;
-            }*/
-
-            // // write i_ref on meas curr 2 for DEBUG
-            g_meas.curr[1] = i_ref;
 
             // current error and curr error sum
             curr_error = i_ref - g_meas.curr[0];
@@ -480,6 +460,11 @@ void motor_control(void) {
             // Derivative
             if (c_mem.k_d_c_dl != 0)
                 pwm_input += (int32)(c_mem.k_d_c_dl * (curr_error - prev_curr_err)) >> 16;
+
+            if (pwm_input > 0)
+                motor_dir = 1;
+            else
+                motor_dir = 0;
 
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 
@@ -585,15 +570,14 @@ void motor_control(void) {
             // Shift right by resolution to have the real input number
             pwm_input = g_ref.pwm[0];
 
-            if (pwm_input > 0) {
+            if (pwm_input > 0)
                 motor_dir = 1;
-            } else {
+            else
                 motor_dir = 0;
-            }
 
             // pwm_input saturation
-            if (pwm_input < 0) {
-                pwm_input = 0;
+            if (pwm_input < -PWM_MAX_VALUE) {
+                pwm_input = -PWM_MAX_VALUE;
             } else if (pwm_input > PWM_MAX_VALUE) {
                 pwm_input = PWM_MAX_VALUE;
             }
