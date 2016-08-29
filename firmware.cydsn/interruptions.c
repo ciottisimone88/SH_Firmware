@@ -1045,5 +1045,7 @@ void pwm_limit_search() {
         index = (uint8)((device.tension - min_tension) / 500);
         device.pwm_limit = pwm_preload_values[index];
     }
+    
+    overcurrent_control();
 }
 /* [] END OF FILE */
