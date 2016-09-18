@@ -26,21 +26,41 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v5.3.5"
+#define VERSION                 "SH-PRO v6.1.0"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
+#define NUM_OF_PARAMS           21      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
 //==============================================================================
 
 //Main frequency 1000 Hz
-#define CALIBRATION_DIV         10     /*!< Frequency divisor for hand calibration (100Hz).*/
+#define CALIBRATION_DIV         10      /*!< Frequency divisor for hand calibration (100Hz).*/
 
-#define DIV_INIT_VALUE          1      /*!<*/
+#define DIV_INIT_VALUE          1       /*!<*/
+
+//==============================================================================
+//                                                                           DMA
+//==============================================================================
+    
+#define DMA_BYTES_PER_BURST 2
+#define DMA_REQUEST_PER_BURST 1
+#define DMA_SRC_BASE (CYDEV_PERIPH_BASE)
+#define DMA_DST_BASE (CYDEV_SRAM_BASE)
+    
+//==============================================================================
+//                                                                     INTERRUPT
+//==============================================================================
+
+#define    WAIT_START   0               /*!< Package start waiting status*/
+#define    WAIT_ID      1               /*!< Package ID waiting status*/
+#define    WAIT_LENGTH  2               /*!< Package lenght waiting status*/
+#define    RECEIVE      3               /*!< Package data receiving status*/
+#define    UNLOAD       4               /*!< Package data flush status*/
 
 //==============================================================================
 //                                                                         OTHER
@@ -51,11 +71,13 @@
 
 #define DEFAULT_EEPROM_DISPLACEMENT 8   /*!< Number of pages occupied by the EEPROM.*/
 
+#define MAX_WATCHDOG_TIMER      250     /*!< num * 2 [cs] */
+
 #define PWM_MAX_VALUE           100     /*!< Maximum value of the PWM signal.*/
 
 #define ANTI_WINDUP             1000    /*!< Anti windup saturation.*/ 
 #define DEFAULT_CURRENT_LIMIT   1000    /*!< Default Current limit, 0 stands for unlimited.*/
-    
+
 #define CURRENT_HYSTERESIS      10      /*!< milliAmperes of hysteresis for current control.*/
 
 #define EMG_SAMPLE_TO_DISCARD   500     /*!< Number of sample to discard before calibration.*/
@@ -63,7 +85,7 @@
 
 #define SAMPLES_FOR_EMG_MEAN    1000    /*!< Number of samples used to mean emg values.*/
 
-#define CALIB_DECIMATION        1   
+#define CALIB_DECIMATION        1
 #define NUM_OF_CLOSURES         5
 
 #define POS_INTEGRAL_SAT_LIMIT  50000000    /*!< Anti windup on position control.*/
@@ -89,13 +111,11 @@ struct st_ref {
 };
 
 //=============================================================     measurements
-/** \brief Measurements structure
- *
-**/
+
 struct st_meas {
     int32 pos[NUM_OF_SENSORS];      /*!< Encoder sensor position.*/
     int32 curr[NUM_OF_MOTORS];      /*!< Motor current and current estimation.*/
-    int16 rot[NUM_OF_SENSORS];      /*!< Encoder sensor rotations.*/
+    int8 rot[NUM_OF_SENSORS];       /*!< Encoder sensor rotations.*/
 
     int32 emg[NUM_OF_EMGS];         /*!< EMG sensors values.*/
     int32 vel[NUM_OF_SENSORS];      /*!< Encoder rotational velocity.*/
@@ -114,9 +134,7 @@ struct st_data {
 };
 
 //============================================     settings stored on the memory
-/** \brief Memory structure
- *
-**/ 
+
 struct st_mem {
     uint8   flag;                       /*!< If checked the device has been configured.*/                   //1
     uint8   id;                         /*!< Device id.*/                                                   //1
@@ -168,7 +186,10 @@ struct st_mem {
 
     float   curr_lookup[LOOKUP_DIM];    /*!< Table of values to get estimated curr.*/                       //24
 
-                                                                                            //TOT           148 bytes
+    uint8   baud_rate;                  /*!< Baud Rate setted.*/                                            //1
+    uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
+
+                                                                                            //TOT           150 bytes
 };
 
 //=================================================     device related variables
@@ -194,22 +215,48 @@ struct st_calib {
     int16   repetitions;            /*!< Number of cycles of hand closing/opening.*/
 };
 
+//=================================================     emg status
+typedef enum {
+
+    NORMAL        = 0,              /*!< Normal execution */
+    RESET         = 1,              /*!< Reset analog measurements */
+    DISCARD       = 2,              /*!< Discard first samples to obtain a correct value */
+    SUM_AND_MEAN  = 3,              /*!< Sum and mean a definite value of samples*/
+    WAIT          = 4               /*!< The second emg waits until the first emg has a valid value */
+
+} emg_status;                       /*!< EMG status enumeration */
 
 //====================================      external global variables definition
 
-extern struct st_ref    g_ref;          /*!< Reference variables.*/
-extern struct st_meas   g_meas;         /*!< Measurements.*/
-extern struct st_data   g_rx;           /*!< Incoming/Outcoming data.*/
-extern struct st_mem    g_mem, c_mem;   /*!< Memory parameters.*/
-extern struct st_dev    device;         /*!< Device related variables.*/
+extern struct st_ref    g_ref, g_refNew, g_refOld;  /*!< Reference variables.*/
+extern struct st_meas   g_meas, g_measOld;          /*!< Measurements.*/
+extern struct st_data   g_rx;                       /*!< Incoming/Outcoming data.*/
+extern struct st_mem    g_mem, c_mem;               /*!< Memory parameters.*/
 extern struct st_calib  calib;
 
-extern float tau_feedback;              /*!< Torque feedback.*/
+extern uint32 timer_value;                          /*!< End time of the firmware main loop.*/
+extern uint32 timer_value0;                         /*!< Start time of the firmware main loop*/
 
-extern uint32 timer_value;              /*!< Time in which the main loop is executed.*/
+// Device Data
 
-extern uint8 reset_last_value_flag;     /*!< This flag is set when the encoders last values must be resetted.*/
-extern int8 pwm_sign;                   /*!< Sign of pwm driven. Used to obtain current sign.*/
+extern int32   dev_tension;                         /*!< Power supply tension */
+extern uint8   dev_pwm_limit;                       /*!< Device pwm limit */
+
+// Bit Flag
+
+extern CYBIT reset_last_value_flag;                 /*!< This flag is set when the encoders last values must be resetted.*/
+extern CYBIT tension_valid;                         /*!< Tension validation bit */
+extern CYBIT interrupt_flag;                        /*!< Interrupt flag enabler */
+extern CYBIT watchdog_flag;                         /*!< Watchdog flag enabler  */
+extern float tau_feedback;                          /*!< Torque feedback.*/
+
+// DMA Buffer
+
+extern int16 ADC_buf[4];                            /*! ADC measurements buffer */
+
+// PWM value
+
+extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
 // -----------------------------------------------------------------------------
 

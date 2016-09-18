@@ -16,7 +16,7 @@
 /**
 * \mainpage     Firmware
 * \brief        This is the firmware of the qbHand.
-* \version      5.3.4
+* \version      6.0.0
 *
 * \author       _qbrobotics_
 *
@@ -48,22 +48,29 @@
 //                                                                 MAIN FUNCTION
 //==============================================================================
 
-int i;              //iterator
-
-
-void main()
+int main()
 {
-//====================================     initializations - psoc and components
+    // Iterator
+    uint8 i;         
+    
+    // Variable declarations for DMA 
+    
+    uint8 DMA_Chan;
+    uint8 DMA_TD[1];
+
+    //================================     initializations - psoc and components
 
     // EEPROM
 
     EEPROM_Start();
     memRecall();                                        // recall configuration
 
-    // RS485
+    // FTDI chip enable
 
     CyDelay(100);
     FTDI_ENABLE_REG_Write(0x01);
+    
+    // RS485
 
     UART_RS485_Stop();                                  // stop UART
     UART_RS485_Start();                                 // start UART
@@ -73,6 +80,12 @@ void main()
     UART_RS485_ClearTxBuffer();
 
     ISR_RS485_RX_StartEx(ISR_RS485_RX_ExInterrupt);     // RS485 isr function
+    
+    // WATCHDOG
+    
+    WATCHDOG_COUNTER_Start();
+    
+    ISR_WATCHDOG_StartEx(ISR_WATCHDOG_Handler);         // WATCHDOG isr function    
 
     // PWM
 
@@ -82,9 +95,10 @@ void main()
     MOTOR_DIR_Write(0);
     MOTOR_ON_OFF_Write(0x00);
 
+
     // SSI encoder initializations
 
-    COUNTER_ENC_1_Start();
+    COUNTER_ENC_Start();
 
     SHIFTREG_ENC_1_Start();
     SHIFTREG_ENC_2_Start();
@@ -92,60 +106,76 @@ void main()
 
     // ADC
 
-    ADC_Start();                            // start ADC
-    ADC_StartConvert();
+    ADC_Start();                                        // start ADC
+    ADC_SOC_Write(0x01);                                // Force first read cycle
+   
+    // DMA
+    DMA_Chan = DMA_DmaInitialize(DMA_BYTES_PER_BURST, DMA_REQUEST_PER_BURST, HI16(DMA_SRC_BASE), HI16(DMA_DST_BASE));
+    DMA_TD[0] = CyDmaTdAllocate();                                                                          // Allocate TD
+    CyDmaTdSetConfiguration(DMA_TD[0], 2 * 4, DMA_TD[0], TD_SWAP_EN | DMA__TD_TERMOUT_EN | TD_INC_DST_ADR); // DMA Configurations
+    CyDmaTdSetAddress(DMA_TD[0], LO16((uint32)ADC_DEC_SAMP_PTR), LO16((uint32)ADC_buf));                    // Set Register Address
+    CyDmaChSetInitialTd(DMA_Chan, DMA_TD[0]);                                                               // Initialize Channel
+    
+    CyDmaChEnable(DMA_Chan, 1);                                                                             // Enable DMA
 
-    // Temporization
+    RS485_CTS_Write(0);                                 // Clear To Send on RS485
 
-    MY_TIMER_Start();
+    // TIMER
+
+    MY_TIMER_Start();           
     PACER_TIMER_Start();
 
-    RS485_CTS_Write(0);
-
-    CYGlobalIntEnable;                      // enable interrupts
+    CYGlobalIntEnable;                                  // enable interrupts
 
 //========================================     initializations - clean variables
 
-    // Activate encoder counters
-    RESET_COUNTERS_Write(0x00);
-    CyDelay(10);
+    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters
 
-    for (i = 0; i < NUM_OF_MOTORS; i++) {
+    CyDelay(10);                                        // Wait for encoders to have a valid value
+
+    //---------------------------------------------------  Initialize referiment structure
+    for (i = NUM_OF_MOTORS; i--;) 
         g_ref.pos[i] = 0;
-    }
+
 
     if (c_mem.emg_calibration_flag) {
         if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
             (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
             (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
-            (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
+            (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV))
             g_ref.onoff = 0x00;
-        } else {
+        else
             g_ref.onoff = c_mem.activ;
-        }
-    } else {
+    } 
+    else
         g_ref.onoff = c_mem.activ;
-    }
-
-    for (i = 0; i < NUM_OF_SENSORS; i++) {
+    
+    //---------------------------------------------------  Initialize measurement structure
+    for (i = NUM_OF_SENSORS; i--;) { 
         g_meas.pos[i] = 0;
         g_meas.rot[i] = 0;
     }
 
+    g_refNew = g_ref;                                   // Initialize k+1 measurements structure
+
+    g_ref.onoff = c_mem.activ;                          // Initalize Activation
+    
+    //---------------------------------------------------  Initialize emg structure
     g_meas.emg[0] = 0;
     g_meas.emg[1] = 0;
 
-    g_rx.length   = 0;
+    MOTOR_ON_OFF_Write(g_ref.onoff);                    // Activating motors
 
-    // Calculate conversion factor
-    device.tension_conv_factor = ((0.25 * 101.0 * 1000) / 1638.4); //derives from datasheet calculations
-    device.pwm_limit = PWM_MAX_VALUE;
-    device.tension_valid = FALSE;
+    dev_pwm_limit = 0;                                  // Init PWM limit
+    tension_valid = FALSE;                              // Init tension_valid BIT
 
     reset_last_value_flag = 0;
 
+    //------------------------------------------------- Initialize package on receive from RS485
+    g_rx.length = 0;
+    g_rx.ready  = 0;
 
-//=========================================================     application loop
+    //============================================================     main loop
 
     for(;;)
     {
@@ -156,7 +186,27 @@ void main()
         function_scheduler();
 
         //  Wait until the FF is set to 1
-        while(FF_STATUS_Read() == 0);
+        while(FF_STATUS_Read() == 0){
+            // On interrupt from RS485
+            if (interrupt_flag){
+                // Reset WDT
+                WATCHDOG_REFRESH_Write(0x01);
+                // Reset flags
+                interrupt_flag = FALSE;
+                watchdog_flag = FALSE;
+                // Manage Interrupt on rs485
+                interrupt_manager();
+            }
+            // On interrupt from WDT
+            else { 
+                if (watchdog_flag){
+                    // Reset WDT
+                    WATCHDOG_REFRESH_Write(0x01);
+                    // Disactivate motors
+                    g_refNew.onoff = 0x00;
+                }
+            }
+        };
 
         // Command a FF reset
         RESET_FF_Write(0x01);
@@ -167,6 +217,7 @@ void main()
         if(UART_RS485_ReadRxStatus() & UART_RS485_RX_STS_SOFT_BUFF_OVER)
             UART_RS485_ClearRxBuffer();
     }
+    return 0;
 }
 
 

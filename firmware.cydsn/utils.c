@@ -36,7 +36,7 @@ int32 filter_v(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) >> 10;
+    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
 
     old_value = aux;
 
@@ -47,7 +47,7 @@ int32 filter_i1(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) >> 10;
+    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
 
     old_value = aux;
 
@@ -62,7 +62,7 @@ int32 filter_ch1(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + new_value * (ALPHA)) / 1024;
+    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
 
     old_value = aux;
 
@@ -73,7 +73,7 @@ int32 filter_ch2(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + new_value * (ALPHA)) / 1024;
+    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
 
     old_value = aux;
 
@@ -176,10 +176,10 @@ int32 filter_acc_3(int32 new_value) {
 
 // Returns 1 if the encoder data is correct, 0 otherwise
 
-uint8 check_enc_data(uint32 *value) {
+CYBIT check_enc_data(const uint32 *value) {
 
-    const uint8* p = (const uint8*)value;
-    uint8 a = *p;
+    const uint8* CYIDATA p = (const uint8*)value;
+    uint8 CYDATA a = *p;
 
     a = a ^ *(++p);
     a = a ^ *(++p);
@@ -194,7 +194,7 @@ uint8 check_enc_data(uint32 *value) {
 //                                                                ROUND_FUNCTION
 //==============================================================================
 
-int round(double x) {
+int my_round(const double x) {
 
     if (x < 0.0)
         return (int)(x - 0.5);
@@ -223,6 +223,7 @@ uint32 my_mod(int32 val, int32 divisor) {
 void calibration(void) {
     static uint8 direction;                 //0 closing, 1 opening
     static uint16 closure_counter;          //Range [0 - 2^16]
+
 
     // closing
     if (direction == 0) {
@@ -274,10 +275,10 @@ void calibration(void) {
 #define I2 (-1)         ///< Second wheel invariant value
 
 // Number of ticks per turn
-#define M 65536         ///< Number of encoder ticks per turn
+#define M 65536          ///< Number of encoder ticks per turn
 
 
-int calc_turns_fcn(int32 pos1, int32 pos2) {
+int calc_turns_fcn(const int32 pos1, const int32 pos2) {
     
     int32 x = (my_mod( - N2*pos2 - N1*pos1, M*N2) + M/2) / M;
 

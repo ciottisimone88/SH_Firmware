@@ -65,152 +65,249 @@ static const uint8 pwm_preload_values[29] = {100,    //0 (11500)
                                               51,
                                               51};   //28 (25500)
 
-CY_ISR(ISR_RS485_RX_ExInterrupt){
+//==============================================================================
+//                                                            WATCHDOG INTERRUPT
+//==============================================================================
 
-//===============================================     local variables definition
+CY_ISR(ISR_WATCHDOG_Handler){
 
-    static uint8    state = 0;                          // actual state
-    static struct   st_data data_packet;                // local data packet
-    static uint8    rx_queue[3];                        // last 3 bytes received
-    static uint8    rx_data;                            // RS485 UART rx data
-    static uint8    rx_data_type;                       // packet for me or not
+    // Set WDT flag
+    
+    watchdog_flag = TRUE;
 
+}
 
-//==========================================================     receive routine
+//==============================================================================
+//                                                            RS485 RX INTERRUPT
+//==============================================================================
 
-// get data while rx fifo is not empty
-    while (UART_RS485_ReadRxStatus() & UART_RS485_RX_STS_FIFO_NOTEMPTY) {
+CY_ISR(ISR_RS485_RX_ExInterrupt) {
+
+    // Set RS485 flag
+    
+    interrupt_flag = TRUE;
+     
+}
+
+//==============================================================================
+//                                                             INTERRUPT MANAGER
+//==============================================================================
+// Manage interrupt from RS485 
+//==============================================================================
+// Processing RS-485 data frame:
+//
+// - WAIT_START:    Waits for beginning characters;
+// - WAIT_ID:       Waits for ID;
+// - WAIT_LENGTH:   Data length;
+// - RECEIVE:       Receive all bytes;
+// - UNLOAD:        Wait for another device end of transmission;
+//
+//==============================================================================
+
+void interrupt_manager(){
+
+    
+    //===========================================     local variables definition
+
+    static uint8 CYDATA state = WAIT_START;                      // state
+    
+    //------------------------------------------------- local data packet
+    static uint8 CYDATA data_packet_index;
+    static uint8 CYDATA data_packet_length;
+    static uint8 data_packet_buffer[128];                     
+    static uint8 CYDATA rx_queue[3];                    // last 2 bytes received
+    //-------------------------------------------------
+
+    uint8 CYDATA    rx_data;                            // RS485 UART rx data
+    CYBIT           rx_data_type;                       // my id?
+    uint8 CYDATA    package_count = 0;                     
+
+    //======================================================     receive routine
+    
+    // Get data until buffer is not empty 
+    
+    while(UART_RS485_GetRxBufferSize() && (package_count < 6)){  
+        // 6 stima di numero massimo di pacchetti che riesco a leggere senza bloccare l'esecuzione del firmware
+        
+        // Get next char
         rx_data = UART_RS485_GetChar();
-
+        
         switch (state) {
-            // ----- wait for frame start -----
-            case 0:
-
+            //-----     wait for frame start     -------------------------------
+            case WAIT_START:
+            
                 rx_queue[0] = rx_queue[1];
                 rx_queue[1] = rx_queue[2];
                 rx_queue[2] = rx_data;
-
-                // Finding starting frame
-                if ((rx_queue[1] == ':') && (rx_queue[2] == ':')) {
+                
+                // Check for header configuration package
+                if ((rx_queue[1] == 58) && (rx_queue[2] == 58)) {
                     rx_queue[0] = 0;
                     rx_queue[1] = 0;
                     rx_queue[2] = 0;
-                    state       = 1;
-                } else if(  //this has to be removed
-                        (rx_queue[0] == 63) &&      //ASCII - ?
+                    state       = WAIT_ID;                    
+                }else
+                    if ((rx_queue[0] == 63) &&      //ASCII - ?
                         (rx_queue[1] == 13) &&      //ASCII - CR
-                        (rx_queue[2] == 10)){       //ASCII - LF
-                    infoSend();
-                }
+                        (rx_queue[2] == 10))        //ASCII - LF)
+                        infoGet(INFO_ALL);
                 break;
 
-            // ----- wait for id -----
-            case 1:
+            //-----     wait for id     ----------------------------------------
+            case  WAIT_ID:
 
                 // packet is for my ID or is broadcast
-                if((rx_data == c_mem.id) || (rx_data == 0)) {
-                    rx_data_type = 0;
-                } else {                //packet is for others
-                    rx_data_type = 1;
-                }
-                data_packet.length = -1;
-                state = 2;
+                if (rx_data == c_mem.id || rx_data == 0)
+                    rx_data_type = FALSE;
+                else                //packet is for others
+                    rx_data_type = TRUE;
+                
+                data_packet_length = 0;
+                state = WAIT_LENGTH;
                 break;
 
-            // ----- wait for length -----
-            case 2:
+            //-----     wait for length     ------------------------------------
+            case  WAIT_LENGTH:
 
-                data_packet.length = rx_data;
+ 
+                data_packet_length = rx_data;
                 // check validity of pack length
-                if (data_packet.length <= 1) {
-                    data_packet.length = -1;
-                    state = 0;
-                } else if (data_packet.length > 128) {
-                    data_packet.length = -1;
-                    state = 0;
+                if (data_packet_length <= 1) {
+                    data_packet_length = 0;
+                    state = WAIT_START;
+                } else if (data_packet_length > 128) {
+                    data_packet_length = 0;
+                    state = WAIT_START;
                 } else {
-                    data_packet.ind = 0;
-                    if(rx_data_type == 0) {
-                        state = 3;          // packet for me or broadcast
-                    } else {
-                        state = 4;          // packet for others
-                    }
+                    data_packet_index = 0;
+                    
+                    if(rx_data_type == FALSE)
+                        state = RECEIVE;          // packet for me or broadcast
+                    else
+                        state = UNLOAD;           // packet for others
                 }
                 break;
 
-            // ----- receving -----
-            case 3:
+            //-----     receiving     -------------------------------------------
+            case RECEIVE:
 
-                data_packet.buffer[data_packet.ind] = rx_data;
-                data_packet.ind++;
-
+                data_packet_buffer[data_packet_index] = rx_data;
+                data_packet_index++;
+                
                 // check end of transmission
-                if (data_packet.ind >= data_packet.length) {
+                if (data_packet_index >= data_packet_length) {
                     // verify if frame ID corresponded to the device ID
-                    if (rx_data_type == 0) {
+                    if (rx_data_type == FALSE) {
                         // copying data from buffer to global packet
-                        memcpy(g_rx.buffer, data_packet.buffer, data_packet.length);
-                        g_rx.length = data_packet.length;
+                        memcpy(g_rx.buffer, data_packet_buffer, data_packet_length);
+                        g_rx.length = data_packet_length;
+                        g_rx.ready  = 1;
                         commProcess();
                     }
-                    data_packet.ind    =  0;
-                    data_packet.length = -1;
-                    state              =  0;
+                    
+                    data_packet_index  = 0;
+                    data_packet_length = 0;
+                    state              = WAIT_START;
+                    package_count++;
+                
                 }
                 break;
 
-            // ----- other device is receving -----
-            case 4:
-
-                if(!(--data_packet.length)) {
-                    data_packet.ind    = 0;
-                    data_packet.length = -1;
-                    RS485_CTS_Write(1);             //CTS on falling edge
+            //-----     other device is receving     ---------------------------
+            case UNLOAD:
+                if (!(--data_packet_length)) {
+                    data_packet_index  = 0;
+                    data_packet_length = 0;
+                    RS485_CTS_Write(1);
                     RS485_CTS_Write(0);
-                    state              = 0;
+                    state              = WAIT_START;
+                    package_count++;
                 }
                 break;
         }
     }
-
-    /* PSoC3 ES1, ES2 RTC ISR PATCH  */
-    #if(CYDEV_CHIP_FAMILY_USED == CYDEV_CHIP_FAMILY_PSOC3)
-        #if((CYDEV_CHIP_REVISION_USED <= CYDEV_CHIP_REVISION_3A_ES2) && (ISR_RS485_RX__ES2_PATCH ))
-            ISR_MOTORS_CONTROL_ISR_PATCH();
-        #endif
-    #endif
 }
-
 //==============================================================================
 //                                                            FUNCTION SCHEDULER
 //==============================================================================
-// Call all the functions with the right frequency
+// Call all the function with the right frequency
+//==============================================================================
+// Base frequency 1000 Hz
 //==============================================================================
 
 void function_scheduler(void) {
-    // Base frequency 1000 Hz
-
+ 
     static uint16 counter_calibration = DIV_INIT_VALUE;
 
-    MY_TIMER_WriteCounter(5000000);
+    timer_value0 = (uint32)MY_TIMER_ReadCounter();
 
-    analog_read_init(0);
-    encoder_reading(0);
-    analog_read_end(0);
+    // Start ADC Conversion, SOC = 1
 
-    analog_read_init(1);
+    ADC_SOC_Write(0x01); 
+    
+    // Check Interrupt 
+
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+  
+    //---------------------------------- Get Encoders
+
+    encoder_reading(0); 
+    
+    // Check Interrupt     
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }   
+    
     encoder_reading(1);
-    analog_read_end(1);
-
-    analog_read_init(2);
+    
+    // Check Interrupt 
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+    
     encoder_reading(2);
-    analog_read_end(2);
+    
+    // Check Interrupt 
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
 
-    analog_read_init(3);
+    //---------------------------------- Control Motor
+   
     motor_control();
-    analog_read_end(3);
+
+    // Check Interrupt 
+
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+
+    //---------------------------------- Control Overcurrent
 
     overcurrent_control();
+    
+    // Check Interrupt 
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+
+    //---------------------------------- Read conversion buffer - LOCK function
+
+    analog_read_end();
+
+    //---------------------------------- Calibration 
 
     // Divider 10, freq = 500 Hz
     if (calib.enabled == TRUE) {
@@ -221,21 +318,65 @@ void function_scheduler(void) {
         counter_calibration++;
     }
 
-    timer_value = (uint32)MY_TIMER_ReadCounter();
-}
+    // Check Interrupt 
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+   
+    //---------------------------------- Update States
+    
+    // Load k-1 state
+    memcpy( &g_measOld, &g_meas, sizeof(g_meas) );
+    memcpy( &g_refOld, &g_ref, sizeof(g_ref) );
 
+    // Load k+1 state
+    memcpy( &g_ref, &g_refNew, sizeof(g_ref) );
+
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+
+    timer_value = (uint32)MY_TIMER_ReadCounter();
+    MY_TIMER_WriteCounter(5000000);
+
+}
 
 //==============================================================================
 //                                                                MOTORS CONTROL
 //==============================================================================
 
-void motor_control(void) {
+void motor_control() {
 
-    static int32 pwm_input = 0;
-    static uint8 motor_dir = 0;
+    int32 CYDATA pwm_input = 0;
 
-    static int32 pos_error;         // position error
-    static int32 curr_error;        // current error
+    int32 CYDATA pos_error;         // position error
+    int32 CYDATA curr_error;        // current error
+
+    int32 CYDATA i_ref;             // current reference
+    int32 CYDATA handle_value;
+
+    int32 CYDATA err_emg_1, err_emg_2;
+
+    int32 CYDATA k_p = c_mem.k_p;  
+    int32 CYDATA k_i = c_mem.k_i; 
+    int32 CYDATA k_d = c_mem.k_d; 
+
+    int32 CYDATA k_p_c = c_mem.k_p_c;  
+    int32 CYDATA k_i_c = c_mem.k_i_c; 
+    int32 CYDATA k_d_c = c_mem.k_d_c;   
+
+    int32 CYDATA k_p_dl = c_mem.k_p_dl;  
+    int32 CYDATA k_i_dl = c_mem.k_i_dl; 
+    int32 CYDATA k_d_dl = c_mem.k_d_dl;
+    
+    int32 CYDATA k_p_c_dl = c_mem.k_p_c_dl;  
+    int32 CYDATA k_i_c_dl = c_mem.k_i_c_dl; 
+    int32 CYDATA k_d_c_dl = c_mem.k_d_c_dl;   
+
+    // Static Variables
 
     static int32 pos_error_sum;     // position error sum for integral
     static int32 curr_error_sum;    // current error sum for integral
@@ -243,22 +384,15 @@ void motor_control(void) {
     static int32 prev_pos_err;      // previous position error for deriv. control
     static int32 prev_curr_err;     // previous current error for deriv. control
 
-    static int32 i_ref;             // current reference
-
-    static int32 err_emg_1, err_emg_2;
+    static CYBIT motor_dir = FALSE;
 
     static uint8 current_emg = 0;   // 0 NONE
                                     // 1 EMG 1
                                     // 2 EMG 2
                                     // wait for both to get down
 
-    static int32 handle_value;
-
-
     err_emg_1 = g_meas.emg[0] - c_mem.emg_threshold[0];
     err_emg_2 = g_meas.emg[1] - c_mem.emg_threshold[1];
-
-
 
     // =========================== POSITION INPUT ==============================
     switch(c_mem.input_mode) {
@@ -267,37 +401,37 @@ void motor_control(void) {
 
             // Calculate handle value based on position of handle in the
             // sensor chain and multiplication factor between handle and motor position
-            if (c_mem.double_encoder_on_off) {
+            if (c_mem.double_encoder_on_off) 
                 handle_value = g_meas.pos[2] * c_mem.motor_handle_ratio;
-            } else {
+            else
                 handle_value = g_meas.pos[1] * c_mem.motor_handle_ratio;
-            }
+            
 
             // Read handle and use it as reference for the motor
-            if (((handle_value - g_ref.pos[0]) > c_mem.max_step_pos) && (c_mem.max_step_pos != 0)) {
+            if (((handle_value - g_ref.pos[0]) > c_mem.max_step_pos) && (c_mem.max_step_pos != 0))
                 g_ref.pos[0] += c_mem.max_step_pos;
-            } else if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg) && (c_mem.max_step_neg != 0)) {
-                g_ref.pos[0] += c_mem.max_step_neg;
-            } else {
+            else {
+                if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg) && (c_mem.max_step_neg != 0))
+                    g_ref.pos[0] += c_mem.max_step_neg;
+                else
                 g_ref.pos[0] = handle_value;
             }
             break;
 
         case INPUT_MODE_EMG_PROPORTIONAL:
-            if (err_emg_1 > 0) {
-            g_ref.pos[0] = (err_emg_1 * g_mem.pos_lim_sup[0]) / (1024 - c_mem.emg_threshold[0]);
-            } else {
+            if (err_emg_1 > 0)
+                g_ref.pos[0] = (err_emg_1 * g_mem.pos_lim_sup[0]) / (1024 - c_mem.emg_threshold[0]);
+            else
                 g_ref.pos[0] = 0;
-            }
             break;
 
         case INPUT_MODE_EMG_INTEGRAL:
-            if (err_emg_1 > 0) {
-                g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
-            }
-            if (err_emg_2 > 0) {
-                g_ref.pos[0] -= (err_emg_2 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
-            }
+            if (err_emg_1 > 0)
+                g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed << 1) / (1024 - c_mem.emg_threshold[0]);
+
+            if (err_emg_2 > 0) 
+                g_ref.pos[0] -= (err_emg_2 * g_mem.emg_speed << 1) / (1024 - c_mem.emg_threshold[1]);
+            
             break;
 
         case INPUT_MODE_EMG_FCFS:
@@ -360,9 +494,9 @@ void motor_control(void) {
                         break;
                     }
                     // but if the current signal come back over threshold, continue using it
-                    if (err_emg_1 > 0) {
-                        g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
-                    }
+                    if (err_emg_1 > 0) 
+                        g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed << 2) / (1024 - c_mem.emg_threshold[0]);
+                    
                     break;
 
                 // EMG 2 is first
@@ -374,7 +508,7 @@ void motor_control(void) {
                     }
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_2 > 0) {
-                        g_ref.pos[0] -= (err_emg_2 * c_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+                        g_ref.pos[0] -= (err_emg_2 * c_mem.emg_speed << 2) / (1024 - c_mem.emg_threshold[1]);
                     }
                     break;
 
@@ -388,8 +522,10 @@ void motor_control(void) {
 
     // Position limit saturation
     if (c_mem.pos_lim_flag) {
-        if (g_ref.pos[0] < c_mem.pos_lim_inf[0]) g_ref.pos[0] = c_mem.pos_lim_inf[0];
-        if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) g_ref.pos[0] = c_mem.pos_lim_sup[0];
+        if (g_ref.pos[0] < c_mem.pos_lim_inf[0]) 
+            g_ref.pos[0] = c_mem.pos_lim_inf[0];
+        if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) 
+            g_ref.pos[0] = c_mem.pos_lim_sup[0];
     }
 
     switch(c_mem.control_mode) {
@@ -412,27 +548,47 @@ void motor_control(void) {
             i_ref = 0;
             
             // Proportional
-            if (c_mem.k_p_dl != 0)
-                i_ref += (int32)(c_mem.k_p_dl * pos_error) >> 16;
+            if (k_p_dl != 0)
+                i_ref += (int32)(k_p_dl * pos_error) >> 16;
 
             // Integral
-            if (c_mem.k_i_dl != 0)
-                i_ref += (int32)(c_mem.k_i_dl * (pos_error_sum >> 6)) >> 10;
+            if (k_i_dl != 0)
+                i_ref += (int32)(k_i_dl * (pos_error_sum >> 6)) >> 10;
 
             // Derivative
-            if (c_mem.k_d_dl != 0)
-                i_ref += (int32)(c_mem.k_d_dl * (pos_error - prev_pos_err)) >> 16;
+            if (k_d_dl != 0)
+                i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16;
                         
             // Update previous position
             prev_pos_err = pos_error;
 
+            // // current set through position reference
+            // i_ref = g_ref.pos[0] >> g_mem.res[0];
+
+            // motor direction depends on i_ref
+            if (i_ref >= 0)
+                motor_dir = TRUE;
+            else
+                motor_dir = FALSE;
+
+            // current ref must be positive
+            //i_ref = abs(i_ref);
+
             // saturate max current
             if (i_ref > c_mem.current_limit)
                 i_ref = c_mem.current_limit;
-            else {
+            else 
                 if (i_ref < -c_mem.current_limit)
                     i_ref = -c_mem.current_limit;
-            }
+            
+
+            // saturate min current
+            /*if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
+                i_ref = MIN_CURR_SAT_LIMIT;
+            }*/
+
+            // // write i_ref on meas curr 2 for DEBUG
+            //g_meas.curr[1] = i_ref;
 
             // current error and curr error sum
             curr_error = i_ref - g_meas.curr[0];
@@ -450,21 +606,16 @@ void motor_control(void) {
             pwm_input = 0;
 
             // Proportional
-            if (c_mem.k_p_c_dl != 0)
-                pwm_input += (int32)(c_mem.k_p_c_dl * curr_error) >> 16;
+            if (k_p_c_dl != 0)
+                pwm_input += (int32)(k_p_c_dl * curr_error) >> 16;
 
             // Integral
-            if (c_mem.k_i_c_dl != 0)
-                pwm_input += (int32)(c_mem.k_i_c_dl * (curr_error_sum >> 6)) >> 10;
+            if (k_i_c_dl != 0)
+                pwm_input += (int32)(k_i_c_dl * (curr_error_sum >> 6)) >> 10;
 
             // Derivative
-            if (c_mem.k_d_c_dl != 0)
-                pwm_input += (int32)(c_mem.k_d_c_dl * (curr_error - prev_curr_err)) >> 16;
-
-            if (pwm_input > 0)
-                motor_dir = 1;
-            else
-                motor_dir = 0;
+            if (k_d_c_dl != 0)
+                pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 16;
 
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 
@@ -493,33 +644,33 @@ void motor_control(void) {
             }
 
             // Proportional
-            if (c_mem.k_p != 0) {
-                pwm_input = (int32)(c_mem.k_p * pos_error) >> 16;
-            }
+            if (k_p != 0) 
+                pwm_input = (int32)(k_p * pos_error) >> 16;
+            
 
             // Integral
-            if (c_mem.k_i != 0) {
-                pwm_input += (int32)(c_mem.k_i * (pos_error_sum) >> 6) >> 10;
-            }
+            if (k_i != 0) 
+                pwm_input += (int32)(k_i * (pos_error_sum >> 6)) >> 10;
+            
 
             // Derivative
-            if (c_mem.k_d != 0) {
-                pwm_input += (int32)(c_mem.k_d * (pos_error - prev_pos_err)) >> 16;
-            }
+            if (k_d != 0) 
+                pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16;
+            
 
             // Update measure
             prev_pos_err = pos_error;
 
             if (pwm_input > 0)
-                motor_dir = 1;
+                motor_dir = TRUE;
             else
-                motor_dir = 0;
+                motor_dir = FALSE;
 
         break;
 
         // ========================== CURRENT CONTROL ==========================
         case CONTROL_CURRENT:
-            if(g_ref.onoff && device.tension_valid) {
+            if(g_ref.onoff && tension_valid) {
                 
                 i_ref = g_ref.curr[0];
 
@@ -544,141 +695,134 @@ void motor_control(void) {
                 pwm_input = 0;
 
                 // Proportional
-                if (c_mem.k_p_c != 0)
-                    pwm_input += (int32)(c_mem.k_p_c * curr_error) >> 16;
+                if (k_p_c != 0)
+                    pwm_input += (int32)(k_p_c * curr_error) >> 16;
 
                 // Integral
-                if (c_mem.k_i_c != 0)
-                    pwm_input += (int32)(c_mem.k_i_c * (curr_error_sum >> 6)) >> 10;
+                if (k_i_c != 0)
+                    pwm_input += (int32)(k_i_c * (curr_error_sum >> 6)) >> 10;
 
                 // Derivative
-                if (c_mem.k_d_c != 0)
-                    pwm_input += (int32)(c_mem.k_d_c * (curr_error - prev_curr_err)) >> 16;
+                if (k_d_c != 0)
+                    pwm_input += (int32)(k_d_c * (curr_error - prev_curr_err)) >> 16;
                 
                 prev_curr_err = curr_error;
                 
-                if (pwm_input >= 0) {
-                    motor_dir = 1;
-                } else {
-                    motor_dir = 0;
-                }
+                if (pwm_input >= 0) 
+                    motor_dir = TRUE;
+                else
+                    motor_dir = FALSE;
             }
         break;
         
         // ================= DIRECT PWM CONTROL ================================
         case CONTROL_PWM:
-            // Shift right by resolution to have the real input number
+
             pwm_input = g_ref.pwm[0];
 
-            if (pwm_input > 0)
-                motor_dir = 1;
-            else
-                motor_dir = 0;
+            if (pwm_input > 0) 
+                motor_dir = TRUE;
+            else 
+                motor_dir = FALSE;
+            
 
             // pwm_input saturation
-            if (pwm_input < -PWM_MAX_VALUE) {
+            if (pwm_input < -PWM_MAX_VALUE) 
                 pwm_input = -PWM_MAX_VALUE;
-            } else if (pwm_input > PWM_MAX_VALUE) {
+             else if (pwm_input > PWM_MAX_VALUE) 
                 pwm_input = PWM_MAX_VALUE;
-            }
+            
 
         break;
     }
 
     ////////////////////////////////////////////////////////////////////////////
 
-    if(pwm_input >  PWM_MAX_VALUE) pwm_input =  PWM_MAX_VALUE;
-    if(pwm_input < -PWM_MAX_VALUE) pwm_input = -PWM_MAX_VALUE;
+    if(pwm_input >  PWM_MAX_VALUE) 
+        pwm_input =  PWM_MAX_VALUE;
+    if(pwm_input < -PWM_MAX_VALUE) 
+        pwm_input = -PWM_MAX_VALUE;
 
 
-    if (c_mem.control_mode != CONTROL_PWM) {
-        pwm_input = (((pwm_input << 10) / PWM_MAX_VALUE) * device.pwm_limit) >> 10;
-    }
+    if (c_mem.control_mode != CONTROL_PWM) 
+        pwm_input = (((pwm_input << 10) / PWM_MAX_VALUE) * dev_pwm_limit) >> 10;
+    
 
     pwm_sign = SIGN(pwm_input);
-    MOTOR_DIR_Write(motor_dir);
+
+    if (motor_dir)
+        MOTOR_DIR_Write(0x01);
+    else
+        MOTOR_DIR_Write(0x00);
+
     PWM_MOTORS_WriteCompare1(abs(pwm_input));
 }
 
 //==============================================================================
-//                                                               ENCODER READING
+//                                                                   ENCODER READING
 //==============================================================================
 
-void encoder_reading(uint8 index) {
+void encoder_reading(const uint8 idx) {
 
-    static uint8 jj; // iterator
-
-    static uint32 data_encoder;
-    static int32 value_encoder;
-    static int32 speed_encoder;
-    static int32 accel_encoder;
-    static int32 aux;
+    uint8 CYDATA index = idx;
+    
+    uint8 jj;
+    
+    uint32 data_encoder;
+    int32 value_encoder;
+    int32 aux;
 
     static int32 last_value_encoder[NUM_OF_SENSORS];
 
-    static uint8 only_first_time = 1;
-    static uint8 one_time_execute = 0;
-
-    static int32 l_value[NUM_OF_SENSORS];   //last value for vel
-    static int32 ll_value[NUM_OF_SENSORS];  //last last value for vel
-    static int32 lll_value[NUM_OF_SENSORS];  //last last last value for vel
-
-    static int32 a_value[NUM_OF_SENSORS];   //last value for acc
-    static int32 aa_value[NUM_OF_SENSORS];  //last last value for acc
-    static int32 aaa_value[NUM_OF_SENSORS];  //last last last value for acc
-
     static uint8 error[NUM_OF_SENSORS];
+    
+    static CYBIT only_first_time = TRUE;
 
-    // check index value. Eventually reset last_vale_encoder
+    static uint8 one_time_execute = 0;
+    static CYBIT pos_reconstruct = FALSE;
+
+    // static int32 l_value[NUM_OF_SENSORS];   //last value for vel
+    // static int32 ll_value[NUM_OF_SENSORS];  //last last value for vel
+    // static int32 lll_value[NUM_OF_SENSORS];  //last last last value for vel
+
     if (index >= NUM_OF_SENSORS)
         return;
     
-    if(reset_last_value_flag) {
-        for(jj=0; jj<NUM_OF_SENSORS; jj++){
+    if (reset_last_value_flag) {
+        for (jj = NUM_OF_SENSORS; jj--;) 
             last_value_encoder[jj] = 0;
-        }
+        
         reset_last_value_flag = 0;
     }
 
-    // Normal execution
-    switch(index) {
-        case 0:
-            data_encoder = SHIFTREG_ENC_1_ReadData();
-            break;
-
-        case 1:
-            data_encoder = SHIFTREG_ENC_2_ReadData();
-            break;
-
-        case 2:
-            data_encoder = SHIFTREG_ENC_3_ReadData();
-            break;
+    //======================================================     reading sensors
+        // Shift 1 right to erase Dummy bit of chain
+    if (index == 0)
+            data_encoder = (SHIFTREG_ENC_1_ReadData() >> 1) & 0x3FFFF;  //0x0003FFFF reset first 14 bits
+    else {
+        if (index == 1)
+            data_encoder = (SHIFTREG_ENC_2_ReadData() >> 1) & 0x3FFFF;  //0x0003FFFF reset first 14 bits
+        else // index == 2
+            data_encoder = (SHIFTREG_ENC_3_ReadData() >> 1) & 0x3FFFF;  //0x0003FFFF reset first 14 bits
     }
-
-    // Shift 1 right to erase Dummy bit of chain
-    data_encoder = data_encoder >> 1;
-
-    data_encoder = data_encoder & 0x3FFFF;          //0x0003FFFF reset first 14 bits
+       
 
     if (check_enc_data(&data_encoder)) {
 
-        aux = data_encoder & 0x3FFC0;           // reset last 6 bit 
-                                                // -> |:|:|id|dim|CMD|CHK|(data---
-        value_encoder = (aux - 0x20000) >> 2;   // subtract half of max value
-                                                // and shift to have 16 bit val
-
-        // Add offset and crop to 16bit
-        value_encoder  = (int32)((int16)(value_encoder + g_mem.m_off[index]));
+        value_encoder = (int16) (((data_encoder & 0x3FFC0) - 0x20000) >> 2 ) + g_mem.m_off[index];
+                                                    // reset last 6 bit 
+                                                    // -> |:|:|id|dim|CMD|CHK|(data---
+                                                    // subtract half of max value
+                                                    // and shift to have 16 bit val
 
         // Initialize last_value_encoder
         if (only_first_time) {
             last_value_encoder[index] = value_encoder;
-            if (index == 2) {
+            if (index == 2)
                 only_first_time = 0;
-            }
         }
 
-        // take care of rotations
+        // Take care of rotations
         aux = value_encoder - last_value_encoder[index];
 
         // ====================== 1 TURN ======================
@@ -699,17 +843,19 @@ void encoder_reading(uint8 index) {
         // to go slower than 1/4 turn every ms -> 1 turn every 4ms
         // equal to 250 turn/s -> 15000 RPM
 
-        if (aux > 49152) {
+        if (aux > 49152)
             g_meas.rot[index]--;
-        } else if (aux < -49152) {
-            g_meas.rot[index]++;
-        } else if (abs(aux) > 16384) { // if two measure are too far
-            error[index]++;
-            if (error[index] < 10) {
-                // Discard
-                return;
+        else{ 
+            if (aux < -49152)
+                g_meas.rot[index]++;
+            else{
+                if (abs(aux) > 16384) { // if two measure are too far
+                    error[index]++;
+                    if (error[index] < 10)
+                        // Discard
+                        return;
+                }
             }
-            error[index] = 0;
         }
 
         error[index] = 0;
@@ -725,66 +871,23 @@ void encoder_reading(uint8 index) {
         g_meas.pos[index] = value_encoder;
     }
 
-    //Encoder rotational velocity calculation
-    switch(index) {
-        case 0: {
-            speed_encoder = (int16)filter_vel_1((3*value_encoder + l_value[0] - ll_value[0] - 3*lll_value[0])*10);
-            break;
-        }
-        case 1: {
-            speed_encoder = (int16)filter_vel_2((3*value_encoder + l_value[1] - ll_value[1] - 3*lll_value[1])*10);
-            break;
-        }
-        case 2: {
-            speed_encoder = (int16)filter_vel_3((3*value_encoder + l_value[2] - ll_value[2] - 3*lll_value[2])*10);
-            break;
-        }
-    }
-    //Update velocity measure with actual value 
-    g_meas.vel[index] = speed_encoder;
-
-    //Encoder rotational acceleration calculation
-    switch(index) {
-        case 0:
-            accel_encoder = (int16)filter_acc_1((3*speed_encoder + a_value[0] - aa_value[0] - 3*aaa_value[0])*10);
-            break;
-        
-        case 1:
-            accel_encoder = (int16)filter_acc_2((3*speed_encoder + a_value[1] - aa_value[1] - 3*aaa_value[1])*10);
-            break;
-        
-        case 2:
-            accel_encoder = (int16)filter_acc_3((3*speed_encoder + a_value[2] - aa_value[2] - 3*aaa_value[2])*10);
-            break;
-    }
-    // Update acceleration measure with actual value
-    g_meas.acc[index] = accel_encoder;
-
-    // update old velocity and acceleration values
-    lll_value[index] = ll_value[index];
-    ll_value[index] = l_value[index];
-    l_value[index] = value_encoder;
-
-    aaa_value[index] = aa_value[index];
-    aa_value[index] = a_value[index];
-    a_value[index] = speed_encoder;
-
-
     // wait at least 3 * max_num_of_error (10) + 5 = 35 cycles to reconstruct the right turn
-    if (one_time_execute < 35) {
-        if (one_time_execute < 34) {
+    if (pos_reconstruct == FALSE){
+        if (one_time_execute < 34) 
             one_time_execute++;
-        } else {
+        else {
             //Double encoder translation
             if (c_mem.double_encoder_on_off)
                 g_meas.rot[0] = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
 
             g_meas.pos[0] += (int32) g_meas.rot[0] << 16;
+
             // If necessary activate motors
-            g_ref.pos[0] = g_meas.pos[0];
+            g_refNew.pos[0] = g_meas.pos[0];
+
             MOTOR_ON_OFF_Write(g_ref.onoff);
             
-            one_time_execute = 35;
+            pos_reconstruct = TRUE;
         }
     }
 }
@@ -793,217 +896,291 @@ void encoder_reading(uint8 index) {
 //                                                           ANALOG MEASUREMENTS
 //==============================================================================
 
-void analog_read_init(uint8 index) {
+void analog_read_end() {
 
-    // should I execute the function for this index?
-    if(index >= NUM_OF_ANALOG_INPUTS)
-        return;
+    /* =========================================================================
+    /   Ideal formulation to calculate tension and current
+    /
+    /   tension = ((read_value_mV - offset) * 101) / gain -> [mV]
+    /   current = ((read_value_mV - offset) * 375) / (gain * resistor) -> [mA]
+    /
+    /   Definition:
+    /   read_value_mV = counts_read / 0.819 -> conversion from counts to mV
+    /   offset = 2000 -> hardware amplifier bias in mV
+    /   gain = 8.086 -> amplifier gain
+    /   resistor = 18 -> resistor of voltage divider in KOhm 
+    /
+    /   Real formulation: tradeoff in good performance and accurancy, ADC_buf[] 
+    /   and offset unit of measurment is counts, instead dev_tension and
+    /   g_meas.curr[] are converted in properly unit.
+    /  =========================================================================
+    */
 
-    AMUX_FastSelect(index);
-    ADC_StartConvert();
-}
+    int16 CYDATA i_aux;
 
-
-void analog_read_end(uint8 index) {
-
-    static int32 value, i_aux;
-
+    static emg_status CYDATA emg_1_status = RESET; 
+    static emg_status CYDATA emg_2_status = RESET;                                             
+    
     static uint16 emg_counter_1 = 0;
     static uint16 emg_counter_2 = 0;
 
-    static uint8 emg_1_status = 1;  // 0 normal execution
-    static uint8 emg_2_status = 1;  // 1 reset status
-                                    // 2 discard values
-                                    // 3 sum values and mean
-                                    // 4 wait
+    // Wait for conversion end
+    
+    while(!ADC_STATUS_Read()){
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
+    }
+    
+    // Convert tension read
+    dev_tension = ((int32)(ADC_buf[0] - 1638) * 1952) >> 7;
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
 
-    // should I execute the function for this index?
-    if(index >= NUM_OF_ANALOG_INPUTS)
-        return;
+    // Until there is no valid input tension repeat this measurement
+    
+    if (dev_tension > 0){
+        // Set tension valid bit to TRUE
 
-    if (ADC_IsEndConversion(ADC_WAIT_FOR_RESULT)) {
+        tension_valid = TRUE;
 
-        value = (int32) ADC_GetResult16();
-        ADC_StopConvert();
+        if(g_mem.activate_pwm_rescaling)        //pwm rescaling is activated
+            pwm_limit_search();                 //only for 12V motors
 
-        switch(index) {
-            // --- Input tension ---
-            case 0:
-                device.tension = ((value - 1638) * device.tension_conv_factor);
-                //until there is no valid input tension repeat this measurement
-                if (device.tension < 0) {
-                    emg_1_status = 1;   // reset status
-                    emg_2_status = 1;
-                    device.tension_valid = FALSE;
+        // Filter and Set currents
+        g_meas.curr[0] = filter_i1((int16) (((int32)(ADC_buf[1] - 1638) * 25771) >> 13) * pwm_sign);
+        
+        // Check Interrupt 
+    
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
 
-                    if (c_mem.emg_calibration_flag) {
-                        if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
-                            (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                            (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
-                            (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
-                            g_ref.onoff = 0x00;
-                            MOTOR_ON_OFF_Write(g_ref.onoff);
-                        }
+        // if calibration is not needed go to "normal execution"
+        if (!g_mem.emg_calibration_flag){
+            emg_1_status = 0; // normal execution
+            emg_2_status = 0; // normal execution
+        }
+
+        // EMG 1 calibration state machine
+        
+        // Calibration state machine
+        switch(emg_1_status) {
+            case NORMAL: // normal execution
+                i_aux = filter_ch1(ADC_buf[2]);
+                i_aux = (i_aux << 10) / g_mem.emg_max_value[0];
+    
+                if (interrupt_flag){
+                    interrupt_flag = FALSE;
+                    interrupt_manager();
+                }
+                //Saturation
+                if (i_aux < 0)
+                    i_aux = 0;
+                else 
+                    if (i_aux > 1024) 
+                        i_aux = 1024;
+                
+                g_meas.emg[0] = i_aux;
+    
+                if (interrupt_flag){
+                    interrupt_flag = FALSE;
+                    interrupt_manager();
+                }
+                
+                break;
+
+            case RESET: // reset variables
+                emg_counter_1 = 0;
+                g_mem.emg_max_value[0] = 0;
+                emg_1_status = DISCARD; // goto next status
+                
+                break;
+
+            case DISCARD: // discard first EMG_SAMPLE_TO_DISCARD samples
+                emg_counter_1++;
+                if (emg_counter_1 == EMG_SAMPLE_TO_DISCARD) {
+                    emg_counter_1 = 0;          // reset counter
+                    LED_REG_Write(0x01);        // turn on LED
+                        
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
                     }
-                } else {
-                    device.tension_valid = TRUE;
-                    if(g_mem.activate_pwm_rescaling)        //pwm rescaling is activated
-                        pwm_limit_search();                 //only for 12V motors
+                    
+                    emg_1_status = SUM_AND_MEAN;           // sum and mean status
                 }
                 break;
 
-            // --- Current motor 1 ---
-            case 1:
-                if (device.tension_valid) {
-                    g_meas.curr[0] =  filter_i1((((value - 1638) * 25771) >> 13) * pwm_sign);
-                } else {
-                    g_meas.curr[0] = 0;
+            case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
+                // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
+                emg_counter_1++;
+                g_mem.emg_max_value[0] += filter_ch1(ADC_buf[2]);
+                
+                if (interrupt_flag){
+                    interrupt_flag = FALSE;
+                    interrupt_manager();
+                }
+                
+                if (emg_counter_1 == SAMPLES_FOR_EMG_MEAN) {
+                    g_mem.emg_max_value[0] = g_mem.emg_max_value[0] / SAMPLES_FOR_EMG_MEAN; // calc mean
+    
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }                    
+                    
+                    LED_REG_Write(0x00);        // led OFF
+                    emg_counter_1 = 0;          // reset counter
+
+                    emg_1_status = NORMAL;           // goto normal execution
                 }
                 break;
-
-            // --- EMG 1 ---
-            case 2:
-                // execute only if there is tension
-                if (device.tension_valid == FALSE) {
-                    g_meas.emg[0] = 0;
-                    break;
-                }
-
-                // if calibration is not needed go to "normal execution"
-                if (!g_mem.emg_calibration_flag) {
-                    emg_1_status = 0; //normal execution
-                }
-                // EMG 1 calibration state machine
-                switch(emg_1_status) {
-                    case 0: // normal execution
-                        i_aux = filter_ch1(value);
-                        i_aux = (1024 * i_aux) / g_mem.emg_max_value[0];
-
-                        //Saturation
-                        if (i_aux < 0) {
-                            i_aux = 0;
-                        } else if (i_aux > 1024) {
-                            i_aux = 1024;
-                        }
-
-                        g_meas.emg[0] = i_aux;
-                        break;
-
-                    case 1: // reset variables
-                        emg_counter_1 = 0;
-                        g_mem.emg_max_value[0] = 0;
-                        emg_1_status = 2; // goto next status
-                        break;
-
-                    case 2: // discard first EMG_SAMPLE_TO_DISCARD samples
-                        emg_counter_1++;
-                        if (emg_counter_1 == EMG_SAMPLE_TO_DISCARD) {
-                            emg_counter_1 = 0;          // reset counter
-                            LED_REG_Write(0x01);        // turn on LED
-                            emg_1_status = 3;           // sum and mean status
-                        }
-                        break;
-
-                    case 3: // sum first SAMPLES_FOR_EMG_MEAN samples
-                        // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
-                        emg_counter_1++;
-                        g_mem.emg_max_value[0] += filter_ch1(value);
-                        if (emg_counter_1 == SAMPLES_FOR_EMG_MEAN) {
-                            g_mem.emg_max_value[0] = g_mem.emg_max_value[0] / SAMPLES_FOR_EMG_MEAN; // calc mean
-                            LED_REG_Write(0x00);        // led OFF
-                            emg_counter_1 = 0;          // reset counter
-                            emg_1_status = 0;           // goto normal execution
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-                break; // main switch break
-
-            // --- EMG 2 ---
-            case 3:
-                // execute only if there is tension
-                if (device.tension_valid == FALSE) {
-                    g_meas.emg[1] = 0;
-                    break;
-                }
-
-                // if calibration is not needed go to "normal execution"
-                if (!g_mem.emg_calibration_flag) {
-                    emg_2_status = 0; // normal execution
-                }
-
-                // EMG 2 calibration state machine
-                switch(emg_2_status) {
-                    case 0: // normal execution
-                        i_aux = filter_ch2(value);
-                        i_aux = (1024 * i_aux) / g_mem.emg_max_value[1];
-
-                        if (i_aux < 0) {
-                            i_aux = 0;
-                        } else if (i_aux > 1024) {
-                            i_aux = 1024;
-                        }
-
-                        g_meas.emg[1] = i_aux;
-                        break;
-
-                    case 1: // reset variables
-                        emg_counter_2 = 0;
-                        g_mem.emg_max_value[1] = 0;
-                        emg_2_status = 4; // wait for EMG 1 calibration
-                        break;
-
-                    case 2: // discard first EMG_SAMPLE_TO_DISCARD samples
-                        emg_counter_2++;
-                        if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
-                            emg_counter_2 = 0;          // reset counter
-                            LED_REG_Write(0x01);        // turn on LED
-                            emg_2_status = 3;           // sum and mean status
-                        }
-                        break;
-
-                    case 3: // sum first SAMPLES_FOR_EMG_MEAN samples
-                        // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
-                        emg_counter_2++;
-                        g_mem.emg_max_value[1] += filter_ch2(value);
-                        if (emg_counter_2 == SAMPLES_FOR_EMG_MEAN) {
-                            g_mem.emg_max_value[1] = g_mem.emg_max_value[1] / SAMPLES_FOR_EMG_MEAN; // calc mean
-                            LED_REG_Write(0x00);        // led OFF
-                            emg_counter_2 = 0;          // reset counter
-
-                            // if EMG control mode active, activate motors accordingly with startup value
-                            if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
-                                (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                                (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
-                                (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
-                                if (c_mem.control_mode == CONTROL_ANGLE) {
-                                    g_ref.pos[0] = g_meas.pos[0];
-                                    g_ref.pos[1] = g_meas.pos[1];
-                                }
-                                g_ref.onoff = c_mem.activ;
-                                MOTOR_ON_OFF_Write(g_ref.onoff);
-                            }
-
-                            emg_2_status = 0;           // goto normal execution
-                        }
-                        break;
-
-                    case 4: // wait for EMG calibration to be done
-                        if (emg_1_status == 0) {
-                            emg_2_status = 2;           // goto discart sample
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-                break; // emg switch break
 
             default:
-                break; // main switch break
+                break;
         }
+    
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
+        // EMG 2 calibration state machine
+        switch(emg_2_status) {
+            case NORMAL: // normal execution
+                i_aux = filter_ch2(ADC_buf[3]);
+                i_aux = (i_aux << 10) / g_mem.emg_max_value[1];
+    
+                if (interrupt_flag){
+                    interrupt_flag = FALSE;
+                    interrupt_manager();
+                }
+                
+                if (i_aux < 0) 
+                    i_aux = 0;
+                else 
+                    if (i_aux > 1024)
+                        i_aux = 1024;
+                
+                g_meas.emg[1] = i_aux;
+
+                break;
+
+            case RESET: // reset variables
+                emg_counter_2 = 0;
+                g_mem.emg_max_value[1] = 0;
+    
+                if (interrupt_flag){
+                    interrupt_flag = FALSE;
+                    interrupt_manager();
+                }
+                
+                emg_2_status = WAIT; // wait for EMG 1 calibration
+                break;
+
+            case DISCARD: // discard first EMG_SAMPLE_TO_DISCARD samples
+                emg_counter_2++;
+                if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
+                    emg_counter_2 = 0;          // reset counter
+                    LED_REG_Write(0x01);        // turn on LED
+    
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    emg_2_status = SUM_AND_MEAN;           // sum and mean status
+                }
+                break;
+
+            case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
+                // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
+                emg_counter_2++;
+                g_mem.emg_max_value[1] += filter_ch2(ADC_buf[3]);
+    
+                if (interrupt_flag){
+                    interrupt_flag = FALSE;
+                    interrupt_manager();
+                }
+                
+                if (emg_counter_2 == SAMPLES_FOR_EMG_MEAN) {
+                    g_mem.emg_max_value[1] = g_mem.emg_max_value[1] / SAMPLES_FOR_EMG_MEAN; // calc mean
+                    LED_REG_Write(0x00);        // led OFF
+                    emg_counter_2 = 0;          // reset counter
+                
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    // if EMG control mode active, activate motors accordingly with startup value
+                    if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
+                        (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
+                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
+                        if (c_mem.control_mode == CONTROL_ANGLE) {
+                            g_ref.pos[0] = g_meas.pos[0];
+                            g_ref.pos[1] = g_meas.pos[1];
+                        }
+                        g_ref.onoff = c_mem.activ;
+                        MOTOR_ON_OFF_Write(g_ref.onoff);
+                    }
+                    emg_2_status = NORMAL;           // goto normal execution
+                }
+                break;
+
+            case WAIT: // wait for EMG calibration to be done
+                if (emg_1_status == NORMAL)
+                    emg_2_status = DISCARD;           // goto discard sample
+                break;
+
+            default:
+                break;
+        }
+            
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
+    }
+    else{
+        emg_1_status = RESET; 
+        emg_2_status = RESET;
+
+        tension_valid = FALSE;
+            
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
+        
+        if (c_mem.emg_calibration_flag) {
+            if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
+                (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
+                (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+                (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
+                g_ref.onoff = 0x00;
+                MOTOR_ON_OFF_Write(g_ref.onoff);
+            }
+        }
+
+        // Reset current
+        g_meas.curr[0] = 0;
+
+        // Reset emg
+        g_meas.emg[0] = 0;
+        g_meas.emg[1] = 0;
+
+    }
+        
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
     }
 }
 
@@ -1011,41 +1188,42 @@ void analog_read_end(uint8 index) {
 //                                                           OVERCURRENT CONTROL
 //==============================================================================
 
-void overcurrent_control(void) {
+void overcurrent_control() {
     if (c_mem.current_limit != 0) {
         // if the current is over the limit
         if (g_meas.curr[0] > c_mem.current_limit) {
             //decrese pwm_limit
-            device.pwm_limit--;
+            dev_pwm_limit--;
         // if the current is in the safe zone
         } else if (g_meas.curr[0] < (c_mem.current_limit - CURRENT_HYSTERESIS)) {
             //increase pwm_limit
-            device.pwm_limit++;
+            dev_pwm_limit++;
         }
 
-        // bound pwm_limit
-        if (device.pwm_limit < 0) {
-            device.pwm_limit = 0;
-        } else if (device.pwm_limit > 100) {
-            device.pwm_limit = 100;
-        }
+        // Bound pwm_limit
+        if (dev_pwm_limit < 0) 
+            dev_pwm_limit = 0;
+        else 
+            if (dev_pwm_limit > 100) 
+                dev_pwm_limit = 100;
     }
 }
 
-void pwm_limit_search() {
-    uint8 index;
-    uint16 max_tension = 25500; 
-    uint16 min_tension = 11500;
+//==============================================================================
+//                                                              PWM_LIMIT_SEARCH
+//==============================================================================
 
-    if (device.tension > max_tension) {
-        device.pwm_limit = 0;
-    } else if (device.tension < min_tension) {
-        device.pwm_limit = 100;
+void pwm_limit_search() {
+
+    uint8 CYDATA index;
+
+    if (dev_tension > 25500) {
+        dev_pwm_limit = 0;
+    } else if (dev_tension < 11500) {
+        dev_pwm_limit = 100;
     } else {
-        index = (uint8)((device.tension - min_tension) / 500);
-        device.pwm_limit = pwm_preload_values[index];
+        index = (uint8)((dev_tension - 11500) >> 9);
+        dev_pwm_limit = pwm_preload_values[index];
     }
-    
-    overcurrent_control();
 }
 /* [] END OF FILE */

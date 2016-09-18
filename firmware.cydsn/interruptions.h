@@ -7,8 +7,8 @@
 * \file         interruptions.h
 *
 * \brief        Interruptions header file.
-* \date         June 06, 2016
-* \author       _qbrobotics_
+* \date         Feb 06, 2012
+* \author       qbrobotics
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
@@ -18,16 +18,32 @@
 //==================================================================     include
 #include <device.h>
 
-/** \name Interruption */
+//=====================================================        Interrupt Handler
+ 
+/** \name Interruptions */
 /** \{ */
-//====================================================     interrupt declaration
-/** This interruption unpacks the packet received and, accordingly to the command
- * 	received, selects the correct function to be called
+//====================================================     RS485 interruption
+/** This interruption sets a flag to let the firmware know that a communication 
+ *	interruption is pending and needs to be handled. The interruption will be
+ *	handled in predefined moments during the firmware execution. 
+ * 	When this interruption is handled, it unpacks the package received on the 
+ *  RS485 communication bus.  
 **/
 CY_ISR_PROTO(ISR_RS485_RX_ExInterrupt);
+
+//====================================================     interrupt declaration
+/** This interruption sets a flag to let the firmware know that a watchdog
+ *	interruption is pending and needs to be handled. The interrpution will be 
+ * 	handled in predefined moments during the firmware execution.
+ *  When this interruption is handled, it deactivates the board because the 
+ *  watchdog timer has expired. 
+**/
+CY_ISR_PROTO(ISR_WATCHDOG_Handler);
+
 /** \} */
 
-//=====================================================     function declaration
+
+//=====================================================     functions declarations
 
 /** \name General function scheduler */
 /** \{ */
@@ -35,25 +51,7 @@ CY_ISR_PROTO(ISR_RS485_RX_ExInterrupt);
 /** This function schedules the other functions in an order that optimizes the 
  *	controller usage.	
 **/
-void function_scheduler();
-/** \} */
-
-/** \name Analog variables reading functions */
-/** \{ */
-//=====================================================     analog_read_init
-/** This function starts converting the analog data pointed by index.
- *
- *	\param index 	The index of the data that needs to be converted.
-**/
-void analog_read_init(uint8 index);
-
-//=====================================================     analog_read_end
-/** This functions ends the conversion started by \ref analog_read_init 
- *	"analog_read_init".
- *
- *	\param index 	The index of the data converted.
-**/
-void analog_read_end(uint8 index);
+void function_scheduler(void);
 /** \} */
 
 
@@ -64,7 +62,7 @@ void analog_read_end(uint8 index);
  *
  *	\param index 	The number of the encoder that must be read.
 **/
-void encoder_reading(uint8 index);
+void encoder_reading(const uint8 index);
 /** \} */
 
 
@@ -77,6 +75,22 @@ void encoder_reading(uint8 index);
 void motor_control();
 /** \} */
 
+/** \name Analog readings */
+/** \{ */
+//=====================================================     analog_read_end
+/** This function executes and terminates the analog readings.
+**/
+void analog_read_end();
+
+
+/** \name Interrupt manager */
+/** \{ */ 
+//=====================================================     interrupt_manager
+/** This function is called in predefinited moments during firmware execution
+ *  in order to unpack the received package. 
+**/
+void interrupt_manager();
+/** \} */
 
 /** \name Utility functions */
 /** \{ */
@@ -93,6 +107,8 @@ void pwm_limit_search();
 void overcurrent_control();
 
 /** \} */
+
+// ----------------------------------------------------------------------------
 
 #endif
 

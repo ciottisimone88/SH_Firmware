@@ -17,7 +17,6 @@
  * 	process the commands sent from the user interfaces (simulink, command line, GUI)
 **/
 
-
 // ----------------------------------------------------------------------------
 #ifndef COMMAND_PROCESSING_H_INCLUDED
 #define COMMAND_PROCESSING_H_INCLUDED
@@ -29,29 +28,6 @@
 //==============================================================================
 //                                                          function definitions
 //==============================================================================
-
-/** \name Param Getting and setting functions */
-/** \{ */
-
-//============================================================  paramSet
-/** This function is used to save the value received from the user interface
- *  into the correct parameter. The correct parameter depends upon the param_type
- *  received.
- *
- * \param 	param_type 	An integer referring to the parameter to be set.
-**/
-void    paramSet           (uint16 param_type);
-
-//============================================================  paramGet
-/** This function is used to get the parameter value from the device memory 
- *  that will be sent through the serial interface. The selected parameter 
- *	depends upon the param_type received.
- *
- * \param 	param_type 	An integer referring to the parameter to be get.
-**/void    paramGet        (uint16 param_type);
-
-/** \} */
-
 
 /** \name Firmware information functions */
 /** \{ */
@@ -83,13 +59,25 @@ void    infoGet            (uint16 info_type);
 /** \} */
 
 
-/** \name Command Processing functions */
+/** \name Command receiving and sending functions */
 /** \{ */
 
 //============================================================  commProcess
 /** This function unpacks the received package, depending on the command received. 	
 **/
 void    commProcess        ();
+
+//============================================================  commWrite_old_id
+/** This function writes on the serial port the package that needs to be sent
+ * to the user. Is used only when a new is set, to communicate back to the APIs that
+ * the new ID setting went fine or there was an error.
+ *
+ *	\param packet_data 		The array of data that must be written.
+ *	\param packet_lenght	The lenght of the data array.
+ *  \param old_id           The previous id of the board, before setting a new one
+ *
+**/
+void    commWrite_old_id   (uint8 *packet_data, uint16 packet_lenght, uint8 old_id);
 
 //============================================================  commWrite
 /** This function writes on the serial port the package that needs to be sent
@@ -99,13 +87,30 @@ void    commProcess        ();
  *	\param packet_lenght	The lenght of the data array.
  *
 **/
-void    commWrite          (uint8 *packet_data, uint16 packet_lenght);
+void    commWrite         (uint8 *packet_data, uint16 packet_lenght);
 
 /** \} */
 
 
 /** \name Memory management functions */
 /** \{ */
+
+//============================================================  get_param_list
+/** This function, depending on the \ref index received, gets the list of
+ *  parameters with their values and sends them to user or sets a parameter
+ *  from all the parameters of the device.
+ *
+ *	\param index 			The index of the parameters to be setted. If 0 gets
+ *							full parameters list.
+ *
+**/
+void get_param_list 		(uint16 index);
+
+//============================================================  setZeros
+/** This function sets the encoders zero position.
+ *
+**/
+void setZeros				();
 
 //============================================================  memStore
 /** This function stores the setted parameters to the internal EEPROM memory.
@@ -156,13 +161,72 @@ uint8   LCRChecksum        (uint8 *data_array, uint8 data_length);
 
 //============================================================  sendAcknoledgment
 /** This functions sends an acknowledgment to see if a command has been executed 
- * 	properly or not
+ * 	properly or not.
  *
  *	\param value 		An ACK_OK(1) or ACK_ERROR(0) value.
 **/
 void    sendAcknowledgment (uint8 value);
 
-/** \} */
+//==============================================================================
+//                                            Service Routine interrupt function
+//==============================================================================
+
+/** \name Command processing functions */
+/** \{ */
+
+//============================================================  cmd_activate
+/** This function activates the board
+**/
+void cmd_activate();
+//============================================================  cmd_set_inputs
+/** This function gets the inputs from the received package and sets them as
+	motor reference.
+**/
+void cmd_set_inputs();
+//============================================================  cmd_get_measurements
+/** This function gets the encoders measurements and puts them in the package
+	to be sent.
+**/
+void cmd_get_measurements();
+//============================================================  cmd_get_currents
+/** This function gets the motor current and puts it in the package to 
+	be sent.
+**/
+void cmd_get_currents();
+//============================================================  cmd_get_emg
+/** This function gets the electromyographic sensors measurements and puts
+	them in the package to be sent.
+**/
+void cmd_get_emg();
+//============================================================  cmd_set_watchdog
+/** This function sets the watchdog timer to the one received from the package.
+	The board automatically deactivate when the time equivalent, to watchdog timer, 
+	has passed.
+**/
+void cmd_set_watchdog();
+//============================================================  cmd_get_activate
+/** This function gets the board activation status and puts it in the package
+	to be sent.
+**/
+void cmd_get_activate();
+//============================================================  cmd_set_baudrate
+/** This function sets the desired communication baudrate. It is possible to
+	select a value equal to 460800 or 2000000.
+**/
+void cmd_set_baudrate();
+//============================================================  cmd_get_inputs
+/** This function gets the current motor reference inputs and puts them in the
+	package to be sent.
+**/
+void cmd_get_inputs();
+//============================================================  cmd_store_params
+/** This function stores the parameters to the EEPROM memory
+**/
+void cmd_store_params();
+//============================================================  cmd_ping
+/** This function is used to ping the device and see if is connected.
+**/
+void cmd_ping();
 
 #endif
 
