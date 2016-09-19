@@ -1,0 +1,3 @@
+--------------- Build Started: 08/02/2016 10:04:31 Project: firmware, Configuration: DP8051 Keil Generic Release ---------------
+ERROR: Could not locate the binaries for the generic tool chain "DP8051 Keil Generic" in the selected path "C:\Program Files (x86)\Cypress\PSoC Creator\3.2\PSoC Creator\lib\DP8051\DP8051_Keil_Generic\Release". The following are the missing binaries: "Ax51.exe"
+--------------- Build Failed: 08/02/2016 10:04:31 ---------------
