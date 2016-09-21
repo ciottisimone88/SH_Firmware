@@ -651,7 +651,10 @@ void get_param_list(uint16 index) {
 
 //===================================================     set_startup_activation        
         case 4:         //Startup flag - uint8
-            g_mem.activ = g_rx.buffer[3];
+            if(g_rx.buffer[3])
+                g_mem.activ = 0x03;
+            else
+                g_mem.activ = 0x00;
         break;
 
 //===========================================================     set_input_mode        
@@ -1408,7 +1411,7 @@ void cmd_get_curr_and_meas(){
     
     // Currents
     *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0];
-    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1];
+    *((int16 *) &packet_data[3]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
 
     // Positions
     for (index = NUM_OF_SENSORS; index--;) 
@@ -1432,7 +1435,7 @@ void cmd_get_currents(){
     packet_data[0] = CMD_GET_CURRENTS;
 
     *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0];
-    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1];
+    *((int16 *) &packet_data[3]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
 
     // Calculate Checksum and send message to UART 
 
