@@ -20,7 +20,7 @@
 //==============================================================================
 
 int32 curr_estim (int32 pos, int32 vel, int32 acc) {
-    return (abs(g_mem.curr_lookup[0]*pos +
+    return (fabs(g_mem.curr_lookup[0]*pos +
                 g_mem.curr_lookup[1]*pow(pos,2) + 
                 g_mem.curr_lookup[2]*pow(pos,3) + 
                 g_mem.curr_lookup[3]*vel + 
