@@ -414,7 +414,7 @@ void motor_control() {
                 if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg) && (c_mem.max_step_neg != 0))
                     g_ref.pos[0] += c_mem.max_step_neg;
                 else
-                g_ref.pos[0] = handle_value;
+                    g_ref.pos[0] = handle_value;
             }
             break;
 
@@ -553,7 +553,7 @@ void motor_control() {
 
             // Integral
             if (k_i_dl != 0)
-                i_ref += (int32)(k_i_dl * (pos_error_sum >> 6)) >> 10;
+                i_ref += (int32)(k_i_dl * pos_error_sum) >> 16;
 
             // Derivative
             if (k_d_dl != 0)
@@ -611,7 +611,7 @@ void motor_control() {
 
             // Integral
             if (k_i_c_dl != 0)
-                pwm_input += (int32)(k_i_c_dl * (curr_error_sum >> 6)) >> 10;
+                pwm_input += (int32)(k_i_c_dl * curr_error_sum) >> 16;
 
             // Derivative
             if (k_d_c_dl != 0)
@@ -650,7 +650,7 @@ void motor_control() {
 
             // Integral
             if (k_i != 0) 
-                pwm_input += (int32)(k_i * (pos_error_sum >> 6)) >> 10;
+                pwm_input += (int32)(k_i * pos_error_sum) >> 16;
             
 
             // Derivative
@@ -700,7 +700,7 @@ void motor_control() {
 
                 // Integral
                 if (k_i_c != 0)
-                    pwm_input += (int32)(k_i_c * (curr_error_sum >> 6)) >> 10;
+                    pwm_input += (int32)(k_i_c * curr_error_sum) >> 16;
 
                 // Derivative
                 if (k_d_c != 0)

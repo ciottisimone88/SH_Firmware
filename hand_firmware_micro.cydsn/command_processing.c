@@ -1234,17 +1234,17 @@ uint8 memInit(void)
     g_mem.id            = 1;
 
     g_mem.k_p           = 0.015 * 65536;
-    g_mem.k_i           =  0.02 * 65536;
+    g_mem.k_i           =     0 * 65536;
     g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter previous value 0.2
     g_mem.k_p_c         =     1 * 65536;
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
 
-    g_mem.k_p_dl        =  0.15 * 65536;
+    g_mem.k_p_dl        =  0.02 * 65536;
     g_mem.k_i_dl        =     0 * 65536;
-    g_mem.k_d_dl        =  0.07 * 65536;
-    g_mem.k_p_c_dl      =     1 * 65536;
-    g_mem.k_i_c_dl      = 0.001 * 65536;
+    g_mem.k_d_dl        =     0 * 65536;
+    g_mem.k_p_c_dl      =   1.5 * 65536;
+    g_mem.k_i_c_dl      = 0.005 * 65536;
     g_mem.k_d_c_dl      =     0 * 65536;
 
     g_mem.activ         = 0;
