@@ -23,7 +23,7 @@
 
 #define TIMER_CLOCK 10000
 
-#define ALPHA 3				///< Voltage and current filters constant
+#define ALPHA 8				///< Voltage and current filters constant
 #define BETA  50			///< Emg filters constant
 #define GAMMA 32 			///< Velocity filters constant
 #define DELTA 32 			///< Acceleration filters constant

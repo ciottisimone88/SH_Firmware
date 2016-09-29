@@ -966,7 +966,7 @@ void analog_read_end() {
     /  =========================================================================
     */
 
-    int16 CYDATA i_aux;
+    int32 CYDATA i_aux;
 
     static emg_status CYDATA emg_1_status = RESET; 
     static emg_status CYDATA emg_2_status = RESET;                                             
@@ -1013,8 +1013,8 @@ void analog_read_end() {
 
         // if calibration is not needed go to "normal execution"
         if (!g_mem.emg_calibration_flag){
-            emg_1_status = 0; // normal execution
-            emg_2_status = 0; // normal execution
+            emg_1_status = NORMAL; // normal execution
+            emg_2_status = NORMAL; // normal execution
         }
 
         // EMG 1 calibration state machine

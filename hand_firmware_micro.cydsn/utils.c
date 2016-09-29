@@ -55,21 +55,10 @@ int32 filter_i1(int32 new_value) {
 }
 
 //==============================================================================
-//                                                                   Emg Filters
+//                                                              First Emg Filter
 //==============================================================================
 
 int32 filter_ch1(int32 new_value) {
-
-    static int32 old_value, aux;
-
-    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
-
-    old_value = aux;
-
-    return aux;
-}
-
-int32 filter_ch2(int32 new_value) {
 
     static int32 old_value, aux;
 
@@ -129,6 +118,21 @@ int32 filter_curr_diff(int32 curr_diff) {
 
     old_out = aux;
     old_input = curr_diff;
+
+    return aux;
+}
+
+//==============================================================================
+//                                                             Second Emg Filter
+//==============================================================================
+
+int32 filter_ch2(int32 new_value) {
+
+    static int32 old_value, aux;
+
+    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
+
+    old_value = aux;
 
     return aux;
 }
