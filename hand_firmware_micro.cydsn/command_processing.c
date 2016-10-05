@@ -1240,11 +1240,11 @@ uint8 memInit(void)
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
 
-    g_mem.k_p_dl        =  0.02 * 65536;
+    g_mem.k_p_dl        =   0.1 * 65536;
     g_mem.k_i_dl        =     0 * 65536;
     g_mem.k_d_dl        =     0 * 65536;
-    g_mem.k_p_c_dl      =   1.5 * 65536;
-    g_mem.k_i_c_dl      = 0.005 * 65536;
+    g_mem.k_p_c_dl      =   0.3 * 65536;
+    g_mem.k_i_c_dl      =0.0002 * 65536;
     g_mem.k_d_c_dl      =     0 * 65536;
 
     g_mem.activ         = 0;

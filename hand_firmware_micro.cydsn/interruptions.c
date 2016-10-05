@@ -292,6 +292,15 @@ void function_scheduler(void) {
         interrupt_manager();
     }
 
+    //---------------------------------- Read conversion buffer - LOCK function
+
+    analog_read_end();
+
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+
     //---------------------------------- Control Overcurrent
 
     overcurrent_control();
@@ -302,10 +311,6 @@ void function_scheduler(void) {
         interrupt_flag = FALSE;
         interrupt_manager();
     }
-
-    //---------------------------------- Read conversion buffer - LOCK function
-
-    analog_read_end();
 
     //---------------------------------- Calibration 
 
@@ -993,7 +998,7 @@ void analog_read_end() {
 
     // Until there is no valid input tension repeat this measurement
     
-    if (dev_tension > 0){
+    if (dev_tension > 0) {
         // Set tension valid bit to TRUE
 
         tension_valid = TRUE;
@@ -1198,7 +1203,8 @@ void analog_read_end() {
             interrupt_manager();
         }
     }
-    else{
+    else {
+
         emg_1_status = RESET; 
         emg_2_status = RESET;
 
