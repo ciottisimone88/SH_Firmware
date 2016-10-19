@@ -40,8 +40,8 @@ uint8   dev_pwm_limit;
 
 CYBIT reset_last_value_flag;
 CYBIT tension_valid;
-CYBIT interrupt_flag;
-CYBIT watchdog_flag;
+CYBIT interrupt_flag = FALSE;
+CYBIT watchdog_flag = FALSE;
 
 // DMA Buffer
 

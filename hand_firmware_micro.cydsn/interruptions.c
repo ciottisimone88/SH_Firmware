@@ -431,15 +431,17 @@ void motor_control() {
             break;
 
         case INPUT_MODE_EMG_INTEGRAL:
-            if (err_emg_1 > 0)
-                g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed << 1) / (1024 - c_mem.emg_threshold[0]);
-
-            if (err_emg_2 > 0) 
-                g_ref.pos[0] -= (err_emg_2 * g_mem.emg_speed << 1) / (1024 - c_mem.emg_threshold[1]);
-            
+            g_ref.pos[0] = g_refOld.pos[0];
+            if (err_emg_1 > 0) {
+                g_ref.pos[0] = g_refOld.pos[0] + (err_emg_1 * (int)g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
+            }
+            if (err_emg_2 > 0) {
+                g_ref.pos[0] = g_refOld.pos[0] - (err_emg_2 * (int)g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+            }
             break;
 
         case INPUT_MODE_EMG_FCFS:
+            g_ref.pos[0] = g_refOld.pos[0];
             switch (current_emg) {
                 case 0:
                     // Look for the first EMG passing the threshold
@@ -459,7 +461,7 @@ void motor_control() {
                         current_emg = 0;
                         break;
                     }
-                    g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
+                    g_ref.pos[0] = g_refOld.pos[0] + (err_emg_1 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[0]);
                     break;
 
                 case 2:
@@ -468,7 +470,7 @@ void motor_control() {
                         current_emg = 0;
                         break;
                     }
-                    g_ref.pos[0] -= (err_emg_2 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
+                    g_ref.pos[0] = g_refOld.pos[0] - (err_emg_2 * g_mem.emg_speed * 2) / (1024 - c_mem.emg_threshold[1]);
                     break;
 
                 default:
@@ -478,6 +480,7 @@ void motor_control() {
             break;
 
         case INPUT_MODE_EMG_FCFS_ADV:
+            g_ref.pos[0] = g_refOld.pos[0];
             switch (current_emg) {
                 // Look for the first EMG passing the threshold
                 case 0:
@@ -500,7 +503,7 @@ void motor_control() {
                     }
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_1 > 0) 
-                        g_ref.pos[0] += (err_emg_1 * g_mem.emg_speed << 2) / (1024 - c_mem.emg_threshold[0]);
+                        g_ref.pos[0] = g_refOld.pos[0] + (err_emg_1 * g_mem.emg_speed << 2) / (1024 - c_mem.emg_threshold[0]);
                     
                     break;
 
@@ -513,7 +516,7 @@ void motor_control() {
                     }
                     // but if the current signal come back over threshold, continue using it
                     if (err_emg_2 > 0) {
-                        g_ref.pos[0] -= (err_emg_2 * c_mem.emg_speed << 2) / (1024 - c_mem.emg_threshold[1]);
+                        g_ref.pos[0] = g_refOld.pos[0] - (err_emg_2 * c_mem.emg_speed << 2) / (1024 - c_mem.emg_threshold[1]);
                     }
                     break;
 

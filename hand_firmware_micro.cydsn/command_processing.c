@@ -192,6 +192,8 @@ void commProcess(void){
             
             g_refNew.pos[0] = 0;
             calib.enabled = TRUE;
+            
+            sendAcknowledgment(ACK_OK);
             break;
 
 //=========================================================== ALL OTHER COMMANDS
