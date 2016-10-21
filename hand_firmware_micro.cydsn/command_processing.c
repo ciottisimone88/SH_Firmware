@@ -220,7 +220,7 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type) {
-    unsigned char packet_string[1100] = "";
+    unsigned char packet_string[1200] = "";
 
     //==================================     choose info type and prepare string
 
@@ -1287,6 +1287,8 @@ uint8 memInit(void)
     g_mem.emg_threshold[1] = 100;
 
     g_mem.emg_speed = 100;
+    
+    g_mem.watchdog_period = 0;
 
     g_mem.double_encoder_on_off = 1;
     g_mem.motor_handle_ratio = 22;

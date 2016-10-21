@@ -84,6 +84,7 @@ int main()
     // WATCHDOG
     
     WATCHDOG_COUNTER_Start();
+    WATCHDOG_ENABLER_Write(1);                          // Initialize watchdog to disabled
     
     ISR_WATCHDOG_StartEx(ISR_WATCHDOG_Handler);         // WATCHDOG isr function    
 
