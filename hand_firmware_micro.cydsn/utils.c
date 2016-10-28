@@ -231,13 +231,13 @@ void calibration(void) {
 
     // closing
     if (direction == 0) {
-        g_ref.pos[0] += (calib.speed << g_mem.res[0]);
-        if ((g_ref.pos[0]) > g_mem.pos_lim_sup[0]) {
+        g_refNew.pos[0] += (calib.speed << g_mem.res[0]);
+        if ((g_refNew.pos[0]) > g_mem.pos_lim_sup[0]) {
             direction = 1;
         }
     } else { //opening
-        g_ref.pos[0] -= (calib.speed << g_mem.res[0]);
-        if (SIGN(g_ref.pos[0]) != 1) {
+        g_refNew.pos[0] -= (calib.speed << g_mem.res[0]);
+        if (SIGN(g_refNew.pos[0]) != 1) {
             direction = 0;
             closure_counter++;
             if (closure_counter == calib.repetitions) {
