@@ -73,7 +73,24 @@ void commProcess(void){
             cmd_get_currents();
             break;
 
+//=========================================================     CMD_GET_CURR_DIFF
+         
+        case CMD_GET_CURR_DIFF:
+            cmd_get_currents_for_cuff();
+            break;
+            
+//=========================================================     CMD_GET_CURR_DIFF
+        
+        case CMD_GET_VELOCITIES:
+            cmd_get_velocities();
+            break;
+            
+//=========================================================     CMD_GET_CURR_DIFF
 
+        case CMD_GET_ACCEL:
+            cmd_get_accelerations();
+            break;
+            
 //=========================================================     CMD_GET_EMG
 
         case CMD_GET_EMG:
@@ -1107,6 +1124,27 @@ void commWrite(uint8 *packet_data, uint16 packet_lenght)
     RS485_CTS_Write(0);
 }
 
+void commWrite_to_cuff(uint8 *packet_data, uint16 packet_lenght)
+{
+    uint16 CYDATA index;    // iterator
+
+    // frame - start
+    UART_RS485_PutChar(':');
+    UART_RS485_PutChar(':');
+    // frame - ID
+    UART_RS485_PutChar(g_mem.id - 1);
+    // frame - length
+    UART_RS485_PutChar((uint8)packet_lenght);
+    // frame - packet data
+    for(index = 0; index < packet_lenght; ++index) {
+        UART_RS485_PutChar(packet_data[index]);
+    }
+
+    index = 0;
+
+    while(!(UART_RS485_ReadTxStatus() & UART_RS485_TX_STS_COMPLETE) && index++ <= 1000){}
+}
+
 //==============================================================================
 //                                                             CHECKSUM FUNCTION
 //==============================================================================
@@ -1329,6 +1367,50 @@ void cmd_get_measurements(){
    
 }
 
+void cmd_get_velocities(){
+ 
+    uint8 CYDATA index;
+   
+    // Packet: header + measure(int16) + crc
+    
+    uint8 packet_data[8]; 
+    
+    //Header package
+    packet_data[0] = CMD_GET_VELOCITIES;   
+    
+    for (index = NUM_OF_SENSORS; index--;) 
+        *((int16 *) &packet_data[(index << 1) + 1]) = (int16) (g_measOld.vel[index] >> g_mem.res[index]);
+            
+    // Calculate Checksum and send message to UART 
+
+    packet_data[7] = LCRChecksum (packet_data, 7);
+
+    commWrite(packet_data, 8);
+   
+}
+
+void cmd_get_accelerations(){
+ 
+    uint8 CYDATA index;
+   
+    // Packet: header + measure(int16) + crc
+    
+    uint8 packet_data[8]; 
+    
+    //Header package
+    packet_data[0] = CMD_GET_ACCEL;   
+    
+    for (index = NUM_OF_SENSORS; index--;) 
+        *((int16 *) &packet_data[(index << 1) + 1]) = (int16)(g_measOld.acc[index] >> g_mem.res[index]);
+            
+    // Calculate Checksum and send message to UART 
+
+    packet_data[7] = LCRChecksum (packet_data, 7);
+
+    commWrite(packet_data, 8);
+   
+}
+
 void cmd_set_inputs(){
     
     // Store position setted in right variables
@@ -1444,8 +1526,27 @@ void cmd_get_currents(){
     // Calculate Checksum and send message to UART 
 
     packet_data[5] = LCRChecksum (packet_data, 5);
-
+    
     commWrite(packet_data, 6);
+}
+
+void cmd_get_currents_for_cuff(){
+    
+    // Packet: header + motor_measure(int16) + crc
+    
+    uint8 packet_data[4]; 
+    
+    //Header package
+
+    packet_data[0] = CMD_SET_CUFF_INPUTS;
+
+    *((int16 *) &packet_data[1]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
+
+    // Calculate Checksum and send message to UART 
+
+    packet_data[3] = LCRChecksum (packet_data, 3);
+    
+    commWrite_to_cuff(packet_data, 4);
 }
 
 void cmd_set_baudrate(){

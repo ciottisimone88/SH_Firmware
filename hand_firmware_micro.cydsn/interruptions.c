@@ -886,18 +886,17 @@ void encoder_reading(const uint8 idx) {
     }
     
     switch(index) {
-        case 0: {
+        case 0:
             speed_encoder = (int16)filter_vel_1((3*value_encoder + v_value[0] - vv_value[0] - 3*vvv_value[0])*10);
-            break;
-        }
-        case 1: {
+        break;
+ 
+        case 1:
             speed_encoder = (int16)filter_vel_2((3*value_encoder + v_value[1] - vv_value[1] - 3*vvv_value[1])*10);
-            break;
-        }
-        case 2: {
+        break;
+    
+        case 2:
             speed_encoder = (int16)filter_vel_3((3*value_encoder + v_value[2] - vv_value[2] - 3*vvv_value[2])*10);
-            break;
-        }
+        break;
     }
     //Update current speed
     g_meas.vel[index] = speed_encoder;

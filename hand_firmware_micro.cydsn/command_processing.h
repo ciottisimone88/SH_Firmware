@@ -89,6 +89,8 @@ void    commWrite_old_id   (uint8 *packet_data, uint16 packet_lenght, uint8 old_
 **/
 void    commWrite         (uint8 *packet_data, uint16 packet_lenght);
 
+
+void    commWrite_to_cuff (uint8* packet_data, uint16 packet_lenght);
 /** \} */
 
 
@@ -188,11 +190,23 @@ void cmd_set_inputs();
 	to be sent.
 **/
 void cmd_get_measurements();
+//============================================================  cmd_get_velocities
+/** This function gets the encoders velocities and puts them in the package
+	to be sent.
+**/
+void cmd_get_velocities();
+//============================================================  cmd_get_accelerations
+/** This function gets the encoders accelerations and puts them in the package
+	to be sent.
+**/
+void cmd_get_accelerations();
 //============================================================  cmd_get_currents
 /** This function gets the motor current and puts it in the package to 
 	be sent.
 **/
 void cmd_get_currents();
+
+void cmd_get_currents_for_cuff();
 //============================================================  cmd_get_emg
 /** This function gets the electromyographic sensors measurements and puts
 	them in the package to be sent.
