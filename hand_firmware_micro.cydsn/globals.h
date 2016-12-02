@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.0"
+#define VERSION                 "SH-PRO v6.1.1"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -236,6 +236,7 @@ extern struct st_calib  calib;
 
 extern uint32 timer_value;                          /*!< End time of the firmware main loop.*/
 extern uint32 timer_value0;                         /*!< Start time of the firmware main loop*/
+extern float cycle_time;							/*!< Variable used to calculate in how much time a cycle is done */
 
 // Device Data
 

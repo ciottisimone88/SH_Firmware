@@ -1496,8 +1496,8 @@ void cmd_get_curr_and_meas(){
     packet_data[0] = CMD_GET_CURR_AND_MEAS;
     
     // Currents
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0];
-    *((int16 *) &packet_data[3]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real current
+    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated current
 
     // Positions
     for (index = NUM_OF_SENSORS; index--;) 
@@ -1520,8 +1520,8 @@ void cmd_get_currents(){
 
     packet_data[0] = CMD_GET_CURRENTS;
 
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0];
-    *((int16 *) &packet_data[3]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real Current
+    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated Current
 
     // Calculate Checksum and send message to UART 
 
@@ -1540,7 +1540,7 @@ void cmd_get_currents_for_cuff(){
 
     packet_data[0] = CMD_SET_CUFF_INPUTS;
 
-    *((int16 *) &packet_data[1]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[1]; //Estimated Current
 
     // Calculate Checksum and send message to UART 
 

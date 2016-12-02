@@ -30,6 +30,7 @@ float tau_feedback;
 
 uint32 timer_value;
 uint32 timer_value0;
+float cycle_time;
 
 // Device Data
 

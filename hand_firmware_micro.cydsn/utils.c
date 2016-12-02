@@ -19,13 +19,36 @@
 //                                                            Current Estimation
 //==============================================================================
 
-int32 curr_estim (int32 pos, int32 vel, int32 acc) {
-    return (abs(g_mem.curr_lookup[0]*pos +
-                g_mem.curr_lookup[1]*pow(pos,2) + 
-                g_mem.curr_lookup[2]*pow(pos,3) + 
-                g_mem.curr_lookup[3]*vel + 
-                g_mem.curr_lookup[4]*pow(vel,2) + 
-                g_mem.curr_lookup[5]*acc));
+int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
+
+        static int32 virtual_pos_friction; 	//Virtual position used to estimate friction
+        static int32 err_pos_dt;			//Temporal evolution of error position.
+											//Needed to model the current transients due to reference steps.
+        int32 curr_estimate;
+
+        if (pos < ZERO_TOL) 
+			virtual_pos_friction = pos;
+        else {
+			if ((pos - virtual_pos_friction) > ZMAX) 
+				virtual_pos_friction =  pos - ZMAX;
+        	else { 
+				if ((pos - virtual_pos_friction) < -ZMAX) 
+					virtual_pos_friction =  pos + ZMAX;
+			}
+		}        
+       
+        curr_estimate = pos * g_mem.curr_lookup[0] * (1 + pos * g_mem.curr_lookup[1]) + (pos - virtual_pos_friction) * (g_mem.curr_lookup[2] / ZMAX) + vel * g_mem.curr_lookup[3] * (1 + abs(vel) * g_mem.curr_lookup[4]) + (ref - err_pos_dt) * g_mem.curr_lookup[5];
+        
+        if (curr_estimate > c_mem.current_limit) 
+            curr_estimate = c_mem.current_limit;
+        else {
+			if (curr_estimate < -c_mem.current_limit)
+            	curr_estimate = -c_mem.current_limit;
+		}
+
+        err_pos_dt = (REFSPEED * ref + (1024 - REFSPEED) * err_pos_dt) / 1024;         
+        
+        return curr_estimate;        
 }
 
 //==============================================================================
@@ -36,22 +59,22 @@ int32 filter_v(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
+    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) /1024;
 
     old_value = aux;
 
-    return (aux >> 6);
+    return (aux /64);
 }
 
 int32 filter_i1(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
+    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) /1024;
 
     old_value = aux;
 
-    return (aux >> 6);
+    return (aux /64);
 }
 
 //==============================================================================
@@ -60,13 +83,13 @@ int32 filter_i1(int32 new_value) {
 
 int32 filter_ch1(int32 new_value) {
 
-    static int32 old_value, aux;
+   static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
+    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
 
     old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 //==============================================================================
@@ -75,51 +98,54 @@ int32 filter_ch1(int32 new_value) {
 
 int32 filter_vel_1(int32 new_value) {
 
-    static int32 old_out, aux;
+   static int32 old_value, aux;
 
-    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
+    aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
 
-    old_out = aux;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 int32 filter_vel_2(int32 new_value) {
 
-    static int32 old_out, aux;
+    static int32 old_value, aux;
 
-    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
+    aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
 
-    old_out = aux;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 int32 filter_vel_3(int32 new_value) {
 
-    static int32 old_out, aux;
+    static int32 old_value, aux;
 
-    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
+    aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
 
-    old_out = aux;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 //==============================================================================
 //                                                     Current difference filter
 //==============================================================================
 
-int32 filter_curr_diff(int32 curr_diff) {
+int32 filter_curr_diff(int32 new_value) {
 
-    static int32 old_out, aux, old_input;
+    static int32 old_value, aux;
 
-    aux = (old_out * (1024 - 2) + (curr_diff + old_input) * (0.8)) / 1024;
+ //   if (new_value < 100) new_value = 0;
+ //   else new_value = new_value - 100;
+    
+    aux = (old_value * (1024 - ETA) + (new_value << 6) * (ETA)) /1024;
 
-    old_out = aux;
-    old_input = curr_diff;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
+
 }
 
 //==============================================================================
@@ -130,11 +156,11 @@ int32 filter_ch2(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
+    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
 
     old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 //==============================================================================
@@ -143,35 +169,35 @@ int32 filter_ch2(int32 new_value) {
 
 int32 filter_acc_1(int32 new_value) {
 
-    static int32 old_out, aux;
+    static int32 old_value, aux;
 
-    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
+    aux = (old_value * (1024 - DELTA) + (new_value << 6) * (DELTA)) /1024;
 
-    old_out = aux;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 int32 filter_acc_2(int32 new_value) {
 
-    static int32 old_out, aux;
+    static int32 old_value, aux;
 
-    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
+    aux = (old_value * (1024 - DELTA) + (new_value << 6) * (DELTA)) /1024;
 
-    old_out = aux;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 int32 filter_acc_3(int32 new_value) {
 
-    static int32 old_out, aux;
+    static int32 old_value, aux;
 
-    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
+    aux = (old_value * (1024 - DELTA) + (new_value << 6) * (DELTA)) /1024;
 
-    old_out = aux;
+    old_value = aux;
 
-    return aux;
+    return (aux /64);
 }
 
 //==============================================================================
