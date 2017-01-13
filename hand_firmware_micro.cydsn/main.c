@@ -127,6 +127,11 @@ int main()
     PACER_TIMER_Start();
 
     CYGlobalIntEnable;                                  // enable interrupts
+    
+    hand_comp_calib.enabled = 0;
+    hand_comp_current_mode = 0;
+    hand_comp_closure_threshold = 1.0;
+    HAND_COMP_TIMER_Start();
 
 //========================================     initializations - clean variables
 

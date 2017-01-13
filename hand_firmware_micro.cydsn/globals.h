@@ -26,13 +26,13 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.1"
+#define VERSION                 "SH-PRO v6.1.0 mod. HAND COMPARAISON + HANDLE"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           21      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           27      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -188,7 +188,9 @@ struct st_mem {
 
     uint8   baud_rate;                  /*!< Baud Rate setted.*/                                            //1
     uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
-
+    
+    float  handle_grasp_time;          /*!< Grasp time to switch to pwm=0 control */
+    uint32  handle_grasp_thr;           /*!< Grasp measurements error threshold */
                                                                                             //TOT           150 bytes
 };
 
@@ -236,7 +238,6 @@ extern struct st_calib  calib;
 
 extern uint32 timer_value;                          /*!< End time of the firmware main loop.*/
 extern uint32 timer_value0;                         /*!< Start time of the firmware main loop*/
-extern float cycle_time;							/*!< Variable used to calculate in how much time a cycle is done */
 
 // Device Data
 
@@ -259,6 +260,17 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer 
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
+
+// Hand comparaison variables
+extern int16 pwm_value;
+extern int32 hand_comp_closure;
+extern uint32 hand_comp_reactivation_time;
+extern uint8 hand_comp_current_mode;
+extern struct st_calib hand_comp_calib;
+extern float hand_comp_closure_threshold;
+
+extern uint32 timer_val;
+extern uint32 timer_val_init;
 // -----------------------------------------------------------------------------
 
 

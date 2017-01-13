@@ -19,36 +19,13 @@
 //                                                            Current Estimation
 //==============================================================================
 
-int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
-
-        static int32 virtual_pos_friction; 	//Virtual position used to estimate friction
-        static int32 err_pos_dt;			//Temporal evolution of error position.
-											//Needed to model the current transients due to reference steps.
-        int32 curr_estimate;
-
-        if (pos < ZERO_TOL) 
-			virtual_pos_friction = pos;
-        else {
-			if ((pos - virtual_pos_friction) > ZMAX) 
-				virtual_pos_friction =  pos - ZMAX;
-        	else { 
-				if ((pos - virtual_pos_friction) < -ZMAX) 
-					virtual_pos_friction =  pos + ZMAX;
-			}
-		}        
-       
-        curr_estimate = pos * g_mem.curr_lookup[0] * (1 + pos * g_mem.curr_lookup[1]) + (pos - virtual_pos_friction) * (g_mem.curr_lookup[2] / ZMAX) + vel * g_mem.curr_lookup[3] * (1 + abs(vel) * g_mem.curr_lookup[4]) + (ref - err_pos_dt) * g_mem.curr_lookup[5];
-        
-        if (curr_estimate > c_mem.current_limit) 
-            curr_estimate = c_mem.current_limit;
-        else {
-			if (curr_estimate < -c_mem.current_limit)
-            	curr_estimate = -c_mem.current_limit;
-		}
-
-        err_pos_dt = (REFSPEED * ref + (1024 - REFSPEED) * err_pos_dt) / 1024;         
-        
-        return curr_estimate;        
+int32 curr_estim (int32 pos, int32 vel, int32 acc) {
+    return (abs(g_mem.curr_lookup[0]*pos +
+                g_mem.curr_lookup[1]*pow(pos,2) + 
+                g_mem.curr_lookup[2]*pow(pos,3) + 
+                g_mem.curr_lookup[3]*vel + 
+                g_mem.curr_lookup[4]*pow(vel,2) + 
+                g_mem.curr_lookup[5]*acc));
 }
 
 //==============================================================================
@@ -59,22 +36,22 @@ int32 filter_v(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) /1024;
+    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
 
     old_value = aux;
 
-    return (aux /64);
+    return (aux >> 6);
 }
 
 int32 filter_i1(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) /1024;
+    aux = (old_value * (1024 - ALPHA) + (new_value << 6) * (ALPHA)) >> 10;
 
     old_value = aux;
 
-    return (aux /64);
+    return (aux >> 6);
 }
 
 //==============================================================================
@@ -83,13 +60,13 @@ int32 filter_i1(int32 new_value) {
 
 int32 filter_ch1(int32 new_value) {
 
-   static int32 old_value, aux;
+    static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
+    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
 
     old_value = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 //==============================================================================
@@ -98,54 +75,51 @@ int32 filter_ch1(int32 new_value) {
 
 int32 filter_vel_1(int32 new_value) {
 
-   static int32 old_value, aux;
+    static int32 old_out, aux;
 
-    aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
+    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 int32 filter_vel_2(int32 new_value) {
 
-    static int32 old_value, aux;
+    static int32 old_out, aux;
 
-    aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
+    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 int32 filter_vel_3(int32 new_value) {
 
-    static int32 old_value, aux;
+    static int32 old_out, aux;
 
-    aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
+    aux = (old_out * (1024 - GAMMA) + new_value * (GAMMA)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 //==============================================================================
 //                                                     Current difference filter
 //==============================================================================
 
-int32 filter_curr_diff(int32 new_value) {
+int32 filter_curr_diff(int32 curr_diff) {
 
-    static int32 old_value, aux;
+    static int32 old_out, aux, old_input;
 
- //   if (new_value < 100) new_value = 0;
- //   else new_value = new_value - 100;
-    
-    aux = (old_value * (1024 - ETA) + (new_value << 6) * (ETA)) /1024;
+    aux = (old_out * (1024 - 2) + (curr_diff + old_input) * (0.8)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
+    old_input = curr_diff;
 
-    return (aux /64);
-
+    return aux;
 }
 
 //==============================================================================
@@ -156,11 +130,11 @@ int32 filter_ch2(int32 new_value) {
 
     static int32 old_value, aux;
 
-    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
+    aux = (old_value * (1024 - BETA) + new_value * (BETA)) / 1024;
 
     old_value = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 //==============================================================================
@@ -169,35 +143,35 @@ int32 filter_ch2(int32 new_value) {
 
 int32 filter_acc_1(int32 new_value) {
 
-    static int32 old_value, aux;
+    static int32 old_out, aux;
 
-    aux = (old_value * (1024 - DELTA) + (new_value << 6) * (DELTA)) /1024;
+    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 int32 filter_acc_2(int32 new_value) {
 
-    static int32 old_value, aux;
+    static int32 old_out, aux;
 
-    aux = (old_value * (1024 - DELTA) + (new_value << 6) * (DELTA)) /1024;
+    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 int32 filter_acc_3(int32 new_value) {
 
-    static int32 old_value, aux;
+    static int32 old_out, aux;
 
-    aux = (old_value * (1024 - DELTA) + (new_value << 6) * (DELTA)) /1024;
+    aux = (old_out * (1024 - DELTA) + new_value * (DELTA)) / 1024;
 
-    old_value = aux;
+    old_out = aux;
 
-    return (aux /64);
+    return aux;
 }
 
 //==============================================================================
@@ -274,6 +248,97 @@ void calibration(void) {
     }
 }
 
+
+//==============================================================================
+//                                                              HAND COMPARAISON
+//==============================================================================
+
+void hand_comparaison(void) {       // 100 Hz frequency
+    static uint8 mode = 0;         //0 closing, 1 pause, 2 opening
+    static uint16 closure_counter;      // Range [0 - 2^16]
+    static uint32 count = 0;        
+
+    static uint8 first_time = 1;
+    
+    
+    if (first_time){
+        //timer_val_init = (uint32)HAND_COMP_TIMER_ReadCounter();
+        count = 0;
+        first_time = 0;
+    }
+    
+    switch (mode) {
+        case 0:             // closing
+            g_refNew.pos[0] = hand_comp_closure;
+            if ((g_meas.pos[0]) > hand_comp_closure_threshold*hand_comp_closure) {
+                hand_comp_current_mode = 1;     // switch to pwm control
+                g_refNew.pwm[0] = 0;
+                mode = 1;
+            }
+            break;
+        case 1:             // pause
+            g_refNew.pwm[0] = 0;
+            //timer_val = (uint32)HAND_COMP_TIMER_ReadCounter();
+            if (count == (hand_comp_reactivation_time/10000) ){
+            //if (((uint32)timer_val-(uint32)timer_val_init) > (uint32)hand_comp_reactivation_time) {
+                hand_comp_current_mode = 0;       // switch to position control
+                mode = 2;
+            }
+            break;
+        case 2:             // opening
+            g_refNew.pos[0] = 0;
+            if ((g_meas.pos[0]) < 100 && count == 1000) {   // wait 10 seconds in total
+                mode = 0;
+                first_time = 1;
+                closure_counter++;
+                if (closure_counter == hand_comp_calib.repetitions) {
+                    closure_counter = 0;
+                    hand_comp_calib.enabled = 0;
+                }
+            }
+            break;
+            
+    }
+    
+    count = count + 1;
+}
+
+
+//==============================================================================
+//                                                             HANDLE CHECK MODE
+//==============================================================================
+
+void handle_check_mode(void) {       // 100 Hz frequency
+    static uint32 meas_error = 0;
+    static uint8 first_time = 1;
+    static uint32 count = 0;  
+    
+    meas_error = abs(g_meas.pos[2] - g_measOld.pos[2]);
+    
+    if (meas_error < c_mem.handle_grasp_thr) {
+            
+        if (first_time){
+            count = 0;
+            first_time = 0;
+        }
+        else {
+            if (count >= ( (uint32)(c_mem.handle_grasp_time*100) )){ // 100 Hz
+                hand_comp_current_mode = 1;     // switch to pwm control
+                g_refNew.pwm[0] = 0;
+            }
+            else {
+                count = count + 1;
+            }
+        }
+
+    }
+    else {
+        // Reset counter if meas_error overcomes the threshold
+        count = 0;
+        hand_comp_current_mode = 0;       // switch to position control
+    }
+
+}
 
 //==============================================================================
 //                                                      DOUBLE ENCODER CALC TURN

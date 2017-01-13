@@ -12,6 +12,8 @@
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
+
+
 #ifndef UTILS_H_INCLUDED
 #define UTILS_H_INCLUDED
 
@@ -23,15 +25,8 @@
 
 #define ALPHA 32			///< Voltage and current filters constant
 #define BETA  50			///< Emg filters constant
-#define GAMMA 128 			///< Velocity filters constant
-#define DELTA 8 			///< Acceleration filters constant
-#define ETA   16            ///< Current residual filter
-
-#define ZMAX 5				///< 
-#define ZERO_TOL 100		/*!< Deadband used to put to zero the virtual position
-								 due to the fact that the friction model has errors when the
-								 position is near to zero*/
-#define REFSPEED 20			///< Constant depending on PID values
+#define GAMMA 32 			///< Velocity filters constant
+#define DELTA 32 			///< Acceleration filters constant
 
 #define SIGN(A) (((A) >=0) ? (1) : (-1))	///< Sign calculation function
 
@@ -135,7 +130,7 @@ int32 filter_acc_3(int32 value);
  * 	\return Returns an estimation of the motor current, depending on its position, velocity
  * 			and acceleration.
 **/
-int32 curr_estim( int32 pos, int32 vel, int32 acc);
+int32 curr_estim(int32 pos, int32 vel, int32 accel);
 /** Low pass filter on current difference between measured and estimated current 
  *
  *	\param curr_diff 	Difference between the measured current and the estimated one.
@@ -181,6 +176,10 @@ int calc_turns_fcn(const int32 pos1,const int32 pos2);
  * calibration of the device.
 **/
 void calibration();
+
+void hand_comparaison();
+
+void handle_check_mode();
 
 #endif
 
