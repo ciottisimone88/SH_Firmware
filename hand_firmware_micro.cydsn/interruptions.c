@@ -330,6 +330,26 @@ void function_scheduler(void) {
         interrupt_manager();
     }
    
+    
+    //---------------------------------- Hand Comparaison
+    
+    // Divider 10, freq = 500 Hz
+    if (hand_comp_calib.enabled == TRUE) {
+        if (counter_calibration == CALIBRATION_DIV) {
+            hand_comparaison();
+            counter_calibration = 0;
+        }
+        counter_calibration++;
+       
+        // Check Interrupt 
+        
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
+    }
+    
+    
     //---------------------------------- Update States
     
     // Load k-1 state
@@ -345,7 +365,6 @@ void function_scheduler(void) {
     }
 
     timer_value = (uint32)MY_TIMER_ReadCounter();
-    cycle_time = (float)((timer_value0 - timer_value)/1000000.0);
     MY_TIMER_WriteCounter(5000000);
 
 }
@@ -586,10 +605,10 @@ void motor_control() {
             // saturate max current
             if (i_ref > c_mem.current_limit)
                 i_ref = c_mem.current_limit;
-            else {
+            else 
                 if (i_ref < -c_mem.current_limit)
                     i_ref = -c_mem.current_limit;
-        	}
+            
 
             // saturate min current
             /*if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
@@ -646,11 +665,10 @@ void motor_control() {
             pos_error_sum += pos_error;
 
             // anti-windup (for integral control)
-            if (pos_error_sum > ANTI_WINDUP)
+            if (pos_error_sum > ANTI_WINDUP) {
                 pos_error_sum = ANTI_WINDUP;
-            else {
-				if (pos_error_sum < -ANTI_WINDUP)
-                	pos_error_sum = -ANTI_WINDUP;
+            } else if (pos_error_sum < -ANTI_WINDUP) {
+                pos_error_sum = -ANTI_WINDUP;
             }
 
             // Proportional
@@ -739,10 +757,68 @@ void motor_control() {
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 
                 pwm_input = -PWM_MAX_VALUE;
-            else {
-				if (pwm_input > PWM_MAX_VALUE) 
-                	pwm_input = PWM_MAX_VALUE;
-        	}
+             else if (pwm_input > PWM_MAX_VALUE) 
+                pwm_input = PWM_MAX_VALUE;
+            
+
+        break;
+            
+        // ================= HAND COMPARAISON ================================
+        case HAND_COMPARAISON:
+            // This mode is handled in the function scheduler   
+            
+            if (hand_comp_current_mode == 0) {      // Position control
+                pos_error = g_ref.pos[0] - g_meas.pos[0];
+
+                pos_error_sum += pos_error;
+
+                // anti-windup (for integral control)
+                if (pos_error_sum > ANTI_WINDUP) {
+                    pos_error_sum = ANTI_WINDUP;
+                } else if (pos_error_sum < -ANTI_WINDUP) {
+                    pos_error_sum = -ANTI_WINDUP;
+                }
+
+                // Proportional
+                if (k_p != 0) 
+                    pwm_input = (int32)(k_p * pos_error) >> 16;
+                
+
+                // Integral
+                if (k_i != 0) 
+                    pwm_input += (int32)(k_i * pos_error_sum) >> 16;
+                
+
+                // Derivative
+                if (k_d != 0) 
+                    pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16;
+                
+
+                // Update measure
+                prev_pos_err = pos_error;
+
+                if (pwm_input > 0)
+                    motor_dir = TRUE;
+                else
+                    motor_dir = FALSE;
+            }
+            else {              // pwm control
+                
+                pwm_input = g_ref.pwm[0];
+
+                if (pwm_input > 0) 
+                    motor_dir = TRUE;
+                else 
+                    motor_dir = FALSE;
+                
+
+                // pwm_input saturation
+                if (pwm_input < -PWM_MAX_VALUE) 
+                    pwm_input = -PWM_MAX_VALUE;
+                 else if (pwm_input > PWM_MAX_VALUE) 
+                    pwm_input = PWM_MAX_VALUE;
+            
+            }
 
         break;
     }
@@ -767,6 +843,8 @@ void motor_control() {
         MOTOR_DIR_Write(0x00);
 
     PWM_MOTORS_WriteCompare1(abs(pwm_input));
+    
+    pwm_value = (int16) pwm_input;
 }
 
 //==============================================================================
@@ -782,7 +860,7 @@ void encoder_reading(const uint8 idx) {
     uint32 data_encoder;
     int32 value_encoder;
     int32 speed_encoder;
-    //int32 accel_encoder;
+    int32 accel_encoder;
     int32 aux;
 
     static int32 last_value_encoder[NUM_OF_SENSORS];
@@ -798,9 +876,9 @@ void encoder_reading(const uint8 idx) {
     static int32 vv_value[NUM_OF_SENSORS];  //last last value for velocity
     static int32 vvv_value[NUM_OF_SENSORS];  //last last last value for velocity
     
-    //static int32 a_value[NUM_OF_SENSORS];   //last value for acceleration
-    //static int32 aa_value[NUM_OF_SENSORS];  //last last value for acceleration
-    //static int32 aaa_value[NUM_OF_SENSORS];  //last last last value for acceleration
+    static int32 a_value[NUM_OF_SENSORS];   //last value for acceleration
+    static int32 aa_value[NUM_OF_SENSORS];  //last last value for acceleration
+    static int32 aaa_value[NUM_OF_SENSORS];  //last last last value for acceleration
 
     if (index >= NUM_OF_SENSORS)
         return;
@@ -890,50 +968,45 @@ void encoder_reading(const uint8 idx) {
     
     switch(index) {
         case 0:
-            speed_encoder = (int16)filter_vel_1((11*value_encoder - 18* v_value[0] + 9 * vv_value[0] -2 * vvv_value[0]));
+            speed_encoder = (int16)filter_vel_1((3*value_encoder + v_value[0] - vv_value[0] - 3*vvv_value[0])*10);
         break;
  
         case 1:
-            speed_encoder = (int16)filter_vel_2((11*value_encoder - 18* v_value[1] + 9 * vv_value[1] -2 * vvv_value[1]));
+            speed_encoder = (int16)filter_vel_2((3*value_encoder + v_value[1] - vv_value[1] - 3*vvv_value[1])*10);
         break;
     
         case 2:
-            speed_encoder = (int16)filter_vel_3((11*value_encoder - 18* v_value[2] + 9 * vv_value[2] -2 * vvv_value[2]));
+            speed_encoder = (int16)filter_vel_3((3*value_encoder + v_value[2] - vv_value[2] - 3*vvv_value[2])*10);
         break;
     }
     //Update current speed
-    speed_encoder = speed_encoder / (6*cycle_time);
     g_meas.vel[index] = speed_encoder;
     
-    /*
     //Encoder rotational acceleration calculation
     switch(index) {
         case 0:
-            accel_encoder = (int16)filter_acc_1((11*speed_encoder - 18* a_value[0] + 9 * aa_value[0] -2* aaa_value[0] ));
+            accel_encoder = (int16)filter_acc_1((3*speed_encoder + a_value[0] - aa_value[0] - 3*aaa_value[0])*10);
             break;
         
         case 1:
-            accel_encoder = (int16)filter_acc_2((11*speed_encoder - 18* a_value[1] + 9 * aa_value[1] -2* aaa_value[1] ));
+            accel_encoder = (int16)filter_acc_2((3*speed_encoder + a_value[1] - aa_value[1] - 3*aaa_value[1])*10);
             break;
         
         case 2:
-            accel_encoder = (int16)filter_acc_3((11*speed_encoder - 18* a_value[2] + 9 * aa_value[2] -2* aaa_value[2] ));
+            accel_encoder = (int16)filter_acc_3((3*speed_encoder + a_value[2] - aa_value[2] - 3*aaa_value[2])*10);
             break;
     }
     //Update current acceleration
-    g_meas.acc[index] = accel_encoder / (6*cycle_time);
-    */
+    g_meas.acc[index] = accel_encoder;
 
     // update old velocity and acceleration values
     vvv_value[index] = vv_value[index];
     vv_value[index] = v_value[index];
     v_value[index] = value_encoder;
 
-    /*
     aaa_value[index] = aa_value[index];
     aa_value[index] = a_value[index];
     a_value[index] = speed_encoder;
-    */
 
 
     // wait at least 3 * max_num_of_error (10) + 5 = 35 cycles to reconstruct the right turn
@@ -1019,9 +1092,6 @@ void analog_read_end() {
         // Filter and Set currents
         g_meas.curr[0] = filter_i1((int16) (((int32)(ADC_buf[1] - 1638) * 25771) >> 13) * pwm_sign);
         
-		// Calculate current estimation and put it in the second part of the current measurement array;
-		g_meas.curr[1] = (int16) filter_curr_diff(((int32) g_meas.curr[0]) - curr_estim(g_meas.pos[0] >> g_mem.res[0], g_meas.vel[0] >> g_mem.res[0], g_ref.pos[0] >> g_mem.res[0]));
-
         // Check Interrupt 
     
         if (interrupt_flag){

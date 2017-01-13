@@ -30,7 +30,6 @@ float tau_feedback;
 
 uint32 timer_value;
 uint32 timer_value0;
-float cycle_time;
 
 // Device Data
 
@@ -50,5 +49,17 @@ int16 ADC_buf[4];
 
 // PWM value
 int8 pwm_sign;
+
+
+// Hand comparaison variables
+int16 pwm_value;
+int32 hand_comp_closure;
+uint32 hand_comp_reactivation_time;
+uint8 hand_comp_current_mode;
+struct st_calib hand_comp_calib;
+float hand_comp_closure_threshold;
+
+uint32 timer_val;
+uint32 timer_val_init;
 
 /* END OF FILE */

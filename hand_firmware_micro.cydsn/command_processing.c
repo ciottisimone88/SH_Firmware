@@ -237,7 +237,7 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type) {
-    unsigned char packet_string[1200] = "";
+    unsigned char packet_string[1300] = "";
 
     //==================================     choose info type and prepare string
 
@@ -258,8 +258,8 @@ void infoGet(uint16 info_type) {
 
 void get_param_list(uint16 index) {
     //Package to be sent variables
-    uint8 packet_data[1551] = "";
-    uint16 packet_lenght = 1551;
+    uint8 packet_data[1751] = "";
+    uint16 packet_lenght = 1751;
 
     //Auxiliary variables
     uint8 CYDATA i;
@@ -288,11 +288,15 @@ void get_param_list(uint16 index) {
     char abs_enc_str[36] = "18 - Absolute encoder position:";
     char handle_ratio_str[25] = "19 - Motor handle ratio:"; 
     char motor_type_str[24] = "20 - PWM rescaling:";
-    char curr_lookup_str[21] = "21 - Current lookup:";
+    char hand_comp_closure_str[31] = "21 - Hand Comparaison Closure:";
+    char hand_comp_closure_thr_str[41] = "22 - Hand Comparasion Closure Threshold:";
+    char hand_comp_pause_time_str[48] = "23 - Hand Comparaison Reactivaction Time [sec]:";
+    char hand_comp_rep_str[35] = "24 - Hand Comparaison Repetitions:";
+    char curr_lookup_str[21] = "25 - Current lookup:";
 
     //Parameters menus
     char input_mode_menu[99] = "0 -> Usb\n1 -> Handle\n2 -> EMG proportional\n3 -> EMG Integral\n4 -> EMG FCFS\n5 -> EMG FCFS Advanced\n";
-    char control_mode_menu[63] = "0 -> Position\n1 -> PWM\n2 -> Current\n3 -> Position and Current\n";
+    char control_mode_menu[85] = "0 -> Position\n1 -> PWM\n2 -> Current\n3 -> Position and Current\n4 -> Hand Comparaison\n";
     char yes_no_menu[42] = "0 -> Deactivate [NO]\n1 -> Activate [YES]\n";
 
     //Strings lenghts
@@ -317,6 +321,11 @@ void get_param_list(uint16 index) {
     uint8 CYDATA input_mode_menu_len = strlen(input_mode_menu);
     uint8 CYDATA control_mode_menu_len = strlen(control_mode_menu);
     uint8 CYDATA yes_no_menu_len = strlen(yes_no_menu);
+    
+    uint8 CYDATA hand_comp_closure_str_len = strlen(hand_comp_closure_str);
+    uint8 CYDATA hand_comp_closure_thr_str_len = strlen(hand_comp_closure_thr_str);
+    uint8 CYDATA hand_comp_pause_time_str_len = strlen(hand_comp_pause_time_str);
+    uint8 CYDATA hand_comp_rep_str_len = strlen(hand_comp_rep_str);
 
     packet_data[0] = CMD_GET_PARAM_LIST;
     packet_data[1] = NUM_OF_PARAMS;
@@ -442,6 +451,10 @@ void get_param_list(uint16 index) {
                 case CURR_AND_POS_CONTROL:
                     strcat(contr_str, " Position and Current\0");
                     string_lenght = 39;
+                break;
+                case HAND_COMPARAISON:
+                    strcat(contr_str, " Hand Comparaison\0");
+                    string_lenght = 35;
                 break;
             }
             for(i = string_lenght; i != 0; i--)
@@ -609,26 +622,59 @@ void get_param_list(uint16 index) {
                 packet_data[955 + string_lenght - i] = motor_type_str[string_lenght - i];
             //The following byte indicates the number of menus at the end of the packet to send
             packet_data[955 + string_lenght] = 3;
+            
+            /*---------HAND COMP CLOSURE---------*/
+            
+            packet_data[1002] = TYPE_INT32;
+            packet_data[1003] = 1;
+            *((int32 *)( packet_data + 1004 )) = (hand_comp_closure >> c_mem.res[i]);
+            for(i = hand_comp_closure_str_len; i != 0; i--)
+                packet_data[1008 + hand_comp_closure_str_len - i] = hand_comp_closure_str[hand_comp_closure_str_len - i];
+                
+            /*---------HAND COMP CLOSURE THRESHOLD---------*/
+            
+            packet_data[1052] = TYPE_FLOAT;
+            packet_data[1053] = 1;
+            *((float *)(packet_data + 1054)) = hand_comp_closure_threshold;
+            for(i = hand_comp_closure_thr_str_len; i != 0; i--)
+                packet_data[1058 + hand_comp_closure_thr_str_len - i] = hand_comp_closure_thr_str[hand_comp_closure_thr_str_len - i];
+
+            /*---------HAND COMP PAUSE TIME---------*/
+            
+            packet_data[1102] = TYPE_UINT32;
+            packet_data[1103] = 1;
+            *((uint32 *)(packet_data + 1104)) = (hand_comp_reactivation_time/1000000);
+            for(i = hand_comp_pause_time_str_len; i != 0; i--)
+                packet_data[1108 + hand_comp_pause_time_str_len - i] = hand_comp_pause_time_str[hand_comp_pause_time_str_len - i];
+                
+             /*---------HAND COMP REPETITIONS---------*/
+            
+            packet_data[1152] = TYPE_UINT8;
+            packet_data[1153] = 1;
+            *((int8 *)(packet_data + 1154)) = hand_comp_calib.repetitions;
+            for(i = hand_comp_rep_str_len; i != 0; i--)
+                packet_data[1155 + hand_comp_rep_str_len - i] = hand_comp_rep_str[hand_comp_rep_str_len - i];
 
             /*---------CURRENT LOOKUP TABLE---------*/
 
-            packet_data[1002] = TYPE_FLOAT;
-            packet_data[1003] = 6;
+            packet_data[1202] = TYPE_FLOAT;
+            packet_data[1203] = 6;
             for(i = 0; i < LOOKUP_DIM; i++)
-                *((float *) ( packet_data + 1004 + (i * 4) )) = c_mem.curr_lookup[i];
+                *((float *) ( packet_data + 1204 + (i * 4) )) = c_mem.curr_lookup[i];
             for(i = curr_lookup_str_len; i != 0; i--)
-                packet_data[1028 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
+                packet_data[1228 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
+                
                 
             /*------------PARAMETERS MENU-----------*/
 
             for(i = input_mode_menu_len; i != 0; i--)
-                packet_data[1052 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
+                packet_data[1252 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
 
             for(i = control_mode_menu_len; i != 0; i--)
-                packet_data[1202 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
+                packet_data[1402 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
 
             for(i = yes_no_menu_len; i!= 0; i--)
-                packet_data[1352 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
+                packet_data[1552 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
             commWrite(packet_data, packet_lenght);
@@ -784,11 +830,30 @@ void get_param_list(uint16 index) {
         case 20:        //Motor type - uint8
             g_mem.activate_pwm_rescaling = g_rx.buffer[3];
         break;
+//===================================================     set_hand_comp_closure
+        case 21:        //hand_comp_closure - int32
+            hand_comp_closure = *((int32 *) &g_rx.buffer[3]);
+
+            hand_comp_closure = hand_comp_closure << g_mem.res[0];
+        break;
+//===================================================     set_hand_comp_speed
+        case 22:        //hand_comp closure_thr - float
+            hand_comp_closure_threshold = *((float *) &g_rx.buffer[3]);
+        break;
+//===================================================     set_hand_comp_reactivation_time
+        case 23:        //hand_comp_reactivation_time - uint32
+            hand_comp_reactivation_time = *((uint32*) &g_rx.buffer[3]);
+            hand_comp_reactivation_time = hand_comp_reactivation_time * 1000000;
+        break;
+//===================================================     set_hand_repetitions
+        case 24:        //hand_comp_repetitions - uint8
+            hand_comp_calib.repetitions = g_rx.buffer[3];
+        break;
 //===================================================     set_curr_lookup_table
-        case 21:        //Current lookup table - float
+        case 25:        //Current lookup table - float
             for(i = 0; i < LOOKUP_DIM; i++)
                 g_mem.curr_lookup[i] = *((float *) &g_rx.buffer[3 + i*4]);
-        break;
+        break;            
     }
 }
 
@@ -977,6 +1042,9 @@ void infoPrepare(unsigned char *info_string)
             case CURR_AND_POS_CONTROL:
                 strcat(info_string, "Control mode: Position and Current\r\n");
                 break;
+            case HAND_COMPARAISON:
+                strcat(info_string, "Control mode: Hand Comparaison\r\n");
+                break;
             default:
                 break;
         }
@@ -1063,6 +1131,16 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, "\r\n");
 
         sprintf(str, "debug: %ld", (uint32)timer_value0 - (uint32)timer_value); //5000001
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        
+        sprintf(str, "hand comp timer init: %ld", (uint32)timer_val_init);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        sprintf(str, "hand comp timer actual: %ld", (uint32)timer_val); 
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        sprintf(str, "hand comp timer diff: %ld", (uint32)timer_val_init - (uint32)timer_val); //5000001
         strcat(info_string, str);
         strcat(info_string, "\r\n");
     }
@@ -1460,6 +1538,15 @@ void cmd_activate(){
     if ((g_mem.control_mode == CONTROL_ANGLE) || (g_mem.control_mode == CURR_AND_POS_CONTROL)) {
         g_refNew.pos[0] = g_meas.pos[0];
         g_refNew.pos[1] = g_meas.pos[1];
+        hand_comp_calib.enabled = 0;
+    }
+    
+    if (g_mem.control_mode == HAND_COMPARAISON) {
+        if (g_rx.buffer[1]){
+            hand_comp_calib.enabled = 1;
+        }
+        else
+            hand_comp_calib.enabled = 0;
     }
 
     // Activate/Disactivate motors
@@ -1496,8 +1583,8 @@ void cmd_get_curr_and_meas(){
     packet_data[0] = CMD_GET_CURR_AND_MEAS;
     
     // Currents
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real current
-    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated current
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0];
+    *((int16 *) &packet_data[3]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
 
     // Positions
     for (index = NUM_OF_SENSORS; index--;) 
@@ -1520,8 +1607,8 @@ void cmd_get_currents(){
 
     packet_data[0] = CMD_GET_CURRENTS;
 
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real Current
-    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated Current
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0];
+    *((int16 *) &packet_data[3]) = (int16) pwm_value; //filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
 
     // Calculate Checksum and send message to UART 
 
@@ -1540,7 +1627,7 @@ void cmd_get_currents_for_cuff(){
 
     packet_data[0] = CMD_SET_CUFF_INPUTS;
 
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[1]; //Estimated Current
+    *((int16 *) &packet_data[1]) = (int16) filter_curr_diff(((int32) g_measOld.curr[0] - curr_estim(g_measOld.pos[0],g_measOld.vel[0], g_measOld.acc[0])));
 
     // Calculate Checksum and send message to UART 
 
