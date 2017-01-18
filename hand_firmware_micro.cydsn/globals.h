@@ -8,7 +8,7 @@
 *
 * \brief        Global definitions and macros are set in this file.
 * \date         June 06, 2016
-* \author       _abrobotics_
+* \author       _qbrobotics_
 * \copyright    (C)  qbrobotics. All rights reserved.
 */
 
@@ -26,7 +26,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.1"
+#define VERSION                 "SH-PRO v6.1.1 mod. KOREA"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -226,6 +226,14 @@ typedef enum {
 
 } emg_status;                       /*!< EMG status enumeration */
 
+//=================================================     handle status
+typedef enum {
+
+    H_NORMAL        = 0,              /*!< Normal execution */
+    H_WAIT          = 1               
+
+} handle_status;                       /*!< EMG status enumeration */
+
 //====================================      external global variables definition
 
 extern struct st_ref    g_ref, g_refNew, g_refOld;  /*!< Reference variables.*/
@@ -258,6 +266,9 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer 
 // PWM value
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
+
+// KOREA mod. version
+extern uint8 normally_closed_mode;                  /*!< Korea hand handle mode */
 
 // -----------------------------------------------------------------------------
 

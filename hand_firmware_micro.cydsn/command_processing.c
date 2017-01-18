@@ -1061,6 +1061,12 @@ void infoPrepare(unsigned char *info_string)
         sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
+        
+        if (normally_closed_mode == 1) {
+            strcat(info_string, "Closing mode: Normally closed\r\n");
+        } else {
+            strcat(info_string, "Closing mode: Normally open\r\n");
+        }
 
         sprintf(str, "debug: %ld", (uint32)timer_value0 - (uint32)timer_value); //5000001
         strcat(info_string, str);

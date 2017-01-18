@@ -422,6 +422,10 @@ void motor_control() {
                 else
                     g_ref.pos[0] = handle_value;
             }
+            
+            if (normally_closed_mode == 1)
+                g_ref.pos[0] = g_mem.pos_lim_sup[0] - g_ref.pos[0];
+            
             break;
 
         case INPUT_MODE_EMG_PROPORTIONAL:
@@ -801,6 +805,10 @@ void encoder_reading(const uint8 idx) {
     //static int32 a_value[NUM_OF_SENSORS];   //last value for acceleration
     //static int32 aa_value[NUM_OF_SENSORS];  //last last value for acceleration
     //static int32 aaa_value[NUM_OF_SENSORS];  //last last last value for acceleration
+    
+    static uint8 handle_index = 2;
+    int32 handle_pos;
+    static handle_status CYDATA h_status = H_NORMAL; 
 
     if (index >= NUM_OF_SENSORS)
         return;
@@ -886,6 +894,35 @@ void encoder_reading(const uint8 idx) {
         }
 
         g_meas.pos[index] = value_encoder;
+
+        // KOREA mod. version
+        if (c_mem.double_encoder_on_off) 
+            handle_index = 2;
+        else
+            handle_index = 1;
+
+        if (index == handle_index && c_mem.input_mode == INPUT_MODE_ENCODER3) {
+            handle_pos = g_meas.pos[handle_index] << g_mem.res[handle_index];
+        
+            switch (h_status) {
+                case H_NORMAL:
+                    if (handle_pos < -100){
+                        h_status = H_WAIT;
+                    }
+                    break;
+                case H_WAIT:                    
+                    if (handle_pos > -50){
+                        // Change mode
+                        if (normally_closed_mode == 0)
+                            normally_closed_mode = 1;
+                        else
+                            normally_closed_mode = 0;
+                        
+                        h_status = H_NORMAL;
+                    }
+                    break;
+            }
+        }
     }
     
     switch(index) {

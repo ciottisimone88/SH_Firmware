@@ -51,4 +51,7 @@ int16 ADC_buf[4];
 // PWM value
 int8 pwm_sign;
 
+// KOREA mod. version
+uint8 normally_closed_mode = 0;              // Korea hand has normally opened mode at startup
+
 /* END OF FILE */
