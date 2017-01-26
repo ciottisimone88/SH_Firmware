@@ -902,16 +902,16 @@ void encoder_reading(const uint8 idx) {
             handle_index = 1;
 
         if (index == handle_index && c_mem.input_mode == INPUT_MODE_ENCODER3) {
-            handle_pos = g_meas.pos[handle_index] << g_mem.res[handle_index];
+            handle_pos = g_meas.pos[handle_index] >> g_mem.res[handle_index];
         
             switch (h_status) {
                 case H_NORMAL:
-                    if (handle_pos < -100){
+                    if (handle_pos < -80){
                         h_status = H_WAIT;
                     }
                     break;
                 case H_WAIT:                    
-                    if (handle_pos > -50){
+                    if (handle_pos > -40){
                         // Change mode
                         if (normally_closed_mode == 0)
                             normally_closed_mode = 1;
