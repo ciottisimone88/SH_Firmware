@@ -325,8 +325,8 @@ void calibration(void) {
 // return
 
 // Number of teeth of the two wheels
-#define N1 28           ///< Teeth of the first encoder wheel
-#define N2 27           ///< Teeth of the second encoder wheel
+#define N1 15           ///< Teeth of the first encoder wheel
+#define N2 14           ///< Teeth of the second encoder wheel
 
 #define I1 1            ///< First wheel invariant value
 #define I2 (-1)         ///< Second wheel invariant value
