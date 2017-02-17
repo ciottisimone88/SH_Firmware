@@ -1,4 +1,4 @@
-LX51 LINKER/LOCATER V4.64.0.0                                                           01/26/2017  09:18:22  PAGE 1
+LX51 LINKER/LOCATER V4.64.0.0                                                           02/01/2017  09:26:49  PAGE 1
 
 
 LX51 LINKER/LOCATER V4.64.0.0, INVOKED BY:
@@ -67,7 +67,7 @@ INPUT MODULES INCLUDED:
   .\DP8051_Keil_951\Release\hand_firmware_micro.lib (SHIFTREG_ENC_1)
          COMMENT TYPE 0: C51 V9.51
   .\DP8051_Keil_951\Release\hand_firmware_micro.lib (RESET_COUNTERS)
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 2
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 2
 
 
          COMMENT TYPE 0: C51 V9.51
@@ -135,7 +135,7 @@ INPUT MODULES INCLUDED:
          COMMENT TYPE 1: A51 / ASM51 Assembler
   C:\PROGRAM FILES (X86)\CYPRESS\PSOC CREATOR\3.3\PSOC CREATOR\IMPORT\KEIL\PK51\9.51\C51\LIB\C51FPL.LIB (?C?FTNPWR)
          COMMENT TYPE 1: A51 / ASM51 Assembler
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 3
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 3
 
 
   C:\PROGRAM FILES (X86)\CYPRESS\PSOC CREATOR\3.3\PSOC CREATOR\IMPORT\KEIL\PK51\9.51\C51\LIB\C51L.LIB (?C_INIT)
@@ -203,7 +203,7 @@ INPUT MODULES INCLUDED:
   C:\PROGRAM FILES (X86)\CYPRESS\PSOC CREATOR\3.3\PSOC CREATOR\IMPORT\KEIL\PK51\9.51\C51\LIB\C51L.LIB (?C?IILDX)
          COMMENT TYPE 1: A51 / ASM51 Assembler
   C:\PROGRAM FILES (X86)\CYPRESS\PSOC CREATOR\3.3\PSOC CREATOR\IMPORT\KEIL\PK51\9.51\C51\LIB\C51L.LIB (?C?ILDIX)
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 4
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 4
 
 
          COMMENT TYPE 1: A51 / ASM51 Assembler
@@ -271,7 +271,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
 009D0DH   009EADH   0001A1H   BYTE   UNIT     CODE           ?PR?_ADC_GAINCOMPENSATION?ADC
 009EAEH   00A033H   000186H   BYTE   UNIT     CODE           ?PR?CLOCKSETUP?CYFITTER_CFG
 00A034H   00A164H   000131H   BYTE   UNIT     CODE           ?PR?_ADC_EXT_CP_CLK_SETDIVIDERREGISTER?ADC_EXT_CP_CLK
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 5
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 5
 
 
 00A165H   00A294H   000130H   BYTE   UNIT     CODE           ?PR?CALIBRATION?UTILS
@@ -339,7 +339,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
 00C282H   00C2BCH   00003BH   BYTE   UNIT     CODE           ?PR?_INFOGET?COMMAND_PROCESSING
 00C2BDH   00C2F7H   00003BH   BYTE   UNIT     CODE           ?PR?ANALOGSETDEFAULT?CYFITTER_CFG
 00C2F8H   00C2FFH   000008H   BYTE   UNIT     CODE           ?PR?CLOCK_UART_GETSOURCEREGISTER?CLOCK_UART
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 6
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 6
 
 
 00C300H   00C33AH   00003BH   PAGE   UNIT     CODE           ?PR?CYDELAYCYCLES?CYBOOTASMKEIL
@@ -407,7 +407,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
 00CA71H   00CA7EH   00000EH   BYTE   UNIT     CODE           ?PR?_PACER_TIMER_WRITEPERIOD?PACER_TIMER
 00CA7FH   00CA8CH   00000EH   BYTE   UNIT     CODE           ?PR?_PACER_TIMER_WRITECOUNTER?PACER_TIMER
 00CA8DH   00CA9AH   00000EH   BYTE   UNIT     CODE           ?PR?SHIFTREG_ENC_3_ENABLEINT?SHIFTREG_ENC_3
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 7
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 7
 
 
 00CA9BH   00CAA8H   00000EH   BYTE   UNIT     CODE           ?PR?SHIFTREG_ENC_2_ENABLEINT?SHIFTREG_ENC_2
@@ -475,7 +475,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
 00CCBAH   00CCBFH   000006H   BYTE   UNIT     CODE           ?PR?SHIFTREG_ENC_1_INIT?SHIFTREG_ENC_1
 00CCC0H   00CCC5H   000006H   BYTE   UNIT     CODE           ?PR?_RESET_COUNTERS_WRITE?RESET_COUNTERS
 00CCC6H   00CCCBH   000006H   BYTE   UNIT     CODE           ?PR?ADC_STATUS_READ?ADC_STATUS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 8
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 8
 
 
 00CCCCH   00CCD1H   000006H   BYTE   UNIT     CODE           ?PR?_ADC_SOC_WRITE?ADC_SOC
@@ -543,7 +543,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
    *DEL*:           000003H   BYTE   UNIT     XDATA          ?XD?_CLOCK_UART_SETSOURCEREGISTER?CLOCK_UART
    *DEL*:           000013H   BYTE   UNIT     CODE           ?PR?ISR_RS485_RX_START?ISR_RS485_RX
    *DEL*:           000004H   BYTE   UNIT     CODE           ?PR?ISR_RS485_RX_STOP?ISR_RS485_RX
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 9
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 9
 
 
    *DEL*:           00000AH   BYTE   UNIT     CODE           ?PR?ISR_RS485_RX_GETVECTOR?ISR_RS485_RX
@@ -611,7 +611,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
    *DEL*:           000004H   BYTE   UNIT     CODE           ?PR?EEPROM_STOP?EEPROM
    *DEL*:           000124H   BYTE   UNIT     CODE           ?PR?_EEPROM_WRITEBYTE?EEPROM
    *DEL*:           000008H   BYTE   UNIT     XDATA          ?XD?_EEPROM_WRITEBYTE?EEPROM
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 10
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 10
 
 
    *DEL*:           00003AH   BYTE   UNIT     CODE           ?PR?_EEPROM_READBYTE?EEPROM
@@ -679,7 +679,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
    *DEL*:           00000AH   BYTE   UNIT     CODE           ?PR?_SHIFTREG_ENC_1_WRITEREGVALUE?SHIFTREG_ENC_1
    *DEL*:           000053H   BYTE   UNIT     CODE           ?PR?SHIFTREG_ENC_1_READREGVALUE?SHIFTREG_ENC_1
    *DEL*:           000004H   BYTE   UNIT     XDATA          ?XD?SHIFTREG_ENC_1_READREGVALUE?SHIFTREG_ENC_1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 11
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 11
 
 
    *DEL*:           000006H   BYTE   UNIT     CODE           ?PR?RESET_COUNTERS_READ?RESET_COUNTERS
@@ -747,7 +747,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
    *DEL*:           000010H   BYTE   UNIT     CODE           ?PR?_CYPLL_OUT_SETSOURCE?CYLIB
    *DEL*:           000053H   BYTE   UNIT     CODE           ?PR?_CYIMO_START?CYLIB
    *DEL*:           000003H   BYTE   UNIT     XDATA          ?XD?_CYIMO_START?CYLIB
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 12
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 12
 
 
    *DEL*:           00000FH   BYTE   UNIT     CODE           ?PR?CYIMO_STOP?CYLIB
@@ -815,7 +815,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
    *DEL*:           000018H   BYTE   UNIT     CODE           ?PR?_CYINTGETVECTOR?CYLIB
    *DEL*:           000014H   BYTE   UNIT     CODE           ?PR?_CYINTGETPRIORITY?CYLIB
    *DEL*:           000036H   BYTE   UNIT     CODE           ?PR?_CYINTGETSTATE?CYLIB
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 13
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 13
 
 
    *DEL*:           000248H   BYTE   UNIT     CODE           ?PR?_CYGETUNIQUEID?CYLIB
@@ -883,7 +883,7 @@ START     STOP      LENGTH    ALIGN  RELOC    MEMORY CLASS   SEGMENT NAME
 
 
 OVERLAY MAP OF MODULE:   .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMMAND_PROCESSING)
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 14
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 14
 
 
 
@@ -951,7 +951,7 @@ CLOCKSETUP/CYFITTER_CFG                       ----- -----  ----- -----  ----- --
   +--> _CYCLOCKSTARTUPERROR/CYFITTER_CFG
 
 CYDELAYCYCLES/CYBOOTASMKEIL                   ----- -----  ----- -----  ----- -----  ----- -----
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 15
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 15
 
 
 
@@ -1019,7 +1019,7 @@ CYFLASHGETSPCALGORITHM/CYFLASH                ----- -----  ----- -----  ----- --
   +--> CYSPCSTART/CYSPC
   +--> CYSPCLOCK/CYSPC
   +--> CYSPCGETALGORITHM/CYSPC
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 16
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 16
 
 
   +--> CYDELAYUS/CYBOOTASMKEIL
@@ -1087,7 +1087,7 @@ _PWM_MOTORS_WRITECOMPARE1/PWM_MOTORS          ----- -----  ----- -----  ----- --
 
 _PWM_MOTORS_WRITECOMPARE2/PWM_MOTORS          ----- -----  ----- -----  ----- -----  ----- -----
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 17
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 17
 
 
 _EEPROM_WRITE/EEPROM                          ----- -----  ----- -----  ----- -----  0019H 001DH
@@ -1155,7 +1155,7 @@ WATCHDOG_COUNTER_START/WATCHDOG_COUNTER       ----- -----  ----- -----  ----- --
   +--> WATCHDOG_COUNTER_INIT/WATCHDOG_COUNTER
   +--> WATCHDOG_COUNTER_ENABLE/WATCHDOG_COUNTER
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 18
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 18
 
 
 WATCHDOG_COUNTER_INIT/WATCHDOG_COUNTER        ----- -----  ----- -----  ----- -----  ----- -----
@@ -1223,7 +1223,7 @@ COUNTER_ENC_INIT/COUNTER_ENC                  ----- -----  ----- -----  ----- --
   +--> _COUNTER_ENC_WRITECOUNTER/COUNTER_ENC
   +--> _COUNTER_ENC_SETINTERRUPTMODE/COUNTER_ENC
   +--> COUNTER_ENC_READSTATUSREGISTER/COUNTER_ENC
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 19
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 19
 
 
   +--> _COUNTER_ENC_WRITECOMPARE/COUNTER_ENC
@@ -1291,7 +1291,7 @@ SHIFTREG_ENC_3_START/SHIFTREG_ENC_3           ----- -----  ----- -----  ----- --
 SHIFTREG_ENC_3_INIT/SHIFTREG_ENC_3            ----- -----  ----- -----  ----- -----  ----- -----
   +--> _SHIFTREG_ENC_3_SETINTMODE/SHIFTREG_ENC_3
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 20
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 20
 
 
 _SHIFTREG_ENC_3_SETINTMODE/SHIFTREG_ENC_+     ----- -----  ----- -----  ----- -----  ----- -----
@@ -1359,7 +1359,7 @@ ADC_EXT_CP_CLK_GETSOURCEREGISTER/ADC_EXT+     ----- -----  ----- -----  ----- --
 ... _CP_CLK
 
 ADC_EXT_CP_CLK_GETDIVIDERREGISTER/ADC_EX+     ----- -----  ----- -----  ----- -----  ----- -----
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 21
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 21
 
 
 ... T_CP_CLK
@@ -1427,7 +1427,7 @@ MY_TIMER_INIT/MY_TIMER                        ----- -----  ----- -----  ----- --
 
 _MY_TIMER_WRITEPERIOD/MY_TIMER                ----- -----  ----- -----  ----- -----  ----- -----
   +--> CYWRITE24/CYMEM
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 22
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 22
 
 
 
@@ -1495,7 +1495,7 @@ INTERRUPT_MANAGER/INTERRUPTIONS               20H.0 20H.0  0027H 0028H  ----- --
   +--> _INFOGET/COMMAND_PROCESSING
   +--> COMMPROCESS/COMMAND_PROCESSING
   +--> _RS485_CTS_WRITE/RS485_CTS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 23
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 23
 
 
 
@@ -1563,7 +1563,7 @@ CMD_SET_INPUTS/COMMAND_PROCESSING             ----- -----  ----- -----  ----- --
 
 CMD_GET_MEASUREMENTS/COMMAND_PROCESSING       ----- -----  002AH 002AH  ----- -----  0002H 0009H
   +--> _LCRCHECKSUM/COMMAND_PROCESSING
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 24
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 24
 
 
   +--> _COMMWRITE/COMMAND_PROCESSING
@@ -1631,7 +1631,7 @@ SETZEROS/COMMAND_PROCESSING                   ----- -----  002AH 002AH  ----- --
 
 _SENDACKNOWLEDGMENT/COMMAND_PROCESSING        ----- -----  ----- -----  ----- -----  0012H 0013H
   +--> _COMMWRITE/COMMAND_PROCESSING
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 25
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 25
 
 
 
@@ -1699,7 +1699,7 @@ _CALC_TURNS_FCN/UTILS                         ----- -----  ----- -----  ----- --
 _MY_MOD/UTILS                                 ----- -----  ----- -----  ----- -----  001EH 0025H
 
 MOTOR_CONTROL/INTERRUPTIONS                   ----- -----  0023H 006EH  ----- -----  ----- -----
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 26
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 26
 
 
   +--> _MOTOR_DIR_WRITE/MOTOR_DIR
@@ -1767,7 +1767,7 @@ ADC_ISR3/ADC_INT                              ----- -----  ----- -----  ----- --
 
 ADC_ISR4/ADC_INT                              ----- -----  ----- -----  ----- -----  ----- -----
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 27
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 27
 
 
 
@@ -1835,7 +1835,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
       01007E1FH   CODE     ---       ?C?LLDXDATA
       010079BAH   CODE     ---       ?C?LMUL
       01007AE4H   CODE     ---       ?C?LNEG
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 28
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 28
 
 
       01007AD7H   CODE     ---       ?C?LNOT
@@ -1903,7 +1903,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
       0100B058H   CODE     ---       _commWrite
       0100AFCBH   CODE     ---       _commWrite_old_id
       0100B27CH   CODE     ---       _commWrite_to_cuff
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 29
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 29
 
 
       0100CC5AH   CODE     ---       _COUNTER_ENC_SetInterruptMode
@@ -1971,7 +1971,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
 *DEL*:00000002H   CODE     NEAR LAB  _cyread32_nodpx
       0100CB14H   CODE     NEAR LAB  _cyread8
       0100CB16H   CODE     NEAR LAB  _cyread8_nodpx
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 30
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 30
 
 
 *DEL*:00000000H   CODE     ---       _CySetFlashEEBuffer
@@ -2039,7 +2039,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
       0100AD03H   CODE     ---       _memStore
       0100CC54H   CODE     ---       _MOTOR_DIR_Write
       0100CC96H   CODE     ---       _MOTOR_ON_OFF_Write
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 31
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 31
 
 
       0100B383H   CODE     ---       _my_mod
@@ -2107,7 +2107,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
       0100B0E5H   CODE     ---       ADC_Enable
       0100CBC9H   CODE     ---       ADC_Ext_CP_Clk_GetDividerRegister
 *DEL*:00000000H   CODE     ---       ADC_Ext_CP_Clk_GetModeRegister
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 32
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 32
 
 
       0100CBFDH   CODE     ---       ADC_Ext_CP_Clk_GetSourceRegister
@@ -2175,7 +2175,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
       010092E8H   CODE     ---       cmd_store_params
       010097E3H   CODE     ---       commProcess
       0100CAE0H   CODE     ---       COUNTER_ENC_ClearFIFO
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 33
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 33
 
 
       0100CBE5H   CODE     ---       COUNTER_ENC_Enable
@@ -2243,7 +2243,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
 *DEL*:00000000H   CODE     ---       CyXTAL_32KHZ_Stop
 *DEL*:00000000H   CODE     ---       CyXTAL_DisableErrStatus
 *DEL*:00000000H   CODE     ---       CyXTAL_DisableFaultRecovery
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 34
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 34
 
 
 *DEL*:00000000H   CODE     ---       CyXTAL_EnableErrStatus
@@ -2311,7 +2311,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
 *DEL*:00000000H   CODE     ---       ISR_WATCHDOG_Start
 *DEL*:00000000H   CODE     ---       ISR_WATCHDOG_Stop
 *DEL*:00000000H   CODE     ---       LED_REG_Read
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 35
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 35
 
 
       010095F0H   CODE     ---       main
@@ -2379,7 +2379,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
 *SFR* 000000F2H   DATA     BYTE      SFRPRT12SEL
 *SFR* 000000F8H   DATA     BYTE      SFRPRT15DR
 *SFR* 000000F9H   DATA     BYTE      SFRPRT15PS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 36
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 36
 
 
 *SFR* 000000FAH   DATA     BYTE      SFRPRT15SEL
@@ -2447,7 +2447,7 @@ PUBLIC SYMBOLS OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (CO
       0100BEB9H   CODE     ---       UART_RS485_GetRxBufferSize
 *DEL*:00000000H   CODE     ---       UART_RS485_GetTxBufferSize
       0100C47CH   CODE     ---       UART_RS485_Init
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 37
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 37
 
 
       02000D4BH   XDATA    BYTE      UART_RS485_initVar
@@ -2515,7 +2515,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C282H   PUBLIC    CODE     ---       _infoGet
       010097E3H   PUBLIC    CODE     ---       commProcess
       000000CAH   SFRSYM    DATA     BYTE      SFRPRT5SEL
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 38
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 38
 
 
       000000DAH   SFRSYM    DATA     BYTE      SFRPRT6SEL
@@ -2583,7 +2583,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100618BH   SYMBOL    CODE     ---       _?ix1014
       01006097H   SYMBOL    CODE     ---       _?ix1005
       010062CFH   SYMBOL    CODE     ---       _?ix1024
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 39
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 39
 
 
       0100619FH   SYMBOL    CODE     ---       _?ix1015
@@ -2651,7 +2651,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       010098A4H   LINE      CODE     ---       #134
       010098A5H   LINE      CODE     ---       #138
       010098A5H   LINE      CODE     ---       #139
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 40
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 40
 
 
       010098B0H   LINE      CODE     ---       #140
@@ -2719,7 +2719,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C2B3H   LINE      CODE     ---       #247
       0100C2BCH   LINE      CODE     ---       #248
       0100C2BCH   LINE      CODE     ---       #250
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 41
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 41
 
 
       0100C2BCH   LINE      CODE     ---       #251
@@ -2787,7 +2787,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01002677H   LINE      CODE     ---       #274
       0100268AH   LINE      CODE     ---       #275
       0100269DH   LINE      CODE     ---       #276
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 42
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 42
 
 
       010026B0H   LINE      CODE     ---       #277
@@ -2855,7 +2855,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01002AC2H   LINE      CODE     ---       #358
       01002AE4H   LINE      CODE     ---       #359
       01002B06H   LINE      CODE     ---       #360
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 43
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 43
 
 
       01002B08H   LINE      CODE     ---       #361
@@ -2923,7 +2923,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01002D8FH   LINE      CODE     ---       #435
       01002DA6H   LINE      CODE     ---       #436
       01002DA9H   LINE      CODE     ---       #437
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 44
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 44
 
 
       01002DABH   LINE      CODE     ---       #438
@@ -2991,7 +2991,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100318BH   LINE      CODE     ---       #523
       010031BDH   LINE      CODE     ---       #527
       010031C2H   LINE      CODE     ---       #528
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 45
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 45
 
 
       010031C5H   LINE      CODE     ---       #529
@@ -3059,7 +3059,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       010034D1H   LINE      CODE     ---       #615
       010034D7H   LINE      CODE     ---       #616
       010034DAH   LINE      CODE     ---       #617
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 46
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 46
 
 
       010034E4H   LINE      CODE     ---       #618
@@ -3127,7 +3127,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100389DH   LINE      CODE     ---       #705
       0100389EH   LINE      CODE     ---       #708
       0100389EH   LINE      CODE     ---       #709
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 47
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 47
 
 
       010038ABH   LINE      CODE     ---       #710
@@ -3195,7 +3195,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0000002AH   SYMBOL    DATA     BYTE      i
       ---         BLOCKEND  ---      ---       LVL=1
       0100B300H   LINE      CODE     ---       #799
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 48
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 48
 
 
       0100B300H   LINE      CODE     ---       #800
@@ -3263,7 +3263,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01003EC7H   LINE      CODE     ---       #870
       01003EE3H   LINE      CODE     ---       #871
       01003EFFH   LINE      CODE     ---       #873
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 49
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 49
 
 
       01003F16H   LINE      CODE     ---       #874
@@ -3331,7 +3331,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100461EH   LINE      CODE     ---       #948
       0100463AH   LINE      CODE     ---       #949
       0100463DH   LINE      CODE     ---       #950
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 50
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 50
 
 
       0100463DH   LINE      CODE     ---       #951
@@ -3399,7 +3399,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01004B67H   LINE      CODE     ---       #1025
       01004B8BH   LINE      CODE     ---       #1026
       01004BA7H   LINE      CODE     ---       #1027
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 51
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 51
 
 
       01004BC3H   LINE      CODE     ---       #1029
@@ -3467,7 +3467,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       02000900H   SYMBOL    XDATA    ---       packet_data
       02000903H   SYMBOL    XDATA    WORD      packet_lenght
       0100B069H   BLOCK     CODE     NEAR LAB  LVL=1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 52
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 52
 
 
       0000003DH   SYMBOL    DATA     WORD      index
@@ -3535,7 +3535,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C8AEH   LINE      CODE     ---       #1181
       0100C8B0H   LINE      CODE     ---       #1183
       0100C8B9H   LINE      CODE     ---       #1184
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 53
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 53
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -3603,7 +3603,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C0C2H   LINE      CODE     ---       #1269
       ---         BLOCKEND  ---      ---       LVL=0
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 54
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 54
 
 
       010099A4H   BLOCK     CODE     ---       LVL=0
@@ -3671,7 +3671,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100BA84H   LINE      CODE     ---       #1370
       0100BA94H   LINE      CODE     ---       #1372
       0100BAA0H   LINE      CODE     ---       #1374
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 55
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 55
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -3739,7 +3739,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C107H   BLOCK     CODE     ---       LVL=0
       0100C107H   LINE      CODE     ---       #1460
       0100C107H   LINE      CODE     ---       #1463
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 56
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 56
 
 
       0100C10FH   LINE      CODE     ---       #1466
@@ -3807,7 +3807,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C8F9H   LINE      CODE     ---       #1572
       0100C8F9H   LINE      CODE     ---       #1577
       0100C8FEH   LINE      CODE     ---       #1580
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 57
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 57
 
 
       0100C900H   LINE      CODE     ---       #1583
@@ -3875,7 +3875,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01009545H   LINE      CODE     ---       #1660
       01009559H   LINE      CODE     ---       #1661
       0100957BH   LINE      CODE     ---       #1662
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 58
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 58
 
 
       0100958FH   LINE      CODE     ---       #1663
@@ -3943,7 +3943,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000A8H.7 SFRSYM    DATA     BIT       EA
       000000A8H   SFRSYM    DATA     BYTE      IE
       00000085H   SFRSYM    DATA     BYTE      DPH1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 59
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 59
 
 
       00000084H   SFRSYM    DATA     BYTE      DPL1
@@ -4011,7 +4011,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000D0H.7 SFRSYM    DATA     BIT       CY
       000000A0H   SFRSYM    DATA     BYTE      P2AX
       00000095H   SFRSYM    DATA     BYTE      DPX1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 60
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 60
 
 
       00000081H   SFRSYM    DATA     BYTE      SP
@@ -4079,7 +4079,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000020H.0 SYMBOL    BIT      BIT       rx_data_type
       00000028H   SYMBOL    DATA     BYTE      package_count
       ---         BLOCKEND  ---      ---       LVL=1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 61
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 61
 
 
       0100A4F4H   LINE      CODE     ---       #107
@@ -4147,7 +4147,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A60FH   LINE      CODE     ---       #223
       0100A612H   LINE      CODE     ---       #224
       0100A614H   LINE      CODE     ---       #225
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 62
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 62
 
 
       0100A614H   LINE      CODE     ---       #226
@@ -4215,7 +4215,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A80CH   LINE      CODE     ---       #343
       0100A80EH   LINE      CODE     ---       #344
       0100A811H   LINE      CODE     ---       #345
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 63
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 63
 
 
       0100A811H   LINE      CODE     ---       #347
@@ -4283,7 +4283,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       010065E9H   LINE      CODE     ---       #426
       010065F4H   LINE      CODE     ---       #427
       01006621H   LINE      CODE     ---       #429
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 64
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 64
 
 
       01006624H   LINE      CODE     ---       #431
@@ -4351,7 +4351,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100696BH   LINE      CODE     ---       #508
       0100696BH   LINE      CODE     ---       #510
       01006981H   LINE      CODE     ---       #511
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 65
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 65
 
 
       010069D3H   LINE      CODE     ---       #513
@@ -4419,7 +4419,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01006E25H   LINE      CODE     ---       #630
       01006E38H   LINE      CODE     ---       #631
       01006E7BH   LINE      CODE     ---       #634
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 66
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 66
 
 
       01006E90H   LINE      CODE     ---       #635
@@ -4487,7 +4487,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       010072B4H   LINE      CODE     ---       #744
       010072C9H   LINE      CODE     ---       #745
       010072D6H   LINE      CODE     ---       #746
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 67
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 67
 
 
       010072D6H   LINE      CODE     ---       #747
@@ -4555,7 +4555,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01007F6FH   LINE      CODE     ---       #851
       01007FA8H   LINE      CODE     ---       #871
       01007FC2H   LINE      CODE     ---       #872
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 68
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 68
 
 
       01007FD2H   LINE      CODE     ---       #873
@@ -4623,7 +4623,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100859BH   LINE      CODE     ---       #988
       010085AFH   LINE      CODE     ---       #990
       010085B7H   LINE      CODE     ---       #992
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 69
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 69
 
 
       010085B9H   LINE      CODE     ---       #993
@@ -4691,7 +4691,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       010087C8H   LINE      CODE     ---       #1110
       010087C8H   LINE      CODE     ---       #1111
       010087D6H   LINE      CODE     ---       #1112
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 70
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 70
 
 
       010087E7H   LINE      CODE     ---       #1113
@@ -4759,7 +4759,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01008995H   LINE      CODE     ---       #1197
       01008998H   LINE      CODE     ---       #1198
       0100899AH   LINE      CODE     ---       #1199
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 71
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 71
 
 
       0100899DH   LINE      CODE     ---       #1200
@@ -4827,7 +4827,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01008AFBH   LINE      CODE     ---       #1287
       01008AFEH   LINE      CODE     ---       #1288
       01008B00H   LINE      CODE     ---       #1289
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 72
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 72
 
 
       01008B03H   LINE      CODE     ---       #1290
@@ -4895,7 +4895,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000B1H   SFRSYM    DATA     BYTE      SFRPRT3PS
       000000C1H   SFRSYM    DATA     BYTE      SFRPRT4PS
       000000C9H   SFRSYM    DATA     BYTE      SFRPRT5PS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 73
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 73
 
 
       000000D9H   SFRSYM    DATA     BYTE      SFRPRT6PS
@@ -4963,7 +4963,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       010096ADH   LINE      CODE     ---       #122
       010096B2H   LINE      CODE     ---       #126
       010096B5H   LINE      CODE     ---       #127
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 74
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 74
 
 
       010096B8H   LINE      CODE     ---       #129
@@ -5031,7 +5031,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100B57BH   PUBLIC    CODE     ---       _filter_vel_2
       0100B4FEH   PUBLIC    CODE     ---       _filter_vel_1
       0100B481H   PUBLIC    CODE     ---       _filter_ch1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 75
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 75
 
 
       0100B404H   PUBLIC    CODE     ---       _filter_i1
@@ -5099,7 +5099,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       ---         BLOCKEND  ---      ---       LVL=1
       01008F87H   LINE      CODE     ---       #22
       01008F8DH   LINE      CODE     ---       #29
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 76
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 76
 
 
       01008FA7H   LINE      CODE     ---       #30
@@ -5167,7 +5167,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
 
       0100B57BH   BLOCK     CODE     ---       LVL=0
       00000004H   SYMBOL    DATA     LONG      new_value
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 77
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 77
 
 
       0100B57BH   BLOCK     CODE     NEAR LAB  LVL=1
@@ -5235,7 +5235,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000013H   SYMBOL    IDATA    ---       p
       00000024H   SYMBOL    DATA     BYTE      a
       ---         BLOCKEND  ---      ---       LVL=1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 78
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 78
 
 
       0100BB79H   LINE      CODE     ---       #209
@@ -5303,7 +5303,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       ---         MODULE    ---      ---       CLOCK_UART
       0100C2F8H   PUBLIC    CODE     ---       CLOCK_UART_GetSourceRegister
       0100CB65H   PUBLIC    CODE     ---       CLOCK_UART_GetDividerRegister
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 79
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 79
 
 
       0100A295H   PUBLIC    CODE     ---       _CLOCK_UART_SetDividerRegister
@@ -5371,7 +5371,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CB65H   LINE      CODE     ---       #297
       0100CB65H   LINE      CODE     ---       #298
       0100CB65H   LINE      CODE     ---       #299
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 80
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 80
 
 
       0100CB6EH   LINE      CODE     ---       #300
@@ -5439,7 +5439,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000D0H.5 SFRSYM    DATA     BIT       F0
       000000D0H.1 SFRSYM    DATA     BIT       F1
       0000008AH   SFRSYM    DATA     BYTE      SFRPRT0SEL
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 81
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 81
 
 
       000000D0H   SFRSYM    DATA     BYTE      PSW
@@ -5507,7 +5507,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000CAH   SFRSYM    DATA     BYTE      SFRPRT5SEL
       000000DAH   SFRSYM    DATA     BYTE      SFRPRT6SEL
       000000D0H.6 SFRSYM    DATA     BIT       AC
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 82
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 82
 
 
       000000A8H.7 SFRSYM    DATA     BIT       EA
@@ -5575,7 +5575,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000007H   SYMBOL    DATA     BYTE      ctrl
       ---         BLOCKEND  ---      ---       LVL=1
       0100C67BH   LINE      CODE     ---       #84
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 83
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 83
 
 
       0100C67BH   LINE      CODE     ---       #85
@@ -5643,7 +5643,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000D0H.6 SFRSYM    DATA     BIT       AC
       000000A8H.7 SFRSYM    DATA     BIT       EA
       000000A8H   SFRSYM    DATA     BYTE      IE
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 84
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 84
 
 
       00000085H   SFRSYM    DATA     BYTE      DPH1
@@ -5711,7 +5711,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C879H   BLOCK     CODE     ---       LVL=0
       0100C879H   LINE      CODE     ---       #180
       0100C879H   LINE      CODE     ---       #181
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 85
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 85
 
 
       0100C879H   LINE      CODE     ---       #184
@@ -5779,7 +5779,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C90DH   PUBLIC    CODE     ---       UART_RS485_ReadRxStatus
       0100C6E9H   PUBLIC    CODE     ---       UART_RS485_Stop
       0100C6C7H   PUBLIC    CODE     ---       UART_RS485_Enable
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 86
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 86
 
 
       0100C47CH   PUBLIC    CODE     ---       UART_RS485_Init
@@ -5847,7 +5847,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C959H   LINE      CODE     ---       #86
       ---         BLOCKEND  ---      ---       LVL=0
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 87
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 87
 
 
       0100C47CH   BLOCK     CODE     ---       LVL=0
@@ -5915,7 +5915,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       ---         BLOCKEND  ---      ---       LVL=0
 
       0100BD10H   BLOCK     CODE     ---       LVL=0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 88
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 88
 
 
       0100BD10H   BLOCK     CODE     NEAR LAB  LVL=1
@@ -5983,7 +5983,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100BEEFH   LINE      CODE     ---       #707
       0100BEF1H   LINE      CODE     ---       #709
       0100BEF1H   LINE      CODE     ---       #710
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 89
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 89
 
 
       0100BF01H   LINE      CODE     ---       #711
@@ -6051,7 +6051,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C447H   LINE      CODE     ---       #1158
       0100C447H   LINE      CODE     ---       #1159
       ---         BLOCKEND  ---      ---       LVL=0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 90
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 90
 
 
       00000005H   SYMBOL    DATA     BYTE      byteCount
@@ -6119,7 +6119,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000C8H   SFRSYM    DATA     BYTE      SFRPRT5DR
       000000D8H   SFRSYM    DATA     BYTE      SFRPRT6DR
       00000089H   SFRSYM    DATA     BYTE      SFRPRT0PS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 91
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 91
 
 
       00000091H   SFRSYM    DATA     BYTE      SFRPRT1PS
@@ -6187,7 +6187,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C95AH   LINE      CODE     ---       #180
       0100C960H   LINE      CODE     ---       #181
       0100C960H   LINE      CODE     ---       #182
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 92
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 92
 
 
       0100C963H   LINE      CODE     ---       #184
@@ -6255,7 +6255,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
 
       ---         MODULE    ---      ---       SHIFTREG_ENC_3
       02000D81H   PUBLIC    XDATA    BYTE      SHIFTREG_ENC_3_initVar
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 93
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 93
 
 
       0100CB79H   PUBLIC    CODE     ---       SHIFTREG_ENC_3_ReadData
@@ -6323,7 +6323,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C973H   LINE      CODE     ---       #47
       0100C976H   LINE      CODE     ---       #48
       0100C97CH   LINE      CODE     ---       #49
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 94
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 94
 
 
       0100C97CH   LINE      CODE     ---       #51
@@ -6391,7 +6391,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000A8H.7 SFRSYM    DATA     BIT       EA
       000000A8H   SFRSYM    DATA     BYTE      IE
       00000085H   SFRSYM    DATA     BYTE      DPH1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 95
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 95
 
 
       00000084H   SFRSYM    DATA     BYTE      DPL1
@@ -6459,7 +6459,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CB59H   LINE      CODE     ---       #76
       ---         BLOCKEND  ---      ---       LVL=0
 
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 96
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 96
 
 
       0100CC84H   BLOCK     CODE     ---       LVL=0
@@ -6527,7 +6527,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000C8H   SFRSYM    DATA     BYTE      SFRPRT5DR
       000000D8H   SFRSYM    DATA     BYTE      SFRPRT6DR
       00000089H   SFRSYM    DATA     BYTE      SFRPRT0PS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 97
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 97
 
 
       00000091H   SFRSYM    DATA     BYTE      SFRPRT1PS
@@ -6595,7 +6595,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100AB9BH   LINE      CODE     ---       #365
       0100AB9BH   LINE      CODE     ---       #368
       0100ABB1H   LINE      CODE     ---       #369
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 98
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 98
 
 
       0100ABB1H   LINE      CODE     ---       #370
@@ -6663,7 +6663,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000A8H   SFRSYM    DATA     BYTE      IE
       00000085H   SFRSYM    DATA     BYTE      DPH1
       00000084H   SFRSYM    DATA     BYTE      DPL1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 99
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 99
 
 
       000000D0H.7 SFRSYM    DATA     BIT       CY
@@ -6731,7 +6731,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100ADF4H   LINE      CODE     ---       #117
       0100ADF6H   LINE      CODE     ---       #119
       0100ADFCH   LINE      CODE     ---       #120
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 100
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 100
 
 
       0100ADFFH   LINE      CODE     ---       #124
@@ -6799,7 +6799,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000007H   SYMBOL    DATA     BYTE      coherency
       00000006H   SYMBOL    DATA     BYTE      tmpReg
       00000004H   SYMBOL    DATA     WORD      gcorValue
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 101
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 101
 
 
       00000007H   SYMBOL    DATA     BYTE      retMode
@@ -6867,7 +6867,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000004H   SYMBOL    DATA     LONG      normalised
       00000004H   SYMBOL    DATA     WORD      gcorValue
       00000004H   SYMBOL    DATA     DWORD     gcorTmp
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 102
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 102
 
 
       ---         BLOCKEND  ---      ---       LVL=1
@@ -6935,7 +6935,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01009EADH   LINE      CODE     ---       #1706
       01009EADH   LINE      CODE     ---       #1707
       ---         BLOCKEND  ---      ---       LVL=0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 103
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 103
 
 
 
@@ -7003,7 +7003,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000D9H   SFRSYM    DATA     BYTE      SFRPRT6PS
       000000EAH   SFRSYM    DATA     BYTE      MXAX
       000000F0H   SFRSYM    DATA     BYTE      B
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 104
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 104
 
 
       000000E0H   SFRSYM    DATA     BYTE      ACC
@@ -7071,7 +7071,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
 
       ---         MODULE    ---      ---       FF_STATUS
       0100CCA8H   PUBLIC    CODE     ---       FF_STATUS_Read
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 105
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 105
 
 
       000000CAH   SFRSYM    DATA     BYTE      SFRPRT5SEL
@@ -7139,7 +7139,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       02000D83H   PUBLIC    XDATA    BYTE      MY_TIMER_initVar
       0100CAEDH   PUBLIC    CODE     ---       MY_TIMER_ClearFIFO
       0100CA36H   PUBLIC    CODE     ---       MY_TIMER_ReadCounter
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 106
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 106
 
 
       0100CBABH   PUBLIC    CODE     ---       _MY_TIMER_WriteCounter
@@ -7207,7 +7207,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       ---         BLOCKEND  ---      ---       LVL=1
       0100C5FDH   LINE      CODE     ---       #43
       0100C5FDH   LINE      CODE     ---       #44
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 107
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 107
 
 
       0100C5FDH   LINE      CODE     ---       #118
@@ -7275,7 +7275,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CBABH   LINE      CODE     ---       #480
       0100CBABH   LINE      CODE     ---       #481
       0100CBABH   LINE      CODE     ---       #489
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 108
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 108
 
 
       0100CBB4H   LINE      CODE     ---       #491
@@ -7343,7 +7343,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000D0H.4 SFRSYM    DATA     BIT       RS1
       00000083H   SFRSYM    DATA     BYTE      DPH
       000000E8H   SFRSYM    DATA     BYTE      SFRPRT12DR
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 109
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 109
 
 
       00000082H   SFRSYM    DATA     BYTE      DPL
@@ -7411,7 +7411,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CA2CH   LINE      CODE     ---       #264
       0100CA35H   LINE      CODE     ---       #265
       ---         BLOCKEND  ---      ---       LVL=0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 110
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 110
 
 
       00000004H   SYMBOL    DATA     DWORD     shiftData
@@ -7479,7 +7479,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000093H   SFRSYM    DATA     BYTE      DPX
       000000F9H   SFRSYM    DATA     BYTE      SFRPRT15PS
       000000D0H.5 SFRSYM    DATA     BIT       F0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 111
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 111
 
 
       000000D0H.1 SFRSYM    DATA     BIT       F1
@@ -7547,7 +7547,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000093H   SFRSYM    DATA     BYTE      DPX
       000000F9H   SFRSYM    DATA     BYTE      SFRPRT15PS
       000000D0H.5 SFRSYM    DATA     BIT       F0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 112
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 112
 
 
       000000D0H.1 SFRSYM    DATA     BIT       F1
@@ -7615,7 +7615,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000089H   SFRSYM    DATA     BYTE      SFRPRT0PS
       00000091H   SFRSYM    DATA     BYTE      SFRPRT1PS
       00000099H   SFRSYM    DATA     BYTE      SFRPRT2PS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 113
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 113
 
 
       000000B1H   SFRSYM    DATA     BYTE      SFRPRT3PS
@@ -7683,7 +7683,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CC22H   LINE      CODE     ---       #298
       0100CC22H   LINE      CODE     ---       #300
       0100CC28H   LINE      CODE     ---       #301
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 114
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 114
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -7751,7 +7751,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000D0H   SFRSYM    DATA     BYTE      PSW
       000000A2H   SFRSYM    DATA     BYTE      SFRPRT1SEL
       0000009AH   SFRSYM    DATA     BYTE      SFRPRT2SEL
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 115
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 115
 
 
       000000B2H   SFRSYM    DATA     BYTE      SFRPRT3SEL
@@ -7819,7 +7819,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CAC5H   LINE      CODE     ---       #416
       0100CAC5H   LINE      CODE     ---       #418
       0100CAD2H   LINE      CODE     ---       #422
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 116
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 116
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -7887,7 +7887,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000C9H   SFRSYM    DATA     BYTE      SFRPRT5PS
       000000D9H   SFRSYM    DATA     BYTE      SFRPRT6PS
       000000EAH   SFRSYM    DATA     BYTE      MXAX
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 117
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 117
 
 
       000000F0H   SFRSYM    DATA     BYTE      B
@@ -7955,7 +7955,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100BF9DH   LINE      CODE     ---       #327
       0100BF9DH   LINE      CODE     ---       #329
       0100BF9FH   LINE      CODE     ---       #330
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 118
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 118
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -8023,7 +8023,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C7C4H   LINE      CODE     ---       #537
       0100C7C4H   LINE      CODE     ---       #539
       0100C7C6H   LINE      CODE     ---       #540
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 119
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 119
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -8091,7 +8091,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       02000008H   SYMBOL    XDATA    ---       convert
       ---         BLOCKEND  ---      ---       LVL=2
       ---         BLOCKEND  ---      ---       LVL=1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 120
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 120
 
 
       0100B1F5H   LINE      CODE     ---       #891
@@ -8159,7 +8159,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000C0H   SFRSYM    DATA     BYTE      SFRPRT4DR
       000000FAH   SFRSYM    DATA     BYTE      SFRPRT15SEL
       000000C8H   SFRSYM    DATA     BYTE      SFRPRT5DR
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 121
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 121
 
 
       000000D8H   SFRSYM    DATA     BYTE      SFRPRT6DR
@@ -8227,7 +8227,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100BDB5H   LINE      CODE     ---       #190
       0100BDB5H   LINE      CODE     ---       #191
       0100BDBBH   LINE      CODE     ---       #192
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 122
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 122
 
 
       0100BDBBH   LINE      CODE     ---       #194
@@ -8295,7 +8295,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100C4F2H   LINE      CODE     ---       #661
       0100C4F8H   LINE      CODE     ---       #668
       0100C4FFH   LINE      CODE     ---       #669
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 123
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 123
 
 
       0100C506H   LINE      CODE     ---       #671
@@ -8363,7 +8363,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0000008AH   SFRSYM    DATA     BYTE      SFRPRT0SEL
       000000D0H   SFRSYM    DATA     BYTE      PSW
       000000A2H   SFRSYM    DATA     BYTE      SFRPRT1SEL
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 124
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 124
 
 
       0000009AH   SFRSYM    DATA     BYTE      SFRPRT2SEL
@@ -8431,7 +8431,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100BDC1H   LINE      CODE     ---       #2641
       0100BDCEH   LINE      CODE     ---       #2642
       0100BDCEH   LINE      CODE     ---       #2648
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 125
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 125
 
 
       0100BDECH   LINE      CODE     ---       #2652
@@ -8499,7 +8499,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000E0H   SFRSYM    DATA     BYTE      ACC
       000000D0H   SFRSYM    DATA     BIT       P
       000000D0H.3 SFRSYM    DATA     BIT       RS0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 126
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 126
 
 
       000000D0H.4 SFRSYM    DATA     BIT       RS1
@@ -8567,7 +8567,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A9B1H   LINE      CODE     ---       #580
       0100A9D3H   LINE      CODE     ---       #581
       0100A9E0H   LINE      CODE     ---       #582
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 127
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 127
 
 
       0100A9EDH   LINE      CODE     ---       #583
@@ -8635,7 +8635,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A01EH   LINE      CODE     ---       #681
       0100A025H   LINE      CODE     ---       #682
       0100A02CH   LINE      CODE     ---       #683
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 128
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 128
 
 
       0100A033H   LINE      CODE     ---       #684
@@ -8703,7 +8703,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A677H   LINE      CODE     ---       #865
       0100A67EH   LINE      CODE     ---       #866
       0100A685H   LINE      CODE     ---       #867
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 129
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 129
 
 
       0100A685H   LINE      CODE     ---       #871
@@ -8771,7 +8771,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000093H   SFRSYM    DATA     BYTE      DPX
       000000F9H   SFRSYM    DATA     BYTE      SFRPRT15PS
       000000D0H.5 SFRSYM    DATA     BIT       F0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 130
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 130
 
 
       000000D0H.1 SFRSYM    DATA     BIT       F1
@@ -8839,7 +8839,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000A8H   SFRSYM    DATA     BYTE      IE
       00000085H   SFRSYM    DATA     BYTE      DPH1
       00000084H   SFRSYM    DATA     BYTE      DPL1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 131
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 131
 
 
       000000D0H.7 SFRSYM    DATA     BIT       CY
@@ -8907,7 +8907,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       ---         BLOCKEND  ---      ---       LVL=0
 
       ---         MODULE    ---      ---       ADC_AMUX
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 132
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 132
 
 
       0100C830H   PUBLIC    CODE     ---       _ADC_AMux_Select
@@ -8975,7 +8975,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A0ADH   LINE      CODE     ---       #225
       0100A0ADH   LINE      CODE     ---       #227
       0100A0B3H   LINE      CODE     ---       #228
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 133
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 133
 
 
       0100A0B3H   LINE      CODE     ---       #229
@@ -9043,7 +9043,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100A3D0H   BLOCK     CODE     NEAR LAB  LVL=1
       02000005H   SYMBOL    XDATA    BYTE      enabled
       02000006H   SYMBOL    XDATA    BYTE      currSrc
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 134
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 134
 
 
       02000007H   SYMBOL    XDATA    WORD      oldDivider
@@ -9111,7 +9111,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100CB07H   LINE      CODE     ---       #333
       0100CB07H   LINE      CODE     ---       #334
       0100CB13H   LINE      CODE     ---       #335
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 135
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 135
 
 
       ---         BLOCKEND  ---      ---       LVL=0
@@ -9179,7 +9179,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       000000C9H   SFRSYM    DATA     BYTE      SFRPRT5PS
       000000D9H   SFRSYM    DATA     BYTE      SFRPRT6PS
       000000EAH   SFRSYM    DATA     BYTE      MXAX
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 136
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 136
 
 
       000000F0H   SFRSYM    DATA     BYTE      B
@@ -9247,7 +9247,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000099H   SFRSYM    DATA     BYTE      SFRPRT2PS
       000000B1H   SFRSYM    DATA     BYTE      SFRPRT3PS
       000000C1H   SFRSYM    DATA     BYTE      SFRPRT4PS
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 137
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 137
 
 
       000000C9H   SFRSYM    DATA     BYTE      SFRPRT5PS
@@ -9315,7 +9315,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       00000007H   SYMBOL    DATA     BYTE      array
       0200001FH   SYMBOL    XDATA    ---       buffer
       02000022H   SYMBOL    XDATA    WORD      size
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 138
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 138
 
 
       0100B9CDH   BLOCK     CODE     NEAR LAB  LVL=1
@@ -9383,7 +9383,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       0100BE66H   LINE      CODE     ---       #495
       0100BE68H   LINE      CODE     ---       #496
       ---         BLOCKEND  ---      ---       LVL=0
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 139
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 139
 
 
       00000007H   SYMBOL    DATA     BYTE      array
@@ -9451,7 +9451,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
 
       0100C7E3H   BLOCK     CODE     ---       LVL=0
       0100C7E3H   BLOCK     CODE     NEAR LAB  LVL=1
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 140
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 140
 
 
       00000007H   SYMBOL    DATA     BYTE      status
@@ -9519,7 +9519,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
 
       ---         MODULE    ---      ---       ?C_INIT
       0100A93AH   PUBLIC    CODE     ---       ?C_START
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 141
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 141
 
 
 
@@ -9587,7 +9587,7 @@ SYMBOL TABLE OF MODULE:  .\DP8051_Keil_951\Release\hand_firmware_micro.omf (COMM
       01007BB9H   PUBLIC    CODE     ---       ?C?CCASE
 
       ---         MODULE    ---      ---       ?C_XBP
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 142
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 142
 
 
       00000011H   PUBLIC    DATA     ---       ?C_XBP
@@ -9655,7 +9655,7 @@ NAME . . . . . . . . . . . . . . . . . . CLASS    MODULE NAMES
 ?_curr_estim?BYTE. . . . . . . . . . . . XDATA    UTILS  INTERRUPTIONS  
 ?_cyconfigcpy?BYTE . . . . . . . . . . . XDATA    CYMEM  CYFITTER_CFG  
 ?_CyDmaChSetConfiguration?BYTE . . . . . XDATA    CYDMAC  DMA_DMA  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 143
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 143
 
 
 ?_CyDmaChStatus?BYTE . . . . . . . . . . XDATA    CYDMAC  
@@ -9723,7 +9723,7 @@ NAME . . . . . . . . . . . . . . . . . . CLASS    MODULE NAMES
                                                    CYFITTER_CFG  CYLIB  CYSPC  INTERRUPTIONS  MAIN  SHIFTREG_ENC_1  SHIF
                                                   TREG_ENC_2  SHIFTREG_ENC_3  UTILS  
 ?C?PLDIXDATA . . . . . . . . . . . . . . CODE     ?C?PLDIXDATA  PRINTF  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 144
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 144
 
 
 ?C?PSTXDATA. . . . . . . . . . . . . . . CODE     ?C?PSTXDATA  PRINTF  
@@ -9791,7 +9791,7 @@ _COUNTER_ENC_SetInterruptMode. . . . . . CODE     COUNTER_ENC
 _COUNTER_ENC_WriteCompare. . . . . . . . CODE     COUNTER_ENC  
 _COUNTER_ENC_WriteControlRegister. . . . CODE     COUNTER_ENC  
 _COUNTER_ENC_WriteCounter. . . . . . . . CODE     COUNTER_ENC  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 145
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 145
 
 
 _COUNTER_ENC_WritePeriod . . . . . . . . CODE     COUNTER_ENC  
@@ -9859,7 +9859,7 @@ _cyread32_nodpx. . . . . . . . . . . . . CODE     CYMEM  CYDMAC
 _cyread8 . . . . . . . . . . . . . . . . CODE     CYMEM  ADC  CYFITTER_CFG  CYLIB  CYSPC  
 _cyread8_nodpx . . . . . . . . . . . . . CODE     CYMEM  
 _CySetFlashEEBuffer. . . . . . . . . . . CODE     CYFLASH  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 146
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 146
 
 
 _CySpcEraseSector. . . . . . . . . . . . CODE     CYSPC  EEPROM  
@@ -9927,7 +9927,7 @@ _LCRChecksum . . . . . . . . . . . . . . CODE     COMMAND_PROCESSING
 _LED_REG_Write . . . . . . . . . . . . . CODE     LED_REG  INTERRUPTIONS  
 _memStore. . . . . . . . . . . . . . . . CODE     COMMAND_PROCESSING  
 _MOTOR_DIR_Write . . . . . . . . . . . . CODE     MOTOR_DIR  INTERRUPTIONS  MAIN  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 147
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 147
 
 
 _MOTOR_ON_OFF_Write. . . . . . . . . . . CODE     MOTOR_ON_OFF  COMMAND_PROCESSING  INTERRUPTIONS  MAIN  
@@ -9995,7 +9995,7 @@ ADC_convDone . . . . . . . . . . . . . . XDATA    ADC
 ADC_CountsPerVolt. . . . . . . . . . . . XDATA    ADC  
 ADC_Enable . . . . . . . . . . . . . . . CODE     ADC  
 ADC_Ext_CP_Clk_GetDividerRegister. . . . CODE     ADC_EXT_CP_CLK  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 148
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 148
 
 
 ADC_Ext_CP_Clk_GetModeRegister . . . . . CODE     ADC_EXT_CP_CLK  
@@ -10063,7 +10063,7 @@ cmd_set_inputs . . . . . . . . . . . . . CODE     COMMAND_PROCESSING
 cmd_set_watchdog . . . . . . . . . . . . CODE     COMMAND_PROCESSING  
 cmd_store_params . . . . . . . . . . . . CODE     COMMAND_PROCESSING  
 commProcess. . . . . . . . . . . . . . . CODE     COMMAND_PROCESSING  INTERRUPTIONS  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 149
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 149
 
 
 COUNTER_ENC_ClearFIFO. . . . . . . . . . CODE     COUNTER_ENC  
@@ -10131,7 +10131,7 @@ CyVdRealTimeStatus . . . . . . . . . . . CODE     CYLIB
 CyWdtClear . . . . . . . . . . . . . . . CODE     CYLIB  
 CyXTAL_32KHZ_ReadStatus. . . . . . . . . CODE     CYLIB  
 CyXTAL_32KHZ_Start . . . . . . . . . . . CODE     CYLIB  CYPM  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 150
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 150
 
 
 CyXTAL_32KHZ_Stop. . . . . . . . . . . . CODE     CYLIB  
@@ -10199,7 +10199,7 @@ ISR_WATCHDOG_GetVector . . . . . . . . . CODE     ISR_WATCHDOG
 ISR_WATCHDOG_Handler . . . . . . . . . . CODE     INTERRUPTIONS  MAIN  
 ISR_WATCHDOG_Interrupt . . . . . . . . . CODE     ISR_WATCHDOG  
 ISR_WATCHDOG_SetPending. . . . . . . . . CODE     ISR_WATCHDOG  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 151
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 151
 
 
 ISR_WATCHDOG_Start . . . . . . . . . . . CODE     ISR_WATCHDOG  
@@ -10267,7 +10267,7 @@ SFRPRT0PS. . . . . . . . . . . . . . . . DATA     COMMAND_PROCESSING
 SFRPRT0SEL . . . . . . . . . . . . . . . DATA     COMMAND_PROCESSING  
 SFRPRT12DR . . . . . . . . . . . . . . . DATA     COMMAND_PROCESSING  
 SFRPRT12PS . . . . . . . . . . . . . . . DATA     COMMAND_PROCESSING  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 152
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 152
 
 
 SFRPRT12SEL. . . . . . . . . . . . . . . DATA     COMMAND_PROCESSING  
@@ -10335,7 +10335,7 @@ UART_RS485_Enable. . . . . . . . . . . . CODE     UART_RS485
 UART_RS485_errorStatus . . . . . . . . . XDATA    UART_RS485  UART_RS485_INT  
 UART_RS485_GetByte . . . . . . . . . . . CODE     UART_RS485  
 UART_RS485_GetChar . . . . . . . . . . . CODE     UART_RS485  INTERRUPTIONS  
-LX51 LINKER/LOCATER V4.64.0.0                                                         01/26/2017  09:18:22  PAGE 153
+LX51 LINKER/LOCATER V4.64.0.0                                                         02/01/2017  09:26:49  PAGE 153
 
 
 UART_RS485_GetRxBufferSize . . . . . . . CODE     UART_RS485  INTERRUPTIONS  

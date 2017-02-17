@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   GLOBALS                                                               01/26/2017 09:18:20 PAGE 1   
+C51 COMPILER V9.51   GLOBALS                                                               02/01/2017 09:26:37 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE GLOBALS
@@ -62,14 +62,14 @@ line level    source
   50          
   51          // PWM value
   52          int8 pwm_sign;
-C51 COMPILER V9.51   GLOBALS                                                               01/26/2017 09:18:20 PAGE 2   
+C51 COMPILER V9.51   GLOBALS                                                               02/01/2017 09:26:37 PAGE 2   
 
   53          
   54          // KOREA mod. version
   55          uint8 normally_closed_mode = 0;              // Korea hand has normally opened mode at startup
   56          
   57          /* END OF FILE */
-C51 COMPILER V9.51   GLOBALS                                                               01/26/2017 09:18:20 PAGE 3   
+C51 COMPILER V9.51   GLOBALS                                                               02/01/2017 09:26:37 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
