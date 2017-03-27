@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="firmware">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="firmware\hand_firmware_micro\Source Files\interruptions.c">
 <ExpandedNodeIds>
 <v>firmware</v>
 <v>firmware\hand_firmware_micro</v>
@@ -610,7 +610,12 @@
 </userData>
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
-<OpenDocs />
+<OpenDocs>
+<name v=".\hand_firmware_micro.cydsn\interruptions.c" />
+<name v=".\hand_firmware_micro.cydsn\utils.c" />
+<name v=".\hand_firmware_micro.cydsn\globals.h" />
+<name v=".\hand_firmware_micro.cydsn\command_processing.c" />
+</OpenDocs>
 <config v="Release" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

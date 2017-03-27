@@ -343,7 +343,12 @@ void handle_check_mode(void) {       // 100 Hz frequency
     static uint8 first_time = 1;
     static uint32 count = 0;  
     
-    meas_error = abs(g_meas.pos[2] - g_measOld.pos[2]);
+    if (c_mem.double_encoder_on_off) {
+        meas_error = abs(g_meas.pos[2] - g_measOld.pos[2]);
+    } else {
+        meas_error = abs(g_meas.pos[1] - g_measOld.pos[1]);
+    }
+    
     
     if (meas_error < c_mem.handle_grasp_thr) {
             

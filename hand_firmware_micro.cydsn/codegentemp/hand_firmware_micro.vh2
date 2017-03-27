@@ -2,7 +2,7 @@
 --	Conversion of hand_firmware_micro.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Mon Feb 20 11:00:48 2017
+--	Mon Mar 27 13:27:48 2017
 --
 
 USE cypress.cypress.all;

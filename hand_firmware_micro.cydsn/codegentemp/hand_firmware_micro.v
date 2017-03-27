@@ -1,6 +1,6 @@
 // ======================================================================
 // hand_firmware_micro.v generated from TopDesign.cysch
-// 02/20/2017 at 11:00
+// 03/27/2017 at 13:27
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
