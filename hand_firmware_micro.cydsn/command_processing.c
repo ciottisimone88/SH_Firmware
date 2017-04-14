@@ -223,6 +223,12 @@ void commProcess(void){
             calib.speed = *((int16 *) &g_rx.buffer[1]);
             calib.repetitions = *((int16 *) &g_rx.buffer[3]);
             
+            if(calib.speed == -1 && calib.repetitions == -1) {
+                calib.enabled = FALSE;
+                calib.speed = 0;
+                calib.repetitions = 0;
+                break;
+            }
             // Speed & repetitions saturations
             if (calib.speed < 0) {
                 calib.speed = 0;
