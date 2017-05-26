@@ -1301,8 +1301,8 @@ void overcurrent_control() {
         if (dev_pwm_limit < 0) 
             dev_pwm_limit = 0;
         else 
-            if (dev_pwm_limit > 100) 
-                dev_pwm_limit = 100;
+            if (dev_pwm_limit > dev_pwm_sat) 
+                dev_pwm_limit = dev_pwm_sat;
     }
 }
 
