@@ -54,7 +54,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.3"
+#define VERSION                 "SH-PRO v6.1.4"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -268,8 +268,9 @@ extern float cycle_time;							/*!< Variable used to calculate in how much time 
 
 // Device Data
 
-extern int32   dev_tension;                         /*!< Power supply tension */
-extern uint8   dev_pwm_limit;                       /*!< Device pwm limit */
+extern int32    dev_tension;                        /*!< Power supply tension */
+extern uint8    dev_pwm_limit;                      /*!< Device pwm limit */
+extern uint8    dev_pwm_sat;                        /*!< Device pwm limit saturation */
 
 // Bit Flag
 

@@ -1315,12 +1315,12 @@ void pwm_limit_search() {
     uint8 CYDATA index;
 
     if (dev_tension > 25500) {
-        dev_pwm_limit = 0;
+        dev_pwm_sat = 0;
     } else if (dev_tension < 11500) {
-        dev_pwm_limit = 100;
+        dev_pwm_sat = 100;
     } else {
         index = (uint8)((dev_tension - 11500) >> 9);
-        dev_pwm_limit = pwm_preload_values[index];
+        dev_pwm_sat = pwm_preload_values[index];
     }
 }
 /* [] END OF FILE */

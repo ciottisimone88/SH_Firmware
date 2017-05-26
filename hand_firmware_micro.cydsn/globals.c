@@ -64,6 +64,7 @@ float cycle_time;
 
 int32   dev_tension;                // Power supply tension
 uint8   dev_pwm_limit;
+uint8   dev_pwm_sat = 100;
 
 // Bit Flag
 
