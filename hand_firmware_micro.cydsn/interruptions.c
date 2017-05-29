@@ -1068,7 +1068,8 @@ void analog_read_end() {
         // Calibration state machine
         switch(emg_1_status) {
             case NORMAL: // normal execution
-                i_aux = filter_ch1(ADC_buf[2]);
+                i_aux = (int32)ADC_buf[2];
+                i_aux = filter_ch1(i_aux);
                 i_aux = (i_aux << 10) / g_mem.emg_max_value[0];
     
                 if (interrupt_flag){
@@ -1116,7 +1117,7 @@ void analog_read_end() {
             case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
                 // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
                 emg_counter_1++;
-                g_mem.emg_max_value[0] += filter_ch1(ADC_buf[2]);
+                g_mem.emg_max_value[0] += filter_ch1((int32)ADC_buf[2]);
                 
                 if (interrupt_flag){
                     interrupt_flag = FALSE;
@@ -1149,7 +1150,8 @@ void analog_read_end() {
         // EMG 2 calibration state machine
         switch(emg_2_status) {
             case NORMAL: // normal execution
-                i_aux = filter_ch2(ADC_buf[3]);
+                i_aux = (int32)ADC_buf[3];
+                i_aux = filter_ch2(i_aux);
                 i_aux = (i_aux << 10) / g_mem.emg_max_value[1];
     
                 if (interrupt_flag){
@@ -1197,7 +1199,7 @@ void analog_read_end() {
             case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
                 // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
                 emg_counter_2++;
-                g_mem.emg_max_value[1] += filter_ch2(ADC_buf[3]);
+                g_mem.emg_max_value[1] += filter_ch2((int32)ADC_buf[3]);
     
                 if (interrupt_flag){
                     interrupt_flag = FALSE;
