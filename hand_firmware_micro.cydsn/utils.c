@@ -110,7 +110,10 @@ int32 filter_i1(int32 new_value) {
 
 int32 filter_ch1(int32 new_value) {
 
-   static int32 old_value, aux;
+   static int32 old_value, aux;    
+     
+    if (new_value < 0)
+        new_value = 0;
 
     aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
 
@@ -182,6 +185,9 @@ int32 filter_curr_diff(int32 new_value) {
 int32 filter_ch2(int32 new_value) {
 
     static int32 old_value, aux;
+    
+    if (new_value < 0)
+        new_value = 0;
 
     aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
 
