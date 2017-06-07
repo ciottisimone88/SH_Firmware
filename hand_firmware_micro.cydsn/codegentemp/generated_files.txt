@@ -151,6 +151,17 @@
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\WATCHDOG_REFRESH.h" value="NONE;WATCHDOG_REFRESH" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\WATCHDOG_REFRESH.c" value="DP8051_C_FILE;WATCHDOG_REFRESH" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\WATCHDOG_REFRESH_PM.c" value="DP8051_C_FILE;WATCHDOG_REFRESH" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK.c" value="DP8051_C_FILE;LED_BLINK" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK.h" value="NONE;LED_BLINK" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK_PM.c" value="DP8051_C_FILE;LED_BLINK" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_CTRL.h" value="NONE;LED_CTRL" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_CTRL.c" value="DP8051_C_FILE;LED_CTRL" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_CTRL_PM.c" value="DP8051_C_FILE;LED_CTRL" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK_EN.h" value="NONE;LED_BLINK_EN" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK_EN.c" value="DP8051_C_FILE;LED_BLINK_EN" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK_EN_PM.c" value="DP8051_C_FILE;LED_BLINK_EN" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CLOCK_PWM_1.c" value="DP8051_C_FILE;CLOCK_PWM_1" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CLOCK_PWM_1.h" value="NONE;CLOCK_PWM_1" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_AMux.c" value="DP8051_C_FILE;ADC_AMux" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_AMux.h" value="NONE;ADC_AMux" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_Ext_CP_Clk.c" value="DP8051_C_FILE;ADC_Ext_CP_Clk" />

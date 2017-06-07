@@ -1091,6 +1091,8 @@ void analog_read_end() {
     
     static uint16 emg_counter_1 = 0;
     static uint16 emg_counter_2 = 0;
+	static uint8 first_tension_valid = TRUE;
+    static int32 pow_tension = 12000;       //12000 mV (12 V)
 
     // Wait for conversion end
     
@@ -1107,6 +1109,20 @@ void analog_read_end() {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+    }
+	if (first_tension_valid && tension_valid) {
+        if (dev_tension < 9000) {   // 8 V case
+            pow_tension = 8000;
+        }
+        else {      // 12 V - 24 V cases
+            if (dev_tension < 13000) {
+                pow_tension = 12000;
+            }
+            else
+                pow_tension = 24000;
+        }
+
+        first_tension_valid = FALSE;
     }
 
     // Until there is no valid input tension repeat this measurement
@@ -1327,6 +1343,10 @@ void analog_read_end() {
         emg_2_status = RESET;
 
         tension_valid = FALSE;
+		//fixed
+        LED_CTRL_Write(1);
+        //PWM Blink Enable
+        LED_BLINK_EN_Write(0);
             
         if (interrupt_flag){
             interrupt_flag = FALSE;
@@ -1350,6 +1370,23 @@ void analog_read_end() {
         g_meas.emg[0] = 0;
         g_meas.emg[1] = 0;
 
+    }
+	// The board LED blinks if attached battery is not fully charged
+    if (!first_tension_valid && tension_valid == TRUE){
+        if (dev_tension > 0.92 * pow_tension){
+            //fixed
+            LED_CTRL_Write(1);
+            
+            //PWM Blink Enable
+            LED_BLINK_EN_Write(0);
+        }
+        else {
+            // blink
+            LED_CTRL_Write(0);
+            
+            //PWM Blink Enable
+            LED_BLINK_EN_Write(1);
+        }
     }
         
     if (interrupt_flag){
