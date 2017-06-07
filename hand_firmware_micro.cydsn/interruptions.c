@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -37,7 +38,8 @@
 * \brief        Interruption handling and firmware core functions
 * \date         June 06, 2016
 * \author       _qbrobotics_
-* \copyright    (C)  qbrobotics. All rights reserved.
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
 
 
@@ -356,6 +358,24 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+    }
+    
+     
+    //---------------------------------- Rest position check
+    
+    // Divider 10, freq = 500 Hz
+    if (c_mem.control_mode == CONTROL_ANGLE_AND_REST_POS){
+        if (counter_calibration == CALIBRATION_DIV) {
+                check_rest_position();
+                counter_calibration = 0;
+        }
+        counter_calibration++;
+
+        // Check Interrupt     
+        if (interrupt_flag){
+            interrupt_flag = FALSE;
+            interrupt_manager();
+        }
     }
    
     //---------------------------------- Update States
@@ -771,6 +791,61 @@ void motor_control() {
 				if (pwm_input > PWM_MAX_VALUE) 
                 	pwm_input = PWM_MAX_VALUE;
         	}
+
+        break;
+    
+        // =============== POSITION CONTROL WITH REST CHECK =================
+        case CONTROL_ANGLE_AND_REST_POS:
+            
+            if (rest_enabled == 1){
+                // Change position reference to drive motor to rest position smoothly
+                g_ref.pos[0] = rest_pos_curr_ref;
+            }
+            
+            if (forced_open == 1) {
+                // Open the SoftHand as EMG PROPORTIONAL input mode 
+                if (err_emg_2 > 0)
+                    g_ref.pos[0] = g_mem.rest_pos - (err_emg_2 * g_mem.rest_pos) / (1024 - c_mem.emg_threshold[1]);
+                else {
+                    g_ref.pos[0] = g_mem.rest_pos;
+                    forced_open = 0;
+                }
+            }
+            
+            
+            pos_error = g_ref.pos[0] - g_meas.pos[0];
+
+            pos_error_sum += pos_error;
+
+            // anti-windup (for integral control)
+            if (pos_error_sum > ANTI_WINDUP) {
+                pos_error_sum = ANTI_WINDUP;
+            } else if (pos_error_sum < -ANTI_WINDUP) {
+                pos_error_sum = -ANTI_WINDUP;
+            }
+
+            // Proportional
+            if (k_p != 0) 
+                pwm_input = (int32)(k_p * pos_error) >> 16;
+            
+
+            // Integral
+            if (k_i != 0) 
+                pwm_input += (int32)(k_i * pos_error_sum) >> 16;
+            
+
+            // Derivative
+            if (k_d != 0) 
+                pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16;
+            
+
+            // Update measure
+            prev_pos_err = pos_error;
+
+            if (pwm_input > 0)
+                motor_dir = TRUE;
+            else
+                motor_dir = FALSE;
 
         break;
     }
@@ -1303,8 +1378,8 @@ void overcurrent_control() {
         if (dev_pwm_limit < 0) 
             dev_pwm_limit = 0;
         else 
-            if (dev_pwm_limit > 100) 
-                dev_pwm_limit = 100;
+            if (dev_pwm_limit > dev_pwm_sat) 
+                dev_pwm_limit = dev_pwm_sat;
     }
 }
 
@@ -1317,12 +1392,12 @@ void pwm_limit_search() {
     uint8 CYDATA index;
 
     if (dev_tension > 25500) {
-        dev_pwm_limit = 0;
+        dev_pwm_sat = 0;
     } else if (dev_tension < 11500) {
-        dev_pwm_limit = 100;
+        dev_pwm_sat = 100;
     } else {
         index = (uint8)((dev_tension - 11500) >> 9);
-        dev_pwm_limit = pwm_preload_values[index];
+        dev_pwm_sat = pwm_preload_values[index];
     }
 }
 /* [] END OF FILE */

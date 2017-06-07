@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -211,7 +212,8 @@ enum qbmove_control_mode {
     CONTROL_ANGLE           = 0,        ///< Classic position control
     CONTROL_PWM             = 1,        ///< Direct PWM value
     CONTROL_CURRENT         = 2,        ///< Current control
-    CURR_AND_POS_CONTROL    = 3         ///< Current and position control
+    CURR_AND_POS_CONTROL    = 3,         ///< Current and position control
+    CONTROL_ANGLE_AND_REST_POS = 4      ///< Position control with rest position check
 
 };
 

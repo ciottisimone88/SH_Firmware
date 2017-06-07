@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -37,7 +38,8 @@
 * \brief        Global definitions and macros are set in this file.
 * \date         June 06, 2016
 * \author       _abrobotics_
-* \copyright    (C)  qbrobotics. All rights reserved.
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
 
 #ifndef GLOBALS_H_INCLUDED
@@ -54,13 +56,13 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.2"
+#define VERSION                 "SH-PRO v6.1.5 (Socket w/Rest position)"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           21      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           25      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -217,7 +219,11 @@ struct st_mem {
     uint8   baud_rate;                  /*!< Baud Rate setted.*/                                            //1
     uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
 
-                                                                                            //TOT           150 bytes
+    int32   rest_pos;                   /*!< Hand rest position while in EMG mode.*/                        //4
+    float  rest_delay;                 /*!< Hand rest position delay while in EMG mode.*/                  //4
+    float  rest_vel;                   /*!< Hand velocity closure for rest position reaching*/             //4
+    float   rest_ratio;                 /*!< Hand rest ratio between velocity closure and rest position error*/  //4
+                                                                                           //TOT           150 bytes
 };
 
 //=================================================     device related variables
@@ -269,6 +275,7 @@ extern float cycle_time;							/*!< Variable used to calculate in how much time 
 // Device Data
 
 extern int32   dev_tension;                         /*!< Power supply tension */
+extern uint8    dev_pwm_sat;                        /*!< Device pwm limit saturation */
 extern uint8   dev_pwm_limit;                       /*!< Device pwm limit */
 
 // Bit Flag
@@ -286,6 +293,12 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer 
 // PWM value
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
+
+extern uint8 rest_enabled;
+extern uint8 forced_open;
+extern int32 rest_pos_curr_ref;
+
+
 
 // -----------------------------------------------------------------------------
 

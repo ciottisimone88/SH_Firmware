@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -30,13 +31,15 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // POSSIBILITY OF SUCH DAMAGE.
 // ----------------------------------------------------------------------------
+
 /**
 * \file         utils.c
 *
 * \brief        Definition of utility functions.
 * \date         June 06, 2016
 * \author       _qbrobotics_
-* \copyright    (C)  qbrobotics. All rights reserved.
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
 
 #include <utils.h>
@@ -331,8 +334,8 @@ void calibration(void) {
 // return
 
 // Number of teeth of the two wheels
-#define N1 15           ///< Teeth of the first encoder wheel
-#define N2 14           ///< Teeth of the second encoder wheel
+#define N1 28           ///< Teeth of the first encoder wheel
+#define N2 27           ///< Teeth of the second encoder wheel
 
 #define I1 1            ///< First wheel invariant value
 #define I2 (-1)         ///< Second wheel invariant value
@@ -348,6 +351,107 @@ int calc_turns_fcn(const int32 pos1, const int32 pos2) {
     int32 aux = my_mod(x*I1, N2);
     
     return (my_mod(aux + N2/2, N2) - N2/2);
+}
+
+
+//==============================================================================
+//                                                              REST POSITION
+//==============================================================================
+
+void check_rest_position(void) {     // 100 Hz frequency
+    
+    static uint32 count = 0;        // Range [0 - 2^31]
+    static uint8 flag_count = 1;
+    static uint8 first_time = 1;
+    static float m = 0;
+    static int32 abs_err_thr = 0;
+    static int32 delta_inc = 0;
+    int32 curr_pos = 0;
+    static int32 rest_error;
+    int32 handle_value = 0;
+    
+    if (first_time){
+        count = 0;
+        first_time = 0;
+    }
+    
+    curr_pos = (int32)(g_meas.pos[0] >> g_mem.res[0]);
+    
+    if (c_mem.input_mode == INPUT_MODE_ENCODER3) {
+        if (c_mem.double_encoder_on_off == 0)
+            handle_value = g_meas.pos[1];
+        else
+            handle_value = g_meas.pos[2];
+    }
+    
+    if ( ( (c_mem.input_mode >= 2 && g_meas.emg[0] < 200 && g_meas.emg[1] < 200) || (c_mem.input_mode == INPUT_MODE_ENCODER3 && handle_value < 50) ) && curr_pos < 10000){
+        if (flag_count == 1){
+            count = count + 1;
+        }
+    }
+    else {
+        count = 0;
+        rest_enabled = 0;
+        flag_count = 1;
+    }
+    
+    /********** Velocity closure procedure *************
+    * m = error/time
+    * m = (g_mem.rest_pos - init_pos)/time
+    * time = g_mem.rest_pos/g_mem.rest_vel (g_mem.rest_vel in ticks/msec)
+    ***************************************************/
+    
+    if (count == (uint32)(g_mem.rest_delay/CALIBRATION_DIV)){ //10 seconds 
+        rest_enabled = 1;
+        rest_pos_curr_ref = g_meas.pos[0];
+        
+        // Ramp angular coefficient
+        m = ((float)(g_mem.rest_pos - g_meas.pos[0])/((float)g_mem.rest_pos))*(g_mem.rest_vel);
+        
+        // Stop condition threshold is related to m coefficient by g_mem.rest_ratio value
+        abs_err_thr = (int32)( (int32)(g_mem.rest_ratio*m*((float)CALIBRATION_DIV)) << g_mem.res[0]);
+        abs_err_thr = (abs_err_thr>0)?abs_err_thr:(0-abs_err_thr);
+        
+        rest_error = g_mem.rest_pos - g_meas.pos[0];    
+        
+        delta_inc = (int32)( ((int32)(m*(float)CALIBRATION_DIV)) << g_mem.res[0] );
+        delta_inc = (delta_inc>0)?delta_inc:(0-delta_inc);
+        
+        count = 0;
+        flag_count = 0;
+    }
+    
+    if (rest_enabled){
+
+        if (rest_error < abs_err_thr && rest_error > -abs_err_thr){
+            // Stop condition
+            rest_pos_curr_ref = g_mem.rest_pos;
+            
+            if (c_mem.input_mode >= 2)   // EMG input mode
+                forced_open = 1; 
+            
+            count = 0;
+        }
+        else {
+            rest_error = g_mem.rest_pos - g_meas.pos[0];        
+
+            if (rest_error > 0){
+                rest_pos_curr_ref = rest_pos_curr_ref + delta_inc;
+            }
+            if (rest_error < 0){
+                rest_pos_curr_ref = rest_pos_curr_ref - delta_inc;
+            }
+        } 
+    }
+    
+    // Position limit saturation
+    if (c_mem.pos_lim_flag) {
+        if (rest_pos_curr_ref < c_mem.pos_lim_inf[0]) 
+            rest_pos_curr_ref = c_mem.pos_lim_inf[0];
+        if (rest_pos_curr_ref > c_mem.pos_lim_sup[0]) 
+            rest_pos_curr_ref = c_mem.pos_lim_sup[0];
+    }
+
 }
 
 /* [] END OF FILE */

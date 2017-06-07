@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -37,7 +38,8 @@
 * \brief        Global variables.
 * \date         June 06, 2016
 * \author       _qbrobotics_
-* \copyright    (C)  qbrobotics. All rights reserved.
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
 
 //=================================================================     includes
@@ -64,6 +66,7 @@ float cycle_time;
 
 int32   dev_tension;                // Power supply tension
 uint8   dev_pwm_limit;
+uint8   dev_pwm_sat = 100;
 
 // Bit Flag
 
@@ -78,5 +81,9 @@ int16 ADC_buf[4];
 
 // PWM value
 int8 pwm_sign;
+
+uint8 rest_enabled;
+int32 rest_pos_curr_ref;
+uint8 forced_open;
 
 /* END OF FILE */

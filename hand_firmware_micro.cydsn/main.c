@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // BSD 3-Clause License
 
-// Copyright (c) 2017, qbrobotics
+// Copyright (c) 2016, qbrobotics
+// Copyright (c) 2017, Centro "E.Piaggio"
 // All rights reserved.
 
 // Redistribution and use in source and binary forms, with or without
@@ -37,7 +38,8 @@
 * \brief        Firmware main file.
 * \date         June 06, 2016
 * \author       qbrobotics
-* \copyright    (C)  qbrobotics. All rights reserved.
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
 
 /**
@@ -53,7 +55,8 @@
 *               read its encoder. Also can read and convert analog measurements
 *               connected to the PSoC microcontroller.                
 *
-* \copyright    (C)  qbrobotics. All rights reserved.
+* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 *
 */
 
@@ -194,7 +197,7 @@ int main()
 
     MOTOR_ON_OFF_Write(g_ref.onoff);                    // Activating motors
 
-    dev_pwm_limit = 0;                                  // Init PWM limit
+    dev_pwm_limit = dev_pwm_sat;                                  // Init PWM limit
     tension_valid = FALSE;                              // Init tension_valid BIT
 
     reset_last_value_flag = 0;
@@ -202,6 +205,9 @@ int main()
     //------------------------------------------------- Initialize package on receive from RS485
     g_rx.length = 0;
     g_rx.ready  = 0;
+	
+    rest_enabled = 1;
+    forced_open = 0;
 
     //============================================================     main loop
 
