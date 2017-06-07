@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   GLOBALS                                                               06/07/2017 10:29:06 PAGE 1   
+C51 COMPILER V9.51   GLOBALS                                                               06/07/2017 10:54:14 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE GLOBALS
@@ -62,7 +62,7 @@ line level    source
   50          
   51          struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
   52          struct st_meas  g_meas, g_measOld;          // measurements
-C51 COMPILER V9.51   GLOBALS                                                               06/07/2017 10:29:06 PAGE 2   
+C51 COMPILER V9.51   GLOBALS                                                               06/07/2017 10:54:14 PAGE 2   
 
   53          struct st_data  g_rx;                       // income data
   54          struct st_mem   g_mem, c_mem;               // memory
@@ -101,7 +101,7 @@ line level    source
   87          uint8 forced_open;
   88          
   89          /* END OF FILE */
-C51 COMPILER V9.51   GLOBALS                                                               06/07/2017 10:29:06 PAGE 3   
+C51 COMPILER V9.51   GLOBALS                                                               06/07/2017 10:54:14 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 

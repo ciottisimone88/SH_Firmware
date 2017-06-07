@@ -1194,7 +1194,9 @@ void analog_read_end() {
                 emg_counter_1++;
                 if (emg_counter_1 == EMG_SAMPLE_TO_DISCARD) {
                     emg_counter_1 = 0;          // reset counter
-                    LED_REG_Write(0x01);        // turn on LED
+                    
+                    LED_CTRL_Write(1);
+                    LED_BLINK_EN_Write(0);
                         
                     if (interrupt_flag){
                         interrupt_flag = FALSE;
@@ -1223,7 +1225,9 @@ void analog_read_end() {
                         interrupt_manager();
                     }                    
                     
-                    LED_REG_Write(0x00);        // led OFF
+                    LED_CTRL_Write(0);
+                    LED_BLINK_EN_Write(0);
+                    
                     emg_counter_1 = 0;          // reset counter
 
                     emg_1_status = NORMAL;           // goto normal execution
@@ -1276,7 +1280,9 @@ void analog_read_end() {
                 emg_counter_2++;
                 if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
                     emg_counter_2 = 0;          // reset counter
-                    LED_REG_Write(0x01);        // turn on LED
+                    
+                    LED_CTRL_Write(1);
+                    LED_BLINK_EN_Write(0);
     
                     if (interrupt_flag){
                         interrupt_flag = FALSE;
@@ -1299,7 +1305,10 @@ void analog_read_end() {
                 
                 if (emg_counter_2 == SAMPLES_FOR_EMG_MEAN) {
                     g_mem.emg_max_value[1] = g_mem.emg_max_value[1] / SAMPLES_FOR_EMG_MEAN; // calc mean
-                    LED_REG_Write(0x00);        // led OFF
+                    
+                    LED_CTRL_Write(0);
+                    LED_BLINK_EN_Write(0);
+                    
                     emg_counter_2 = 0;          // reset counter
                 
                     if (interrupt_flag){
@@ -1319,7 +1328,7 @@ void analog_read_end() {
                         g_ref.onoff = c_mem.activ;
                         MOTOR_ON_OFF_Write(g_ref.onoff);
                     }
-                    emg_2_status = NORMAL;           // goto normal execution
+                    emg_2_status = WAIT_EoC;           // goto end of calibration wait
                 }
                 break;
 
@@ -1328,6 +1337,20 @@ void analog_read_end() {
                     emg_2_status = DISCARD;           // goto discard sample
                 break;
 
+            case WAIT_EoC:  // wait for end of calibration procedure (only for LED visibility reasons)
+                emg_counter_2++;
+                if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
+                    emg_counter_2 = 0;          // reset counter
+
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    emg_2_status = NORMAL;           // goto normal execution
+                }
+                break;
+                
             default:
                 break;
         }
@@ -1372,7 +1395,7 @@ void analog_read_end() {
 
     }
 	// The board LED blinks if attached battery is not fully charged
-    if (!first_tension_valid && tension_valid == TRUE){
+    if (!first_tension_valid && tension_valid == TRUE && emg_1_status == NORMAL && emg_2_status == NORMAL){
         if (dev_tension > 0.92 * pow_tension){
             //fixed
             LED_CTRL_Write(1);
@@ -1386,6 +1409,10 @@ void analog_read_end() {
             
             //PWM Blink Enable
             LED_BLINK_EN_Write(1);
+            
+            // Disable motors because of not fully charged battery
+            g_refNew.onoff = 0x00;
+            MOTOR_ON_OFF_Write(g_refNew.onoff); // Deactivate motors
         }
     }
         

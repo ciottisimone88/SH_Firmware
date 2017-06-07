@@ -1,5 +1,5 @@
 # hand_firmware_micro
-# 2017-06-07 08:28:56Z
+# 2017-06-07 08:54:03Z
 
 # IO_2@[IOP=(1)][IoId=(2)] is reserved: XresEnabled
 dont_use_io iocell 1 2
@@ -30,7 +30,6 @@ set_io "MOTOR_2B(0)" iocell 1 4
 set_io "USB_VDD(0)" iocell 2 4
 set_io "FTDI_ENABLE(0)" iocell 2 3
 set_io "Signal_1_B(0)" iocell 15 3
-set_io "LED(0)" iocell 15 1
 set_io "BOARD_LED(0)" iocell 12 3
 set_io "Signal_1_A(0)" iocell 12 2
 set_io "EMG_1(0)" iocell 15 0

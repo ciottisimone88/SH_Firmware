@@ -1,5 +1,5 @@
 -- Project:   hand_firmware_micro
--- Generated: 06/07/2017 10:28:56
+-- Generated: 06/07/2017 10:54:03
 -- PSoC Creator  3.3 SP1
 
 ENTITY hand_firmware_micro IS
@@ -17,7 +17,6 @@ ENTITY hand_firmware_micro IS
         USB_VDD(0)_PAD : OUT std_ulogic;
         FTDI_ENABLE(0)_PAD : OUT std_ulogic;
         Signal_1_B(0)_PAD : OUT std_ulogic;
-        LED(0)_PAD : OUT std_ulogic;
         BOARD_LED(0)_PAD : OUT std_ulogic;
         Signal_1_A(0)_PAD : OUT std_ulogic);
     ATTRIBUTE voltage_VDDOPAMP OF __DEFAULT__ : ENTITY IS 5e0;
@@ -54,7 +53,6 @@ ARCHITECTURE __DEFAULT__ OF hand_firmware_micro IS
     SIGNAL EMG_1(0)__PA : bit;
     SIGNAL EMG_2(0)__PA : bit;
     SIGNAL FTDI_ENABLE(0)__PA : bit;
-    SIGNAL LED(0)__PA : bit;
     SIGNAL MOTOR_1A(0)__PA : bit;
     SIGNAL MOTOR_1B(0)__PA : bit;
     SIGNAL MOTOR_2A(0)__PA : bit;
@@ -81,7 +79,6 @@ ARCHITECTURE __DEFAULT__ OF hand_firmware_micro IS
     SIGNAL Net_2334_local : bit;
     SIGNAL Net_2411 : bit;
     SIGNAL Net_2627 : bit;
-    SIGNAL Net_2828 : bit;
     SIGNAL Net_2982 : bit;
     SIGNAL Net_2993 : bit;
     SIGNAL Net_2996 : bit;
@@ -105,13 +102,13 @@ ARCHITECTURE __DEFAULT__ OF hand_firmware_micro IS
     SIGNAL Net_3570 : bit;
     SIGNAL Net_3588 : bit;
     SIGNAL Net_3664 : bit;
-    SIGNAL Net_3782 : bit;
-    ATTRIBUTE udbclken_assigned OF Net_3782 : SIGNAL IS "True";
-    ATTRIBUTE global_signal OF Net_3782 : SIGNAL IS true;
-    SIGNAL Net_3782_local : bit;
     SIGNAL Net_3925 : bit;
     SIGNAL Net_3960 : bit;
     SIGNAL Net_3961 : bit;
+    SIGNAL Net_4015 : bit;
+    ATTRIBUTE udbclken_assigned OF Net_4015 : SIGNAL IS "True";
+    ATTRIBUTE global_signal OF Net_4015 : SIGNAL IS true;
+    SIGNAL Net_4015_local : bit;
     SIGNAL Net_4627 : bit;
     SIGNAL Net_4716 : bit;
     SIGNAL Net_5118 : bit;
@@ -218,13 +215,6 @@ ARCHITECTURE __DEFAULT__ OF hand_firmware_micro IS
     SIGNAL \LED_CTRL:control_5\ : bit;
     SIGNAL \LED_CTRL:control_6\ : bit;
     SIGNAL \LED_CTRL:control_7\ : bit;
-    SIGNAL \LED_REG:control_1\ : bit;
-    SIGNAL \LED_REG:control_2\ : bit;
-    SIGNAL \LED_REG:control_3\ : bit;
-    SIGNAL \LED_REG:control_4\ : bit;
-    SIGNAL \LED_REG:control_5\ : bit;
-    SIGNAL \LED_REG:control_6\ : bit;
-    SIGNAL \LED_REG:control_7\ : bit;
     SIGNAL \MOTOR_DIR:control_2\ : bit;
     SIGNAL \MOTOR_DIR:control_3\ : bit;
     SIGNAL \MOTOR_DIR:control_4\ : bit;
@@ -522,17 +512,15 @@ ARCHITECTURE __DEFAULT__ OF hand_firmware_micro IS
     ATTRIBUTE Location OF FTDI_ENABLE(0) : LABEL IS "P2[3]";
     ATTRIBUTE lib_model OF Signal_1_B(0) : LABEL IS "iocell14";
     ATTRIBUTE Location OF Signal_1_B(0) : LABEL IS "P15[3]";
-    ATTRIBUTE lib_model OF LED(0) : LABEL IS "iocell15";
-    ATTRIBUTE Location OF LED(0) : LABEL IS "P15[1]";
-    ATTRIBUTE lib_model OF BOARD_LED(0) : LABEL IS "iocell16";
+    ATTRIBUTE lib_model OF BOARD_LED(0) : LABEL IS "iocell15";
     ATTRIBUTE Location OF BOARD_LED(0) : LABEL IS "P12[3]";
-    ATTRIBUTE lib_model OF Signal_1_A(0) : LABEL IS "iocell17";
+    ATTRIBUTE lib_model OF Signal_1_A(0) : LABEL IS "iocell16";
     ATTRIBUTE Location OF Signal_1_A(0) : LABEL IS "P12[2]";
-    ATTRIBUTE lib_model OF EMG_1(0) : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF EMG_1(0) : LABEL IS "iocell17";
     ATTRIBUTE Location OF EMG_1(0) : LABEL IS "P15[0]";
-    ATTRIBUTE lib_model OF CURRENT_SENSE_1(0) : LABEL IS "iocell19";
+    ATTRIBUTE lib_model OF CURRENT_SENSE_1(0) : LABEL IS "iocell18";
     ATTRIBUTE Location OF CURRENT_SENSE_1(0) : LABEL IS "P0[6]";
-    ATTRIBUTE lib_model OF VOLTAGE_SENSE(0) : LABEL IS "iocell20";
+    ATTRIBUTE lib_model OF VOLTAGE_SENSE(0) : LABEL IS "iocell19";
     ATTRIBUTE Location OF VOLTAGE_SENSE(0) : LABEL IS "P0[5]";
     ATTRIBUTE lib_model OF Net_2411 : LABEL IS "macrocell1";
     ATTRIBUTE lib_model OF Net_2627 : LABEL IS "macrocell2";
@@ -577,33 +565,32 @@ ARCHITECTURE __DEFAULT__ OF hand_firmware_micro IS
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_2:bSR:sC24:BShiftRegDp:u0\ : LABEL IS "datapathcell9";
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_2:bSR:sC24:BShiftRegDp:u1\ : LABEL IS "datapathcell10";
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_2:bSR:sC24:BShiftRegDp:u2\ : LABEL IS "datapathcell11";
-    ATTRIBUTE lib_model OF \LED_REG:Sync:ctrl_reg\ : LABEL IS "controlcell6";
     ATTRIBUTE Location OF \ADC:DSM\ : LABEL IS "F(DSM,0)";
-    ATTRIBUTE lib_model OF \RS485_CTS:Sync:ctrl_reg\ : LABEL IS "controlcell7";
-    ATTRIBUTE lib_model OF \MOTOR_ON_OFF:Sync:ctrl_reg\ : LABEL IS "controlcell8";
-    ATTRIBUTE lib_model OF \FTDI_ENABLE_REG:Sync:ctrl_reg\ : LABEL IS "controlcell9";
-    ATTRIBUTE lib_model OF \RESET_FF:Sync:ctrl_reg\ : LABEL IS "controlcell10";
+    ATTRIBUTE lib_model OF \RS485_CTS:Sync:ctrl_reg\ : LABEL IS "controlcell6";
+    ATTRIBUTE lib_model OF \MOTOR_ON_OFF:Sync:ctrl_reg\ : LABEL IS "controlcell7";
+    ATTRIBUTE lib_model OF \FTDI_ENABLE_REG:Sync:ctrl_reg\ : LABEL IS "controlcell8";
+    ATTRIBUTE lib_model OF \RESET_FF:Sync:ctrl_reg\ : LABEL IS "controlcell9";
     ATTRIBUTE lib_model OF \FF_STATUS:sts:sts_reg\ : LABEL IS "statuscell1";
-    ATTRIBUTE lib_model OF \MY_TIMER:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell11";
+    ATTRIBUTE lib_model OF \MY_TIMER:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell10";
     ATTRIBUTE lib_model OF \MY_TIMER:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell6";
     ATTRIBUTE lib_model OF \MY_TIMER:TimerUDB:sT24:timerdp:u0\ : LABEL IS "datapathcell12";
     ATTRIBUTE lib_model OF \MY_TIMER:TimerUDB:sT24:timerdp:u1\ : LABEL IS "datapathcell13";
     ATTRIBUTE lib_model OF \MY_TIMER:TimerUDB:sT24:timerdp:u2\ : LABEL IS "datapathcell14";
-    ATTRIBUTE lib_model OF \SHIFTREG_ENC_1:bSR:SyncCtl:CtrlReg\ : LABEL IS "controlcell12";
+    ATTRIBUTE lib_model OF \SHIFTREG_ENC_1:bSR:SyncCtl:CtrlReg\ : LABEL IS "controlcell11";
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_1:bSR:StsReg\ : LABEL IS "statusicell7";
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_1:bSR:sC24:BShiftRegDp:u0\ : LABEL IS "datapathcell15";
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_1:bSR:sC24:BShiftRegDp:u1\ : LABEL IS "datapathcell16";
     ATTRIBUTE lib_model OF \SHIFTREG_ENC_1:bSR:sC24:BShiftRegDp:u2\ : LABEL IS "datapathcell17";
-    ATTRIBUTE lib_model OF \RESET_COUNTERS:Sync:ctrl_reg\ : LABEL IS "controlcell13";
+    ATTRIBUTE lib_model OF \RESET_COUNTERS:Sync:ctrl_reg\ : LABEL IS "controlcell12";
     ATTRIBUTE lib_model OF \ADC_STATUS:sts:sts_reg\ : LABEL IS "statuscell2";
     ATTRIBUTE lib_model OF DMA : LABEL IS "drqcell1";
-    ATTRIBUTE lib_model OF \ADC_SOC:Sync:ctrl_reg\ : LABEL IS "controlcell14";
-    ATTRIBUTE lib_model OF \WATCHDOG_ENABLER:Sync:ctrl_reg\ : LABEL IS "controlcell15";
-    ATTRIBUTE lib_model OF \WATCHDOG_REFRESH:Sync:ctrl_reg\ : LABEL IS "controlcell16";
-    ATTRIBUTE lib_model OF \LED_BLINK:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell17";
+    ATTRIBUTE lib_model OF \ADC_SOC:Sync:ctrl_reg\ : LABEL IS "controlcell13";
+    ATTRIBUTE lib_model OF \WATCHDOG_ENABLER:Sync:ctrl_reg\ : LABEL IS "controlcell14";
+    ATTRIBUTE lib_model OF \WATCHDOG_REFRESH:Sync:ctrl_reg\ : LABEL IS "controlcell15";
+    ATTRIBUTE lib_model OF \LED_BLINK:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell16";
     ATTRIBUTE lib_model OF \LED_BLINK:PWMUDB:sP8:pwmdp:u0\ : LABEL IS "datapathcell18";
-    ATTRIBUTE lib_model OF \LED_CTRL:Sync:ctrl_reg\ : LABEL IS "controlcell18";
-    ATTRIBUTE lib_model OF \LED_BLINK_EN:Sync:ctrl_reg\ : LABEL IS "controlcell19";
+    ATTRIBUTE lib_model OF \LED_CTRL:Sync:ctrl_reg\ : LABEL IS "controlcell17";
+    ATTRIBUTE lib_model OF \LED_BLINK_EN:Sync:ctrl_reg\ : LABEL IS "controlcell18";
     ATTRIBUTE lib_model OF Net_6020 : LABEL IS "macrocell23";
     ATTRIBUTE lib_model OF \PWM_MOTORS:PWMUDB:runmode_enable\ : LABEL IS "macrocell24";
     ATTRIBUTE lib_model OF Net_2993 : LABEL IS "macrocell25";
@@ -1080,8 +1067,8 @@ BEGIN
             dclk_4 => Net_10_local,
             dclk_glb_5 => Net_1308,
             dclk_5 => Net_1308_local,
-            dclk_glb_6 => Net_3782,
-            dclk_6 => Net_3782_local,
+            dclk_glb_6 => Net_4015,
+            dclk_6 => Net_4015_local,
             clk_bus_glb_ff => \ClockBlock.clk_bus_glb_ff__sig\,
             dclk_glb_ff_2 => \ClockBlock.dclk_glb_ff_2__sig\,
             aclk_glb_ff_0 => \ClockBlock.aclk_glb_ff_0__sig\);
@@ -2294,98 +2281,6 @@ BEGIN
             pin_input => Net_3376,
             pad_out => Signal_1_B(0)_PAD,
             pad_in => Signal_1_B(0)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    LED:logicalport
-        GENERIC MAP(
-            drive_mode => "010",
-            ibuf_enabled => "1",
-            id => "d5a0e4a7-1f9c-4b60-a1af-168d8495643c",
-            init_dr_st => "1",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "1",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "1",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "",
-            pin_mode => "O",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vohsel => "",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "10",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open);
-
-    LED(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "LED",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => LED(0)__PA,
-            oe => open,
-            pin_input => Net_2828,
-            pad_out => LED(0)_PAD,
-            pad_in => LED(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -3833,25 +3728,6 @@ BEGIN
             sor => \SHIFTREG_ENC_2:bSR:sC24:BShiftRegDp:u2.sor__sig\,
             cmsbo => \SHIFTREG_ENC_2:bSR:sC24:BShiftRegDp:u2.cmsbo__sig\);
 
-    \LED_REG:Sync:ctrl_reg\:controlcell
-        GENERIC MAP(
-            cy_ctrl_mode_0 => "00000000",
-            cy_ctrl_mode_1 => "00000000",
-            cy_ext_reset => 0,
-            cy_force_order => 1,
-            cy_init_value => "00000000",
-            clken_mode => 1)
-        PORT MAP(
-            control_7 => \LED_REG:control_7\,
-            control_6 => \LED_REG:control_6\,
-            control_5 => \LED_REG:control_5\,
-            control_4 => \LED_REG:control_4\,
-            control_3 => \LED_REG:control_3\,
-            control_2 => \LED_REG:control_2\,
-            control_1 => \LED_REG:control_1\,
-            control_0 => Net_2828,
-            busclk => ClockBlock_BUS_CLK);
-
     \ADC:DSM\:dsmodcell
         GENERIC MAP(
             cy_registers => "",
@@ -4538,7 +4414,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_3782,
+            clock => Net_4015,
             control_7 => \LED_BLINK:PWMUDB:control_7\,
             control_6 => \LED_BLINK:PWMUDB:control_6\,
             control_5 => \LED_BLINK:PWMUDB:control_5\,
@@ -4577,7 +4453,7 @@ BEGIN
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            clock => Net_3782,
+            clock => Net_4015,
             cs_addr_2 => \LED_BLINK:PWMUDB:tc_i\,
             cs_addr_1 => \LED_BLINK:PWMUDB:runmode_enable\,
             ce0_comb => \LED_BLINK:PWMUDB:cmp1_eq\,
@@ -5132,7 +5008,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => \LED_BLINK:PWMUDB:runmode_enable\,
-            clock_0 => Net_3782,
+            clock_0 => Net_4015,
             main_0 => \LED_BLINK:PWMUDB:control_7\,
             main_1 => Net_3925);
 
@@ -5143,7 +5019,7 @@ BEGIN
             clken_mode => 1)
         PORT MAP(
             q => Net_3960,
-            clock_0 => Net_3782,
+            clock_0 => Net_4015,
             main_0 => \LED_BLINK:PWMUDB:runmode_enable\,
             main_1 => \LED_BLINK:PWMUDB:cmp1_eq\,
             main_2 => \LED_BLINK:PWMUDB:cmp1_less\);

@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="firmware\hand_firmware_micro\hand_firmware_micro.cydwr">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="firmware\hand_firmware_micro\Source Files\command_processing.c">
 <ExpandedNodeIds>
 <v>firmware</v>
 <v>firmware\hand_firmware_micro</v>
@@ -135,10 +135,6 @@
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\ISR_WATCHDOG</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\ISR_WATCHDOG\ISR_WATCHDOG.c</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\ISR_WATCHDOG\ISR_WATCHDOG.h</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED\LED.c</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED\LED.h</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED\LED_aliases.h</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_BLINK</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_BLINK\LED_BLINK.c</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_BLINK\LED_BLINK.h</v>
@@ -151,10 +147,6 @@
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_CTRL\LED_CTRL.c</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_CTRL\LED_CTRL.h</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_CTRL\LED_CTRL_PM.c</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_REG</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_REG\LED_REG.c</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_REG\LED_REG.h</v>
-<v>firmware\hand_firmware_micro\Generated_Source\PSoC3\LED_REG\LED_REG_PM.c</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\MOTOR_1A</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\MOTOR_1A\MOTOR_1A.c</v>
 <v>firmware\hand_firmware_micro\Generated_Source\PSoC3\MOTOR_1A\MOTOR_1A.h</v>
@@ -398,15 +390,12 @@
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\ISR_RS485_RX.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\ISR_WATCHDOG.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\KeilStart.lst</v>
-<v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_BLINK.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_BLINK_EN.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_BLINK_EN_PM.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_BLINK_PM.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_CTRL.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_CTRL_PM.lst</v>
-<v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_REG.lst</v>
-<v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\LED_REG_PM.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\main.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\MOTOR_1A.lst</v>
 <v>firmware\hand_firmware_micro\DP8051\DP8051_Keil_951\Release\Listing Files\MOTOR_1B.lst</v>

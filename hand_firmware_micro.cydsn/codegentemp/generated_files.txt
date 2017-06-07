@@ -79,12 +79,6 @@
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\Signal_1_B.c" value="DP8051_C_FILE;Signal_1_B" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\Signal_1_B.h" value="NONE;Signal_1_B" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\Signal_1_B_aliases.h" value="NONE;Signal_1_B" />
-  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_REG.h" value="NONE;LED_REG" />
-  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_REG.c" value="DP8051_C_FILE;LED_REG" />
-  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_REG_PM.c" value="DP8051_C_FILE;LED_REG" />
-  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED.c" value="DP8051_C_FILE;LED" />
-  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED.h" value="NONE;LED" />
-  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_aliases.h" value="NONE;LED" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC.c" value="DP8051_C_FILE;ADC" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC.h" value="NONE;ADC" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_PM.c" value="DP8051_C_FILE;ADC" />
