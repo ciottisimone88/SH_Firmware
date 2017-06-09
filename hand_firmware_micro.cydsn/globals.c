@@ -80,5 +80,4 @@ int16 ADC_buf[4];
 
 // PWM value
 int8 pwm_sign;
-
 /* END OF FILE */

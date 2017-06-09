@@ -37,7 +37,7 @@
 *
 * \brief        Global definitions and macros are set in this file.
 * \date         June 06, 2016
-* \author       _abrobotics_
+* \author       _qbrobotics_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
@@ -288,7 +288,6 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer 
 // PWM value
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
-
 // -----------------------------------------------------------------------------
 
 

@@ -814,6 +814,7 @@ void encoder_reading(const uint8 idx) {
     int32 speed_encoder;
     //int32 accel_encoder;
     int32 aux;
+    int32 init_rot = 0;
 
     static int32 last_value_encoder[NUM_OF_SENSORS];
 
@@ -836,8 +837,10 @@ void encoder_reading(const uint8 idx) {
         return;
     
     if (reset_last_value_flag) {
-        for (jj = NUM_OF_SENSORS; jj--;) 
+        for (jj=0; jj< NUM_OF_SENSORS-1; jj++)
             last_value_encoder[jj] = 0;
+        //for (jj = NUM_OF_SENSORS; jj--;) 
+//            last_value_encoder[jj] = 0;
         
         reset_last_value_flag = 0;
     }
@@ -910,11 +913,11 @@ void encoder_reading(const uint8 idx) {
         last_value_encoder[index] = value_encoder;
 
         value_encoder += (int32)g_meas.rot[index] << 16;
-
+        
         if (c_mem.m_mult[index] != 1.0) {
             value_encoder *= c_mem.m_mult[index];
         }
-
+     
         g_meas.pos[index] = value_encoder;
     }
     
@@ -972,11 +975,25 @@ void encoder_reading(const uint8 idx) {
             one_time_execute++;
         else {
             //Double encoder translation
-            if (c_mem.double_encoder_on_off)
-                g_meas.rot[0] = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
+            if (c_mem.double_encoder_on_off){
 
-            g_meas.pos[0] += (int32) g_meas.rot[0] << 16;
+                init_rot = calc_turns_fcn(g_meas.pos[0],g_meas.pos[1]);
+                
+                if (c_mem.m_mult[0] < 0)
+                    init_rot = -init_rot;
+                
+                g_meas.rot[0] = (int8)init_rot;
 
+            }
+
+            if (c_mem.m_mult != 1.0)
+                g_meas.pos[0] /= c_mem.m_mult[0];
+            
+            g_meas.pos[0] += (int32)(init_rot << 16);
+            
+            if (c_mem.m_mult != 1.0)
+                g_meas.pos[0] *= c_mem.m_mult[0];
+                    
             // If necessary activate motors
             g_refNew.pos[0] = g_meas.pos[0];
 
