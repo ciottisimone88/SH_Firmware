@@ -252,7 +252,8 @@ enum data_types {
 //==============================================================================
 /** \name QB Move Information Strings */
 /** \{ */
-#define INFO_ALL        0 ///< All system information.
+#define INFO_ALL        0 ///< Generic device informations.
+#define CYCLES_INFO     1 ///< Cycles counter informations.
 
 /** \} */
 

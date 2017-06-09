@@ -93,6 +93,38 @@ static const uint8 pwm_preload_values[29] = {100,    //0 (11500)
                                               51,
                                               51};   //28 (25500)
 
+CYCODE uint8 pwm_preload_values_6v[32] = {  100,  //0 (6000)
+                                            76,
+                                            71,
+                                            68,
+                                            66,
+                                            64,   //5 (8750)
+                                            62,
+                                            60,
+                                            58,
+                                            56,
+                                            54,   //10 (11500)
+                                            53,
+                                            52,
+                                            51,
+                                            50,
+                                            49,   //15 (14250)
+                                            47,
+                                            46,
+                                            45,
+                                            44,
+                                            43,   //20 (17000)
+                                            42,
+                                            41,
+                                            40,
+                                            39,
+                                            38,   //25 (19750)
+                                            37,
+                                            37,
+                                            37,
+                                            37,
+                                            36};  //30 (22500)
+
 //==============================================================================
 //                                                            WATCHDOG INTERRUPT
 //==============================================================================
@@ -266,7 +298,7 @@ void interrupt_manager(){
 void function_scheduler(void) {
  
     static uint16 counter_calibration = DIV_INIT_VALUE;
-
+    CYBIT write_cycles = FALSE;
     timer_value0 = (uint32)MY_TIMER_ReadCounter();
 
     // Start ADC Conversion, SOC = 1
@@ -278,6 +310,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
   
     //---------------------------------- Get Encoders
@@ -289,6 +322,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }   
     
     encoder_reading(1);
@@ -298,6 +332,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
     
     encoder_reading(2);
@@ -307,6 +342,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Control Motor
@@ -318,6 +354,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Read conversion buffer - LOCK function
@@ -327,6 +364,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Control Overcurrent
@@ -338,6 +376,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Calibration 
@@ -356,6 +395,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
    
     //---------------------------------- Update States
@@ -366,10 +406,11 @@ void function_scheduler(void) {
 
     // Load k+1 state
     memcpy( &g_ref, &g_refNew, sizeof(g_ref) );
-
+        
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     timer_value = (uint32)MY_TIMER_ReadCounter();
@@ -384,6 +425,7 @@ void function_scheduler(void) {
 
 void motor_control() {
 
+    static CYBIT count_one = 0;
     int32 CYDATA pwm_input = 0;
 
     int32 CYDATA pos_error;         // position error
@@ -786,7 +828,26 @@ void motor_control() {
     if (c_mem.control_mode != CONTROL_PWM) 
         pwm_input = (((pwm_input << 10) / PWM_MAX_VALUE) * dev_pwm_limit) >> 10;
     
-
+    //Increase cycles when the reference is over the threshold and the calibration is not active
+    if((g_ref.pos[0] >> g_mem.res[0]) >= cycles_thr && pwm_sign == 1 && g_ref.onoff && calib.enabled == FALSE && count_one) {
+        pwm_sign = SIGN(pwm_input);
+        //The cycles are increased when the reference, even if greater than the threshold, 
+        //makes the hand going to a more "open" position
+        if (pwm_sign == -1) {
+            cycles_reader += 1;
+            count_one = FALSE;  //Necessary because it counts cycles twice if not present
+        }
+        //Step inputs counted while going back to opening position
+        if((g_refNew.pos[0] >> g_mem.res[0]) < cycles_thr) {
+            cycles_reader += 1;
+            count_one = FALSE;
+        }
+    }
+    else {    // If the reference given is minor than threshold reset the count_one to make count another cycle
+        if((g_ref.pos[0] >> g_mem.res[0]) < cycles_thr /*|| pwm_sign == 1*/)
+            count_one = TRUE;
+    }
+    
     pwm_sign = SIGN(pwm_input);
 
     if (motor_dir)
@@ -798,7 +859,7 @@ void motor_control() {
 }
 
 //==============================================================================
-//                                                                   ENCODER READING
+//                                                               ENCODER READING
 //==============================================================================
 
 void encoder_reading(const uint8 idx) {
@@ -810,6 +871,7 @@ void encoder_reading(const uint8 idx) {
     uint32 data_encoder;
     int32 value_encoder;
     int32 speed_encoder;
+    static int32 previous_val;
     //int32 accel_encoder;
     int32 aux;
 
@@ -912,6 +974,8 @@ void encoder_reading(const uint8 idx) {
         if (c_mem.m_mult[index] != 1.0) {
             value_encoder *= c_mem.m_mult[index];
         }
+        
+        previous_val = (g_meas.pos[0] >> g_mem.res[0]); 
 
         g_meas.pos[index] = value_encoder;
     }
@@ -1315,13 +1379,15 @@ void overcurrent_control() {
 void pwm_limit_search() {
 
     uint8 CYDATA index;
-
-    if (dev_tension > 25500) {
+    uint16 CYDATA max_tension = 25500;
+    uint16 CYDATA min_tension = 11500;
+    
+    if (dev_tension > max_tension) {
         dev_pwm_sat = 0;
-    } else if (dev_tension < 11500) {
+    } else if (dev_tension < min_tension) {
         dev_pwm_sat = 100;
     } else {
-        index = (uint8)((dev_tension - 11500) >> 9);
+        index = (uint8)((dev_tension - min_tension) >> 9);
         dev_pwm_sat = pwm_preload_values[index];
     }
 }

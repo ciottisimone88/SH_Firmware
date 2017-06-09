@@ -260,8 +260,9 @@ void commProcess(void){
 //==============================================================================
 
 void infoSend(void){
-    unsigned char packet_string[1100];
-    infoPrepare(packet_string);
+    char packet_string[1500];
+    
+    prepare_generic_info(packet_string);
     UART_RS485_PutString(packet_string);
 }
 
@@ -271,16 +272,21 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type) {
-    unsigned char packet_string[1200] = "";
-
+    char packet_string[1500] = "";
+    
     //==================================     choose info type and prepare string
 
     switch (info_type) {
         case INFO_ALL:
-            infoPrepare(packet_string);
+            prepare_generic_info(packet_string);
+            UART_RS485_ClearTxBuffer(); 
             UART_RS485_PutString(packet_string);
             break;
-
+        case CYCLES_INFO:
+            prepare_counter_info(packet_string);
+            UART_RS485_ClearTxBuffer();
+            UART_RS485_PutString(packet_string);
+            break;
         default:
             break;
     }
@@ -846,14 +852,15 @@ void setZeros()
 }
 
 //==============================================================================
-//                                                           PREPARE DEVICE INFO
+//                                                   PREPARE GENERIC DEVICE INFO
 //==============================================================================
 
-void infoPrepare(unsigned char *info_string)
+void prepare_generic_info(char *info_string)
 {
     int i;
+            
     if(c_mem.id != 250){                //To avoid dummy board ping
-        unsigned char str[100];
+        char str[100];
         strcpy(info_string, "");
         strcat(info_string, "\r\n");
         strcat(info_string, "Firmware version: ");
@@ -890,18 +897,18 @@ void infoPrepare(unsigned char *info_string)
                 sprintf(str, "%d ", (int)(g_ref.curr[i]));
                 strcat(info_string,str);
             }
-        else {
-            if(g_mem.control_mode == CONTROL_PWM) {
-                sprintf(str, "%d ", (int)(g_ref.pwm[i]));
-                strcat(info_string,str);
-            }
             else {
-                sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
-                strcat(info_string,str);
+                if(g_mem.control_mode == CONTROL_PWM) {
+                    sprintf(str, "%d ", (int)(g_ref.pwm[i]));
+                    strcat(info_string,str);
+                }
+                else {
+                    sprintf(str, "%d ", (int)(g_ref.pos[i] >> c_mem.res[i]));
+                    strcat(info_string,str);
+                }
             }
         }
-    }
-    strcat(info_string,"\r\n");
+        strcat(info_string,"\r\n");
         strcat(info_string, "\r\n");
 
         sprintf(str, "Motor enabled: ");
@@ -970,12 +977,10 @@ void infoPrepare(unsigned char *info_string)
 
         strcat(info_string, "\r\n");
 
-
-        if (c_mem.activ == 0x03) {
+        if (c_mem.activ == 0x03)
             strcat(info_string, "Startup activation: YES\r\n");
-        } else {
+        else
             strcat(info_string, "Startup activation: NO\r\n");
-        }
 
         switch(c_mem.input_mode) {
             case INPUT_MODE_EXTERNAL:
@@ -1015,16 +1020,13 @@ void infoPrepare(unsigned char *info_string)
                 break;
         }
 
-        if (c_mem.double_encoder_on_off) {
+        if (c_mem.double_encoder_on_off)
             strcat(info_string, "Absolute encoder position: YES\r\n");
-        } else {
+        else
             strcat(info_string, "Absolute encoder position: NO\r\n");
-        }
 
         sprintf(str, "Motor-Handle Ratio: %d\r\n", (int)c_mem.motor_handle_ratio);
         strcat(info_string, str);
-
-
 
         strcat(info_string, "Sensor resolution:\r\n");
         for (i = 0; i < NUM_OF_SENSORS; ++i) {
@@ -1032,7 +1034,6 @@ void infoPrepare(unsigned char *info_string)
             strcat(info_string, str);
             strcat(info_string, "\r\n");
         }
-
 
         strcat(info_string, "Measurement Offset:\r\n");
         for (i = 0; i < NUM_OF_SENSORS; ++i) {
@@ -1086,11 +1087,10 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, str);
         strcat(info_string, "\r\n");
 
-        if (g_mem.emg_calibration_flag) {
+        if (g_mem.emg_calibration_flag)
             strcat(info_string, "Calibration enabled: YES\r\n");
-        } else {
+        else
             strcat(info_string, "Calibration enabled: NO\r\n");
-        }
 
         sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
         strcat(info_string, str);
@@ -1101,6 +1101,22 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, "\r\n");
     }
 }
+
+//==============================================================================
+//                                                   PREPARE GENERIC DEVICE INFO
+//==============================================================================
+
+void prepare_counter_info(char *info_string)
+{
+    char str[100];
+    strcpy(info_string, "");
+    strcat(info_string, "\r\n");
+    strcat(info_string, "Cycles counter: \t");
+    sprintf(str, "%ld", (uint32)g_mem.cycles_counter); 
+    strcat(info_string, str);
+    strcat(info_string, "\r\n");
+}
+
 
 //==============================================================================
 //                                                     WRITE FUNCTIONS FOR RS485
@@ -1364,7 +1380,15 @@ uint8 memInit(void)
 
     g_mem.double_encoder_on_off = 1;
     g_mem.motor_handle_ratio = 22;
-
+    
+    for(i = 0; i < LOOKUP_DIM; i++) {
+        g_mem.curr_lookup[i] = 0;
+        g_mem.unused_bytes_2[i] = 0;
+        g_mem.unused_bytes_2[2*i] = 0;
+    }
+    for(i = 0; i < (LOOKUP_DIM - 1); i++)
+        g_mem.unused_bytes_1[i] = 0; 
+    
     // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;
     
@@ -1465,13 +1489,10 @@ void cmd_set_inputs(){
             g_refNew.pos[1] = *((int16 *) &g_rx.buffer[3]);   // motor 2
             g_refNew.pos[1] = g_refNew.pos[1] << g_mem.res[1];
         }
-    }
+    }     
 
-    // Check Position Limit cmd
-
-    if (c_mem.pos_lim_flag && 
-        (g_mem.control_mode == CURR_AND_POS_CONTROL
-        || g_mem.control_mode == CONTROL_ANGLE)) {                      // pos limiting
+    // Check if the reference is nor higher or lower than the position limits
+    if (c_mem.pos_lim_flag && (g_mem.control_mode == CURR_AND_POS_CONTROL || g_mem.control_mode == CONTROL_ANGLE)) { 
         
         if (g_refNew.pos[0] < c_mem.pos_lim_inf[0]) 
             g_refNew.pos[0] = c_mem.pos_lim_inf[0];

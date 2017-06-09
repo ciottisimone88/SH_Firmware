@@ -78,7 +78,10 @@
 int main()
 {
     // Iterator
-    uint8 i;         
+    uint8 i;  
+    CYBIT can_write = TRUE;
+    counter_status CYDATA cycles_status = NONE;
+    cystatus status;
     
     // Variable declarations for DMA 
     
@@ -157,14 +160,13 @@ int main()
 
 //========================================     initializations - clean variables
 
-    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters
+    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters. Must be made before initializing measurements to zero.
 
     CyDelay(10);                                        // Wait for encoders to have a valid value
 
     //---------------------------------------------------  Initialize referiment structure
     for (i = NUM_OF_MOTORS; i--;) 
         g_ref.pos[i] = 0;
-
 
     if (c_mem.emg_calibration_flag) {
         if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
@@ -202,7 +204,13 @@ int main()
     //------------------------------------------------- Initialize package on receive from RS485
     g_rx.length = 0;
     g_rx.ready  = 0;
-
+    
+    //------------------------------------------------- Initialize cycles counter
+    
+    //Uncomment+program to initialize cycles to a value and then re-comment+program
+    //g_mem.cycles_counter = 0;     
+    cycles_reader = g_mem.cycles_counter;
+            
     //============================================================     main loop
 
     for(;;)
@@ -212,6 +220,54 @@ int main()
 
         // Call function scheduler
         function_scheduler();
+        
+        //Cycles are written 20 at a time to save EEPROM writings (1M maximum)
+        if((cycles_reader - g_mem.cycles_counter) >= 20 && can_write) {
+            cycles_status = WRITE_CYCLES;
+        }
+        switch(cycles_status) {
+            case WRITE_CYCLES:
+                g_mem.cycles_counter = cycles_reader;
+                c_mem.cycles_counter = g_mem.cycles_counter;
+                
+                //Check temperature of chip before writing
+                EEPROM_UpdateTemperature(); 
+                
+                //The row that is going to be written is the tenth one. 
+                //It stores only the cycles counter and 12 unused bytes
+                status = EEPROM_StartWrite((uint8*) &g_mem.cycles_counter, 10);
+                
+                if(status == CYRET_STARTED || status == CYRET_SUCCESS) {
+                    cycles_status = WAIT_QUERY;
+                    can_write = FALSE;
+                }
+                if(status == CYRET_BAD_PARAM)
+                    debug_cycles = -1;
+                if(status == CYRET_LOCKED)
+                    debug_cycles = -2;
+                if(status == CYRET_UNKNOWN)
+                    debug_cycles = -3;
+
+            break;
+                
+            case WAIT_QUERY:
+                status = EEPROM_Query();
+                if(status == CYRET_SUCCESS) {
+                    cycles_status = NONE;
+                    can_write = TRUE;
+                    g_mem.cycles_counter = c_mem.cycles_counter;
+                }
+                else{
+                    if(status == CYRET_STARTED)
+                        debug_cycles = -4;
+                    else
+                        debug_cycles = -5;
+                }    
+            break;
+               
+            case NONE:
+            break;
+        }  
 
         //  Wait until the FF is set to 1
         while(FF_STATUS_Read() == 0){
@@ -247,7 +303,5 @@ int main()
     }
     return 0;
 }
-
-
 
 /* [] END OF FILE */

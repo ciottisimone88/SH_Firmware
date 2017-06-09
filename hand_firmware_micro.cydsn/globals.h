@@ -54,7 +54,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.5"
+#define VERSION                 "SH-PRO v6.1.6"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -97,14 +97,14 @@
 #define FALSE                   0
 #define TRUE                    1
 
-#define DEFAULT_EEPROM_DISPLACEMENT 8   /*!< Number of pages occupied by the EEPROM.*/
+#define DEFAULT_EEPROM_DISPLACEMENT 50  /*!< Number of pages occupied by the EEPROM.*/
 
 #define MAX_WATCHDOG_TIMER      250     /*!< num * 2 [cs] */
 
 #define PWM_MAX_VALUE           100     /*!< Maximum value of the PWM signal.*/
 
 #define ANTI_WINDUP             1000    /*!< Anti windup saturation.*/ 
-#define DEFAULT_CURRENT_LIMIT   1000    /*!< Default Current limit, 0 stands for unlimited.*/
+#define DEFAULT_CURRENT_LIMIT   1500    /*!< Default Current limit, 0 stands for unlimited.*/
 
 #define CURRENT_HYSTERESIS      10      /*!< milliAmperes of hysteresis for current control.*/
 
@@ -166,58 +166,56 @@ struct st_data {
 struct st_mem {
     uint8   flag;                       /*!< If checked the device has been configured.*/                   //1
     uint8   id;                         /*!< Device id.*/                                                   //1
-
     int32   k_p;                        /*!< Position controller proportional constant.*/                   //4
     int32   k_i;                        /*!< Position controller integrative constant.*/                    //4
     int32   k_d;                        /*!< Position controller derivative constant.*/                     //4
-
-    int32   k_p_c;                      /*!< Current controller proportional constant.*/                    //4
+    int32   k_p_c;                      /*!< Current controller proportional constant.*/                    //4     18
+    //End of row one. K_p_c is half on row one and half on row two
     int32   k_i_c;                      /*!< Current controller integrative constant.*/                     //4
-    int32   k_d_c;                      /*!< Current controller derivative constant.*/                      //4 26
-
+    int32   k_d_c;                      /*!< Current controller derivative constant.*/                      //4 
     int32   k_p_dl;                     /*!< Double loop position controller prop. constant.*/              //4
-    int32   k_i_dl;                     /*!< Double loop position controller integr. constant.*/            //4
+    int32   k_i_dl;                     /*!< Double loop position controller integr. constant.*/            //4     16
+    //End of row two. K_i_dl is half on row two and half on row three
     int32   k_d_dl;                     /*!< Double loop position controller deriv. constant.*/             //4
     int32   k_p_c_dl;                   /*!< Double loop current controller prop. constant.*/               //4
     int32   k_i_c_dl;                   /*!< Double loop current controller integr. constant.*/             //4
-    int32   k_d_c_dl;                   /*!< Double loop current controller deriv. constant.*/              //4 24
-    
+    int32   k_d_c_dl;                   /*!< Double loop current controller deriv. constant.*/              //4     16
+    //End of row three. K_d_c_dl is half on row three and half on row four
     uint8   activ;                      /*!< Startup activation.*/                                          //1
-    uint8   input_mode;                 /*!< Motor Input mode.*/                                            //1
+    uint8   input_mode;                 /*!< Motor Input mode.*/                                            //1 
     uint8   control_mode;               /*!< Motor Control mode.*/                                          //1
-
     uint8   res[NUM_OF_SENSORS];        /*!< Angle resolution.*/                                            //3
-    int32   m_off[NUM_OF_SENSORS];      /*!< Measurement offset.*/                                          //12
-    float   m_mult[NUM_OF_SENSORS];     /*!< Measurement multiplier.*/                                      //12 30
-
+    int32   m_off[NUM_OF_SENSORS];      /*!< Measurement offset.*/                                          //12    18
+    //End of row four. Third offset is on row five
+    float   m_mult[NUM_OF_SENSORS];     /*!< Measurement multiplier.*/                                      //12    12
+    //Ene of row five.
     uint8   pos_lim_flag;               /*!< Position limit active/inactive.*/                              //1
-    int32   pos_lim_inf[NUM_OF_MOTORS]; /*!< Inferior position limit for motors.*/                          //8
+    int32   pos_lim_inf[NUM_OF_MOTORS]; /*!< Inferior position limit for motors.*/                          //8     9
+    //End of row six. Pos_limit_sup[1] is for three bytes on row six and for one byte on row seven.
     int32   pos_lim_sup[NUM_OF_MOTORS]; /*!< Superior position limit for motors.*/                          //8
-
-    int32   max_step_pos;               /*!< Maximum number of steps per cycle for positive positions.*/    //4
-    int32   max_step_neg;               /*!< Maximum number of steps per cycle for negative positions.*/    //4 25
-
+    int32   max_step_pos;               /*!< Maximum number of steps per cycle for positive positions.*/    //4     12
+    //End of row six. Max_step_pos is for three bytes on row six and for one byte on row seven
+    int32   max_step_neg;               /*!< Maximum number of steps per cycle for negative positions.*/    //4 
     int16   current_limit;              /*!< Limit for absorbed current.*/                                  //2
-
     uint16  emg_threshold[NUM_OF_EMGS]; /*!< Minimum value for activation of EMG control.*/                 //4
-
-    uint8   emg_calibration_flag;       /*!< Enable emg calibration on startup.*/                           //1
-    uint32  emg_max_value[NUM_OF_EMGS]; /*!< Maximum value for EMG.*/                                       //8
-
+    uint8   emg_calibration_flag;       /*!< Enable emg calibration on startup.*/                           //1     11
+    //End of row seven.
+    uint32  emg_max_value[NUM_OF_EMGS]; /*!< Maximum value for EMG.*/                                       //8  
     uint8   emg_speed;                  /*!< Maximum closure speed when using EMG.*/                        //1
-
     uint8   double_encoder_on_off;      /*!< Double encoder ON/OFF.*/                                       //1
-
     int8    motor_handle_ratio;         /*!< Discrete multiplier for handle device.*/                       //1 
-
-    uint8   activate_pwm_rescaling;     /*!< Activation of PWM rescaling for 12V motors.*/                  //1 19
-
-    float   curr_lookup[LOOKUP_DIM];    /*!< Table of values to get estimated curr.*/                       //24
-
+    uint8   activate_pwm_rescaling;     /*!< Activation of PWM rescaling for 12V motors.*/                  //1     12
+    //End of row eight. Curr_lookup[1] is on row eight but curr_lookup[2] is on row nine 
+    float   curr_lookup[LOOKUP_DIM];    /*!< Table of values to get estimated curr.*/                       //24    24
+    //End of row nine. Curr_lookup[6] is on row ten.
     uint8   baud_rate;                  /*!< Baud Rate setted.*/                                            //1
-    uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
-
-                                                                                            //TOT           150 bytes
+    uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1  
+    int8    unused_bytes_1[10];                                                                             //10    12
+    //End of row ten.
+    uint32  cycles_counter;             /*!< Counter for hand cycles closures */                            //4
+    int8    unused_bytes_2[12];                                                                             //12    16
+    //End of row eleven.
+                                                                                                    //TOT           170 bytes
 };
 
 //=================================================     device related variables
@@ -254,6 +252,14 @@ typedef enum {
 
 } emg_status;                       /*!< EMG status enumeration */
 
+typedef enum {
+    
+    WRITE_CYCLES    = 0,            /*!< Cycles writing on EEPROM is enabled and control is passed to query */
+    WAIT_QUERY      = 1,            /*!< Wait until EEPROM_Query() has finished writing on EEPROM and then disable cycles writing*/
+    NONE            = 2             /*!< Cycles writing on EEPROM is disabled */
+    
+} counter_status;                   /*!< Cycles counter state machine statuses */ 
+
 //====================================      external global variables definition
 
 extern struct st_ref    g_ref, g_refNew, g_refOld;  /*!< Reference variables.*/
@@ -269,8 +275,12 @@ extern float cycle_time;							/*!< Variable used to calculate in how much time 
 // Device Data
 
 extern int32    dev_tension;                        /*!< Power supply tension */
-extern uint8    dev_pwm_limit;                      /*!< Device pwm limit */
-extern uint8    dev_pwm_sat;                        /*!< Device pwm limit saturation */
+extern uint8    dev_pwm_limit;                      /*!< Device pwm limit. It may change during execution */
+extern uint8    dev_pwm_sat;                        /*!< Device pwm saturation */
+
+extern uint32 cycles_reader;                        /*!< Used to read count cycles*/
+extern const uint16 cycles_thr;                     /*!< Cycles counter threshold*/
+extern int8 debug_cycles;                           /*!< Used to debug if cycles are correctly saved or not */
 
 // Bit Flag
 

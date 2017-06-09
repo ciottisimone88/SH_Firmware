@@ -166,9 +166,6 @@ int32 filter_vel_3(int32 new_value) {
 int32 filter_curr_diff(int32 new_value) {
 
     static int32 old_value, aux;
-
- //   if (new_value < 100) new_value = 0;
- //   else new_value = new_value - 100;
     
     aux = (old_value * (1024 - ETA) + (new_value << 6) * (ETA)) /1024;
 
@@ -286,11 +283,17 @@ uint32 my_mod(int32 val, int32 divisor) {
 void calibration(void) {
     static uint8 direction;                 //0 closing, 1 opening
     static uint16 closure_counter;          //Range [0 - 2^16]
+    static CYBIT count_one = 1;                 //Used to count only one cycle, when inputs are generated
+                                            //and pass the threshold, having the condition verified
 
 
     // closing
     if (direction == 0) {
         g_refNew.pos[0] += (calib.speed << g_mem.res[0]);
+        if((g_refNew.pos[0] >> g_mem.res[0]) >= cycles_thr && count_one && g_ref.onoff) {
+            cycles_reader += 1;
+            count_one = 0;          //Necessary because it counted cycles twice
+        }
         if ((g_refNew.pos[0]) > g_mem.pos_lim_sup[0]) {
             direction = 1;
         }
@@ -299,6 +302,7 @@ void calibration(void) {
         if (SIGN(g_refNew.pos[0]) != 1) {
             direction = 0;
             closure_counter++;
+            count_one = 1;          // Enables back the cycles counter
             if (closure_counter == calib.repetitions) {
                 closure_counter = 0;
                 calib.enabled = FALSE;

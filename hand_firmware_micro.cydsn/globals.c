@@ -56,15 +56,20 @@ float tau_feedback;
 
 // Timer value for debug field
 
-uint32 timer_value;
-uint32 timer_value0;
-float cycle_time;
+uint32  timer_value;
+uint32  timer_value0;
+float   cycle_time;
+
+int8 debug_cycles;
 
 // Device Data
 
 int32   dev_tension;                // Power supply tension
 uint8   dev_pwm_limit;
-uint8   dev_pwm_sat = 100;
+uint8   dev_pwm_sat = 100;          //By default the saturation value must not exceed 100
+
+uint32 cycles_reader = 0;
+const uint16 cycles_thr = 7000;
 
 // Bit Flag
 
