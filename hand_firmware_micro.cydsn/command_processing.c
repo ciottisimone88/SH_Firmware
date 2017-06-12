@@ -1162,13 +1162,6 @@ void infoPrepare(unsigned char *info_string)
         sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-
-        sprintf(str, "Rest enabled: ");
-        strcat(info_string, str);
-        if(rest_enabled == 1)
-            strcat(info_string, "YES\r\n");
-        else
-            strcat(info_string, "NO\r\n");
         
         sprintf(str, "Rest time delay (ms): %f", (float)g_mem.rest_delay);
         strcat(info_string, str);

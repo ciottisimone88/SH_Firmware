@@ -1316,18 +1316,6 @@ void analog_read_end() {
                         interrupt_manager();
                     }
                     
-                    // if EMG control mode active, activate motors accordingly with startup value
-                    if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
-                        (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
-                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
-                        if (c_mem.control_mode == CONTROL_ANGLE) {
-                            g_ref.pos[0] = g_meas.pos[0];
-                            g_ref.pos[1] = g_meas.pos[1];
-                        }
-                        g_ref.onoff = c_mem.activ;
-                        MOTOR_ON_OFF_Write(g_ref.onoff);
-                    }
                     emg_2_status = WAIT_EoC;           // goto end of calibration wait
                 }
                 break;
@@ -1347,6 +1335,19 @@ void analog_read_end() {
                         interrupt_manager();
                     }
                     
+                    // if EMG control mode active, activate motors accordingly with startup value
+                    if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
+                        (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
+                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
+                        if (c_mem.control_mode == CONTROL_ANGLE) {
+                            g_ref.pos[0] = g_meas.pos[0];
+                            g_ref.pos[1] = g_meas.pos[1];
+                        }
+                        g_ref.onoff = c_mem.activ;
+                        MOTOR_ON_OFF_Write(g_ref.onoff);
+                    }
+                        
                     emg_2_status = NORMAL;           // goto normal execution
                 }
                 break;
