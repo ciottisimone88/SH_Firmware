@@ -56,13 +56,13 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.1 mod. KOREA"
+#define VERSION                 "SH-PRO v6.1.1 mod. NO/NC w/act. lever"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           21      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           22      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -219,6 +219,9 @@ struct st_mem {
     uint8   baud_rate;                  /*!< Baud Rate setted.*/                                            //1
     uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
 
+	int32  activation_lever_thr;        /*!< Activation lever threshold */
+
+
                                                                                             //TOT           150 bytes
 };
 
@@ -297,8 +300,9 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer 
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
-// KOREA mod. version
+// NO/NC mod. version
 extern uint8 normally_closed_mode;                  /*!< Korea hand handle mode */
+extern handle_status CYDATA h_status; 
 
 // -----------------------------------------------------------------------------
 

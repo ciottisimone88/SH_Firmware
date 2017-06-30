@@ -455,6 +455,15 @@ void motor_control() {
             
             if (normally_closed_mode == 1)
                 g_ref.pos[0] = g_mem.pos_lim_sup[0] - g_ref.pos[0];
+
+
+			if (h_status == H_WAIT){                               
+                if (normally_closed_mode == 0)
+                    g_ref.pos[0] = c_mem.pos_lim_sup[0];
+                else
+                    g_ref.pos[0] = c_mem.pos_lim_inf[0];
+
+			}
             
             break;
 
@@ -818,6 +827,7 @@ void encoder_reading(const uint8 idx) {
     int32 speed_encoder;
     //int32 accel_encoder;
     int32 aux;
+	int32 init_rot = 0;
 
     static int32 last_value_encoder[NUM_OF_SENSORS];
 
@@ -936,12 +946,14 @@ void encoder_reading(const uint8 idx) {
         
             switch (h_status) {
                 case H_NORMAL:
-                    if (handle_pos < -80){
+                    if (handle_pos > c_mem.activation_lever_thr){       //< -80 (korea)
+
                         h_status = H_WAIT;
                     }
                     break;
                 case H_WAIT:                    
-                    if (handle_pos > -40){
+
+                    if (handle_pos < 40){                               // > -40 (korea)
                         // Change mode
                         if (normally_closed_mode == 0)
                             normally_closed_mode = 1;
@@ -1009,11 +1021,26 @@ void encoder_reading(const uint8 idx) {
             one_time_execute++;
         else {
             //Double encoder translation
-            if (c_mem.double_encoder_on_off)
-                g_meas.rot[0] = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
+            if (c_mem.double_encoder_on_off){
 
-            g_meas.pos[0] += (int32) g_meas.rot[0] << 16;
+                init_rot = calc_turns_fcn(g_meas.pos[0],g_meas.pos[1]);
+                
+                if (c_mem.m_mult[0] < 0)
+                    init_rot = -init_rot;
+                
+                g_meas.rot[0] = (int8)init_rot;
 
+            }
+
+
+            if (c_mem.m_mult != 1.0)
+                g_meas.pos[0] /= c_mem.m_mult[0];
+            
+            g_meas.pos[0] += (int32)(init_rot << 16);
+            
+            if (c_mem.m_mult != 1.0)
+                g_meas.pos[0] *= c_mem.m_mult[0];
+                    
             // If necessary activate motors
             g_refNew.pos[0] = g_meas.pos[0];
 

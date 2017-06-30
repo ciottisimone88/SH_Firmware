@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   GLOBALS                                                               02/01/2017 09:26:37 PAGE 1   
+C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:55:50 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE GLOBALS
@@ -11,65 +11,96 @@ line level    source
 
 *** MESSAGE C286 IN LINE 0 OF (null): license limits optimization to level 5
    1          // ----------------------------------------------------------------------------
-   2          // Copyright (C)  qbrobotics. All rights reserved.
-   3          // www.qbrobotics.com
-   4          // ----------------------------------------------------------------------------
-   5          
-   6          /**
-   7          * \file         globals.c
-   8          *
-   9          * \brief        Global variables.
-  10          * \date         June 06, 2016
-  11          * \author       _qbrobotics_
-  12          * \copyright    (C)  qbrobotics. All rights reserved.
-  13          */
-  14          
-  15          //=================================================================     includes
-  16          #include <globals.h>
+   2          // BSD 3-Clause License
+   3          
+   4          // Copyright (c) 2016, qbrobotics
+   5          // Copyright (c) 2017, Centro "E.Piaggio"
+   6          // All rights reserved.
+   7          
+   8          // Redistribution and use in source and binary forms, with or without
+   9          // modification, are permitted provided that the following conditions are met:
+  10          
+  11          // * Redistributions of source code must retain the above copyright notice, this
+  12          //   list of conditions and the following disclaimer.
+  13          
+  14          // * Redistributions in binary form must reproduce the above copyright notice,
+  15          //   this list of conditions and the following disclaimer in the documentation
+  16          //   and/or other materials provided with the distribution.
   17          
-  18          //=============================================      global variables definition
-  19          
-  20          
-  21          struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
-  22          struct st_meas  g_meas, g_measOld;          // measurements
-  23          struct st_data  g_rx;                       // income data
-  24          struct st_mem   g_mem, c_mem;               // memory
-  25          struct st_calib calib;
-  26          
-  27          float tau_feedback;
-  28          
-  29          // Timer value for debug field
-  30          
-  31          uint32 timer_value;
-  32          uint32 timer_value0;
-  33          float cycle_time;
+  18          // * Neither the name of the copyright holder nor the names of its
+  19          //   contributors may be used to endorse or promote products derived from
+  20          //   this software without specific prior written permission.
+  21          
+  22          // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23          // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24          // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  25          // DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  26          // FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  27          // DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  28          // SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  29          // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  30          // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  31          // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  32          // POSSIBILITY OF SUCH DAMAGE.
+  33          // ----------------------------------------------------------------------------
   34          
-  35          // Device Data
-  36          
-  37          int32   dev_tension;                // Power supply tension
-  38          uint8   dev_pwm_limit;
-  39          
-  40          // Bit Flag
-  41          
-  42          CYBIT reset_last_value_flag;
-  43          CYBIT tension_valid;
-  44          CYBIT interrupt_flag = FALSE;
-  45          CYBIT watchdog_flag = FALSE;
-  46          
-  47          // DMA Buffer
-  48          
-  49          int16 ADC_buf[4]; 
+  35          /**
+  36          * \file         globals.c
+  37          *
+  38          * \brief        Global variables.
+  39          * \date         June 06, 2016
+  40          * \author       _qbrobotics_
+  41          * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
+  42          * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+  43          */
+  44          
+  45          //=================================================================     includes
+  46          #include <globals.h>
+  47          
+  48          //=============================================      global variables definition
+  49          
   50          
-  51          // PWM value
-  52          int8 pwm_sign;
-C51 COMPILER V9.51   GLOBALS                                                               02/01/2017 09:26:37 PAGE 2   
+  51          struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
+  52          struct st_meas  g_meas, g_measOld;          // measurements
+C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:55:50 PAGE 2   
 
-  53          
-  54          // KOREA mod. version
-  55          uint8 normally_closed_mode = 0;              // Korea hand has normally opened mode at startup
+  53          struct st_data  g_rx;                       // income data
+  54          struct st_mem   g_mem, c_mem;               // memory
+  55          struct st_calib calib;
   56          
-  57          /* END OF FILE */
-C51 COMPILER V9.51   GLOBALS                                                               02/01/2017 09:26:37 PAGE 3   
+  57          float tau_feedback;
+  58          
+  59          // Timer value for debug field
+  60          
+  61          uint32 timer_value;
+  62          uint32 timer_value0;
+  63          float cycle_time;
+  64          
+  65          // Device Data
+  66          
+  67          int32   dev_tension;                // Power supply tension
+  68          uint8   dev_pwm_limit;
+  69          
+  70          // Bit Flag
+  71          
+  72          CYBIT reset_last_value_flag;
+  73          CYBIT tension_valid;
+  74          CYBIT interrupt_flag = FALSE;
+  75          CYBIT watchdog_flag = FALSE;
+  76          
+  77          // DMA Buffer
+  78          
+  79          int16 ADC_buf[4]; 
+  80          
+  81          // PWM value
+  82          int8 pwm_sign;
+  83          
+  84          // NO/NC mod. version
+  85          uint8 normally_closed_mode = 0;              // Korea hand has normally opened mode at startup
+  86          handle_status CYDATA h_status;
+  87          
+  88          /* END OF FILE */
+C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:55:50 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -79,9 +110,9 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   ----    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =    655    ----
+   XDATA SIZE       =    663    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      1    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      4    ----
    EDATA SIZE       =   ----    ----

@@ -202,6 +202,7 @@ int main()
     tension_valid = FALSE;                              // Init tension_valid BIT
 
     reset_last_value_flag = 0;
+	h_status = H_NORMAL;
 
     //------------------------------------------------- Initialize package on receive from RS485
     g_rx.length = 0;

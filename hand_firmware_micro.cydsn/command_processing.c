@@ -288,8 +288,8 @@ void infoGet(uint16 info_type) {
 
 void get_param_list(uint16 index) {
     //Package to be sent variables
-    uint8 packet_data[1551] = "";
-    uint16 packet_lenght = 1551;
+    uint8 packet_data[1601] = "";
+    uint16 packet_lenght = 1601;
 
     //Auxiliary variables
     uint8 CYDATA i;
@@ -318,7 +318,8 @@ void get_param_list(uint16 index) {
     char abs_enc_str[36] = "18 - Absolute encoder position:";
     char handle_ratio_str[25] = "19 - Motor handle ratio:"; 
     char motor_type_str[24] = "20 - PWM rescaling:";
-    char curr_lookup_str[21] = "21 - Current lookup:";
+	char activation_lever_thr_str[33] = "21 - Activation lever threshold:";
+    char curr_lookup_str[21] = "22 - Current lookup:";
 
     //Parameters menus
     char input_mode_menu[99] = "0 -> Usb\n1 -> Handle\n2 -> EMG proportional\n3 -> EMG Integral\n4 -> EMG FCFS\n5 -> EMG FCFS Advanced\n";
@@ -347,6 +348,7 @@ void get_param_list(uint16 index) {
     uint8 CYDATA input_mode_menu_len = strlen(input_mode_menu);
     uint8 CYDATA control_mode_menu_len = strlen(control_mode_menu);
     uint8 CYDATA yes_no_menu_len = strlen(yes_no_menu);
+	uint8 CYDATA activation_lever_thr_str_len = strlen(activation_lever_thr_str);
 
     packet_data[0] = CMD_GET_PARAM_LIST;
     packet_data[1] = NUM_OF_PARAMS;
@@ -640,25 +642,33 @@ void get_param_list(uint16 index) {
             //The following byte indicates the number of menus at the end of the packet to send
             packet_data[955 + string_lenght] = 3;
 
+            /*-------------ACTIVATION LEVER THRESHOLD-----------*/
+            
+            packet_data[1002] = TYPE_INT32;
+            packet_data[1003] = 1;
+            *((int32 *)(packet_data + 1004)) = c_mem.activation_lever_thr;
+            for(i = activation_lever_thr_str_len; i != 0; i--)
+                packet_data[1008 + activation_lever_thr_str_len - i] = activation_lever_thr_str[activation_lever_thr_str_len - i];
+
             /*---------CURRENT LOOKUP TABLE---------*/
 
-            packet_data[1002] = TYPE_FLOAT;
-            packet_data[1003] = 6;
+            packet_data[1052] = TYPE_FLOAT;
+            packet_data[1053] = 6;
             for(i = 0; i < LOOKUP_DIM; i++)
-                *((float *) ( packet_data + 1004 + (i * 4) )) = c_mem.curr_lookup[i];
+                *((float *) ( packet_data + 1054 + (i * 4) )) = c_mem.curr_lookup[i];
             for(i = curr_lookup_str_len; i != 0; i--)
-                packet_data[1028 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
+                packet_data[1078 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];            
                 
             /*------------PARAMETERS MENU-----------*/
 
             for(i = input_mode_menu_len; i != 0; i--)
-                packet_data[1052 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
+                packet_data[1102 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
 
             for(i = control_mode_menu_len; i != 0; i--)
-                packet_data[1202 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
+                packet_data[1252 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
 
             for(i = yes_no_menu_len; i!= 0; i--)
-                packet_data[1352 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
+                packet_data[1402 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
             commWrite(packet_data, packet_lenght);
@@ -814,8 +824,12 @@ void get_param_list(uint16 index) {
         case 20:        //Motor type - uint8
             g_mem.activate_pwm_rescaling = g_rx.buffer[3];
         break;
+//===================================================     set_motor_handle_ratio
+        case 21:        //Activation lever threshold - int32
+            g_mem.activation_lever_thr = *((int32*) &g_rx.buffer[3]);
+        break; 
 //===================================================     set_curr_lookup_table
-        case 21:        //Current lookup table - float
+        case 22:        //Current lookup table - float
             for(i = 0; i < LOOKUP_DIM; i++)
                 g_mem.curr_lookup[i] = *((float *) &g_rx.buffer[3 + i*4]);
         break;
