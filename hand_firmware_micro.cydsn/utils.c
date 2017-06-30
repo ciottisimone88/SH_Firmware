@@ -236,6 +236,17 @@ int32 filter_acc_3(int32 new_value) {
     return (aux /64);
 }
 
+int32 filter_voltage(int32 new_value) {
+
+    static int32 old_value, aux;
+
+    aux = (old_value * (1024 - EPSILON) + (new_value << 6) * (EPSILON)) /1024;
+
+    old_value = aux;
+
+    return (aux /64);
+}
+
 //==============================================================================
 //                                                                CHECK ENC DATA
 //==============================================================================

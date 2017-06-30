@@ -67,6 +67,7 @@ float cycle_time;
 int32   dev_tension;                // Power supply tension
 uint8   dev_pwm_limit;
 uint8   dev_pwm_sat = 100;
+int32   dev_tension_f;
 
 // Bit Flag
 
@@ -85,5 +86,6 @@ int8 pwm_sign;
 uint8 rest_enabled;
 int32 rest_pos_curr_ref;
 uint8 forced_open;
+
 
 /* END OF FILE */

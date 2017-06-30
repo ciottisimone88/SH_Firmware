@@ -887,6 +887,7 @@ void encoder_reading(const uint8 idx) {
     int32 speed_encoder;
     //int32 accel_encoder;
     int32 aux;
+    int32 init_rot = 0;
 
     static int32 last_value_encoder[NUM_OF_SENSORS];
 
@@ -1045,11 +1046,25 @@ void encoder_reading(const uint8 idx) {
             one_time_execute++;
         else {
             //Double encoder translation
-            if (c_mem.double_encoder_on_off)
-                g_meas.rot[0] = calc_turns_fcn(g_meas.pos[0], g_meas.pos[1]);
+            if (c_mem.double_encoder_on_off){
 
-            g_meas.pos[0] += (int32) g_meas.rot[0] << 16;
+                init_rot = calc_turns_fcn(g_meas.pos[0],g_meas.pos[1]);
+                
+                if (c_mem.m_mult[0] < 0)
+                    init_rot = -init_rot;
+                
+                g_meas.rot[0] = (int8)init_rot;
 
+            }
+
+            if (c_mem.m_mult != 1.0)
+                g_meas.pos[0] /= c_mem.m_mult[0];
+            
+            g_meas.pos[0] += (int32)(init_rot << 16);
+            
+            if (c_mem.m_mult != 1.0)
+                g_meas.pos[0] *= c_mem.m_mult[0];
+                    
             // If necessary activate motors
             g_refNew.pos[0] = g_meas.pos[0];
 
@@ -1093,6 +1108,8 @@ void analog_read_end() {
     static uint16 emg_counter_2 = 0;
 	static uint8 first_tension_valid = TRUE;
     static int32 pow_tension = 12000;       //12000 mV (12 V)
+    static uint8 count = 0;
+
 
     // Wait for conversion end
     
@@ -1111,18 +1128,22 @@ void analog_read_end() {
         interrupt_manager();
     }
 	if (first_tension_valid && tension_valid) {
-        if (dev_tension < 9000) {   // 8 V case
-            pow_tension = 8000;
-        }
-        else {      // 12 V - 24 V cases
-            if (dev_tension < 13000) {
-                pow_tension = 12000;
+        count = count + 1;
+        
+        if (count == 1000){
+            if (dev_tension < 9000) {   // 8 V case
+                pow_tension = 8000;
             }
-            else
-                pow_tension = 24000;
-        }
+            else {      // 12 V - 24 V cases
+                if (dev_tension < 13000) {
+                    pow_tension = 12000;
+                }
+                else
+                    pow_tension = 24000;
+            }
 
-        first_tension_valid = FALSE;
+            first_tension_valid = FALSE;
+        }
     }
 
     // Until there is no valid input tension repeat this measurement
@@ -1397,7 +1418,8 @@ void analog_read_end() {
     }
 	// The board LED blinks if attached battery is not fully charged
     if (!first_tension_valid && tension_valid == TRUE && emg_1_status == NORMAL && emg_2_status == NORMAL){
-        if (dev_tension > 0.92 * pow_tension){
+        dev_tension_f = filter_voltage(dev_tension);
+        if (dev_tension_f > 0.92 * pow_tension){        // Sometimes pow_tension is not well computed when using power supply
             //fixed
             LED_CTRL_Write(1);
             

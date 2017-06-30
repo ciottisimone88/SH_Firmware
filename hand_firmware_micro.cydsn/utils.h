@@ -56,6 +56,7 @@
 #define GAMMA 128 			///< Velocity filters constant
 #define DELTA 8 			///< Acceleration filters constant
 #define ETA   16            ///< Current residual filter
+#define EPSILON 8           ///< Voltage readings filter
 
 #define ZMAX 5				///< 
 #define ZERO_TOL 100		/*!< Deadband used to put to zero the virtual position
@@ -150,6 +151,15 @@ int32 filter_acc_2(int32 value);
  * 	\return Returns the filtered third encoder rotational acceleration value
 **/
 int32 filter_acc_3(int32 value);
+/** \} */ 
+/** Filter on voltage readings. The weighted average between the 
+ *	old value and the new one is executed.
+ * 	
+ *	\param value	New value of the filter. 
+ *
+ * 	\return Returns the filtered voltage value
+**/
+int32 filter_voltage(int32 value);
 /** \} */ 
 
 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   GLOBALS                                                               06/12/2017 09:47:34 PAGE 1   
+C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:39:06 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE GLOBALS
@@ -62,7 +62,7 @@ line level    source
   50          
   51          struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
   52          struct st_meas  g_meas, g_measOld;          // measurements
-C51 COMPILER V9.51   GLOBALS                                                               06/12/2017 09:47:34 PAGE 2   
+C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:39:06 PAGE 2   
 
   53          struct st_data  g_rx;                       // income data
   54          struct st_mem   g_mem, c_mem;               // memory
@@ -81,27 +81,29 @@ line level    source
   67          int32   dev_tension;                // Power supply tension
   68          uint8   dev_pwm_limit;
   69          uint8   dev_pwm_sat = 100;
-  70          
-  71          // Bit Flag
-  72          
-  73          CYBIT reset_last_value_flag;
-  74          CYBIT tension_valid;
-  75          CYBIT interrupt_flag = FALSE;
-  76          CYBIT watchdog_flag = FALSE;
-  77          
-  78          // DMA Buffer
-  79          
-  80          int16 ADC_buf[4]; 
-  81          
-  82          // PWM value
-  83          int8 pwm_sign;
-  84          
-  85          uint8 rest_enabled;
-  86          int32 rest_pos_curr_ref;
-  87          uint8 forced_open;
-  88          
-  89          /* END OF FILE */
-C51 COMPILER V9.51   GLOBALS                                                               06/12/2017 09:47:34 PAGE 3   
+  70          int32   dev_tension_f;
+  71          
+  72          // Bit Flag
+  73          
+  74          CYBIT reset_last_value_flag;
+  75          CYBIT tension_valid;
+  76          CYBIT interrupt_flag = FALSE;
+  77          CYBIT watchdog_flag = FALSE;
+  78          
+  79          // DMA Buffer
+  80          
+  81          int16 ADC_buf[4]; 
+  82          
+  83          // PWM value
+  84          int8 pwm_sign;
+  85          
+  86          uint8 rest_enabled;
+  87          int32 rest_pos_curr_ref;
+  88          uint8 forced_open;
+  89          
+  90          
+  91          /* END OF FILE */
+C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:39:06 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -111,7 +113,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   ----    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =    693    ----
+   XDATA SIZE       =    697    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
