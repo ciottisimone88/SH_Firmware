@@ -62,7 +62,7 @@
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           22      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           25      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -220,9 +220,12 @@ struct st_mem {
     uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
 
 	int32  activation_lever_thr;        /*!< Activation lever threshold */
-
-
-                                                                                            //TOT           150 bytes
+    
+    uint8  switch_mode;                 /*!< Switching mode */
+    
+    int32 switch_limit_inf;             /*!< Switching mode inf PUSH */
+    int32 switch_limit_sup;             /*!< Switching mode sup PUSH */
+                                                                                            //TOT           158 bytes
 };
 
 //=================================================     device related variables
@@ -266,6 +269,14 @@ typedef enum {
     H_WAIT          = 1               
 
 } handle_status;                       /*!< EMG status enumeration */
+
+//=================================================     lever switching mode
+typedef enum {
+
+    PULL        = 0,              /*!< Normal execution */
+    PUSH        = 1               
+
+} switching_mode;                       /*!< Switching mode enumeration */
 
 //====================================      external global variables definition
 

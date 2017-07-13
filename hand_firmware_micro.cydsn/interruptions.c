@@ -458,10 +458,19 @@ void motor_control() {
 
 
 			if (h_status == H_WAIT){                               
-                if (normally_closed_mode == 0)
-                    g_ref.pos[0] = c_mem.pos_lim_sup[0];
-                else
-                    g_ref.pos[0] = c_mem.pos_lim_inf[0];
+                if (c_mem.switch_mode == PULL) {
+                    if (normally_closed_mode == 0)
+                        g_ref.pos[0] = c_mem.pos_lim_sup[0];
+                    else
+                        g_ref.pos[0] = c_mem.pos_lim_inf[0];
+                }
+                
+                if (c_mem.switch_mode == PUSH) {
+                    if (normally_closed_mode == 0)
+                        g_ref.pos[0] = c_mem.pos_lim_inf[0];
+                    else
+                        g_ref.pos[0] = c_mem.pos_lim_sup[0];
+                }
 
 			}
             
@@ -849,6 +858,7 @@ void encoder_reading(const uint8 idx) {
     static uint8 handle_index = 2;
     int32 handle_pos;
     static handle_status CYDATA h_status = H_NORMAL; 
+    static uint8 wait_for_switch = 0;
 
     if (index >= NUM_OF_SENSORS)
         return;
@@ -946,14 +956,16 @@ void encoder_reading(const uint8 idx) {
         
             switch (h_status) {
                 case H_NORMAL:
-                    if (handle_pos > c_mem.activation_lever_thr){       //< -80 (korea)
-
+                    if (c_mem.switch_mode == PULL && handle_pos > c_mem.activation_lever_thr){       //(bowden)
+                        h_status = H_WAIT;
+                    }
+                    if (c_mem.switch_mode == PUSH && handle_pos < c_mem.switch_limit_inf){       //(korea) -80
                         h_status = H_WAIT;
                     }
                     break;
                 case H_WAIT:                    
 
-                    if (handle_pos < 40){                               // > -40 (korea)
+                    if (c_mem.switch_mode == PULL && handle_pos < 40){                               //(bowden)
                         // Change mode
                         if (normally_closed_mode == 0)
                             normally_closed_mode = 1;
@@ -962,6 +974,27 @@ void encoder_reading(const uint8 idx) {
                         
                         h_status = H_NORMAL;
                     }
+                    
+                    if (c_mem.switch_mode == PUSH  && handle_pos > c_mem.switch_limit_sup) {       //(korea) -40
+                        // Button released                       
+                        if (normally_closed_mode == 1) {    // NC
+                            if (handle_pos > 900) {
+                                normally_closed_mode = 0;
+                                wait_for_switch = 0;
+                            }
+                            else
+                                wait_for_switch = 1;
+                        }
+                        else {  ///NO
+                            normally_closed_mode = 1; 
+                            wait_for_switch = 0;                            
+                        }
+                        
+                    
+                        if (wait_for_switch == 0)
+                            h_status = H_NORMAL;
+                    }
+  
                     break;
             }
         }
