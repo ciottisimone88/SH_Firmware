@@ -985,7 +985,11 @@ void infoPrepare(unsigned char *info_string)
             strcat(info_string, "\r\n");
         }
 
-        sprintf(str, "Voltage (mV): %ld", (int32) dev_tension );
+        sprintf(str, "Battery Voltage (mV): %ld", (int32) dev_tension );
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        
+        sprintf(str, "Full charge power tension (mV): %ld", (int32) pow_tension );
         strcat(info_string, str);
         strcat(info_string, "\r\n");
 

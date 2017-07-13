@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 1   
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE UTILS
@@ -62,7 +62,7 @@ line level    source
   50          //==============================================================================
   51          
   52          int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 2   
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 2   
 
   53   1      
   54   1              static int32 virtual_pos_friction;      //Virtual position used to estimate friction
@@ -126,7 +126,7 @@ line level    source
  110          //==============================================================================
  111          //                                                              First Emg Filter
  112          //==============================================================================
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 3   
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 3   
 
  113          
  114          int32 filter_ch1(int32 new_value) {
@@ -190,7 +190,7 @@ line level    source
  172   1      
  173   1       //   if (new_value < 100) new_value = 0;
  174   1       //   else new_value = new_value - 100;
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 4   
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 4   
 
  175   1          
  176   1          aux = (old_value * (1024 - ETA) + (new_value << 6) * (ETA)) /1024;
@@ -254,248 +254,249 @@ line level    source
  234   1          old_value = aux;
  235   1      
  236   1          return (aux /64);
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 5   
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 5   
 
  237   1      }
  238          
  239          int32 filter_voltage(int32 new_value) {
  240   1      
- 241   1          static int32 old_value, aux;
- 242   1      
- 243   1          aux = (old_value * (1024 - EPSILON) + (new_value << 6) * (EPSILON)) /1024;
- 244   1      
- 245   1          old_value = aux;
- 246   1      
- 247   1          return (aux /64);
- 248   1      }
- 249          
- 250          //==============================================================================
- 251          //                                                                CHECK ENC DATA
- 252          //==============================================================================
- 253          
- 254          // Returns 1 if the encoder data is correct, 0 otherwise
- 255          
- 256          CYBIT check_enc_data(const uint32 *value) {
- 257   1      
- 258   1          const uint8* CYIDATA p = (const uint8*)value;
- 259   1          uint8 CYDATA a = *p;
- 260   1      
- 261   1          a = a ^ *(++p);
+ 241   1          static int32 old_value = 12000;
+ 242   1          static int32 aux;
+ 243   1      
+ 244   1          aux = (old_value * (1024 - EPSILON) + (new_value << 6) * (EPSILON)) /1024;
+ 245   1      
+ 246   1          old_value = aux;
+ 247   1      
+ 248   1          return (aux /64);
+ 249   1      }
+ 250          
+ 251          //==============================================================================
+ 252          //                                                                CHECK ENC DATA
+ 253          //==============================================================================
+ 254          
+ 255          // Returns 1 if the encoder data is correct, 0 otherwise
+ 256          
+ 257          CYBIT check_enc_data(const uint32 *value) {
+ 258   1      
+ 259   1          const uint8* CYIDATA p = (const uint8*)value;
+ 260   1          uint8 CYDATA a = *p;
+ 261   1      
  262   1          a = a ^ *(++p);
  263   1          a = a ^ *(++p);
- 264   1          a = (a & 0x0F) ^ (a>>4);
- 265   1      
- 266   1          return (0x9669 >> a) & 0x01;
- 267   1          //0x9669 is a bit vector representing the !(bitwise XOR) of 4bits
- 268   1      }
- 269          
- 270          //==============================================================================
- 271          //                                                                ROUND_FUNCTION
- 272          //==============================================================================
- 273          
- 274          int my_round(const double x) {
- 275   1      
- 276   1          if (x < 0.0)
- 277   1              return (int)(x - 0.5);
- 278   1          else
- 279   1              return (int)(x + 0.5);
- 280   1      }
- 281          
- 282          //==============================================================================
- 283          //                                                                        MODULE
- 284          //==============================================================================
- 285          
- 286          uint32 my_mod(int32 val, int32 divisor) {
- 287   1      
- 288   1          if (val >= 0) {
- 289   2              return (int32)(val % divisor);
- 290   2          } else {
- 291   2              return (int32)(divisor - (-val % divisor));
- 292   2          }
- 293   1      }
- 294          
+ 264   1          a = a ^ *(++p);
+ 265   1          a = (a & 0x0F) ^ (a>>4);
+ 266   1      
+ 267   1          return (0x9669 >> a) & 0x01;
+ 268   1          //0x9669 is a bit vector representing the !(bitwise XOR) of 4bits
+ 269   1      }
+ 270          
+ 271          //==============================================================================
+ 272          //                                                                ROUND_FUNCTION
+ 273          //==============================================================================
+ 274          
+ 275          int my_round(const double x) {
+ 276   1      
+ 277   1          if (x < 0.0)
+ 278   1              return (int)(x - 0.5);
+ 279   1          else
+ 280   1              return (int)(x + 0.5);
+ 281   1      }
+ 282          
+ 283          //==============================================================================
+ 284          //                                                                        MODULE
+ 285          //==============================================================================
+ 286          
+ 287          uint32 my_mod(int32 val, int32 divisor) {
+ 288   1      
+ 289   1          if (val >= 0) {
+ 290   2              return (int32)(val % divisor);
+ 291   2          } else {
+ 292   2              return (int32)(divisor - (-val % divisor));
+ 293   2          }
+ 294   1      }
  295          
- 296          //==============================================================================
- 297          //                                                                     CALIBRATE
- 298          //==============================================================================
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 6   
+ 296          
+ 297          //==============================================================================
+ 298          //                                                                     CALIBRATE
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 6   
 
- 299          
- 300          void calibration(void) {
- 301   1          static uint8 direction;                 //0 closing, 1 opening
- 302   1          static uint16 closure_counter;          //Range [0 - 2^16]
- 303   1      
+ 299          //==============================================================================
+ 300          
+ 301          void calibration(void) {
+ 302   1          static uint8 direction;                 //0 closing, 1 opening
+ 303   1          static uint16 closure_counter;          //Range [0 - 2^16]
  304   1      
- 305   1          // closing
- 306   1          if (direction == 0) {
- 307   2              g_refNew.pos[0] += (calib.speed << g_mem.res[0]);
- 308   2              if ((g_refNew.pos[0]) > g_mem.pos_lim_sup[0]) {
- 309   3                  direction = 1;
- 310   3              }
- 311   2          } else { //opening
- 312   2              g_refNew.pos[0] -= (calib.speed << g_mem.res[0]);
- 313   2              if (SIGN(g_refNew.pos[0]) != 1) {
- 314   3                  direction = 0;
- 315   3                  closure_counter++;
- 316   3                  if (closure_counter == calib.repetitions) {
- 317   4                      closure_counter = 0;
- 318   4                      calib.enabled = FALSE;
- 319   4                  }
- 320   3              }
- 321   2          }
- 322   1      }
- 323          
+ 305   1      
+ 306   1          // closing
+ 307   1          if (direction == 0) {
+ 308   2              g_refNew.pos[0] += (calib.speed << g_mem.res[0]);
+ 309   2              if ((g_refNew.pos[0]) > g_mem.pos_lim_sup[0]) {
+ 310   3                  direction = 1;
+ 311   3              }
+ 312   2          } else { //opening
+ 313   2              g_refNew.pos[0] -= (calib.speed << g_mem.res[0]);
+ 314   2              if (SIGN(g_refNew.pos[0]) != 1) {
+ 315   3                  direction = 0;
+ 316   3                  closure_counter++;
+ 317   3                  if (closure_counter == calib.repetitions) {
+ 318   4                      closure_counter = 0;
+ 319   4                      calib.enabled = FALSE;
+ 320   4                  }
+ 321   3              }
+ 322   2          }
+ 323   1      }
  324          
- 325          //==============================================================================
- 326          //                                                      DOUBLE ENCODER CALC TURN
- 327          //==============================================================================
- 328          
- 329          // Use this matlab function to calculate I1 and I2
- 330          //
- 331          // function [inv_a, inv_b] = mod_mul_inv(a, b)
- 332          //     a = int32(a);
- 333          //     b = int32(b);
- 334          //     if b == 0
- 335          //         inv_a = 1;
- 336          //         inv_b = 0;
- 337          //         return
- 338          //     else
- 339          //         q = idivide(a,b,'floor');
- 340          //         r = mod(a,b);
- 341          //         [s, t] = mod_mul_inv(b, r);
- 342          //     end
- 343          //     inv_a = t;
- 344          //     inv_b = s - q * t;
- 345          // return
- 346          
- 347          // Number of teeth of the two wheels
- 348          #define N1 28           ///< Teeth of the first encoder wheel
- 349          #define N2 27           ///< Teeth of the second encoder wheel
- 350          
- 351          #define I1 1            ///< First wheel invariant value
- 352          #define I2 (-1)         ///< Second wheel invariant value
- 353          
- 354          // Number of ticks per turn
- 355          #define M 65536          ///< Number of encoder ticks per turn
- 356          
+ 325          
+ 326          //==============================================================================
+ 327          //                                                      DOUBLE ENCODER CALC TURN
+ 328          //==============================================================================
+ 329          
+ 330          // Use this matlab function to calculate I1 and I2
+ 331          //
+ 332          // function [inv_a, inv_b] = mod_mul_inv(a, b)
+ 333          //     a = int32(a);
+ 334          //     b = int32(b);
+ 335          //     if b == 0
+ 336          //         inv_a = 1;
+ 337          //         inv_b = 0;
+ 338          //         return
+ 339          //     else
+ 340          //         q = idivide(a,b,'floor');
+ 341          //         r = mod(a,b);
+ 342          //         [s, t] = mod_mul_inv(b, r);
+ 343          //     end
+ 344          //     inv_a = t;
+ 345          //     inv_b = s - q * t;
+ 346          // return
+ 347          
+ 348          // Number of teeth of the two wheels
+ 349          #define N1 15           ///< Teeth of the first encoder wheel
+ 350          #define N2 14           ///< Teeth of the second encoder wheel
+ 351          
+ 352          #define I1 1            ///< First wheel invariant value
+ 353          #define I2 (-1)         ///< Second wheel invariant value
+ 354          
+ 355          // Number of ticks per turn
+ 356          #define M 65536          ///< Number of encoder ticks per turn
  357          
- 358          int calc_turns_fcn(const int32 pos1, const int32 pos2) {
- 359   1          
- 360   1          int32 x = (my_mod( - N2*pos2 - N1*pos1, M*N2) + M/2) / M;
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 7   
+ 358          
+ 359          int calc_turns_fcn(const int32 pos1, const int32 pos2) {
+ 360   1          
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 7   
 
- 361   1      
- 362   1          int32 aux = my_mod(x*I1, N2);
- 363   1          
- 364   1          return (my_mod(aux + N2/2, N2) - N2/2);
- 365   1      }
- 366          
+ 361   1          int32 x = (my_mod( - N2*pos2 - N1*pos1, M*N2) + M/2) / M;
+ 362   1      
+ 363   1          int32 aux = my_mod(x*I1, N2);
+ 364   1          
+ 365   1          return (my_mod(aux + N2/2, N2) - N2/2);
+ 366   1      }
  367          
- 368          //==============================================================================
- 369          //                                                              REST POSITION
- 370          //==============================================================================
- 371          
- 372          void check_rest_position(void) {     // 100 Hz frequency
- 373   1          
- 374   1          static uint32 count = 0;        // Range [0 - 2^31]
- 375   1          static uint8 flag_count = 1;
- 376   1          static uint8 first_time = 1;
- 377   1          static float m = 0;
- 378   1          static int32 abs_err_thr = 0;
- 379   1          static int32 delta_inc = 0;
- 380   1          int32 curr_pos = 0;
- 381   1          static int32 rest_error;
- 382   1          int32 handle_value = 0;
- 383   1          
- 384   1          if (first_time){
- 385   2              count = 0;
- 386   2              first_time = 0;
- 387   2          }
- 388   1          
- 389   1          curr_pos = (int32)(g_meas.pos[0] >> g_mem.res[0]);
- 390   1          
- 391   1          if (c_mem.input_mode == INPUT_MODE_ENCODER3) {
- 392   2              if (c_mem.double_encoder_on_off == 0)
- 393   2                  handle_value = g_meas.pos[1];
- 394   2              else
- 395   2                  handle_value = g_meas.pos[2];
- 396   2          }
- 397   1          
- 398   1          if ( ( (c_mem.input_mode >= 2 && g_meas.emg[0] < 200 && g_meas.emg[1] < 200) || (c_mem.input_mode == I
+ 368          
+ 369          //==============================================================================
+ 370          //                                                              REST POSITION
+ 371          //==============================================================================
+ 372          
+ 373          void check_rest_position(void) {     // 100 Hz frequency
+ 374   1          
+ 375   1          static uint32 count = 0;        // Range [0 - 2^31]
+ 376   1          static uint8 flag_count = 1;
+ 377   1          static uint8 first_time = 1;
+ 378   1          static float m = 0;
+ 379   1          static int32 abs_err_thr = 0;
+ 380   1          static int32 delta_inc = 0;
+ 381   1          int32 curr_pos = 0;
+ 382   1          static int32 rest_error;
+ 383   1          int32 handle_value = 0;
+ 384   1          
+ 385   1          if (first_time){
+ 386   2              count = 0;
+ 387   2              first_time = 0;
+ 388   2          }
+ 389   1          
+ 390   1          curr_pos = (int32)(g_meas.pos[0] >> g_mem.res[0]);
+ 391   1          
+ 392   1          if (c_mem.input_mode == INPUT_MODE_ENCODER3) {
+ 393   2              if (c_mem.double_encoder_on_off == 0)
+ 394   2                  handle_value = g_meas.pos[1];
+ 395   2              else
+ 396   2                  handle_value = g_meas.pos[2];
+ 397   2          }
+ 398   1          
+ 399   1          if ( ( (c_mem.input_mode >= 2 && g_meas.emg[0] < 200 && g_meas.emg[1] < 200) || (c_mem.input_mode == I
              -NPUT_MODE_ENCODER3 && handle_value < 50) ) && curr_pos < 10000){
- 399   2              if (flag_count == 1){
- 400   3                  count = count + 1;
- 401   3              }
- 402   2          }
- 403   1          else {
- 404   2              count = 0;
- 405   2              rest_enabled = 0;
- 406   2              flag_count = 1;
- 407   2          }
- 408   1          
- 409   1          /********** Velocity closure procedure *************
- 410   1          * m = error/time
- 411   1          * m = (g_mem.rest_pos - init_pos)/time
- 412   1          * time = g_mem.rest_pos/g_mem.rest_vel (g_mem.rest_vel in ticks/msec)
- 413   1          ***************************************************/
- 414   1          
- 415   1          if (count == (uint32)(g_mem.rest_delay/CALIBRATION_DIV)){ //10 seconds 
- 416   2              rest_enabled = 1;
- 417   2              rest_pos_curr_ref = g_meas.pos[0];
- 418   2              
- 419   2              // Ramp angular coefficient
- 420   2              m = ((float)(g_mem.rest_pos - g_meas.pos[0])/((float)g_mem.rest_pos))*(g_mem.rest_vel);
- 421   2              
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 8   
+ 400   2              if (flag_count == 1){
+ 401   3                  count = count + 1;
+ 402   3              }
+ 403   2          }
+ 404   1          else {
+ 405   2              count = 0;
+ 406   2              rest_enabled = 0;
+ 407   2              flag_count = 1;
+ 408   2          }
+ 409   1          
+ 410   1          /********** Velocity closure procedure *************
+ 411   1          * m = error/time
+ 412   1          * m = (g_mem.rest_pos - init_pos)/time
+ 413   1          * time = g_mem.rest_pos/g_mem.rest_vel (g_mem.rest_vel in ticks/msec)
+ 414   1          ***************************************************/
+ 415   1          
+ 416   1          if (count == (uint32)(g_mem.rest_delay/CALIBRATION_DIV)){ //10 seconds 
+ 417   2              rest_enabled = 1;
+ 418   2              rest_pos_curr_ref = g_meas.pos[0];
+ 419   2              
+ 420   2              // Ramp angular coefficient
+ 421   2              m = ((float)(g_mem.rest_pos - g_meas.pos[0])/((float)g_mem.rest_pos))*(g_mem.rest_vel);
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 8   
 
- 422   2              // Stop condition threshold is related to m coefficient by g_mem.rest_ratio value
- 423   2              abs_err_thr = (int32)( (int32)(g_mem.rest_ratio*m*((float)CALIBRATION_DIV)) << g_mem.res[0]);
- 424   2              abs_err_thr = (abs_err_thr>0)?abs_err_thr:(0-abs_err_thr);
- 425   2              
- 426   2              rest_error = g_mem.rest_pos - g_meas.pos[0];    
- 427   2              
- 428   2              delta_inc = (int32)( ((int32)(m*(float)CALIBRATION_DIV)) << g_mem.res[0] );
- 429   2              delta_inc = (delta_inc>0)?delta_inc:(0-delta_inc);
- 430   2              
- 431   2              count = 0;
- 432   2              flag_count = 0;
- 433   2          }
- 434   1          
- 435   1          if (rest_enabled){
- 436   2      
- 437   2              if (rest_error < abs_err_thr && rest_error > -abs_err_thr){
- 438   3                  // Stop condition
- 439   3                  rest_pos_curr_ref = g_mem.rest_pos;
- 440   3                  
- 441   3                  if (c_mem.input_mode >= 2)   // EMG input mode
- 442   3                      forced_open = 1; 
- 443   3                  
- 444   3                  count = 0;
- 445   3              }
- 446   2              else {
- 447   3                  rest_error = g_mem.rest_pos - g_meas.pos[0];        
- 448   3      
- 449   3                  if (rest_error > 0){
- 450   4                      rest_pos_curr_ref = rest_pos_curr_ref + delta_inc;
- 451   4                  }
- 452   3                  if (rest_error < 0){
- 453   4                      rest_pos_curr_ref = rest_pos_curr_ref - delta_inc;
- 454   4                  }
- 455   3              } 
- 456   2          }
- 457   1          
- 458   1          // Position limit saturation
- 459   1          if (c_mem.pos_lim_flag) {
- 460   2              if (rest_pos_curr_ref < c_mem.pos_lim_inf[0]) 
- 461   2                  rest_pos_curr_ref = c_mem.pos_lim_inf[0];
- 462   2              if (rest_pos_curr_ref > c_mem.pos_lim_sup[0]) 
- 463   2                  rest_pos_curr_ref = c_mem.pos_lim_sup[0];
- 464   2          }
- 465   1      
- 466   1      }
- 467          
- 468          /* [] END OF FILE */
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 9   
+ 422   2              
+ 423   2              // Stop condition threshold is related to m coefficient by g_mem.rest_ratio value
+ 424   2              abs_err_thr = (int32)( (int32)(g_mem.rest_ratio*m*((float)CALIBRATION_DIV)) << g_mem.res[0]);
+ 425   2              abs_err_thr = (abs_err_thr>0)?abs_err_thr:(0-abs_err_thr);
+ 426   2              
+ 427   2              rest_error = g_mem.rest_pos - g_meas.pos[0];    
+ 428   2              
+ 429   2              delta_inc = (int32)( ((int32)(m*(float)CALIBRATION_DIV)) << g_mem.res[0] );
+ 430   2              delta_inc = (delta_inc>0)?delta_inc:(0-delta_inc);
+ 431   2              
+ 432   2              count = 0;
+ 433   2              flag_count = 0;
+ 434   2          }
+ 435   1          
+ 436   1          if (rest_enabled){
+ 437   2      
+ 438   2              if (rest_error < abs_err_thr && rest_error > -abs_err_thr){
+ 439   3                  // Stop condition
+ 440   3                  rest_pos_curr_ref = g_mem.rest_pos;
+ 441   3                  
+ 442   3                  if (c_mem.input_mode >= 2)   // EMG input mode
+ 443   3                      forced_open = 1; 
+ 444   3                  
+ 445   3                  count = 0;
+ 446   3              }
+ 447   2              else {
+ 448   3                  rest_error = g_mem.rest_pos - g_meas.pos[0];        
+ 449   3      
+ 450   3                  if (rest_error > 0){
+ 451   4                      rest_pos_curr_ref = rest_pos_curr_ref + delta_inc;
+ 452   4                  }
+ 453   3                  if (rest_error < 0){
+ 454   4                      rest_pos_curr_ref = rest_pos_curr_ref - delta_inc;
+ 455   4                  }
+ 456   3              } 
+ 457   2          }
+ 458   1          
+ 459   1          // Position limit saturation
+ 460   1          if (c_mem.pos_lim_flag) {
+ 461   2              if (rest_pos_curr_ref < c_mem.pos_lim_inf[0]) 
+ 462   2                  rest_pos_curr_ref = c_mem.pos_lim_inf[0];
+ 463   2              if (rest_pos_curr_ref > c_mem.pos_lim_sup[0]) 
+ 464   2                  rest_pos_curr_ref = c_mem.pos_lim_sup[0];
+ 465   2          }
+ 466   1      
+ 467   1      }
+ 468          
+ 469          /* [] END OF FILE */
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 9   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -559,7 +560,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0045 900000      R     MOV     DPTR,#pos
 0048 E0                MOVX    A,@DPTR
 0049 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 10  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 10  
 
 004A A3                INC     DPTR
 004B E0                MOVX    A,@DPTR
@@ -623,7 +624,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0092 F8                MOV     R0,A
 0093 A3                INC     DPTR
 0094 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 11  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 11  
 
 0095 F9                MOV     R1,A
 0096 A3                INC     DPTR
@@ -687,7 +688,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00D9 3C                ADDC    A,R4
 00DA FC                MOV     R4,A
 00DB 900000      R     MOV     DPTR,#virtual_pos_friction
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 12  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 12  
 
 00DE 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 67
@@ -751,7 +752,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0131 F8                MOV     R0,A
 0132 A3                INC     DPTR
 0133 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 13  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 13  
 
 0134 F9                MOV     R1,A
 0135 A3                INC     DPTR
@@ -815,7 +816,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 018D FD                MOV     R5,A
 018E A3                INC     DPTR
 018F E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 14  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 14  
 
 0190 FE                MOV     R6,A
 0191 A3                INC     DPTR
@@ -879,7 +880,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01DF FD                MOV     R5,A
 01E0 EC                MOV     A,R4
 01E1 98                SUBB    A,R0
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 15  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 15  
 
 01E2 FC                MOV     R4,A
 01E3 120000      E     LCALL   ?C?FCASTL
@@ -943,7 +944,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0243 E0                MOVX    A,@DPTR
 0244 FD                MOV     R5,A
 0245 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 16  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 16  
 
 0246 E0                MOVX    A,@DPTR
 0247 FE                MOV     R6,A
@@ -1007,7 +1008,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0297 A3                INC     DPTR
 0298 E0                MOVX    A,@DPTR
 0299 FB                MOV     R3,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 17  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 17  
 
 029A D3                SETB    C
 029B 120000      E     LCALL   ?C?SLCMP
@@ -1071,7 +1072,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02E5 FF                MOV     R7,A
 02E6 C3                CLR     C
 02E7 E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 18  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 18  
 
 02E8 9F                SUBB    A,R7
 02E9 FF                MOV     R7,A
@@ -1135,7 +1136,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0338 2B                ADD     A,R3
 0339 FF                MOV     R7,A
 033A EE                MOV     A,R6
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 19  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 19  
 
 033B 3A                ADDC    A,R2
 033C FE                MOV     R6,A
@@ -1199,7 +1200,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0023 E0                MOVX    A,@DPTR
 0024 F9                MOV     R1,A
 0025 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 20  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 20  
 
 0026 E0                MOVX    A,@DPTR
 0027 FA                MOV     R2,A
@@ -1263,7 +1264,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0075 FE                MOV     R6,A
 0076 A3                INC     DPTR
 0077 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 21  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 21  
 
 0078 FF                MOV     R7,A
 0079 120000      E     LCALL   ?C?SLDIV
@@ -1327,7 +1328,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0044 7A04              MOV     R2,#04H
 0046 F9                MOV     R1,A
 0047 F8                MOV     R0,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 22  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 22  
 
 0048 120000      E     LCALL   ?C?SLDIV
 004B 900000      R     MOV     DPTR,#aux
@@ -1391,7 +1392,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0014 E0                MOVX    A,@DPTR
 0015 FA                MOV     R2,A
 0016 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 23  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 23  
 
 0017 E0                MOVX    A,@DPTR
 0018 FB                MOV     R3,A
@@ -1455,7 +1456,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 006A D001              POP     AR1
 006C D000              POP     AR0
 006E EF                MOV     A,R7
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 24  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 24  
 
 006F 2B                ADD     A,R3
 0070 FF                MOV     R7,A
@@ -1519,7 +1520,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 132
 ;---- Variable 'new_value' assigned to Register 'R4/R5/R6/R7' ----
                                            ; SOURCE LINE # 136
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 25  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 25  
 
 0000 7806              MOV     R0,#06H
 0002 120000      E     LCALL   ?C?LSHL
@@ -1583,7 +1584,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0057 E0                MOVX    A,@DPTR
 0058 FD                MOV     R5,A
 0059 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 26  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 26  
 
 005A E0                MOVX    A,@DPTR
 005B FE                MOV     R6,A
@@ -1647,7 +1648,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0026 E0                MOVX    A,@DPTR
 0027 FA                MOV     R2,A
 0028 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 27  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 27  
 
 0029 E0                MOVX    A,@DPTR
 002A FB                MOV     R3,A
@@ -1711,7 +1712,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0078 FF                MOV     R7,A
 0079 120000      E     LCALL   ?C?SLDIV
                                            ; SOURCE LINE # 152
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 28  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 28  
 
 007C         ?C0015:
 007C 22                RET     
@@ -1775,7 +1776,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0048 120000      E     LCALL   ?C?SLDIV
 004B 900000      R     MOV     DPTR,#aux
 004E 120000      E     LCALL   ?C?LSTXDATA
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 29  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 29  
 
                                            ; SOURCE LINE # 160
 0051 900000      R     MOV     DPTR,#aux
@@ -1839,7 +1840,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 001C FC                MOV     R4,A
 001D 900000      R     MOV     DPTR,#old_value
 0020 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 30  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 30  
 
 0021 F8                MOV     R0,A
 0022 A3                INC     DPTR
@@ -1903,7 +1904,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0070 A3                INC     DPTR
 0071 E0                MOVX    A,@DPTR
 0072 FD                MOV     R5,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 31  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 31  
 
 0073 A3                INC     DPTR
 0074 E0                MOVX    A,@DPTR
@@ -1967,7 +1968,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0038 7806              MOV     R0,#06H
 003A 120000      E     LCALL   ?C?LSHL
 003D E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 32  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 32  
 
 003E 7B32              MOV     R3,#032H
 0040 FA                MOV     R2,A
@@ -2031,7 +2032,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0092 E0                MOVX    A,@DPTR
 0093 FE                MOV     R6,A
 0094 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 33  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 33  
 
 0095 E0                MOVX    A,@DPTR
 0096 FF                MOV     R7,A
@@ -2095,7 +2096,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0029 E0                MOVX    A,@DPTR
 002A FB                MOV     R3,A
 002B 120000      E     LCALL   ?C?LMUL
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 34  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 34  
 
 002E D003              POP     AR3
 0030 D002              POP     AR2
@@ -2159,7 +2160,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007C         ?C0020:
 007C 22                RET     
              ; FUNCTION _filter_acc_1 (END)
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 35  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 35  
 
 
              ; FUNCTION _filter_acc_2 (BEGIN)
@@ -2223,7 +2224,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 223
 0051 900000      R     MOV     DPTR,#aux
 0054 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 36  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 36  
 
 0055 FC                MOV     R4,A
 0056 A3                INC     DPTR
@@ -2287,7 +2288,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0021 F8                MOV     R0,A
 0022 A3                INC     DPTR
 0023 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 37  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 37  
 
 0024 F9                MOV     R1,A
 0025 A3                INC     DPTR
@@ -2351,7 +2352,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0073 A3                INC     DPTR
 0074 E0                MOVX    A,@DPTR
 0075 FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 38  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 38  
 
 0076 A3                INC     DPTR
 0077 E0                MOVX    A,@DPTR
@@ -2365,7 +2366,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
              ; FUNCTION _filter_voltage (BEGIN)
                                            ; SOURCE LINE # 239
 ;---- Variable 'new_value' assigned to Register 'R4/R5/R6/R7' ----
-                                           ; SOURCE LINE # 243
+                                           ; SOURCE LINE # 244
 0000 7806              MOV     R0,#06H
 0002 120000      E     LCALL   ?C?LSHL
 0005 E4                CLR     A
@@ -2415,14 +2416,14 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0042 E4                CLR     A
 0043 FB                MOV     R3,A
 0044 7A04              MOV     R2,#04H
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 39  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 39  
 
 0046 F9                MOV     R1,A
 0047 F8                MOV     R0,A
 0048 120000      E     LCALL   ?C?SLDIV
 004B 900000      R     MOV     DPTR,#aux
 004E 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 245
+                                           ; SOURCE LINE # 246
 0051 900000      R     MOV     DPTR,#aux
 0054 E0                MOVX    A,@DPTR
 0055 FC                MOV     R4,A
@@ -2437,7 +2438,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005E FF                MOV     R7,A
 005F 900000      R     MOV     DPTR,#old_value
 0062 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 247
+                                           ; SOURCE LINE # 248
 0065 E4                CLR     A
 0066 7B40              MOV     R3,#040H
 0068 FA                MOV     R2,A
@@ -2456,30 +2457,30 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0077 E0                MOVX    A,@DPTR
 0078 FF                MOV     R7,A
 0079 120000      E     LCALL   ?C?SLDIV
-                                           ; SOURCE LINE # 248
+                                           ; SOURCE LINE # 249
 007C         ?C0023:
 007C 22                RET     
              ; FUNCTION _filter_voltage (END)
 
              ; FUNCTION _check_enc_data (BEGIN)
-                                           ; SOURCE LINE # 256
+                                           ; SOURCE LINE # 257
 ;---- Variable 'value' assigned to Register 'R1/R2/R3' ----
-                                           ; SOURCE LINE # 258
+                                           ; SOURCE LINE # 259
 0000 7800        R     MOV     R0,#LOW p
 0002 A603              MOV     @R0,AR3
 0004 08                INC     R0
 0005 A602              MOV     @R0,AR2
 0007 08                INC     R0
 0008 A601              MOV     @R0,AR1
-                                           ; SOURCE LINE # 259
+                                           ; SOURCE LINE # 260
 000A 120000      E     LCALL   ?C?CLDPTR
 000D F500        R     MOV     a,A
-                                           ; SOURCE LINE # 261
+                                           ; SOURCE LINE # 262
 000F 7800        R     MOV     R0,#LOW p
 0011 8603              MOV     AR3,@R0
 0013 08                INC     R0
 0014 08                INC     R0
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 40  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 40  
 
 0015 06                INC     @R0
 0016 E6                MOV     A,@R0
@@ -2491,7 +2492,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 001C 8602              MOV     AR2,@R0
 001E 120000      E     LCALL   ?C?CLDPTR
 0021 6200        R     XRL     a,A
-                                           ; SOURCE LINE # 262
+                                           ; SOURCE LINE # 263
 0023 7800        R     MOV     R0,#LOW p
 0025 8603              MOV     AR3,@R0
 0027 08                INC     R0
@@ -2506,7 +2507,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0030 8602              MOV     AR2,@R0
 0032 120000      E     LCALL   ?C?CLDPTR
 0035 6200        R     XRL     a,A
-                                           ; SOURCE LINE # 263
+                                           ; SOURCE LINE # 264
 0037 7800        R     MOV     R0,#LOW p
 0039 8603              MOV     AR3,@R0
 003B 08                INC     R0
@@ -2521,7 +2522,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0044 8602              MOV     AR2,@R0
 0046 120000      E     LCALL   ?C?CLDPTR
 0049 6200        R     XRL     a,A
-                                           ; SOURCE LINE # 264
+                                           ; SOURCE LINE # 265
 004B E500        R     MOV     A,a
 004D C4                SWAP    A
 004E 540F              ANL     A,#0FH
@@ -2530,7 +2531,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0053 540F              ANL     A,#0FH
 0055 6F                XRL     A,R7
 0056 F500        R     MOV     a,A
-                                           ; SOURCE LINE # 266
+                                           ; SOURCE LINE # 267
 0058 FF                MOV     R7,A
 0059 7469              MOV     A,#069H
 005B 7E96              MOV     R6,#096H
@@ -2543,21 +2544,21 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0064 13                RRC     A
 0065 CE                XCH     A,R6
 0066 13                RRC     A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 41  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 41  
 
 0067         ?C0068:
 0067 D8F9              DJNZ    R0,?C0067
 0069 13                RRC     A
-                                           ; SOURCE LINE # 268
+                                           ; SOURCE LINE # 269
 006A         ?C0024:
 006A 22                RET     
              ; FUNCTION _check_enc_data (END)
 
              ; FUNCTION _my_round (BEGIN)
-                                           ; SOURCE LINE # 274
+                                           ; SOURCE LINE # 275
 0000 900000      R     MOV     DPTR,#x
 0003 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 276
+                                           ; SOURCE LINE # 277
 0006 E4                CLR     A
 0007 FF                MOV     R7,A
 0008 FE                MOV     R6,A
@@ -2577,7 +2578,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0018 FB                MOV     R3,A
 0019 120000      E     LCALL   ?C?FPCMP3
 001C 501B              JNC     ?C0025
-                                           ; SOURCE LINE # 277
+                                           ; SOURCE LINE # 278
 001E E4                CLR     A
 001F FF                MOV     R7,A
 0020 FE                MOV     R6,A
@@ -2599,7 +2600,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0035 120000      E     LCALL   ?C?CASTF
 0038 22                RET     
 0039         ?C0025:
-                                           ; SOURCE LINE # 279
+                                           ; SOURCE LINE # 280
 0039 E4                CLR     A
 003A FF                MOV     R7,A
 003B FE                MOV     R6,A
@@ -2607,7 +2608,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 003D 7C3F              MOV     R4,#03FH
 003F 900000      R     MOV     DPTR,#x
 0042 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 42  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 42  
 
 0043 F8                MOV     R0,A
 0044 A3                INC     DPTR
@@ -2621,16 +2622,16 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 004C FB                MOV     R3,A
 004D 120000      E     LCALL   ?C?FPADD
 0050 120000      E     LCALL   ?C?CASTF
-                                           ; SOURCE LINE # 280
+                                           ; SOURCE LINE # 281
 0053         ?C0026:
 0053 22                RET     
              ; FUNCTION _my_round (END)
 
              ; FUNCTION _my_mod (BEGIN)
-                                           ; SOURCE LINE # 286
+                                           ; SOURCE LINE # 287
 0000 900000      R     MOV     DPTR,#val
 0003 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 288
+                                           ; SOURCE LINE # 289
 0006 E4                CLR     A
 0007 FF                MOV     R7,A
 0008 FE                MOV     R6,A
@@ -2651,7 +2652,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0019 C3                CLR     C
 001A 120000      E     LCALL   ?C?SLCMP
 001D 4028              JC      ?C0028
-                                           ; SOURCE LINE # 289
+                                           ; SOURCE LINE # 290
 001F 900000      R     MOV     DPTR,#divisor
 0022 E0                MOVX    A,@DPTR
 0023 F8                MOV     R0,A
@@ -2671,7 +2672,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0033 E0                MOVX    A,@DPTR
 0034 FD                MOV     R5,A
 0035 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 43  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 43  
 
 0036 E0                MOVX    A,@DPTR
 0037 FE                MOV     R6,A
@@ -2684,9 +2685,9 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0042 AE02              MOV     R6,AR2
 0044 AF03              MOV     R7,AR3
 0046 22                RET     
-                                           ; SOURCE LINE # 290
-0047         ?C0028:
                                            ; SOURCE LINE # 291
+0047         ?C0028:
+                                           ; SOURCE LINE # 292
 0047 900000      R     MOV     DPTR,#val
 004A E0                MOVX    A,@DPTR
 004B FC                MOV     R4,A
@@ -2735,22 +2736,22 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007C FD                MOV     R5,A
 007D EC                MOV     A,R4
 007E 98                SUBB    A,R0
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 44  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 44  
 
 007F FC                MOV     R4,A
-                                           ; SOURCE LINE # 292
                                            ; SOURCE LINE # 293
+                                           ; SOURCE LINE # 294
 0080         ?C0029:
 0080 22                RET     
              ; FUNCTION _my_mod (END)
 
              ; FUNCTION calibration (BEGIN)
-                                           ; SOURCE LINE # 300
-                                           ; SOURCE LINE # 306
+                                           ; SOURCE LINE # 301
+                                           ; SOURCE LINE # 307
 0000 900000      R     MOV     DPTR,#direction
 0003 E0                MOVX    A,@DPTR
 0004 707B              JNZ     ?C0031
-                                           ; SOURCE LINE # 307
+                                           ; SOURCE LINE # 308
 0006 900000      E     MOV     DPTR,#g_refNew
 0009 E0                MOVX    A,@DPTR
 000A F8                MOV     R0,A
@@ -2799,7 +2800,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0043 EB                MOV     A,R3
 0044 2F                ADD     A,R7
 0045 FF                MOV     R7,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 45  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 45  
 
 0046 EA                MOV     A,R2
 0047 3E                ADDC    A,R6
@@ -2812,7 +2813,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 004E FC                MOV     R4,A
 004F 900000      E     MOV     DPTR,#g_refNew
 0052 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 308
+                                           ; SOURCE LINE # 309
 0055 900000      E     MOV     DPTR,#g_mem+059H
 0058 E0                MOVX    A,@DPTR
 0059 FC                MOV     R4,A
@@ -2841,15 +2842,15 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0072 120000      E     LCALL   ?C?SLCMP
 0075 5003              JNC     $ + 5H
 0077 020000      R     LJMP    ?C0038
-                                           ; SOURCE LINE # 309
+                                           ; SOURCE LINE # 310
 007A 900000      R     MOV     DPTR,#direction
 007D 7401              MOV     A,#01H
 007F F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 310
                                            ; SOURCE LINE # 311
+                                           ; SOURCE LINE # 312
 0080 22                RET     
 0081         ?C0031:
-                                           ; SOURCE LINE # 312
+                                           ; SOURCE LINE # 313
 0081 900000      E     MOV     DPTR,#g_refNew
 0084 E0                MOVX    A,@DPTR
 0085 FC                MOV     R4,A
@@ -2863,7 +2864,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 008D E0                MOVX    A,@DPTR
 008E FF                MOV     R7,A
 008F C004              PUSH    AR4
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 46  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 46  
 
 0091 C005              PUSH    AR5
 0093 C006              PUSH    AR6
@@ -2914,7 +2915,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00CD FC                MOV     R4,A
 00CE 900000      E     MOV     DPTR,#g_refNew
 00D1 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 313
+                                           ; SOURCE LINE # 314
 00D4 E4                CLR     A
 00D5 FF                MOV     R7,A
 00D6 FE                MOV     R6,A
@@ -2927,7 +2928,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00DF E0                MOVX    A,@DPTR
 00E0 F9                MOV     R1,A
 00E1 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 47  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 47  
 
 00E2 E0                MOVX    A,@DPTR
 00E3 FA                MOV     R2,A
@@ -2948,11 +2949,11 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00F8 6401              XRL     A,#01H
 00FA 4E                ORL     A,R6
 00FB 6032              JZ      ?C0038
-                                           ; SOURCE LINE # 314
+                                           ; SOURCE LINE # 315
 00FD E4                CLR     A
 00FE 900000      R     MOV     DPTR,#direction
 0101 F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 315
+                                           ; SOURCE LINE # 316
 0102 900000      R     MOV     DPTR,#closure_counter+01H
 0105 E0                MOVX    A,@DPTR
 0106 04                INC     A
@@ -2963,7 +2964,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 010E 04                INC     A
 010F F0                MOVX    @DPTR,A
 0110         ?C0073:
-                                           ; SOURCE LINE # 316
+                                           ; SOURCE LINE # 317
 0110 900000      R     MOV     DPTR,#closure_counter
 0113 E0                MOVX    A,@DPTR
 0114 FE                MOV     R6,A
@@ -2976,32 +2977,32 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 011F A3                INC     DPTR
 0120 E0                MOVX    A,@DPTR
 0121 B5070B            CJNE    A,AR7,?C0038
-                                           ; SOURCE LINE # 317
+                                           ; SOURCE LINE # 318
 0124 E4                CLR     A
 0125 900000      R     MOV     DPTR,#closure_counter
 0128 F0                MOVX    @DPTR,A
 0129 A3                INC     DPTR
 012A F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 318
+                                           ; SOURCE LINE # 319
 012B 900000      E     MOV     DPTR,#calib
 012E F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 319
                                            ; SOURCE LINE # 320
                                            ; SOURCE LINE # 321
                                            ; SOURCE LINE # 322
+                                           ; SOURCE LINE # 323
 012F         ?C0038:
 012F 22                RET     
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 48  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 48  
 
              ; FUNCTION calibration (END)
 
              ; FUNCTION _calc_turns_fcn (BEGIN)
-                                           ; SOURCE LINE # 358
+                                           ; SOURCE LINE # 359
 0000 900000      R     MOV     DPTR,#pos1
 0003 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 360
+                                           ; SOURCE LINE # 361
 0006 E4                CLR     A
-0007 7F1C              MOV     R7,#01CH
+0007 7F0F              MOV     R7,#0FH
 0009 FE                MOV     R6,A
 000A FD                MOV     R5,A
 000B FC                MOV     R4,A
@@ -3023,7 +3024,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0021 C006              PUSH    AR6
 0023 C007              PUSH    AR7
 0025 74FF              MOV     A,#0FFH
-0027 7FE5              MOV     R7,#0E5H
+0027 7FF2              MOV     R7,#0F2H
 0029 FE                MOV     R6,A
 002A FD                MOV     R5,A
 002B FC                MOV     R4,A
@@ -3055,7 +3056,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 004D 99                SUBB    A,R1
 004E FD                MOV     R5,A
 004F EC                MOV     A,R4
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 49  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 49  
 
 0050 98                SUBB    A,R0
 0051 FC                MOV     R4,A
@@ -3066,7 +3067,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005A E4                CLR     A
 005B FF                MOV     R7,A
 005C FE                MOV     R6,A
-005D 7D1B              MOV     R5,#01BH
+005D 7D0E              MOV     R5,#0EH
 005F FC                MOV     R4,A
 0060 900000      R     MOV     DPTR,#?_my_mod?BYTE+04H
 0063 120000      E     LCALL   ?C?LSTXDATA
@@ -3094,13 +3095,13 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0083 F8                MOV     R0,A
 0084 120000      E     LCALL   ?C?ULDIV
 ;---- Variable 'x' assigned to Register 'R4/R5/R6/R7' ----
-                                           ; SOURCE LINE # 362
+                                           ; SOURCE LINE # 363
 0087 C004              PUSH    AR4
 0089 C005              PUSH    AR5
 008B C006              PUSH    AR6
 008D C007              PUSH    AR7
 008F E4                CLR     A
-0090 7F1B              MOV     R7,#01BH
+0090 7F0E              MOV     R7,#0EH
 0092 FE                MOV     R6,A
 0093 FD                MOV     R5,A
 0094 FC                MOV     R4,A
@@ -3112,14 +3113,14 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00A1 D004              POP     AR4
 00A3 120000      R     LCALL   _my_mod
 ;---- Variable 'aux' assigned to Register 'R4/R5/R6/R7' ----
-                                           ; SOURCE LINE # 364
+                                           ; SOURCE LINE # 365
 00A6 EF                MOV     A,R7
-00A7 240D              ADD     A,#0DH
+00A7 2407              ADD     A,#07H
 00A9 FF                MOV     R7,A
 00AA E4                CLR     A
 00AB 3E                ADDC    A,R6
 00AC FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 50  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 50  
 
 00AD E4                CLR     A
 00AE 3D                ADDC    A,R5
@@ -3132,7 +3133,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00B7 C006              PUSH    AR6
 00B9 C007              PUSH    AR7
 00BB E4                CLR     A
-00BC 7F1B              MOV     R7,#01BH
+00BC 7F0E              MOV     R7,#0EH
 00BE FE                MOV     R6,A
 00BF FD                MOV     R5,A
 00C0 FC                MOV     R4,A
@@ -3144,19 +3145,19 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00CD D004              POP     AR4
 00CF 120000      R     LCALL   _my_mod
 00D2 EF                MOV     A,R7
-00D3 24F3              ADD     A,#0F3H
+00D3 24F9              ADD     A,#0F9H
 00D5 FF                MOV     R7,A
 00D6 EE                MOV     A,R6
 00D7 34FF              ADDC    A,#0FFH
 00D9 FE                MOV     R6,A
-                                           ; SOURCE LINE # 365
+                                           ; SOURCE LINE # 366
 00DA         ?C0039:
 00DA 22                RET     
              ; FUNCTION _calc_turns_fcn (END)
 
              ; FUNCTION check_rest_position (BEGIN)
-                                           ; SOURCE LINE # 372
-                                           ; SOURCE LINE # 380
+                                           ; SOURCE LINE # 373
+                                           ; SOURCE LINE # 381
 0000 E4                CLR     A
 0001 FF                MOV     R7,A
 0002 FE                MOV     R6,A
@@ -3164,7 +3165,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0004 FC                MOV     R4,A
 0005 900000      R     MOV     DPTR,#curr_pos
 0008 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 382
+                                           ; SOURCE LINE # 383
 000B E4                CLR     A
 000C FF                MOV     R7,A
 000D FE                MOV     R6,A
@@ -3172,27 +3173,27 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 000F FC                MOV     R4,A
 0010 900000      R     MOV     DPTR,#handle_value
 0013 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 384
+                                           ; SOURCE LINE # 385
 0016 900000      R     MOV     DPTR,#first_time
 0019 E0                MOVX    A,@DPTR
 001A 6010              JZ      ?C0040
-                                           ; SOURCE LINE # 385
+                                           ; SOURCE LINE # 386
 001C E4                CLR     A
 001D FF                MOV     R7,A
 001E FE                MOV     R6,A
 001F FD                MOV     R5,A
 0020 FC                MOV     R4,A
 0021 900000      R     MOV     DPTR,#count
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 51  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 51  
 
 0024 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 386
+                                           ; SOURCE LINE # 387
 0027 E4                CLR     A
 0028 900000      R     MOV     DPTR,#first_time
 002B F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 387
+                                           ; SOURCE LINE # 388
 002C         ?C0040:
-                                           ; SOURCE LINE # 389
+                                           ; SOURCE LINE # 390
 002C 900000      E     MOV     DPTR,#g_meas
 002F E0                MOVX    A,@DPTR
 0030 FC                MOV     R4,A
@@ -3212,16 +3213,16 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0040 120000      E     LCALL   ?C?SLSHR
 0043 900000      R     MOV     DPTR,#curr_pos
 0046 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 391
+                                           ; SOURCE LINE # 392
 0049 900000      E     MOV     DPTR,#c_mem+033H
 004C E0                MOVX    A,@DPTR
 004D FB                MOV     R3,A
 004E B40130            CJNE    A,#01H,?C0041
-                                           ; SOURCE LINE # 392
+                                           ; SOURCE LINE # 393
 0051 900000      E     MOV     DPTR,#c_mem+079H
 0054 E0                MOVX    A,@DPTR
 0055 7016              JNZ     ?C0042
-                                           ; SOURCE LINE # 393
+                                           ; SOURCE LINE # 394
 0057 900000      E     MOV     DPTR,#g_meas+04H
 005A E0                MOVX    A,@DPTR
 005B FC                MOV     R4,A
@@ -3238,7 +3239,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0068 120000      E     LCALL   ?C?LSTXDATA
 006B 8014              SJMP    ?C0041
 006D         ?C0042:
-                                           ; SOURCE LINE # 395
+                                           ; SOURCE LINE # 396
 006D 900000      E     MOV     DPTR,#g_meas+08H
 0070 E0                MOVX    A,@DPTR
 0071 FC                MOV     R4,A
@@ -3247,7 +3248,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0074 FD                MOV     R5,A
 0075 A3                INC     DPTR
 0076 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 52  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 52  
 
 0077 FE                MOV     R6,A
 0078 A3                INC     DPTR
@@ -3255,9 +3256,9 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007A FF                MOV     R7,A
 007B 900000      R     MOV     DPTR,#handle_value
 007E 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 396
+                                           ; SOURCE LINE # 397
 0081         ?C0041:
-                                           ; SOURCE LINE # 398
+                                           ; SOURCE LINE # 399
 0081 EB                MOV     A,R3
 0082 C3                CLR     C
 0083 9402              SUBB    A,#02H
@@ -3311,7 +3312,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00C5 FD                MOV     R5,A
 00C6 FC                MOV     R4,A
 00C7 900000      R     MOV     DPTR,#handle_value
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 53  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 53  
 
 00CA E0                MOVX    A,@DPTR
 00CB F8                MOV     R0,A
@@ -3348,11 +3349,11 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00F0 C3                CLR     C
 00F1 120000      E     LCALL   ?C?SLCMP
 00F4 5028              JNC     ?C0044
-                                           ; SOURCE LINE # 399
+                                           ; SOURCE LINE # 400
 00F6 900000      R     MOV     DPTR,#flag_count
 00F9 E0                MOVX    A,@DPTR
 00FA B40136            CJNE    A,#01H,?C0048
-                                           ; SOURCE LINE # 400
+                                           ; SOURCE LINE # 401
 00FD 900000      R     MOV     DPTR,#count
 0100 E0                MOVX    A,@DPTR
 0101 FC                MOV     R4,A
@@ -3375,16 +3376,16 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0113 E4                CLR     A
 0114 3C                ADDC    A,R4
 0115 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 54  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 54  
 
 0116 900000      R     MOV     DPTR,#count
 0119 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 401
                                            ; SOURCE LINE # 402
+                                           ; SOURCE LINE # 403
 011C 8015              SJMP    ?C0048
 011E         ?C0044:
-                                           ; SOURCE LINE # 403
                                            ; SOURCE LINE # 404
+                                           ; SOURCE LINE # 405
 011E E4                CLR     A
 011F FF                MOV     R7,A
 0120 FE                MOV     R6,A
@@ -3392,17 +3393,17 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0122 FC                MOV     R4,A
 0123 900000      R     MOV     DPTR,#count
 0126 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 405
+                                           ; SOURCE LINE # 406
 0129 E4                CLR     A
 012A 900000      E     MOV     DPTR,#rest_enabled
 012D F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 406
+                                           ; SOURCE LINE # 407
 012E 900000      R     MOV     DPTR,#flag_count
 0131 04                INC     A
 0132 F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 407
+                                           ; SOURCE LINE # 408
 0133         ?C0048:
-                                           ; SOURCE LINE # 415
+                                           ; SOURCE LINE # 416
 0133 E4                CLR     A
 0134 FB                MOV     R3,A
 0135 FA                MOV     R2,A
@@ -3438,13 +3439,13 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 015D 120000      E     LCALL   ?C?ULCMP
 0160 6003              JZ      $ + 5H
 0162 020000      R     LJMP    ?C0049
-                                           ; SOURCE LINE # 416
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 55  
+                                           ; SOURCE LINE # 417
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 55  
 
 0165 900000      E     MOV     DPTR,#rest_enabled
 0168 04                INC     A
 0169 F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 417
+                                           ; SOURCE LINE # 418
 016A 900000      E     MOV     DPTR,#g_meas
 016D E0                MOVX    A,@DPTR
 016E FC                MOV     R4,A
@@ -3459,7 +3460,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0177 FF                MOV     R7,A
 0178 900000      E     MOV     DPTR,#rest_pos_curr_ref
 017B 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 420
+                                           ; SOURCE LINE # 421
 017E 900000      E     MOV     DPTR,#g_meas
 0181 E0                MOVX    A,@DPTR
 0182 F8                MOV     R0,A
@@ -3503,7 +3504,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01B0 900000      E     MOV     DPTR,#g_mem+096H
 01B3 E0                MOVX    A,@DPTR
 01B4 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 56  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 56  
 
 01B5 A3                INC     DPTR
 01B6 E0                MOVX    A,@DPTR
@@ -3540,7 +3541,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01E3 120000      E     LCALL   ?C?FPMUL
 01E6 900000      R     MOV     DPTR,#m
 01E9 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 423
+                                           ; SOURCE LINE # 424
 01EC 900000      R     MOV     DPTR,#m
 01EF E0                MOVX    A,@DPTR
 01F0 FC                MOV     R4,A
@@ -3567,7 +3568,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0207 FB                MOV     R3,A
 0208 120000      E     LCALL   ?C?FPMUL
 020B E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 57  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 57  
 
 020C FB                MOV     R3,A
 020D FA                MOV     R2,A
@@ -3582,7 +3583,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 021E 120000      E     LCALL   ?C?LSHL
 0221 900000      R     MOV     DPTR,#abs_err_thr
 0224 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 424
+                                           ; SOURCE LINE # 425
 0227 E4                CLR     A
 0228 FF                MOV     R7,A
 0229 FE                MOV     R6,A
@@ -3631,11 +3632,11 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 025D FF                MOV     R7,A
 025E 120000      E     LCALL   ?C?LNEG
 0261         ?C0051:
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 58  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 58  
 
 0261 900000      R     MOV     DPTR,#abs_err_thr
 0264 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 426
+                                           ; SOURCE LINE # 427
 0267 900000      E     MOV     DPTR,#g_meas
 026A E0                MOVX    A,@DPTR
 026B F8                MOV     R0,A
@@ -3673,7 +3674,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 028D FC                MOV     R4,A
 028E 900000      R     MOV     DPTR,#rest_error
 0291 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 428
+                                           ; SOURCE LINE # 429
 0294 E4                CLR     A
 0295 FF                MOV     R7,A
 0296 FE                MOV     R6,A
@@ -3695,14 +3696,14 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02AC 120000      E     LCALL   ?C?CASTF
 02AF 900000      E     MOV     DPTR,#g_mem+035H
 02B2 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 59  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 59  
 
 02B3 F9                MOV     R1,A
 02B4 F8                MOV     R0,A
 02B5 120000      E     LCALL   ?C?LSHL
 02B8 900000      R     MOV     DPTR,#delta_inc
 02BB 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 429
+                                           ; SOURCE LINE # 430
 02BE E4                CLR     A
 02BF FF                MOV     R7,A
 02C0 FE                MOV     R6,A
@@ -3753,28 +3754,28 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02F8         ?C0053:
 02F8 900000      R     MOV     DPTR,#delta_inc
 02FB 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 431
+                                           ; SOURCE LINE # 432
 02FE E4                CLR     A
 02FF FF                MOV     R7,A
 0300 FE                MOV     R6,A
 0301 FD                MOV     R5,A
 0302 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 60  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 60  
 
 0303 900000      R     MOV     DPTR,#count
 0306 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 432
+                                           ; SOURCE LINE # 433
 0309 E4                CLR     A
 030A 900000      R     MOV     DPTR,#flag_count
 030D F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 433
+                                           ; SOURCE LINE # 434
 030E         ?C0049:
-                                           ; SOURCE LINE # 435
+                                           ; SOURCE LINE # 436
 030E 900000      E     MOV     DPTR,#rest_enabled
 0311 E0                MOVX    A,@DPTR
 0312 7003              JNZ     $ + 5H
 0314 020000      R     LJMP    ?C0054
-                                           ; SOURCE LINE # 437
+                                           ; SOURCE LINE # 438
 0317 900000      R     MOV     DPTR,#abs_err_thr
 031A E0                MOVX    A,@DPTR
 031B FC                MOV     R4,A
@@ -3823,13 +3824,13 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0351 A3                INC     DPTR
 0352 E0                MOVX    A,@DPTR
 0353 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 61  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 61  
 
 0354 E0                MOVX    A,@DPTR
 0355 D3                SETB    C
 0356 120000      E     LCALL   ?C?SLCMP
 0359 4031              JC      ?C0055
-                                           ; SOURCE LINE # 439
+                                           ; SOURCE LINE # 440
 035B 900000      E     MOV     DPTR,#g_mem+096H
 035E E0                MOVX    A,@DPTR
 035F FC                MOV     R4,A
@@ -3844,18 +3845,18 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0368 FF                MOV     R7,A
 0369 900000      E     MOV     DPTR,#rest_pos_curr_ref
 036C 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 441
+                                           ; SOURCE LINE # 442
 036F 900000      E     MOV     DPTR,#c_mem+033H
 0372 E0                MOVX    A,@DPTR
 0373 C3                CLR     C
 0374 9402              SUBB    A,#02H
 0376 4006              JC      ?C0056
-                                           ; SOURCE LINE # 442
+                                           ; SOURCE LINE # 443
 0378 900000      E     MOV     DPTR,#forced_open
 037B 7401              MOV     A,#01H
 037D F0                MOVX    @DPTR,A
 037E         ?C0056:
-                                           ; SOURCE LINE # 444
+                                           ; SOURCE LINE # 445
 037E E4                CLR     A
 037F FF                MOV     R7,A
 0380 FE                MOV     R6,A
@@ -3863,11 +3864,11 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0382 FC                MOV     R4,A
 0383 900000      R     MOV     DPTR,#count
 0386 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 445
+                                           ; SOURCE LINE # 446
 0389 020000      R     LJMP    ?C0054
 038C         ?C0055:
-                                           ; SOURCE LINE # 446
                                            ; SOURCE LINE # 447
+                                           ; SOURCE LINE # 448
 038C 900000      E     MOV     DPTR,#g_meas
 038F E0                MOVX    A,@DPTR
 0390 F8                MOV     R0,A
@@ -3887,7 +3888,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03A0 E0                MOVX    A,@DPTR
 03A1 FD                MOV     R5,A
 03A2 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 62  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 62  
 
 03A3 E0                MOVX    A,@DPTR
 03A4 FE                MOV     R6,A
@@ -3907,7 +3908,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03B2 FC                MOV     R4,A
 03B3 900000      R     MOV     DPTR,#rest_error
 03B6 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 449
+                                           ; SOURCE LINE # 450
 03B9 E4                CLR     A
 03BA FF                MOV     R7,A
 03BB FE                MOV     R6,A
@@ -3928,7 +3929,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03CC D3                SETB    C
 03CD 120000      E     LCALL   ?C?SLCMP
 03D0 402E              JC      ?C0058
-                                           ; SOURCE LINE # 450
+                                           ; SOURCE LINE # 451
 03D2 900000      E     MOV     DPTR,#rest_pos_curr_ref
 03D5 E0                MOVX    A,@DPTR
 03D6 FC                MOV     R4,A
@@ -3951,7 +3952,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03E9 E0                MOVX    A,@DPTR
 03EA FA                MOV     R2,A
 03EB A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 63  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 63  
 
 03EC E0                MOVX    A,@DPTR
 03ED FB                MOV     R3,A
@@ -3969,9 +3970,9 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03F9 FC                MOV     R4,A
 03FA 900000      E     MOV     DPTR,#rest_pos_curr_ref
 03FD 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 451
-0400         ?C0058:
                                            ; SOURCE LINE # 452
+0400         ?C0058:
+                                           ; SOURCE LINE # 453
 0400 E4                CLR     A
 0401 FF                MOV     R7,A
 0402 FE                MOV     R6,A
@@ -3992,7 +3993,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0413 C3                CLR     C
 0414 120000      E     LCALL   ?C?SLCMP
 0417 502F              JNC     ?C0054
-                                           ; SOURCE LINE # 453
+                                           ; SOURCE LINE # 454
 0419 900000      E     MOV     DPTR,#rest_pos_curr_ref
 041C E0                MOVX    A,@DPTR
 041D FC                MOV     R4,A
@@ -4015,7 +4016,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0430 E0                MOVX    A,@DPTR
 0431 FA                MOV     R2,A
 0432 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 64  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 64  
 
 0433 E0                MOVX    A,@DPTR
 0434 FB                MOV     R3,A
@@ -4034,15 +4035,15 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0441 FC                MOV     R4,A
 0442 900000      E     MOV     DPTR,#rest_pos_curr_ref
 0445 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 454
                                            ; SOURCE LINE # 455
                                            ; SOURCE LINE # 456
+                                           ; SOURCE LINE # 457
 0448         ?C0054:
-                                           ; SOURCE LINE # 459
+                                           ; SOURCE LINE # 460
 0448 900000      E     MOV     DPTR,#c_mem+050H
 044B E0                MOVX    A,@DPTR
 044C 606A              JZ      ?C0063
-                                           ; SOURCE LINE # 460
+                                           ; SOURCE LINE # 461
 044E A3                INC     DPTR
 044F E0                MOVX    A,@DPTR
 0450 FC                MOV     R4,A
@@ -4070,7 +4071,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0468 C3                CLR     C
 0469 120000      E     LCALL   ?C?SLCMP
 046C 5014              JNC     ?C0061
-                                           ; SOURCE LINE # 461
+                                           ; SOURCE LINE # 462
 046E 900000      E     MOV     DPTR,#c_mem+051H
 0471 E0                MOVX    A,@DPTR
 0472 FC                MOV     R4,A
@@ -4079,7 +4080,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0475 FD                MOV     R5,A
 0476 A3                INC     DPTR
 0477 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 65  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 65  
 
 0478 FE                MOV     R6,A
 0479 A3                INC     DPTR
@@ -4088,7 +4089,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 047C 900000      E     MOV     DPTR,#rest_pos_curr_ref
 047F 120000      E     LCALL   ?C?LSTXDATA
 0482         ?C0061:
-                                           ; SOURCE LINE # 462
+                                           ; SOURCE LINE # 463
 0482 900000      E     MOV     DPTR,#c_mem+059H
 0485 E0                MOVX    A,@DPTR
 0486 FC                MOV     R4,A
@@ -4116,7 +4117,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 049E D3                SETB    C
 049F 120000      E     LCALL   ?C?SLCMP
 04A2 4014              JC      ?C0063
-                                           ; SOURCE LINE # 463
+                                           ; SOURCE LINE # 464
 04A4 900000      E     MOV     DPTR,#c_mem+059H
 04A7 E0                MOVX    A,@DPTR
 04A8 FC                MOV     R4,A
@@ -4131,8 +4132,8 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 04B1 FF                MOV     R7,A
 04B2 900000      E     MOV     DPTR,#rest_pos_curr_ref
 04B5 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 464
-                                           ; SOURCE LINE # 466
+                                           ; SOURCE LINE # 465
+                                           ; SOURCE LINE # 467
 04B8         ?C0063:
 04B8 22                RET     
              ; FUNCTION check_rest_position (END)
@@ -4143,7 +4144,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   4529    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    129      52
-C51 COMPILER V9.51   UTILS                                                                 06/30/2017 11:39:08 PAGE 66  
+C51 COMPILER V9.51   UTILS                                                                 07/13/2017 11:30:52 PAGE 66  
 
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----       1

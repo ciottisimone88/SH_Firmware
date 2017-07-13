@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:39:06 PAGE 1   
+C51 COMPILER V9.51   GLOBALS                                                               07/13/2017 11:30:51 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE GLOBALS
@@ -62,7 +62,7 @@ line level    source
   50          
   51          struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
   52          struct st_meas  g_meas, g_measOld;          // measurements
-C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:39:06 PAGE 2   
+C51 COMPILER V9.51   GLOBALS                                                               07/13/2017 11:30:51 PAGE 2   
 
   53          struct st_data  g_rx;                       // income data
   54          struct st_mem   g_mem, c_mem;               // memory
@@ -82,28 +82,29 @@ line level    source
   68          uint8   dev_pwm_limit;
   69          uint8   dev_pwm_sat = 100;
   70          int32   dev_tension_f;
-  71          
-  72          // Bit Flag
-  73          
-  74          CYBIT reset_last_value_flag;
-  75          CYBIT tension_valid;
-  76          CYBIT interrupt_flag = FALSE;
-  77          CYBIT watchdog_flag = FALSE;
-  78          
-  79          // DMA Buffer
-  80          
-  81          int16 ADC_buf[4]; 
-  82          
-  83          // PWM value
-  84          int8 pwm_sign;
-  85          
-  86          uint8 rest_enabled;
-  87          int32 rest_pos_curr_ref;
-  88          uint8 forced_open;
-  89          
+  71          int32   pow_tension;
+  72          
+  73          // Bit Flag
+  74          
+  75          CYBIT reset_last_value_flag;
+  76          CYBIT tension_valid;
+  77          CYBIT interrupt_flag = FALSE;
+  78          CYBIT watchdog_flag = FALSE;
+  79          
+  80          // DMA Buffer
+  81          
+  82          int16 ADC_buf[4]; 
+  83          
+  84          // PWM value
+  85          int8 pwm_sign;
+  86          
+  87          uint8 rest_enabled;
+  88          int32 rest_pos_curr_ref;
+  89          uint8 forced_open;
   90          
-  91          /* END OF FILE */
-C51 COMPILER V9.51   GLOBALS                                                               06/30/2017 11:39:06 PAGE 3   
+  91          
+  92          /* END OF FILE */
+C51 COMPILER V9.51   GLOBALS                                                               07/13/2017 11:30:51 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -113,7 +114,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   ----    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =    697    ----
+   XDATA SIZE       =    701    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

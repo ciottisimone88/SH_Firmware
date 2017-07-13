@@ -1109,6 +1109,7 @@ void analog_read_end() {
 	static uint8 first_tension_valid = TRUE;
     static int32 pow_tension = 12000;       //12000 mV (12 V)
     static uint8 count = 0;
+    static uint32 count2 = 0;
 
 
     // Wait for conversion end
@@ -1148,10 +1149,16 @@ void analog_read_end() {
 
     // Until there is no valid input tension repeat this measurement
     
-    if (dev_tension > 0) {
+    if (dev_tension > 7000) {       //at least > 7.36 V (92% of 8 V) that is minimum charge of smallest battery
         // Set tension valid bit to TRUE
 
-        tension_valid = TRUE;
+        if (count2 == 1000){
+            tension_valid = TRUE;   
+        }
+        else {                      // wait for battery voltage stabilization
+            count2 = count2 + 1;
+            dev_tension_f = filter_voltage(dev_tension);
+        }
 
         if(g_mem.activate_pwm_rescaling)        //pwm rescaling is activated
             pwm_limit_search();                 //only for 12V motors

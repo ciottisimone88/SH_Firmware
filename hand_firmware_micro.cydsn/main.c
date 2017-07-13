@@ -204,7 +204,8 @@ int main()
 
     MOTOR_ON_OFF_Write(g_ref.onoff);                    // Activating motors
 
-    dev_pwm_limit = dev_pwm_sat;                                  // Init PWM limit
+    dev_pwm_limit = dev_pwm_sat;   
+    pow_tension = 12000;       //12000 mV (12 V)// Init PWM limit
     tension_valid = FALSE;                              // Init tension_valid BIT
 
     reset_last_value_flag = 0;

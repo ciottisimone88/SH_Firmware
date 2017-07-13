@@ -238,7 +238,8 @@ int32 filter_acc_3(int32 new_value) {
 
 int32 filter_voltage(int32 new_value) {
 
-    static int32 old_value, aux;
+    static int32 old_value = 12000;
+    static int32 aux;
 
     aux = (old_value * (1024 - EPSILON) + (new_value << 6) * (EPSILON)) /1024;
 
@@ -345,8 +346,8 @@ void calibration(void) {
 // return
 
 // Number of teeth of the two wheels
-#define N1 28           ///< Teeth of the first encoder wheel
-#define N2 27           ///< Teeth of the second encoder wheel
+#define N1 15           ///< Teeth of the first encoder wheel
+#define N2 14           ///< Teeth of the second encoder wheel
 
 #define I1 1            ///< First wheel invariant value
 #define I2 (-1)         ///< Second wheel invariant value

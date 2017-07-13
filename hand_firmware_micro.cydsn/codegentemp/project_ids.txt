@@ -1,6 +1,6 @@
-C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\hand_firmware_micro.cyprj|375b7c57-b536-4a7c-8fc3-a81d6524e9cb
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|5c217cfa-634a-4a00-970f-117e50836566
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|1bb9015d-c17f-4640-8482-9a902a5a016c
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|4f3e0ed6-bba0-4b3b-8f22-7c11241b3fb1
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|0a338833-3f25-4623-8c61-5588438e8f67
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|663d2efb-af53-484c-8d3a-2c32300fbf8e
+C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\hand_firmware_micro.cyprj|6c6a31fd-9cb8-473b-84dd-28e43154aa7d
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|a54e8df6-86e4-4890-b490-89992e283e59
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|20ab05ad-5524-46ab-b993-9edc94942872
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|eed2f823-c5d4-42a1-abd3-a7588db3d5c2
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|c0be4003-4771-4fae-b726-18e6b6cfd86f
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|4cf1c281-ca45-46f5-94bb-4016a7ed8d16

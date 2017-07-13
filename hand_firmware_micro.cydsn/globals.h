@@ -56,7 +56,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.5 (Socket w/rest position)"
+#define VERSION                 "SH-PRO v6.1.5 (SoftHand w/rest position)"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -279,6 +279,7 @@ extern int32   dev_tension;                         /*!< Power supply tension */
 extern uint8    dev_pwm_sat;                        /*!< Device pwm limit saturation */
 extern uint8   dev_pwm_limit;                       /*!< Device pwm limit */
 extern int32    dev_tension_f;                      /*!< Filtered power supply tension */
+extern int32   pow_tension;
 
 // Bit Flag
 

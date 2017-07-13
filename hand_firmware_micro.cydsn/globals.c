@@ -68,6 +68,7 @@ int32   dev_tension;                // Power supply tension
 uint8   dev_pwm_limit;
 uint8   dev_pwm_sat = 100;
 int32   dev_tension_f;
+int32   pow_tension;
 
 // Bit Flag
 
