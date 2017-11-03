@@ -36,8 +36,8 @@
 * \file         globals.c
 *
 * \brief        Global variables.
-* \date         June 06, 2016
-* \author       _qbrobotics_
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
@@ -48,45 +48,44 @@
 //=============================================      global variables definition
 
 
-struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
-struct st_meas  g_meas, g_measOld;          // measurements
-struct st_data  g_rx;                       // income data
-struct st_mem   g_mem, c_mem;               // memory
-struct st_calib calib;
+struct st_ref       g_ref, g_refNew, g_refOld;  // Motor reference variables.
+struct st_meas      g_meas, g_measOld;          // Measurements.
+struct st_data      g_rx;                       // Income data.
+struct st_mem       g_mem, c_mem;               // Memory variables.
+struct st_calib     calib;                      // Calibration variables.
 
-float tau_feedback;
+float tau_feedback;								// Torque feedback.
 
 // Timer value for debug field
-
 uint32 timer_value;
 uint32 timer_value0;
 float cycle_time;
 
 // Device Data
 
-int32   dev_tension;                // Power supply tension
-uint8   dev_pwm_limit;
-uint8   dev_pwm_sat = 100;
-int32   dev_tension_f;
-int32   pow_tension;
+int32   dev_tension;                        /*!< Power supply tension.*/
+uint8   dev_pwm_limit;                      /*!< Device pwm limit. It may change during execution.*/
+uint8   dev_pwm_sat = 100;                  /*!< Device pwm saturation. By default the saturation value must not exceed 100.*/
+int32   dev_tension_f;                      /*!< Filtered power supply tension.*/
+int32   pow_tension;                        /*!< Computed power supply tension.*/
 
 // Bit Flag
 
-CYBIT reset_last_value_flag;
-CYBIT tension_valid;
-CYBIT interrupt_flag = FALSE;
-CYBIT watchdog_flag = FALSE;
+CYBIT reset_last_value_flag;                /*!< This flag is set when the encoders last values must be resetted.*/
+CYBIT tension_valid;                        /*!< Tension validation bit.*/
+CYBIT interrupt_flag = FALSE;               /*!< Interrupt flag enabler.*/
+CYBIT watchdog_flag = FALSE;				/*!< Watchdog flag enabler.*/
 
 // DMA Buffer
 
-int16 ADC_buf[4]; 
+int16 ADC_buf[4]; 							/*! ADC measurements buffer.*/
 
 // PWM value
-int8 pwm_sign;
+int8 pwm_sign;								/*!< Sign of pwm driven. Used to obtain current sign.*/
 
-uint8 rest_enabled;
-int32 rest_pos_curr_ref;
-uint8 forced_open;
+uint8 rest_enabled;                         /*!< Rest position flag.*/
+uint8 forced_open;                          /*!< Forced open flag (used in position with rest position control).*/                               
+int32 rest_pos_curr_ref;					/*!< Rest position current reference.*/
 
 
 /* END OF FILE */

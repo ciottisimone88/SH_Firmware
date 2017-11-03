@@ -36,8 +36,8 @@
 * \file         interruptions.h
 *
 * \brief        Interruptions header file.
-* \date         Feb 06, 2012
-* \author       qbrobotics
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */

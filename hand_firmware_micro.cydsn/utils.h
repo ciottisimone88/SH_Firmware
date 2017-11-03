@@ -36,8 +36,8 @@
 * \file         utils.h
 *
 * \brief        Utility functions declaration.
-* \date         June 06, 2016
-* \author       _qbrobotics_
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
@@ -51,20 +51,20 @@
 
 #define TIMER_CLOCK 10000
 
-#define ALPHA 32			///< Voltage and current filters constant
-#define BETA  50			///< Emg filters constant
-#define GAMMA 128 			///< Velocity filters constant
-#define DELTA 8 			///< Acceleration filters constant
-#define ETA   16            ///< Current residual filter
-#define EPSILON 8           ///< Voltage readings filter
+#define ALPHA 32			///< Voltage and current filters constant.
+#define BETA  50			///< Emg filters constant.
+#define GAMMA 128 			///< Velocity filters constant.
+#define DELTA 8 			///< Acceleration filters constant.
+#define ETA   16            ///< Current residual filter.
+#define EPSILON 8           ///< Voltage readings filter.
 
-#define ZMAX 5				///< 
+#define ZMAX 5				/*!< Constant useful for current estimation procedure.*/
 #define ZERO_TOL 100		/*!< Deadband used to put to zero the virtual position
 								 due to the fact that the friction model has errors when the
-								 position is near to zero*/
-#define REFSPEED 20			///< Constant depending on PID values
+								 position is near to zero.*/
+#define REFSPEED 20			/*!< Constant depending on PID values.*/
 
-#define SIGN(A) (((A) >=0) ? (1) : (-1))	///< Sign calculation function
+#define SIGN(A) (((A) >=0) ? (1) : (-1))	/*!< Sign calculation function.*/
 
 //-------------------------------------------------------------     DECLARATIONS
 
@@ -79,6 +79,7 @@
  * 	\return Returns the filtered voltage value
 **/
 int32 filter_v(int32 new_value);
+
 /** Filter on the first EMG sensor converted value. The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -87,6 +88,7 @@ int32 filter_v(int32 new_value);
  * 	\return Returns the filtered emg sensor value
 **/
 int32 filter_ch1(int32 value);
+
 /** Filter on the second EMG sensor converted value. The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -95,6 +97,7 @@ int32 filter_ch1(int32 value);
  * 	\return Returns the filtered emg sensor value
 **/
 int32 filter_ch2(int32 value);
+
 /** Filter on the motor current converted value. The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -103,6 +106,7 @@ int32 filter_ch2(int32 value);
  * 	\return Returns the filtered current value
 **/
 int32 filter_i1(int32 value);
+
 /** Filter on first encoder rotational speed. The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -111,6 +115,7 @@ int32 filter_i1(int32 value);
  * 	\return Returns the filtered first encoder rotational speed value
 **/
 int32 filter_vel_1(int32 value);
+
 /**	Filter on second encoder rotational speed (if present). The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -119,6 +124,7 @@ int32 filter_vel_1(int32 value);
  * 	\return Returns the filtered second encoder rotational speed value
 **/
 int32 filter_vel_2(int32 value);
+
 /** Filter on third encoder rotational speed (if present). The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -127,6 +133,7 @@ int32 filter_vel_2(int32 value);
  * 	\return Returns the filtered third encoder rotational speed value
 **/
 int32 filter_vel_3(int32 value);
+
 /** Filter on first encoder rotational acceleration. The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -135,6 +142,7 @@ int32 filter_vel_3(int32 value);
  * 	\return Returns the filtered first encoder rotational acceleration value
 **/
 int32 filter_acc_1(int32 value);
+
 /** Filter on second encoder rotation acceleration (if present). The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -143,6 +151,7 @@ int32 filter_acc_1(int32 value);
  * 	\return Returns the filtered second encoder rotational acceleration value
 **/
 int32 filter_acc_2(int32 value);
+
 /** Filter on third encoder rotation acceleration (if present). The weighted average between the 
  *	old value and the new one is executed.
  * 	
@@ -151,6 +160,7 @@ int32 filter_acc_2(int32 value);
  * 	\return Returns the filtered third encoder rotational acceleration value
 **/
 int32 filter_acc_3(int32 value);
+
 /** \} */ 
 /** Filter on voltage readings. The weighted average between the 
  *	old value and the new one is executed.
@@ -176,6 +186,7 @@ int32 filter_voltage(int32 value);
  * 			and acceleration.
 **/
 int32 curr_estim( int32 pos, int32 vel, int32 acc);
+
 /** Low pass filter on current difference between measured and estimated current 
  *
  *	\param curr_diff 	Difference between the measured current and the estimated one.
@@ -194,6 +205,7 @@ int32 filter_curr_diff(int32 curr_diff);
  *	\param x 	The floating point value that needs to be rounded
 **/
 int my_round(const double x);
+
 /** This function computes the module function, returning positive values regardless
  * 	of wheter the value passed is negative
  * 
@@ -201,6 +213,7 @@ int my_round(const double x);
  * 	\param divisor	The divisor according to which the module is calculated
 **/
 uint32 my_mod(int32 val, int32 divisor);
+
 /**	This function controls if the read encoder data is correct or not.
  *
  * \param value 	A pointer to the encoder data read 
@@ -208,6 +221,7 @@ uint32 my_mod(int32 val, int32 divisor);
  * \return Returns 1 if the read data is correct, 0 otherwise	
 **/
 CYBIT check_enc_data(const uint32* value);
+
 /**	This function is used at startup to reconstruct the correct turn of the shaft
  *  connected to the motor. It need two encoders to work.
  *
@@ -217,11 +231,15 @@ CYBIT check_enc_data(const uint32* value);
  * \return Returns the number of turns of motor pulley at startup
 **/
 int calc_turns_fcn(const int32 pos1,const int32 pos2);
+
 /** This function counts a series of hand opening and closing used to execute a 
  * calibration of the device.
 **/
 void calibration();
 
+/** This function checks for rest position and, in case, gives a position
+ * reference to qbhand.
+**/
 void check_rest_position();
 
 #endif

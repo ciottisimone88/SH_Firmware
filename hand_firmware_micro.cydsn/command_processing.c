@@ -33,13 +33,14 @@
 // ----------------------------------------------------------------------------
 
 
+
 /**
 * \file         command_processing.c
 *
 
 * \brief        Command processing functions.
-* \date         June 06, 2016
-* \author       _qbrobotics_
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
@@ -1617,8 +1618,8 @@ void cmd_get_curr_and_meas(){
     packet_data[0] = CMD_GET_CURR_AND_MEAS;
     
     // Currents
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real current
-    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated current
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real current.
+    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated current.
 
     // Positions
     for (index = NUM_OF_SENSORS; index--;) 
@@ -1641,8 +1642,8 @@ void cmd_get_currents(){
 
     packet_data[0] = CMD_GET_CURRENTS;
 
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real Current
-    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated Current
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real Current.
+    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated Current.
 
     // Calculate Checksum and send message to UART 
 
@@ -1661,7 +1662,7 @@ void cmd_get_currents_for_cuff(){
 
     packet_data[0] = CMD_SET_CUFF_INPUTS;
 
-    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[1]; //Estimated Current
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[1]; //Estimated Current.
 
     // Calculate Checksum and send message to UART 
 
@@ -1780,7 +1781,7 @@ void cmd_store_params(){
     // Store params 
 
     if (c_mem.id != g_mem.id) {     //If a new id is going to be set we will lose communication 
-        old_id = c_mem.id;          //after the memstore(0) and the ACK won't be recognised
+        old_id = c_mem.id;          //after the memstore(0) and the ACK won't be recognised.
         if(memStore(0)) {
             packet_data[0] = ACK_OK;
             packet_data[1] = ACK_OK;

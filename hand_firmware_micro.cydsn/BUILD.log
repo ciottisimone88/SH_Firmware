@@ -1,0 +1,10 @@
+--------------- Build Started: 10/31/2017 16:07:15 Project: hand_firmware_micro, Configuration: DP8051 Keil 9.51 Release ---------------
+The code generation step is up to date.
+The compile step is up to date, no work needs to be done.
+The link step is up to date, no work needs to be done.
+cysymboladdressfinder.exe -f .\DP8051_Keil_951\Release\hand_firmware_micro.elf -s STARTUP1 -p .\DP8051_Keil_951\Release\entryaddress.txt -l FF0000
+CyHexTool -o C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\DP8051_Keil_951\Release\hand_firmware_micro.cyacd -f C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\DP8051_Keil_951\Release\hand_firmware_micro.ihx -flsLine 256 -arraySize 65536 -id 1E093069 -rev 3 -ecc Generated_Source\PSoC3\config.hex -metaRow 0 -blver 000000000000000000000000000000000000 -chksumEcc -blChkType 0 -endian b -a EEPROM=90200000:800,PROGRAM=00000000:10000,CONFIG=80000000:2000,PROTECT=90400000:40 -acd -acdStart 2600 -e .\DP8051_Keil_951\Release\entryaddress.txt
+CyHexTool -o C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\DP8051_Keil_951\Release\hand_firmware_micro.hex -flsLine 256 -arraySize 65536 -bl ..\bootloader_bin\bootloader.hex -blver 000000000000000000000000000000000000 -chksumEcc -blChkType 0 -endian b -prot Generated_Source\PSoC3\protect.hex -id 1E093069 -a EEPROM=90200000:800,PROGRAM=00000000:10000,CONFIG=80000000:2000,PROTECT=90400000:40 -meta 0301 -cunv 0800C007 -wonv BC90ACAF -ecc Generated_Source\PSoC3\config.hex -ld C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\DP8051_Keil_951\Release\hand_firmware_micro.ihx=2600:D9BF -acdStart 2600 -e .\DP8051_Keil_951\Release\entryaddress.txt
+Flash used: 60069 of 65536 bytes (91.7%). Bootloader: 9728 bytes. Application: 50085 bytes. Metadata: 256 bytes.
+SRAM used: 3888 of 8192 bytes (47.5%).
+--------------- Build Succeeded: 10/31/2017 16:07:16 ---------------

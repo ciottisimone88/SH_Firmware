@@ -36,8 +36,8 @@
 * \file         interruptions.c
 *
 * \brief        Interruption handling and firmware core functions
-* \date         June 06, 2016
-* \author       _qbrobotics_
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
@@ -157,7 +157,7 @@ void interrupt_manager(){
     // Get data until buffer is not empty 
     
     while(UART_RS485_GetRxBufferSize() && (package_count < 6)){  
-        // 6 stima di numero massimo di pacchetti che riesco a leggere senza bloccare l'esecuzione del firmware
+        // 6 - estimated maximum number of packets we can read without blocking firmware execution
         
         // Get next char
         rx_data = UART_RS485_GetChar();
@@ -619,17 +619,11 @@ void motor_control() {
             // Update previous position
             prev_pos_err = pos_error;
 
-            // // current set through position reference
-            // i_ref = g_ref.pos[0] >> g_mem.res[0];
-
             // motor direction depends on i_ref
             if (i_ref >= 0)
                 motor_dir = TRUE;
             else
                 motor_dir = FALSE;
-
-            // current ref must be positive
-            //i_ref = abs(i_ref);
 
             // saturate max current
             if (i_ref > c_mem.current_limit)
@@ -638,14 +632,6 @@ void motor_control() {
                 if (i_ref < -c_mem.current_limit)
                     i_ref = -c_mem.current_limit;
         	}
-
-            // saturate min current
-            /*if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
-                i_ref = MIN_CURR_SAT_LIMIT;
-            }*/
-
-            // // write i_ref on meas curr 2 for DEBUG
-            //g_meas.curr[1] = i_ref;
 
             // current error and curr error sum
             curr_error = i_ref - g_meas.curr[0];
@@ -873,7 +859,7 @@ void motor_control() {
 }
 
 //==============================================================================
-//                                                                   ENCODER READING
+//                                                               ENCODER READING
 //==============================================================================
 
 void encoder_reading(const uint8 idx) {
@@ -917,7 +903,7 @@ void encoder_reading(const uint8 idx) {
     }
 
     //======================================================     reading sensors
-        // Shift 1 right to erase Dummy bit of chain
+	// Shift 1 right to erase Dummy bit of chain
     if (index == 0)
             data_encoder = (SHIFTREG_ENC_1_ReadData() >> 1) & 0x3FFFF;  //0x0003FFFF reset first 14 bits
     else {

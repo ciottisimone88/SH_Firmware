@@ -1,11 +1,11 @@
-C51 COMPILER V9.51   GLOBALS                                                               07/13/2017 11:30:51 PAGE 1   
+C51 COMPILER V9.51   GLOBALS                                                               10/31/2017 14:56:49 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE GLOBALS
 OBJECT MODULE PLACED IN .\DP8051_Keil_951\Release\globals.obj
-COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
-                    -.\globals.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(NDEBUG) WL(2) PR(.\DP8051_Kei
-                    -l_951\Release/globals.lst) CD OT(8,SPEED) OJ(.\DP8051_Keil_951\Release\globals.obj)
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+                    -globals.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(NDEBUG) WL(2) PR(.\DP8051_Keil_
+                    -951\Release/globals.lst) CD OT(8,SPEED) OJ(.\DP8051_Keil_951\Release\globals.obj)
 
 line level    source
 
@@ -48,8 +48,8 @@ line level    source
   36          * \file         globals.c
   37          *
   38          * \brief        Global variables.
-  39          * \date         June 06, 2016
-  40          * \author       _qbrobotics_
+  39          * \date         October 01, 2017
+  40          * \author       _Centro "E.Piaggio"_
   41          * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
   42          * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
   43          */
@@ -60,51 +60,53 @@ line level    source
   48          //=============================================      global variables definition
   49          
   50          
-  51          struct st_ref   g_ref, g_refNew, g_refOld;  // motor variables
-  52          struct st_meas  g_meas, g_measOld;          // measurements
-C51 COMPILER V9.51   GLOBALS                                                               07/13/2017 11:30:51 PAGE 2   
+  51          struct st_ref       g_ref, g_refNew, g_refOld;  // Motor reference variables.
+  52          struct st_meas      g_meas, g_measOld;          // Measurements.
+C51 COMPILER V9.51   GLOBALS                                                               10/31/2017 14:56:49 PAGE 2   
 
-  53          struct st_data  g_rx;                       // income data
-  54          struct st_mem   g_mem, c_mem;               // memory
-  55          struct st_calib calib;
+  53          struct st_data      g_rx;                       // Income data.
+  54          struct st_mem       g_mem, c_mem;               // Memory variables.
+  55          struct st_calib     calib;                      // Calibration variables.
   56          
-  57          float tau_feedback;
+  57          float tau_feedback;                                                             // Torque feedback.
   58          
   59          // Timer value for debug field
-  60          
-  61          uint32 timer_value;
-  62          uint32 timer_value0;
-  63          float cycle_time;
-  64          
-  65          // Device Data
-  66          
-  67          int32   dev_tension;                // Power supply tension
-  68          uint8   dev_pwm_limit;
-  69          uint8   dev_pwm_sat = 100;
-  70          int32   dev_tension_f;
-  71          int32   pow_tension;
-  72          
-  73          // Bit Flag
-  74          
-  75          CYBIT reset_last_value_flag;
-  76          CYBIT tension_valid;
-  77          CYBIT interrupt_flag = FALSE;
-  78          CYBIT watchdog_flag = FALSE;
-  79          
-  80          // DMA Buffer
-  81          
-  82          int16 ADC_buf[4]; 
-  83          
-  84          // PWM value
-  85          int8 pwm_sign;
-  86          
-  87          uint8 rest_enabled;
-  88          int32 rest_pos_curr_ref;
-  89          uint8 forced_open;
+  60          uint32 timer_value;
+  61          uint32 timer_value0;
+  62          float cycle_time;
+  63          
+  64          // Device Data
+  65          
+  66          int32   dev_tension;                        /*!< Power supply tension.*/
+  67          uint8   dev_pwm_limit;                      /*!< Device pwm limit. It may change during execution.*/
+  68          uint8   dev_pwm_sat = 100;                  /*!< Device pwm saturation. By default the saturation value mu
+             -st not exceed 100.*/
+  69          int32   dev_tension_f;                      /*!< Filtered power supply tension.*/
+  70          int32   pow_tension;                        /*!< Computed power supply tension.*/
+  71          
+  72          // Bit Flag
+  73          
+  74          CYBIT reset_last_value_flag;                /*!< This flag is set when the encoders last values must be re
+             -setted.*/
+  75          CYBIT tension_valid;                        /*!< Tension validation bit.*/
+  76          CYBIT interrupt_flag = FALSE;               /*!< Interrupt flag enabler.*/
+  77          CYBIT watchdog_flag = FALSE;                            /*!< Watchdog flag enabler.*/
+  78          
+  79          // DMA Buffer
+  80          
+  81          int16 ADC_buf[4];                                                       /*! ADC measurements buffer.*/
+  82          
+  83          // PWM value
+  84          int8 pwm_sign;                                                          /*!< Sign of pwm driven. Used to obtain current sign.*/
+  85          
+  86          uint8 rest_enabled;                         /*!< Rest position flag.*/
+  87          uint8 forced_open;                          /*!< Forced open flag (used in position with rest position con
+             -trol).*/                               
+  88          int32 rest_pos_curr_ref;                                        /*!< Rest position current reference.*/
+  89          
   90          
-  91          
-  92          /* END OF FILE */
-C51 COMPILER V9.51   GLOBALS                                                               07/13/2017 11:30:51 PAGE 3   
+  91          /* END OF FILE */
+C51 COMPILER V9.51   GLOBALS                                                               10/31/2017 14:56:49 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 

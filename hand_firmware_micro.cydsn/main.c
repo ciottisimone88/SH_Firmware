@@ -36,27 +36,17 @@
 * \file         main.c
 *
 * \brief        Firmware main file.
-* \date         June 06, 2016
-* \author       qbrobotics
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
-*/
-
-/**
 * \mainpage     Firmware
-* \brief        This is the firmware of the qbHand.
-* \version      6.0.0
+* \brief        This is the firmware of the SoftHand Pro board.
+* \version      1.0
 *
-* \author       _qbrobotics_
-*
-* \date         June 06, 2016
-*
-* \details      This is the firmware of the qbHand. It can control a motor and
+* \details      This is the firmware of the SoftHand Pro board. It can control a motor and
 *               read its encoder. Also can read and convert analog measurements
 *               connected to the PSoC microcontroller.                
-*
-* \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
-* \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 *
 */
 
@@ -69,7 +59,7 @@
 //=================================================================     includes
 
 #include <device.h>
-#include <globals.h> // ALL GLOBAL DEFINITIONS, STRUCTURES AND MACROS HERE
+#include <globals.h>
 #include <interruptions.h>
 #include <command_processing.h>
 #include <utils.h>
@@ -81,7 +71,8 @@
 int main()
 {
     // Iterator
-    uint8 i;         
+    
+	uint8 i;         
     
     // Variable declarations for DMA 
     
@@ -93,7 +84,7 @@ int main()
     // EEPROM
 
     EEPROM_Start();
-    memRecall();                                        // recall configuration
+    memRecall();                                        // Recall configuration.
 
     // FTDI chip enable
 
@@ -116,14 +107,14 @@ int main()
     UART_RS485_ClearRxBuffer();
     UART_RS485_ClearTxBuffer();
 
-    ISR_RS485_RX_StartEx(ISR_RS485_RX_ExInterrupt);     // RS485 isr function
+    ISR_RS485_RX_StartEx(ISR_RS485_RX_ExInterrupt);     // RS485 isr function.
     
     // WATCHDOG
     
     WATCHDOG_COUNTER_Start();
-    WATCHDOG_ENABLER_Write(1);                          // Initialize watchdog to disabled
+    WATCHDOG_ENABLER_Write(1);                          // Initialize watchdog to disabled.
     
-    ISR_WATCHDOG_StartEx(ISR_WATCHDOG_Handler);         // WATCHDOG isr function    
+    ISR_WATCHDOG_StartEx(ISR_WATCHDOG_Handler);         // WATCHDOG isr function.    
 
     // PWM
 
@@ -144,32 +135,32 @@ int main()
 
     // ADC
 
-    ADC_Start();                                        // start ADC
-    ADC_SOC_Write(0x01);                                // Force first read cycle
+    ADC_Start();                                        
+    ADC_SOC_Write(0x01);                                // Force first read cycle.
    
     // DMA
     DMA_Chan = DMA_DmaInitialize(DMA_BYTES_PER_BURST, DMA_REQUEST_PER_BURST, HI16(DMA_SRC_BASE), HI16(DMA_DST_BASE));
-    DMA_TD[0] = CyDmaTdAllocate();                                                                          // Allocate TD
-    CyDmaTdSetConfiguration(DMA_TD[0], 2 * 4, DMA_TD[0], TD_SWAP_EN | DMA__TD_TERMOUT_EN | TD_INC_DST_ADR); // DMA Configurations
-    CyDmaTdSetAddress(DMA_TD[0], LO16((uint32)ADC_DEC_SAMP_PTR), LO16((uint32)ADC_buf));                    // Set Register Address
-    CyDmaChSetInitialTd(DMA_Chan, DMA_TD[0]);                                                               // Initialize Channel
+    DMA_TD[0] = CyDmaTdAllocate();                                                                          // Allocate TD.
+    CyDmaTdSetConfiguration(DMA_TD[0], 2 * 4, DMA_TD[0], TD_SWAP_EN | DMA__TD_TERMOUT_EN | TD_INC_DST_ADR); // DMA Configurations.
+    CyDmaTdSetAddress(DMA_TD[0], LO16((uint32)ADC_DEC_SAMP_PTR), LO16((uint32)ADC_buf));                    // Set Register Address.
+    CyDmaChSetInitialTd(DMA_Chan, DMA_TD[0]);                                                               // Initialize Channel.
     
-    CyDmaChEnable(DMA_Chan, 1);                                                                             // Enable DMA
+    CyDmaChEnable(DMA_Chan, 1);                                                                             // Enable DMA.
 
-    RS485_CTS_Write(0);                                 // Clear To Send on RS485
+    RS485_CTS_Write(0);                                 // Clear To Send on RS485.
 
     // TIMER
 
     MY_TIMER_Start();           
     PACER_TIMER_Start();
 
-    CYGlobalIntEnable;                                  // enable interrupts
+    CYGlobalIntEnable;                                  // Enable interrupts.
 
 //========================================     initializations - clean variables
 
-    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters
+    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters.
 
-    CyDelay(10);                                        // Wait for encoders to have a valid value
+    CyDelay(10);                                        // Wait for encoders to have a valid value.
 
     //---------------------------------------------------  Initialize referiment structure
     for (i = NUM_OF_MOTORS; i--;) 
@@ -194,19 +185,19 @@ int main()
         g_meas.rot[i] = 0;
     }
 
-    g_refNew = g_ref;                                   // Initialize k+1 measurements structure
+    g_refNew = g_ref;                                   // Initialize k+1 measurements structure.
 
-    g_ref.onoff = c_mem.activ;                          // Initalize Activation
+    g_ref.onoff = c_mem.activ;                          // Initalize Activation.
     
     //---------------------------------------------------  Initialize emg structure
     g_meas.emg[0] = 0;
     g_meas.emg[1] = 0;
 
-    MOTOR_ON_OFF_Write(g_ref.onoff);                    // Activating motors
+    MOTOR_ON_OFF_Write(g_ref.onoff);                    // Activate motors.
 
-    dev_pwm_limit = dev_pwm_sat;   
-    pow_tension = 12000;       //12000 mV (12 V)// Init PWM limit
-    tension_valid = FALSE;                              // Init tension_valid BIT
+    dev_pwm_limit = dev_pwm_sat;   						// Init PWM limit.
+    pow_tension = 12000;       							// 12000 mV (12 V).
+    tension_valid = FALSE;                              // Init tension_valid BIT.
 
     reset_last_value_flag = 0;
 

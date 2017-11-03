@@ -36,8 +36,8 @@
 * \file         utils.c
 *
 * \brief        Definition of utility functions.
-* \date         June 06, 2016
-* \author       _qbrobotics_
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 */
@@ -51,7 +51,7 @@
 
 int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
 
-        static int32 virtual_pos_friction; 	//Virtual position used to estimate friction
+        static int32 virtual_pos_friction; 	//Virtual position used to estimate friction.
         static int32 err_pos_dt;			//Temporal evolution of error position.
 											//Needed to model the current transients due to reference steps.
         int32 curr_estimate;
@@ -126,6 +126,24 @@ int32 filter_ch1(int32 new_value) {
 }
 
 //==============================================================================
+//                                                             Second Emg Filter
+//==============================================================================
+
+int32 filter_ch2(int32 new_value) {
+
+    static int32 old_value, aux;
+    
+    if (new_value < 0)
+        new_value = 0;
+
+    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
+
+    old_value = aux;
+
+    return (aux /64);
+}
+
+//==============================================================================
 //                                                              Velocity filters
 //==============================================================================
 
@@ -156,43 +174,6 @@ int32 filter_vel_3(int32 new_value) {
     static int32 old_value, aux;
 
     aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
-
-    old_value = aux;
-
-    return (aux /64);
-}
-
-//==============================================================================
-//                                                     Current difference filter
-//==============================================================================
-
-int32 filter_curr_diff(int32 new_value) {
-
-    static int32 old_value, aux;
-
- //   if (new_value < 100) new_value = 0;
- //   else new_value = new_value - 100;
-    
-    aux = (old_value * (1024 - ETA) + (new_value << 6) * (ETA)) /1024;
-
-    old_value = aux;
-
-    return (aux /64);
-
-}
-
-//==============================================================================
-//                                                             Second Emg Filter
-//==============================================================================
-
-int32 filter_ch2(int32 new_value) {
-
-    static int32 old_value, aux;
-    
-    if (new_value < 0)
-        new_value = 0;
-
-    aux = (old_value * (1024 - BETA) + (new_value << 6) * (BETA)) /1024;
 
     old_value = aux;
 
@@ -235,6 +216,29 @@ int32 filter_acc_3(int32 new_value) {
 
     return (aux /64);
 }
+
+//==============================================================================
+//                                                     Current difference filter
+//==============================================================================
+
+int32 filter_curr_diff(int32 new_value) {
+
+    static int32 old_value, aux;
+
+ //   if (new_value < 100) new_value = 0;
+ //   else new_value = new_value - 100;
+    
+    aux = (old_value * (1024 - ETA) + (new_value << 6) * (ETA)) /1024;
+
+    old_value = aux;
+
+    return (aux /64);
+
+}
+
+//==============================================================================
+//                                                       Voltage readings filter
+//==============================================================================
 
 int32 filter_voltage(int32 new_value) {
 
@@ -299,8 +303,8 @@ uint32 my_mod(int32 val, int32 divisor) {
 //==============================================================================
 
 void calibration(void) {
-    static uint8 direction;                 //0 closing, 1 opening
-    static uint16 closure_counter;          //Range [0 - 2^16]
+    static uint8 direction;                 //0 closing, 1 opening.
+    static uint16 closure_counter;          //Range [0 - 2^16].
 
 
     // closing
@@ -346,14 +350,14 @@ void calibration(void) {
 // return
 
 // Number of teeth of the two wheels
-#define N1 15           ///< Teeth of the first encoder wheel
-#define N2 14           ///< Teeth of the second encoder wheel
+#define N1 15           ///< Teeth of the first encoder wheel.
+#define N2 14           ///< Teeth of the second encoder wheel.
 
-#define I1 1            ///< First wheel invariant value
-#define I2 (-1)         ///< Second wheel invariant value
+#define I1 1            ///< First wheel invariant value.
+#define I2 (-1)         ///< Second wheel invariant value.
 
 // Number of ticks per turn
-#define M 65536          ///< Number of encoder ticks per turn
+#define M 65536          ///< Number of encoder ticks per turn.
 
 
 int calc_turns_fcn(const int32 pos1, const int32 pos2) {
@@ -370,9 +374,9 @@ int calc_turns_fcn(const int32 pos1, const int32 pos2) {
 //                                                              REST POSITION
 //==============================================================================
 
-void check_rest_position(void) {     // 100 Hz frequency
+void check_rest_position(void) {     // 100 Hz frequency.
     
-    static uint32 count = 0;        // Range [0 - 2^31]
+    static uint32 count = 0;        // Range [0 - 2^31].
     static uint8 flag_count = 1;
     static uint8 first_time = 1;
     static float m = 0;

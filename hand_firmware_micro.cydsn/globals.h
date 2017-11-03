@@ -36,10 +36,11 @@
 * \file         globals.h
 *
 * \brief        Global definitions and macros are set in this file.
-* \date         June 06, 2016
-* \author       _abrobotics_
+* \date         October 01, 2017
+* \author       _Centro "E.Piaggio"_
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
+*
 */
 
 #ifndef GLOBALS_H_INCLUDED
@@ -62,7 +63,7 @@
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           25      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           25      /*!< Number of parameters saved in the EEPROM.*/
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -70,8 +71,7 @@
 
 //Main frequency 1000 Hz
 #define CALIBRATION_DIV         10      /*!< Frequency divisor for hand calibration (100Hz).*/
-
-#define DIV_INIT_VALUE          1       /*!<*/
+#define DIV_INIT_VALUE          1       /*!< Initial value for hand counter calibration.*/
 
 //==============================================================================
 //                                                                           DMA
@@ -86,11 +86,11 @@
 //                                                                     INTERRUPT
 //==============================================================================
 
-#define    WAIT_START   0               /*!< Package start waiting status*/
-#define    WAIT_ID      1               /*!< Package ID waiting status*/
-#define    WAIT_LENGTH  2               /*!< Package lenght waiting status*/
-#define    RECEIVE      3               /*!< Package data receiving status*/
-#define    UNLOAD       4               /*!< Package data flush status*/
+#define    WAIT_START   0               /*!< Package start waiting status.*/
+#define    WAIT_ID      1               /*!< Package ID waiting status.*/
+#define    WAIT_LENGTH  2               /*!< Package lenght waiting status.*/
+#define    RECEIVE      3               /*!< Package data receiving status.*/
+#define    UNLOAD       4               /*!< Package data flush status.*/
 
 //==============================================================================
 //                                                                         OTHER
@@ -101,7 +101,7 @@
 
 #define DEFAULT_EEPROM_DISPLACEMENT 8   /*!< Number of pages occupied by the EEPROM.*/
 
-#define MAX_WATCHDOG_TIMER      250     /*!< num * 2 [cs] */
+#define MAX_WATCHDOG_TIMER      250     /*!< num * 2 [cs].*/
 
 #define PWM_MAX_VALUE           100     /*!< Maximum value of the PWM signal.*/
 
@@ -141,7 +141,9 @@ struct st_ref {
 };
 
 //=============================================================     measurements
-
+/** \brief Measurements structure
+ * 
+**/
 struct st_meas {
     int32 pos[NUM_OF_SENSORS];      /*!< Encoder sensor position.*/
     int32 curr[NUM_OF_MOTORS];      /*!< Motor current and current estimation.*/
@@ -164,7 +166,9 @@ struct st_data {
 };
 
 //============================================     settings stored on the memory
-
+/** \brief EEPROM stored structure
+ * 
+**/
 struct st_mem {
     uint8   flag;                       /*!< If checked the device has been configured.*/                   //1
     uint8   id;                         /*!< Device id.*/                                                   //1
@@ -267,39 +271,39 @@ extern struct st_ref    g_ref, g_refNew, g_refOld;  /*!< Reference variables.*/
 extern struct st_meas   g_meas, g_measOld;          /*!< Measurements.*/
 extern struct st_data   g_rx;                       /*!< Incoming/Outcoming data.*/
 extern struct st_mem    g_mem, c_mem;               /*!< Memory parameters.*/
-extern struct st_calib  calib;
+extern struct st_calib  calib;						/*!< Calibration variables.*/
 
 extern uint32 timer_value;                          /*!< End time of the firmware main loop.*/
-extern uint32 timer_value0;                         /*!< Start time of the firmware main loop*/
-extern float cycle_time;							/*!< Variable used to calculate in how much time a cycle is done */
+extern uint32 timer_value0;                         /*!< Start time of the firmware main loop.*/
+extern float cycle_time;							/*!< Variable used to calculate how much time a cycle takes.*/
 
 // Device Data
 
-extern int32   dev_tension;                         /*!< Power supply tension */
+extern int32    dev_tension;                        /*!< Power supply tension */
 extern uint8    dev_pwm_sat;                        /*!< Device pwm limit saturation */
-extern uint8   dev_pwm_limit;                       /*!< Device pwm limit */
+extern uint8    dev_pwm_limit;                      /*!< Device pwm limit */
 extern int32    dev_tension_f;                      /*!< Filtered power supply tension */
-extern int32   pow_tension;
+extern int32    pow_tension;						/*!< Computed power supply tension.*/
 
 // Bit Flag
 
 extern CYBIT reset_last_value_flag;                 /*!< This flag is set when the encoders last values must be resetted.*/
-extern CYBIT tension_valid;                         /*!< Tension validation bit */
-extern CYBIT interrupt_flag;                        /*!< Interrupt flag enabler */
-extern CYBIT watchdog_flag;                         /*!< Watchdog flag enabler  */
+extern CYBIT tension_valid;                         /*!< Tension validation bit.*/
+extern CYBIT interrupt_flag;                        /*!< Interrupt flag enabler.*/
+extern CYBIT watchdog_flag;                         /*!< Watchdog flag enabler.*/
 extern float tau_feedback;                          /*!< Torque feedback.*/
 
 // DMA Buffer
 
-extern int16 ADC_buf[4];                            /*! ADC measurements buffer */
+extern int16 ADC_buf[4];                            /*! ADC measurements buffer.*/
 
 // PWM value
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
-extern uint8 rest_enabled;
-extern uint8 forced_open;
-extern int32 rest_pos_curr_ref;
+extern uint8 rest_enabled;                          /*!< Rest position flag.*/
+extern uint8 forced_open;                           /*!< Forced open flag (used in position with rest position control).*/
+extern int32 rest_pos_curr_ref;						/*!< Rest position current reference.*/
 
 
 

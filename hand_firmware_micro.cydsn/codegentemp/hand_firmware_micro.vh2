@@ -2,7 +2,7 @@
 --	Conversion of hand_firmware_micro.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Thu Jul 13 11:15:53 2017
+--	Tue Oct 31 14:56:38 2017
 --
 
 USE cypress.cypress.all;
@@ -31,8 +31,8 @@ SIGNAL tmpIO_1__MOTOR_EN_net_0 : bit;
 TERMINAL tmpSIOVREF__MOTOR_EN_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__MOTOR_EN_net_0 : bit;
 SIGNAL Net_2411 : bit;
-SIGNAL Net_2996 : bit;
 SIGNAL Net_3012 : bit;
+SIGNAL Net_2996 : bit;
 SIGNAL tmpOE__MOTOR_2A_net_0 : bit;
 SIGNAL tmpFB_0__MOTOR_2A_net_0 : bit;
 SIGNAL tmpIO_0__MOTOR_2A_net_0 : bit;
@@ -2996,7 +2996,7 @@ zero <=  ('0') ;
 
 tmpOE__MOTOR_1A_net_0 <=  ('1') ;
 
-Net_2411 <= ((Net_2996 and Net_3012));
+Net_2411 <= ((Net_3012 and Net_2996));
 
 \PWM_MOTORS:PWMUDB:sc_kill_tmp\\D\ <= (not \PWM_MOTORS:PWMUDB:tc_i\);
 
@@ -3437,7 +3437,8 @@ CLOCK_UART:cy_clock_v1_0
 	PORT MAP(clock_out=>Net_124,
 		dig_domain_out=>open);
 ISR_RS485_RX:cy_isr_v1_0
-	GENERIC MAP(int_type=>"10")
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_6117);
 RS_485_EN:cy_psoc3_pins_v1_10
 	GENERIC MAP(id=>"294a8542-13bb-492d-93ce-945bd1f598a8",
@@ -3930,7 +3931,8 @@ timer_clock_1:cy_clock_v1_0
 		compare=>\PACER_TIMER:Net_261\,
 		interrupt=>\PACER_TIMER:Net_57\);
 \UART_RS485:RXInternalInterrupt\:cy_isr_v1_0
-	GENERIC MAP(int_type=>"10")
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_6117);
 \UART_RS485:BUART:ClkSync\:cy_psoc3_udb_clock_enable_v1_0
 	GENERIC MAP(sync_mode=>'1')
@@ -5361,7 +5363,8 @@ Signal_1_B:cy_psoc3_pins_v1_10
 	PORT MAP(signal1=>\ADC:Net_520\,
 		signal2=>\ADC:Net_20\);
 \ADC:IRQ\:cy_isr_v1_0
-	GENERIC MAP(int_type=>"10")
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_5118);
 \ADC:theACLK\:cy_clock_v1_0
 	GENERIC MAP(cy_registers=>"",
@@ -6438,7 +6441,8 @@ WATCHDOG_CLK:cy_clock_v1_0
 	PORT MAP(clock_out=>Net_6285,
 		dig_domain_out=>open);
 ISR_WATCHDOG:cy_isr_v1_0
-	GENERIC MAP(int_type=>"10")
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_3570);
 \WATCHDOG_COUNTER:CounterHW\:cy_psoc3_timer_v1_0
 	GENERIC MAP(cy_registers=>"")
