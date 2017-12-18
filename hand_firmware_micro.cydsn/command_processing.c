@@ -100,7 +100,13 @@ void commProcess(void){
         case CMD_GET_CURRENTS:
             cmd_get_currents();
             break;
+            
+//=========================================================     CMD_GET_CURRENTS
 
+        case CMD_GET_CURR_AND_MEAS:
+            cmd_get_curr_meas();
+            break;
+            
 //=========================================================     CMD_GET_CURR_DIFF
          
         case CMD_GET_CURR_DIFF:
@@ -1583,6 +1589,31 @@ void cmd_get_currents(){
     packet_data[5] = LCRChecksum (packet_data, 5);
     
     commWrite(packet_data, 6);
+}
+
+void cmd_get_curr_meas(){
+    
+    // Packet: header + motor_measure(int16) + crc
+    
+    uint8 packet_data[12]; 
+    
+    //Header package
+
+    packet_data[0] = CMD_GET_CURR_AND_MEAS;
+    //Currents
+    *((int16 *) &packet_data[1]) = (int16) g_measOld.curr[0]; //Real Current
+    *((int16 *) &packet_data[3]) = (int16) g_measOld.curr[1]; //Estimated Current
+    //Encoder Readings
+    *((int16 *) &packet_data[5]) = (int16) g_measOld.pos[0]; //Hand Motor Encoder
+    *((int16 *) &packet_data[7]) = (int16) g_measOld.pos[1]; //Driven gear 
+    *((int16 *) &packet_data[9]) = (int16) g_measOld.pos[2]; //Additional sensor to drive hand with handle device
+    
+
+    // Calculate Checksum and send message to UART 
+
+    packet_data[5] = LCRChecksum (packet_data, 11);
+    
+    commWrite(packet_data, 12);
 }
 
 void cmd_get_currents_for_cuff(){
