@@ -288,8 +288,8 @@ void infoGet(uint16 info_type) {
 
 void get_param_list(uint16 index) {
     //Package to be sent variables
-    uint8 packet_data[1901] = "";
-    uint16 packet_lenght = 1901;
+    uint8 packet_data[1951] = "";
+    uint16 packet_lenght = 1951;
 
     //Auxiliary variables
     uint8 CYDATA i;
@@ -323,6 +323,7 @@ void get_param_list(uint16 index) {
     char curr_lookup_str[21] = "23 - Current lookup:";
     char switch_limit_inf_str[23] = "24 - Switch limit inf:";
     char switch_limit_sup_str[23] = "25 - Switch limit sup:";
+    char normally_close_str[42] = "26 - Closure default mode NO(0) NC(1):";
 
     //Parameters menus
     char input_mode_menu[99] = "0 -> Usb\n1 -> Handle\n2 -> EMG proportional\n3 -> EMG Integral\n4 -> EMG FCFS\n5 -> EMG FCFS Advanced\n";
@@ -701,19 +702,37 @@ void get_param_list(uint16 index) {
             for(i = switch_limit_sup_str_len; i != 0; i--)
                 packet_data[1208 + switch_limit_sup_str_len - i] = switch_limit_sup_str[switch_limit_sup_str_len - i];
                 
+            /*------------NORMALLY CLOSE MODE----------*/
+            
+            packet_data[1252] = TYPE_FLAG;
+            packet_data[1253] = 1;
+            packet_data[1254] = c_mem.normally_closed_mode;
+            if(c_mem.normally_closed_mode) {
+                strcat(normally_close_str, " NC\0");
+                string_lenght = 42;
+            }
+            else {
+                strcat(normally_close_str, " NO\0");
+                string_lenght = 42;
+            }
+            for(i = string_lenght; i != 0; i--)
+                packet_data[1255 + string_lenght - i] = normally_close_str[string_lenght - i];
+            //The following byte indicates the number of menus at the end of the packet to send
+            packet_data[1255 + string_lenght] = 3;
+            
             /*------------PARAMETERS MENU-----------*/
 
             for(i = input_mode_menu_len; i != 0; i--)
-                packet_data[1252 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
+                packet_data[1302 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
 
             for(i = control_mode_menu_len; i != 0; i--)
-                packet_data[1402 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
+                packet_data[1452 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
 
             for(i = yes_no_menu_len; i!= 0; i--)
-                packet_data[1552 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
+                packet_data[1602 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
                 
             for(i = switching_mode_menu_len; i!= 0; i--)
-                packet_data[1702 + switching_mode_menu_len - i] = switching_mode_menu[switching_mode_menu_len - i];                
+                packet_data[1752 + switching_mode_menu_len - i] = switching_mode_menu[switching_mode_menu_len - i];                
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
             commWrite(packet_data, packet_lenght);
@@ -894,7 +913,11 @@ void get_param_list(uint16 index) {
 //===================================================     set_switch_limit_sup
         case 25:        //Switch limit sup - int32
             g_mem.switch_limit_sup = *((int32*) &g_rx.buffer[3]);
-        break;                
+        break;  
+//===================================================     set_normally_close_str
+        case 26:        //normally close mode - uint8
+            g_mem.normally_closed_mode = *((uint8*) &g_rx.buffer[3]);
+        break;            
     }
 }
 
@@ -1168,7 +1191,7 @@ void infoPrepare(unsigned char *info_string)
         strcat(info_string, str);
         strcat(info_string, "\r\n");
         
-        if (normally_closed_mode == 1) {
+        if (g_mem.normally_closed_mode == 1) {
             strcat(info_string, "Closing mode: Normally closed\r\n");
         } else {
             strcat(info_string, "Closing mode: Normally open\r\n");
@@ -1449,6 +1472,9 @@ uint8 memInit(void)
 
     g_mem.double_encoder_on_off = 1;
     g_mem.motor_handle_ratio = 22;
+    
+    // Korea hand has normally opened mode at startup
+    g_mem.normally_closed_mode = 0;
 
     // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;

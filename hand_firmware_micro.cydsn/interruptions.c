@@ -453,20 +453,20 @@ void motor_control() {
                     g_ref.pos[0] = handle_value;
             }
             
-            if (normally_closed_mode == 1)
+            if (g_mem.normally_closed_mode == 1)
                 g_ref.pos[0] = g_mem.pos_lim_sup[0] - g_ref.pos[0];
 
 
 			if (h_status == H_WAIT){                               
                 if (c_mem.switch_mode == PULL) {
-                    if (normally_closed_mode == 0)
+                    if (g_mem.normally_closed_mode == 0)
                         g_ref.pos[0] = c_mem.pos_lim_sup[0];
                     else
                         g_ref.pos[0] = c_mem.pos_lim_inf[0];
                 }
                 
                 if (c_mem.switch_mode == PUSH) {
-                    if (normally_closed_mode == 0)
+                    if (g_mem.normally_closed_mode == 0)
                         g_ref.pos[0] = c_mem.pos_lim_inf[0];
                     else
                         g_ref.pos[0] = c_mem.pos_lim_sup[0];
@@ -967,26 +967,26 @@ void encoder_reading(const uint8 idx) {
 
                     if (c_mem.switch_mode == PULL && handle_pos < 40){                               //(bowden)
                         // Change mode
-                        if (normally_closed_mode == 0)
-                            normally_closed_mode = 1;
+                        if (g_mem.normally_closed_mode == 0)
+                            g_mem.normally_closed_mode = 1;
                         else
-                            normally_closed_mode = 0;
+                            g_mem.normally_closed_mode = 0;
                         
                         h_status = H_NORMAL;
                     }
                     
                     if (c_mem.switch_mode == PUSH  && handle_pos > c_mem.switch_limit_sup) {       //(korea) -40
                         // Button released                       
-                        if (normally_closed_mode == 1) {    // NC
+                        if (g_mem.normally_closed_mode == 1) {    // NC
                             if (handle_pos > 900) {
-                                normally_closed_mode = 0;
+                                g_mem.normally_closed_mode = 0;
                                 wait_for_switch = 0;
                             }
                             else
                                 wait_for_switch = 1;
                         }
                         else {  ///NO
-                            normally_closed_mode = 1; 
+                            g_mem.normally_closed_mode = 1; 
                             wait_for_switch = 0;                            
                         }
                         

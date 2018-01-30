@@ -82,7 +82,6 @@ int16 ADC_buf[4];
 int8 pwm_sign;
 
 // NO/NC mod. version
-uint8 normally_closed_mode = 0;              // Korea hand has normally opened mode at startup
 handle_status CYDATA h_status;
 
 /* END OF FILE */

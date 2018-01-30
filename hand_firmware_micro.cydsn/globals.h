@@ -62,7 +62,7 @@
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           25      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           26      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -225,6 +225,7 @@ struct st_mem {
     
     int32 switch_limit_inf;             /*!< Switching mode inf PUSH */
     int32 switch_limit_sup;             /*!< Switching mode sup PUSH */
+    uint8 normally_closed_mode;
                                                                                             //TOT           158 bytes
 };
 
@@ -312,7 +313,6 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
 // NO/NC mod. version
-extern uint8 normally_closed_mode;                  /*!< Korea hand handle mode */
 extern handle_status CYDATA h_status; 
 
 // -----------------------------------------------------------------------------
