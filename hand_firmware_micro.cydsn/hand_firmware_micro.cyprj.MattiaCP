@@ -553,6 +553,13 @@
 <v>Generated_Source\PSoC3\LED_BLINK_EN_PM.c</v>
 <v>Generated_Source\PSoC3\CLOCK_PWM_1.c</v>
 <v>Generated_Source\PSoC3\CLOCK_PWM_1.h</v>
+<v>Generated_Source\PSoC3\CYCLES_TIMER.c</v>
+<v>Generated_Source\PSoC3\CYCLES_TIMER.h</v>
+<v>Generated_Source\PSoC3\CYCLES_TIMER_PM.c</v>
+<v>Generated_Source\PSoC3\counter_cyc_clk.c</v>
+<v>Generated_Source\PSoC3\counter_cyc_clk.h</v>
+<v>Generated_Source\PSoC3\ISR_CYCLES.c</v>
+<v>Generated_Source\PSoC3\ISR_CYCLES.h</v>
 </gen_list>
 <warp_dep>
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\ieee\work\stdlogic.vif</v>
@@ -562,7 +569,7 @@
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif</v>
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif</v>
 </warp_dep>
-<deps_time v="131539318088376239" />
+<deps_time v="131614576518442225" />
 <top_block v="TopDesign" />
 <last_generation v="1" />
 <pdl_path v="" />
@@ -578,6 +585,200 @@
 </dependency_info>
 <dependency_info name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051" xml_contents_version="2">
 <CyGuid_1173175f-1b9b-4ad4-a065-754a48a27021 type_name="CyDesigner.Common.Base.CyFileDeps" version="1">
+<file name=".\DP8051_Keil_951\Release\command_processing.obj">
+<dep name=".\Generated_Source\PSoC3\ADC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_SOC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_STATUS.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
+<dep name=".\Generated_Source\PSoC3\BOARD_LED.h" />
+<dep name=".\Generated_Source\PSoC3\BOARD_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Bootloadable.h" />
+<dep name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.h" />
+<dep name=".\Generated_Source\PSoC3\CLOCK_PWM.h" />
+<dep name=".\Generated_Source\PSoC3\CLOCK_PWM_1.h" />
+<dep name=".\Generated_Source\PSoC3\CLOCK_UART.h" />
+<dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
+<dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
+<dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
+<dep name=".\Generated_Source\PSoC3\CYDMAC.H" />
+<dep name=".\Generated_Source\PSoC3\CYFITTER.H" />
+<dep name=".\Generated_Source\PSoC3\CyDmac.h" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\DMA_dma.h" />
+<dep name=".\Generated_Source\PSoC3\EEPROM.h" />
+<dep name=".\Generated_Source\PSoC3\EMG_1.h" />
+<dep name=".\Generated_Source\PSoC3\EMG_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\EMG_2.h" />
+<dep name=".\Generated_Source\PSoC3\EMG_2_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\FF_STATUS.h" />
+<dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
+<dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
+<dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
+<dep name=".\Generated_Source\PSoC3\LED_BLINK.h" />
+<dep name=".\Generated_Source\PSoC3\LED_BLINK_EN.h" />
+<dep name=".\Generated_Source\PSoC3\LED_CTRL.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_1A.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_1A_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_1B.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_1B_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_2A.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_2A_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_2B.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_2B_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_DIR.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_EN.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_EN_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.h" />
+<dep name=".\Generated_Source\PSoC3\MY_TIMER.h" />
+<dep name=".\Generated_Source\PSoC3\PACER_TIMER.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\PWM_MOTORS.h" />
+<dep name=".\Generated_Source\PSoC3\RESET_COUNTERS.h" />
+<dep name=".\Generated_Source\PSoC3\RESET_FF.h" />
+<dep name=".\Generated_Source\PSoC3\RS485_CTS.h" />
+<dep name=".\Generated_Source\PSoC3\RS_485_EN.h" />
+<dep name=".\Generated_Source\PSoC3\RS_485_EN_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\SHIFTREG_ENC_1.h" />
+<dep name=".\Generated_Source\PSoC3\SHIFTREG_ENC_2.h" />
+<dep name=".\Generated_Source\PSoC3\SHIFTREG_ENC_3.h" />
+<dep name=".\Generated_Source\PSoC3\Signal_1_A.h" />
+<dep name=".\Generated_Source\PSoC3\Signal_1_A_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Signal_1_B.h" />
+<dep name=".\Generated_Source\PSoC3\Signal_1_B_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Signal_1_C.h" />
+<dep name=".\Generated_Source\PSoC3\Signal_1_C_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\UART_RS485.h" />
+<dep name=".\Generated_Source\PSoC3\USB_VDD.h" />
+<dep name=".\Generated_Source\PSoC3\USB_VDD_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.h" />
+<dep name=".\Generated_Source\PSoC3\VOLTAGE_SENSE_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\WATCHDOG_CLK.h" />
+<dep name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
+<dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
+<dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cydisabledsheets.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
+<dep name=".\Generated_Source\PSoC3\cypins.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\Generated_Source\PSoC3\project.h" />
+<dep name=".\Generated_Source\PSoC3\timer_clock.h" />
+<dep name=".\command_processing.c" />
+<dep name=".\command_processing.h" />
+<dep name=".\commands.h" />
+<dep name=".\device.h" />
+<dep name=".\globals.h" />
+<dep name=".\interruptions.h" />
+<dep name=".\utils.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC.h" />
+<file name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<file name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<file name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
+<file name=".\Generated_Source\PSoC3\ADC_SOC.h" />
+<file name=".\Generated_Source\PSoC3\ADC_STATUS.h" />
+<file name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
+<file name=".\Generated_Source\PSoC3\BOARD_LED.h" />
+<file name=".\Generated_Source\PSoC3\BOARD_LED_aliases.h" />
+<file name=".\Generated_Source\PSoC3\Bootloadable.h" />
+<file name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.h" />
+<file name=".\Generated_Source\PSoC3\CLOCK_PWM.h" />
+<file name=".\Generated_Source\PSoC3\CLOCK_PWM_1.h" />
+<file name=".\Generated_Source\PSoC3\CLOCK_UART.h" />
+<file name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
+<file name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
+<file name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<file name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
+<file name=".\Generated_Source\PSoC3\CYDMAC.H" />
+<file name=".\Generated_Source\PSoC3\CYFITTER.H" />
+<file name=".\Generated_Source\PSoC3\CyFlash.h" />
+<file name=".\Generated_Source\PSoC3\CyLib.h" />
+<file name=".\Generated_Source\PSoC3\CySpc.h" />
+<file name=".\Generated_Source\PSoC3\DMA_dma.h" />
+<file name=".\Generated_Source\PSoC3\EEPROM.h" />
+<file name=".\Generated_Source\PSoC3\EMG_1.h" />
+<file name=".\Generated_Source\PSoC3\EMG_1_aliases.h" />
+<file name=".\Generated_Source\PSoC3\EMG_2.h" />
+<file name=".\Generated_Source\PSoC3\EMG_2_aliases.h" />
+<file name=".\Generated_Source\PSoC3\FF_STATUS.h" />
+<file name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
+<file name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
+<file name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
+<file name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
+<file name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
+<file name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
+<file name=".\Generated_Source\PSoC3\LED_BLINK.h" />
+<file name=".\Generated_Source\PSoC3\LED_BLINK_EN.h" />
+<file name=".\Generated_Source\PSoC3\LED_CTRL.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_1A.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_1A_aliases.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_1B.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_1B_aliases.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_2A.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_2A_aliases.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_2B.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_2B_aliases.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_DIR.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_EN.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_EN_aliases.h" />
+<file name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.h" />
+<file name=".\Generated_Source\PSoC3\MY_TIMER.h" />
+<file name=".\Generated_Source\PSoC3\PACER_TIMER.h" />
+<file name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<file name=".\Generated_Source\PSoC3\PWM_MOTORS.h" />
+<file name=".\Generated_Source\PSoC3\RESET_COUNTERS.h" />
+<file name=".\Generated_Source\PSoC3\RESET_FF.h" />
+<file name=".\Generated_Source\PSoC3\RS485_CTS.h" />
+<file name=".\Generated_Source\PSoC3\RS_485_EN.h" />
+<file name=".\Generated_Source\PSoC3\RS_485_EN_aliases.h" />
+<file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_1.h" />
+<file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_2.h" />
+<file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_3.h" />
+<file name=".\Generated_Source\PSoC3\Signal_1_A.h" />
+<file name=".\Generated_Source\PSoC3\Signal_1_A_aliases.h" />
+<file name=".\Generated_Source\PSoC3\Signal_1_B.h" />
+<file name=".\Generated_Source\PSoC3\Signal_1_B_aliases.h" />
+<file name=".\Generated_Source\PSoC3\Signal_1_C.h" />
+<file name=".\Generated_Source\PSoC3\Signal_1_C_aliases.h" />
+<file name=".\Generated_Source\PSoC3\UART_RS485.h" />
+<file name=".\Generated_Source\PSoC3\USB_VDD.h" />
+<file name=".\Generated_Source\PSoC3\USB_VDD_aliases.h" />
+<file name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.h" />
+<file name=".\Generated_Source\PSoC3\VOLTAGE_SENSE_aliases.h" />
+<file name=".\Generated_Source\PSoC3\WATCHDOG_CLK.h" />
+<file name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
+<file name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
+<file name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
+<file name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
+<file name=".\Generated_Source\PSoC3\cyPm.h" />
+<file name=".\Generated_Source\PSoC3\cydevice.h" />
+<file name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<file name=".\Generated_Source\PSoC3\cydisabledsheets.h" />
+<file name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
+<file name=".\Generated_Source\PSoC3\cypins.h" />
+<file name=".\Generated_Source\PSoC3\cytypes.h" />
+<file name=".\Generated_Source\PSoC3\project.h" />
+<file name=".\Generated_Source\PSoC3\timer_clock.h" />
+<file name=".\command_processing.c" />
+<file name=".\command_processing.h" />
+<file name=".\commands.h" />
+<file name=".\device.h" />
+<file name=".\globals.h" />
+<file name=".\interruptions.h" />
+<file name=".\utils.h" />
 <file name=".\DP8051_Keil_951\Release\ADC.obj">
 <dep name=".\Generated_Source\PSoC3\ADC.c" />
 <dep name=".\Generated_Source\PSoC3\ADC.h" />
@@ -596,20 +797,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\ADC.c" />
-<file name=".\Generated_Source\PSoC3\ADC.h" />
-<file name=".\Generated_Source\PSoC3\ADC_AMux.h" />
-<file name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
-<file name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
-<file name=".\Generated_Source\PSoC3\CyFlash.h" />
-<file name=".\Generated_Source\PSoC3\CyLib.h" />
-<file name=".\Generated_Source\PSoC3\CySpc.h" />
-<file name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
-<file name=".\Generated_Source\PSoC3\cyPm.h" />
-<file name=".\Generated_Source\PSoC3\cydevice.h" />
-<file name=".\Generated_Source\PSoC3\cydevice_trm.h" />
-<file name=".\Generated_Source\PSoC3\cyfitter.h" />
-<file name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
-<file name=".\Generated_Source\PSoC3\cytypes.h" />
 <file name=".\DP8051_Keil_951\Release\ADC_AMux.obj">
 <dep name=".\Generated_Source\PSoC3\ADC_AMux.c" />
 <dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
@@ -657,7 +844,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\ADC_IRQ.c" />
-<file name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
 <file name=".\DP8051_Keil_951\Release\ADC_PM.obj">
 <dep name=".\Generated_Source\PSoC3\ADC.h" />
 <dep name=".\Generated_Source\PSoC3\ADC_PM.c" />
@@ -681,7 +867,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\ADC_SOC.c" />
-<file name=".\Generated_Source\PSoC3\ADC_SOC.h" />
 <file name=".\DP8051_Keil_951\Release\ADC_SOC_PM.obj">
 <dep name=".\Generated_Source\PSoC3\ADC_SOC.h" />
 <dep name=".\Generated_Source\PSoC3\ADC_SOC_PM.c" />
@@ -705,7 +890,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\ADC_STATUS.c" />
-<file name=".\Generated_Source\PSoC3\ADC_STATUS.h" />
 <file name=".\DP8051_Keil_951\Release\ADC_theACLK.obj">
 <dep name=".\Generated_Source\PSoC3\ADC_theACLK.c" />
 <dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
@@ -726,9 +910,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\BOARD_LED.c" />
-<file name=".\Generated_Source\PSoC3\BOARD_LED.h" />
-<file name=".\Generated_Source\PSoC3\BOARD_LED_aliases.h" />
-<file name=".\Generated_Source\PSoC3\cypins.h" />
 <file name=".\DP8051_Keil_951\Release\Bootloadable.obj">
 <dep name=".\Generated_Source\PSoC3\Bootloadable.c" />
 <dep name=".\Generated_Source\PSoC3\Bootloadable.h" />
@@ -743,7 +924,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\Bootloadable.c" />
-<file name=".\Generated_Source\PSoC3\Bootloadable.h" />
 <file name=".\DP8051_Keil_951\Release\CLOCK_ENCODERS.obj">
 <dep name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.c" />
 <dep name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.h" />
@@ -753,7 +933,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.c" />
-<file name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.h" />
 <file name=".\DP8051_Keil_951\Release\CLOCK_PWM.obj">
 <dep name=".\Generated_Source\PSoC3\CLOCK_PWM.c" />
 <dep name=".\Generated_Source\PSoC3\CLOCK_PWM.h" />
@@ -763,7 +942,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CLOCK_PWM.c" />
-<file name=".\Generated_Source\PSoC3\CLOCK_PWM.h" />
 <file name=".\DP8051_Keil_951\Release\CLOCK_PWM_1.obj">
 <dep name=".\Generated_Source\PSoC3\CLOCK_PWM_1.c" />
 <dep name=".\Generated_Source\PSoC3\CLOCK_PWM_1.h" />
@@ -773,7 +951,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CLOCK_PWM_1.c" />
-<file name=".\Generated_Source\PSoC3\CLOCK_PWM_1.h" />
 <file name=".\DP8051_Keil_951\Release\CLOCK_UART.obj">
 <dep name=".\Generated_Source\PSoC3\CLOCK_UART.c" />
 <dep name=".\Generated_Source\PSoC3\CLOCK_UART.h" />
@@ -783,7 +960,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CLOCK_UART.c" />
-<file name=".\Generated_Source\PSoC3\CLOCK_UART.h" />
 <file name=".\DP8051_Keil_951\Release\COUNTER_ENC.obj">
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.c" />
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
@@ -798,7 +974,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\COUNTER_ENC.c" />
-<file name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
 <file name=".\DP8051_Keil_951\Release\COUNTER_ENC_PM.obj">
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC_PM.c" />
@@ -824,8 +999,34 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.c" />
-<file name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
-<file name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<file name=".\DP8051_Keil_951\Release\CYCLES_TIMER.obj">
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.c" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\CYCLES_TIMER.c" />
+<file name=".\DP8051_Keil_951\Release\CYCLES_TIMER_PM.obj">
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER_PM.c" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\CYCLES_TIMER_PM.c" />
 <file name=".\DP8051_Keil_951\Release\CyDmac.obj">
 <dep name=".\Generated_Source\PSoC3\CyDmac.c" />
 <dep name=".\Generated_Source\PSoC3\CyDmac.h" />
@@ -840,7 +1041,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CyDmac.c" />
-<file name=".\Generated_Source\PSoC3\CyDmac.h" />
 <file name=".\DP8051_Keil_951\Release\CyFlash.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.c" />
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
@@ -896,7 +1096,6 @@
 <dep name=".\Generated_Source\PSoC3\cyfitter.h" />
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
-<file name=".\Generated_Source\PSoC3\DMA_dma.H" />
 <file name=".\Generated_Source\PSoC3\DMA_dma.c" />
 <file name=".\DP8051_Keil_951\Release\EEPROM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
@@ -912,7 +1111,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\EEPROM.c" />
-<file name=".\Generated_Source\PSoC3\EEPROM.h" />
 <file name=".\DP8051_Keil_951\Release\EMG_1.obj">
 <dep name=".\Generated_Source\PSoC3\EMG_1.c" />
 <dep name=".\Generated_Source\PSoC3\EMG_1.h" />
@@ -924,8 +1122,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\EMG_1.c" />
-<file name=".\Generated_Source\PSoC3\EMG_1.h" />
-<file name=".\Generated_Source\PSoC3\EMG_1_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\EMG_2.obj">
 <dep name=".\Generated_Source\PSoC3\EMG_2.c" />
 <dep name=".\Generated_Source\PSoC3\EMG_2.h" />
@@ -937,8 +1133,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\EMG_2.c" />
-<file name=".\Generated_Source\PSoC3\EMG_2.h" />
-<file name=".\Generated_Source\PSoC3\EMG_2_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\FF_STATUS.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -953,7 +1147,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\FF_STATUS.c" />
-<file name=".\Generated_Source\PSoC3\FF_STATUS.h" />
 <file name=".\DP8051_Keil_951\Release\FTDI_ENABLE.obj">
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.c" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
@@ -965,8 +1158,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\FTDI_ENABLE.c" />
-<file name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
-<file name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\FTDI_ENABLE_REG.obj">
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.c" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
@@ -976,7 +1167,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.c" />
-<file name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
 <file name=".\DP8051_Keil_951\Release\FTDI_ENABLE_REG_PM.obj">
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG_PM.c" />
@@ -986,6 +1176,20 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG_PM.c" />
+<file name=".\DP8051_Keil_951\Release\ISR_CYCLES.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.c" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ISR_CYCLES.c" />
 <file name=".\DP8051_Keil_951\Release\ISR_RS485_RX.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1000,7 +1204,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\ISR_RS485_RX.c" />
-<file name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
 <file name=".\DP8051_Keil_951\Release\ISR_WATCHDOG.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1015,7 +1218,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\ISR_WATCHDOG.c" />
-<file name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
 <file name=".\DP8051_Keil_951\Release\LED_BLINK.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1030,7 +1232,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\LED_BLINK.c" />
-<file name=".\Generated_Source\PSoC3\LED_BLINK.h" />
 <file name=".\DP8051_Keil_951\Release\LED_BLINK_EN.obj">
 <dep name=".\Generated_Source\PSoC3\LED_BLINK_EN.c" />
 <dep name=".\Generated_Source\PSoC3\LED_BLINK_EN.h" />
@@ -1040,7 +1241,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\LED_BLINK_EN.c" />
-<file name=".\Generated_Source\PSoC3\LED_BLINK_EN.h" />
 <file name=".\DP8051_Keil_951\Release\LED_BLINK_EN_PM.obj">
 <dep name=".\Generated_Source\PSoC3\LED_BLINK_EN.h" />
 <dep name=".\Generated_Source\PSoC3\LED_BLINK_EN_PM.c" />
@@ -1073,7 +1273,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\LED_CTRL.c" />
-<file name=".\Generated_Source\PSoC3\LED_CTRL.h" />
 <file name=".\DP8051_Keil_951\Release\LED_CTRL_PM.obj">
 <dep name=".\Generated_Source\PSoC3\LED_CTRL.h" />
 <dep name=".\Generated_Source\PSoC3\LED_CTRL_PM.c" />
@@ -1094,8 +1293,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_1A.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_1A.h" />
-<file name=".\Generated_Source\PSoC3\MOTOR_1A_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_1B.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_1B.c" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_1B.h" />
@@ -1107,8 +1304,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_1B.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_1B.h" />
-<file name=".\Generated_Source\PSoC3\MOTOR_1B_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_2A.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_2A.c" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_2A.h" />
@@ -1120,8 +1315,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_2A.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_2A.h" />
-<file name=".\Generated_Source\PSoC3\MOTOR_2A_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_2B.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_2B.c" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_2B.h" />
@@ -1133,8 +1326,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_2B.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_2B.h" />
-<file name=".\Generated_Source\PSoC3\MOTOR_2B_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_DIR.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_DIR.c" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_DIR.h" />
@@ -1144,7 +1335,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_DIR.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_DIR.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_DIR_PM.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_DIR.h" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_DIR_PM.c" />
@@ -1165,8 +1355,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_EN.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_EN.h" />
-<file name=".\Generated_Source\PSoC3\MOTOR_EN_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_ON_OFF.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.c" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.h" />
@@ -1176,7 +1364,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.c" />
-<file name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.h" />
 <file name=".\DP8051_Keil_951\Release\MOTOR_ON_OFF_PM.obj">
 <dep name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.h" />
 <dep name=".\Generated_Source\PSoC3\MOTOR_ON_OFF_PM.c" />
@@ -1200,7 +1387,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\MY_TIMER.c" />
-<file name=".\Generated_Source\PSoC3\MY_TIMER.h" />
 <file name=".\DP8051_Keil_951\Release\MY_TIMER_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1229,7 +1415,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\PACER_TIMER.c" />
-<file name=".\Generated_Source\PSoC3\PACER_TIMER.h" />
 <file name=".\DP8051_Keil_951\Release\PACER_TIMER_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1258,7 +1443,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\PWM_MOTORS.c" />
-<file name=".\Generated_Source\PSoC3\PWM_MOTORS.h" />
 <file name=".\DP8051_Keil_951\Release\PWM_MOTORS_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1282,7 +1466,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\RESET_COUNTERS.c" />
-<file name=".\Generated_Source\PSoC3\RESET_COUNTERS.h" />
 <file name=".\DP8051_Keil_951\Release\RESET_COUNTERS_PM.obj">
 <dep name=".\Generated_Source\PSoC3\RESET_COUNTERS.h" />
 <dep name=".\Generated_Source\PSoC3\RESET_COUNTERS_PM.c" />
@@ -1301,7 +1484,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\RESET_FF.c" />
-<file name=".\Generated_Source\PSoC3\RESET_FF.h" />
 <file name=".\DP8051_Keil_951\Release\RESET_FF_PM.obj">
 <dep name=".\Generated_Source\PSoC3\RESET_FF.h" />
 <dep name=".\Generated_Source\PSoC3\RESET_FF_PM.c" />
@@ -1320,7 +1502,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\RS485_CTS.c" />
-<file name=".\Generated_Source\PSoC3\RS485_CTS.h" />
 <file name=".\DP8051_Keil_951\Release\RS485_CTS_PM.obj">
 <dep name=".\Generated_Source\PSoC3\RS485_CTS.h" />
 <dep name=".\Generated_Source\PSoC3\RS485_CTS_PM.c" />
@@ -1341,8 +1522,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\RS_485_EN.c" />
-<file name=".\Generated_Source\PSoC3\RS_485_EN.h" />
-<file name=".\Generated_Source\PSoC3\RS_485_EN_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\SHIFTREG_ENC_1.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1357,7 +1536,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_1.c" />
-<file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_1.h" />
 <file name=".\DP8051_Keil_951\Release\SHIFTREG_ENC_1_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1386,7 +1564,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_2.c" />
-<file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_2.h" />
 <file name=".\DP8051_Keil_951\Release\SHIFTREG_ENC_2_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1415,7 +1592,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_3.c" />
-<file name=".\Generated_Source\PSoC3\SHIFTREG_ENC_3.h" />
 <file name=".\DP8051_Keil_951\Release\SHIFTREG_ENC_3_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1441,8 +1617,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\Signal_1_A.c" />
-<file name=".\Generated_Source\PSoC3\Signal_1_A.h" />
-<file name=".\Generated_Source\PSoC3\Signal_1_A_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\Signal_1_B.obj">
 <dep name=".\Generated_Source\PSoC3\Signal_1_B.c" />
 <dep name=".\Generated_Source\PSoC3\Signal_1_B.h" />
@@ -1454,8 +1628,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\Signal_1_B.c" />
-<file name=".\Generated_Source\PSoC3\Signal_1_B.h" />
-<file name=".\Generated_Source\PSoC3\Signal_1_B_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\Signal_1_C.obj">
 <dep name=".\Generated_Source\PSoC3\Signal_1_C.c" />
 <dep name=".\Generated_Source\PSoC3\Signal_1_C.h" />
@@ -1467,8 +1639,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\Signal_1_C.c" />
-<file name=".\Generated_Source\PSoC3\Signal_1_C.h" />
-<file name=".\Generated_Source\PSoC3\Signal_1_C_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\UART_RS485.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1483,7 +1653,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\UART_RS485.c" />
-<file name=".\Generated_Source\PSoC3\UART_RS485.h" />
 <file name=".\DP8051_Keil_951\Release\UART_RS485_BOOT.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1537,8 +1706,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\USB_VDD.c" />
-<file name=".\Generated_Source\PSoC3\USB_VDD.h" />
-<file name=".\Generated_Source\PSoC3\USB_VDD_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\VOLTAGE_SENSE.obj">
 <dep name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.c" />
 <dep name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.h" />
@@ -1550,8 +1717,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.c" />
-<file name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.h" />
-<file name=".\Generated_Source\PSoC3\VOLTAGE_SENSE_aliases.h" />
 <file name=".\DP8051_Keil_951\Release\WATCHDOG_CLK.obj">
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_CLK.c" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_CLK.h" />
@@ -1561,7 +1726,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\WATCHDOG_CLK.c" />
-<file name=".\Generated_Source\PSoC3\WATCHDOG_CLK.h" />
 <file name=".\DP8051_Keil_951\Release\WATCHDOG_COUNTER.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1576,7 +1740,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.c" />
-<file name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
 <file name=".\DP8051_Keil_951\Release\WATCHDOG_COUNTER_PM.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1600,7 +1763,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.c" />
-<file name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
 <file name=".\DP8051_Keil_951\Release\WATCHDOG_ENABLER_PM.obj">
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER_PM.c" />
@@ -1619,7 +1781,6 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.c" />
-<file name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
 <file name=".\DP8051_Keil_951\Release\WATCHDOG_REFRESH_PM.obj">
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH_PM.c" />
@@ -1629,6 +1790,15 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH_PM.c" />
+<file name=".\DP8051_Keil_951\Release\counter_cyc_clk.obj">
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.c" />
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\counter_cyc_clk.c" />
 <file name=".\DP8051_Keil_951\Release\cyPm.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -1673,112 +1843,6 @@
 <dep name=".\Generated_Source\PSoC3\timer_clock.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\timer_clock.c" />
-<file name=".\Generated_Source\PSoC3\timer_clock.h" />
-<file name=".\DP8051_Keil_951\Release\command_processing.obj">
-<dep name=".\Generated_Source\PSoC3\DMA_dma.h" />
-<dep name=".\Generated_Source\PSoC3\cydisabledsheets.h" />
-<dep name=".\Generated_Source\PSoC3\project.h" />
-<dep name=".\Generated_Source\PSoC3\ADC.h" />
-<dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
-<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
-<dep name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
-<dep name=".\Generated_Source\PSoC3\ADC_SOC.h" />
-<dep name=".\Generated_Source\PSoC3\ADC_STATUS.h" />
-<dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
-<dep name=".\Generated_Source\PSoC3\BOARD_LED.h" />
-<dep name=".\Generated_Source\PSoC3\BOARD_LED_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\Bootloadable.h" />
-<dep name=".\Generated_Source\PSoC3\CLOCK_ENCODERS.h" />
-<dep name=".\Generated_Source\PSoC3\CLOCK_PWM.h" />
-<dep name=".\Generated_Source\PSoC3\CLOCK_PWM_1.h" />
-<dep name=".\Generated_Source\PSoC3\CLOCK_UART.h" />
-<dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
-<dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
-<dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\CYDMAC.H" />
-<dep name=".\Generated_Source\PSoC3\CYFITTER.H" />
-<dep name=".\Generated_Source\PSoC3\CyDmac.h" />
-<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
-<dep name=".\Generated_Source\PSoC3\CyLib.h" />
-<dep name=".\Generated_Source\PSoC3\CySpc.h" />
-<dep name=".\Generated_Source\PSoC3\EEPROM.h" />
-<dep name=".\Generated_Source\PSoC3\EMG_1.h" />
-<dep name=".\Generated_Source\PSoC3\EMG_1_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\EMG_2.h" />
-<dep name=".\Generated_Source\PSoC3\EMG_2_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\FF_STATUS.h" />
-<dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
-<dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
-<dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
-<dep name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
-<dep name=".\Generated_Source\PSoC3\LED_BLINK.h" />
-<dep name=".\Generated_Source\PSoC3\LED_BLINK_EN.h" />
-<dep name=".\Generated_Source\PSoC3\LED_CTRL.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_1A.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_1A_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_1B.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_1B_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_2A.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_2A_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_2B.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_2B_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_DIR.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_EN.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_EN_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\MOTOR_ON_OFF.h" />
-<dep name=".\Generated_Source\PSoC3\MY_TIMER.h" />
-<dep name=".\Generated_Source\PSoC3\PACER_TIMER.h" />
-<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
-<dep name=".\Generated_Source\PSoC3\PWM_MOTORS.h" />
-<dep name=".\Generated_Source\PSoC3\RESET_COUNTERS.h" />
-<dep name=".\Generated_Source\PSoC3\RESET_FF.h" />
-<dep name=".\Generated_Source\PSoC3\RS485_CTS.h" />
-<dep name=".\Generated_Source\PSoC3\RS_485_EN.h" />
-<dep name=".\Generated_Source\PSoC3\RS_485_EN_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\SHIFTREG_ENC_1.h" />
-<dep name=".\Generated_Source\PSoC3\SHIFTREG_ENC_2.h" />
-<dep name=".\Generated_Source\PSoC3\SHIFTREG_ENC_3.h" />
-<dep name=".\Generated_Source\PSoC3\Signal_1_A.h" />
-<dep name=".\Generated_Source\PSoC3\Signal_1_A_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\Signal_1_B.h" />
-<dep name=".\Generated_Source\PSoC3\Signal_1_B_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\Signal_1_C.h" />
-<dep name=".\Generated_Source\PSoC3\Signal_1_C_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\UART_RS485.h" />
-<dep name=".\Generated_Source\PSoC3\USB_VDD.h" />
-<dep name=".\Generated_Source\PSoC3\USB_VDD_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\VOLTAGE_SENSE.h" />
-<dep name=".\Generated_Source\PSoC3\VOLTAGE_SENSE_aliases.h" />
-<dep name=".\Generated_Source\PSoC3\WATCHDOG_CLK.h" />
-<dep name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
-<dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
-<dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
-<dep name=".\Generated_Source\PSoC3\cyPm.h" />
-<dep name=".\Generated_Source\PSoC3\cydevice.h" />
-<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
-<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
-<dep name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
-<dep name=".\Generated_Source\PSoC3\cypins.h" />
-<dep name=".\Generated_Source\PSoC3\cytypes.h" />
-<dep name=".\Generated_Source\PSoC3\timer_clock.h" />
-<dep name=".\command_processing.c" />
-<dep name=".\command_processing.h" />
-<dep name=".\commands.h" />
-<dep name=".\device.h" />
-<dep name=".\globals.h" />
-<dep name=".\interruptions.h" />
-<dep name=".\utils.h" />
-</file>
-<file name=".\Generated_Source\PSoC3\cydisabledsheets.h" />
-<file name=".\Generated_Source\PSoC3\project.h" />
-<file name=".\command_processing.c" />
-<file name=".\command_processing.h" />
-<file name=".\commands.h" />
-<file name=".\device.h" />
-<file name=".\globals.h" />
-<file name=".\interruptions.h" />
-<file name=".\utils.h" />
 <file name=".\DP8051_Keil_951\Release\globals.obj">
 <dep name=".\Generated_Source\PSoC3\DMA_dma.h" />
 <dep name=".\Generated_Source\PSoC3\cydisabledsheets.h" />
@@ -1800,6 +1864,7 @@
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
 <dep name=".\Generated_Source\PSoC3\CYDMAC.H" />
 <dep name=".\Generated_Source\PSoC3\CYFITTER.H" />
 <dep name=".\Generated_Source\PSoC3\CyDmac.h" />
@@ -1815,6 +1880,7 @@
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
 <dep name=".\Generated_Source\PSoC3\LED_BLINK.h" />
@@ -1859,6 +1925,7 @@
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
@@ -1894,6 +1961,7 @@
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
 <dep name=".\Generated_Source\PSoC3\CYDMAC.H" />
 <dep name=".\Generated_Source\PSoC3\CYFITTER.H" />
 <dep name=".\Generated_Source\PSoC3\CyDmac.h" />
@@ -1909,6 +1977,7 @@
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
 <dep name=".\Generated_Source\PSoC3\LED_BLINK.h" />
@@ -1953,6 +2022,7 @@
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
@@ -1991,6 +2061,7 @@
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
 <dep name=".\Generated_Source\PSoC3\CYDMAC.H" />
 <dep name=".\Generated_Source\PSoC3\CYFITTER.H" />
 <dep name=".\Generated_Source\PSoC3\CyDmac.h" />
@@ -2006,6 +2077,7 @@
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
 <dep name=".\Generated_Source\PSoC3\LED_BLINK.h" />
@@ -2050,6 +2122,7 @@
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
@@ -2088,6 +2161,7 @@
 <dep name=".\Generated_Source\PSoC3\COUNTER_ENC.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1.h" />
 <dep name=".\Generated_Source\PSoC3\CURRENT_SENSE_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\CYCLES_TIMER.h" />
 <dep name=".\Generated_Source\PSoC3\CYDMAC.H" />
 <dep name=".\Generated_Source\PSoC3\CYFITTER.H" />
 <dep name=".\Generated_Source\PSoC3\CyDmac.h" />
@@ -2103,6 +2177,7 @@
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_REG.h" />
 <dep name=".\Generated_Source\PSoC3\FTDI_ENABLE_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\ISR_CYCLES.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_RS485_RX.h" />
 <dep name=".\Generated_Source\PSoC3\ISR_WATCHDOG.h" />
 <dep name=".\Generated_Source\PSoC3\LED_BLINK.h" />
@@ -2147,6 +2222,7 @@
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_COUNTER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_ENABLER.h" />
 <dep name=".\Generated_Source\PSoC3\WATCHDOG_REFRESH.h" />
+<dep name=".\Generated_Source\PSoC3\counter_cyc_clk.h" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
@@ -2322,6 +2398,10 @@
 <dep name=".\DP8051_Keil_951\Release\LED_BLINK_EN.obj" />
 <dep name=".\DP8051_Keil_951\Release\LED_BLINK_EN_PM.obj" />
 <dep name=".\DP8051_Keil_951\Release\CLOCK_PWM_1.obj" />
+<dep name=".\DP8051_Keil_951\Release\CYCLES_TIMER.obj" />
+<dep name=".\DP8051_Keil_951\Release\CYCLES_TIMER_PM.obj" />
+<dep name=".\DP8051_Keil_951\Release\counter_cyc_clk.obj" />
+<dep name=".\DP8051_Keil_951\Release\ISR_CYCLES.obj" />
 <dep name=".\DP8051_Keil_951\Release\hand_firmware_micro.lib" />
 <dep name="${CyRoot}\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\DP8051\DP8051_Keil_951\Release\CyComponentLibrary.lib" />
 </file>
@@ -2529,6 +2609,10 @@
 <name_val_pair name="Generated_Source\PSoC3\LED_BLINK_EN.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
 <name_val_pair name="Generated_Source\PSoC3\LED_BLINK_EN_PM.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
 <name_val_pair name="Generated_Source\PSoC3\CLOCK_PWM_1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
+<name_val_pair name="Generated_Source\PSoC3\CYCLES_TIMER.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
+<name_val_pair name="Generated_Source\PSoC3\CYCLES_TIMER_PM.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
+<name_val_pair name="Generated_Source\PSoC3\counter_cyc_clk.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
+<name_val_pair name="Generated_Source\PSoC3\ISR_CYCLES.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(NDEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(8 ,Speed)" />
 </name>
 </genericCmdLineData>
 <codeGenCmdLineTag v="-.appdatapath &quot;C:\Users\MattiaCP\AppData\Local\Cypress Semiconductor\PSoC Creator\4.1&quot; -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\hand_firmware_micro.cyprj -d CY8C3246PVI-147 -s C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\Generated_Source\PSoC3 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=BE" />
@@ -2537,7 +2621,7 @@
 <dataGuid v="769d31ea-68b1-4f0c-b90a-7c10a43ee563">
 <CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563 type_name="CyDesigner.Common.ProjMgmt.Model.CyLinkCustomData" version="1">
 <link_deps_times>
-<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051" v="131539318401361594" />
+<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Release@DP8051" v="131616992963461746" />
 </link_deps_times>
 </CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563>
 </dataGuid>

@@ -975,7 +975,7 @@
     </Group>
     <Group key="a014e3ff-1a80-46b9-bbcb-22ceb5400b46">
       <Group key="0">
-        <Data key="Port Format" value="15,0" />
+        <Data key="Port Format" value="1,7" />
       </Group>
     </Group>
     <Group key="aa82e918-037b-4f7d-b1c3-19a361211947">
@@ -1018,7 +1018,7 @@
     </Group>
     <Group key="d2b73a47-2288-411e-8c5b-d740ba0840ec">
       <Group key="0">
-        <Data key="Port Format" value="1,7" />
+        <Data key="Port Format" value="15,0" />
       </Group>
     </Group>
     <Group key="d3b97eba-17be-4498-809f-79bb4aeb63ad">

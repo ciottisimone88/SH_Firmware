@@ -61,13 +61,21 @@
 /** \name Firmware information functions */
 /** \{ */
 
-//============================================================  infoPrepare
-/** This function is used to prepare the information string about the firmware
- *	of the device.
+//============================================================  prepare_generic_info
+/** This function is used to prepare a generic information string on the device parameters
+ *  and measurements
  *
- * \param 	info_string 	An array of chars containing firmware information.
+ * \param 	info_string 	An array of chars containing the requested informations.
 **/
-void    infoPrepare        (unsigned char *info_string);
+void    prepare_generic_info(char *info_string);
+
+//============================================================  prepare_counter_info
+/** This function is used to prepare an information string about the cycles counter
+ *  of the hand
+ *
+ * \param 	info_string 	An array of chars containing the requested informations.
+**/
+void    prepare_counter_info(char *info_string);
 
 //============================================================  infoSend
 /** This function sends the firmware information prepared with \ref infoPrepare 
@@ -77,9 +85,9 @@ void    infoPrepare        (unsigned char *info_string);
 void    infoSend           ();
 
 //============================================================  infoGet
-/** This function sends the firmware information prepared with \ref infoPrepare 
- *  "infoPrepare" through the serial port to the user interface. Is used when 
- *	the ID is specified.
+/** This function sends the firmware information prepared with \ref prepare_general_info 
+ *  "prepare_general_info" or \ref prepare_counter_info "prepare_counter_info" through the 
+ *  serial port to the user interface. Is used when the ID is specified.
  *
  * 	\param info_type	The type of the information needed.
 **/
@@ -119,9 +127,17 @@ void    commWrite_old_id   (uint8 *packet_data, uint16 packet_lenght, uint8 old_
 void    commWrite         (uint8 *packet_data, uint16 packet_lenght);
 
 
+//============================================================  commWrite_to_cuff
+/** This function writes on the serial port the package that needs to be sent
+ * to the Cuff device. It is used only when a specific device is connected to
+ * the hand. The Hand must have ID equal to the one of the Cuff plus one.
+ *
+ *	\param packet_data 		The array of data that must be written.
+ *	\param packet_lenght	The lenght of the data array.
+ *
+**/
 void    commWrite_to_cuff (uint8* packet_data, uint16 packet_lenght);
 /** \} */
-
 
 /** \name Memory management functions */
 /** \{ */
@@ -240,11 +256,17 @@ void cmd_get_accelerations();
 **/
 void cmd_get_currents();
 
-//============================================================  cmd_get_currents_for_cuff()
-/** This function gets the motor current and puts it in the package to 
-	be sent to the Cuff device, using the \ref commWrite_to_cuff "commWrite_to_cuff"
-    function.
+//============================================================  cmd_get_curr_and_meas()
+/** This function gets the motor current and measures and puts it in the package to 
+	be sent.
 **/
+void cmd_get_curr_and_meas();
+
+//============================================================  cmd_get_currents_for_cuff()
+ /** This function gets the motor current and puts it in the package to 
+ 	be sent to the Cuff device, using the \ref commWrite_to_cuff "commWrite_to_cuff"
+     function.
+ **/
 void cmd_get_currents_for_cuff();
 
 //============================================================  cmd_get_emg

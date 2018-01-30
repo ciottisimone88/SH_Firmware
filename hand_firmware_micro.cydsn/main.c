@@ -109,6 +109,11 @@ int main()
 
     ISR_RS485_RX_StartEx(ISR_RS485_RX_ExInterrupt);     // RS485 isr function.
     
+    // CYCLES TIMER
+    
+    CYCLES_TIMER_Start();
+    ISR_CYCLES_StartEx(ISR_CYCLES_Handler);
+    
     // WATCHDOG
     
     WATCHDOG_COUNTER_Start();
@@ -158,7 +163,7 @@ int main()
 
 //========================================     initializations - clean variables
 
-    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters.
+    RESET_COUNTERS_Write(0x00);                         // Activate encoder counters. Must be made before initializing measurements to zero.
 
     CyDelay(10);                                        // Wait for encoders to have a valid value.
 
@@ -205,8 +210,10 @@ int main()
     g_rx.length = 0;
     g_rx.ready  = 0;
 	
-    rest_enabled = 1;
+    //------------------------------------------------- Initialize rest position variables    
+	rest_enabled = 1;
     forced_open = 0;
+    g_mem.rest_position_flag = TRUE;
 
     //============================================================     main loop
 

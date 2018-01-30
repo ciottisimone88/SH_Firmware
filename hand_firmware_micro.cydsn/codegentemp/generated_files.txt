@@ -156,6 +156,13 @@
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\LED_BLINK_EN_PM.c" value="SOURCE_C;DP8051;;;;LED_BLINK_EN" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CLOCK_PWM_1.c" value="SOURCE_C;DP8051;;;;CLOCK_PWM_1" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CLOCK_PWM_1.h" value="HEADER;;;;;CLOCK_PWM_1" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CYCLES_TIMER.c" value="SOURCE_C;DP8051;;;;CYCLES_TIMER" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CYCLES_TIMER.h" value="HEADER;;;;;CYCLES_TIMER" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\CYCLES_TIMER_PM.c" value="SOURCE_C;DP8051;;;;CYCLES_TIMER" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\counter_cyc_clk.c" value="SOURCE_C;DP8051;;;;counter_cyc_clk" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\counter_cyc_clk.h" value="HEADER;;;;;counter_cyc_clk" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ISR_CYCLES.c" value="SOURCE_C;DP8051;;;;ISR_CYCLES" />
+  <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ISR_CYCLES.h" value="HEADER;;;;;ISR_CYCLES" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_AMux.c" value="SOURCE_C;DP8051;;;;ADC_AMux" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_AMux.h" value="HEADER;;;;;ADC_AMux" />
   <file name="C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\codegentemp\ADC_Ext_CP_Clk.c" value="SOURCE_C;DP8051;;;;ADC_Ext_CP_Clk" />

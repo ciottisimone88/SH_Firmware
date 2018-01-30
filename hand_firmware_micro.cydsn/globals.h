@@ -57,13 +57,13 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.5 (SoftHand w/rest position)"
+#define VERSION                 "SH-PRO v6.1.6 Centro Piaggio"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           25      /*!< Number of parameters saved in the EEPROM.*/
+#define NUM_OF_PARAMS           29      /*!< Number of parameters saved in the EEPROM.*/
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -93,20 +93,30 @@
 #define    UNLOAD       4               /*!< Package data flush status.*/
 
 //==============================================================================
+//                                                                 CYCLE COUNTER
+//==============================================================================
+        
+#define STATE_INACTIVE  0               /*!< Open SoftHand position / EMG Inactive.*/
+#define STATE_ACTIVE    1               /*!< Closed SoftHand position / EMG Active.*/
+#define COUNTER_INC     2               /*!< Counter cycle increment.*/
+    
+//==============================================================================
 //                                                                         OTHER
 //==============================================================================
 
 #define FALSE                   0
 #define TRUE                    1
 
-#define DEFAULT_EEPROM_DISPLACEMENT 8   /*!< Number of pages occupied by the EEPROM.*/
-
+#define DEFAULT_EEPROM_DISPLACEMENT 50   /*!< Number of pages occupied by the EEPROM.*/
+#define EEPROM_BYTES_ROW        16      /*!< EEPROM number of bytes per row.*/
+#define EEPROM_COUNTERS_ROWS    5       /*!< EEPROM number of rows dedicated to store counters.*/
+    
 #define MAX_WATCHDOG_TIMER      250     /*!< num * 2 [cs].*/
 
 #define PWM_MAX_VALUE           100     /*!< Maximum value of the PWM signal.*/
 
 #define ANTI_WINDUP             1000    /*!< Anti windup saturation.*/ 
-#define DEFAULT_CURRENT_LIMIT   1000    /*!< Default Current limit, 0 stands for unlimited.*/
+#define DEFAULT_CURRENT_LIMIT   1500    /*!< Default Current limit, 0 stands for unlimited.*/
 
 #define CURRENT_HYSTERESIS      10      /*!< milliAmperes of hysteresis for current control.*/
 
@@ -208,6 +218,7 @@ struct st_mem {
     uint16  emg_threshold[NUM_OF_EMGS]; /*!< Minimum value for activation of EMG control.*/                 //4
 
     uint8   emg_calibration_flag;       /*!< Enable emg calibration on startup.*/                           //1
+    // End of row seven.
     uint32  emg_max_value[NUM_OF_EMGS]; /*!< Maximum value for EMG.*/                                       //8
 
     uint8   emg_speed;                  /*!< Maximum closure speed when using EMG.*/                        //1
@@ -227,7 +238,22 @@ struct st_mem {
     float  rest_delay;                 /*!< Hand rest position delay while in EMG mode.*/                  //4
     float  rest_vel;                   /*!< Hand velocity closure for rest position reaching*/             //4
     float   rest_ratio;                 /*!< Hand rest ratio between velocity closure and rest position error*/  //4
-                                                                                           //TOT           150 bytes
+    uint8   maint_day;                  /*!< Day of maintenance.*/                                          //1
+    uint8   maint_month;                /*!< Month of maintenance.*/                                        //1
+    uint8   maint_year;                 /*!< Year of maintenance.*/                                         //1
+    uint8   switch_emg;                 /*!< EMG opening/closure switch.*/                                  //1
+    uint8   rest_position_flag;         /*!< Enable rest position feature.*/                                        //1    
+    uint8   unused_bytes[5];
+    // End of row eleven.
+    
+    uint32  emg_counter[2];             /*!< Counter for EMG activation - both channels.*/                  //8
+    uint32  position_hist[10];          /*!< Positions histogram - 10 zones.*/                              //40
+    uint32  current_hist[4];            /*!< Current histogram - 4 zones.*/                                 //16
+    uint32  rest_counter;               /*!< Counter for rest position occurrences.*/                       //4
+    uint32  wire_disp;                  /*!< Counter for total wire displacement measurement.*/             //4
+    uint32  total_time_on;              /*!< Total time of system power (in seconds).*/                     //4
+    uint32  total_time_rest;            /*!< Total time of system while rest position is maintained.*/      //4
+                                                                                         //TOT           150 bytes
 };
 
 //=================================================     device related variables
@@ -265,6 +291,15 @@ typedef enum {
 
 } emg_status;                       /*!< EMG status enumeration */
 
+typedef enum {
+    
+    PREPARE_DATA    = 0,            /*!< Prepare data to be written on EEPROM.*/
+    WRITE_CYCLES    = 1,            /*!< Cycles writing on EEPROM is enabled and control is passed to query.*/
+    WAIT_QUERY      = 2,            /*!< Wait until EEPROM_Query() has finished writing on EEPROM and then disable cycles writing.*/
+    WRITE_END       = 3,            /*!< End of EEPROM writing.*/
+    NONE            = 4             /*!< Cycles writing on EEPROM is disabled.*/
+} counter_status;                   /*!< Cycles counter state machine status.*/ 
+
 //====================================      external global variables definition
 
 extern struct st_ref    g_ref, g_refNew, g_refOld;  /*!< Reference variables.*/
@@ -292,6 +327,13 @@ extern CYBIT tension_valid;                         /*!< Tension validation bit.
 extern CYBIT interrupt_flag;                        /*!< Interrupt flag enabler.*/
 extern CYBIT watchdog_flag;                         /*!< Watchdog flag enabler.*/
 extern float tau_feedback;                          /*!< Torque feedback.*/
+extern CYBIT cycles_interrupt_flag;                 /*!< Cycles timer interrupt flag enabler.*/
+extern CYBIT can_write;                             /*!< Write to EEPROM flag.*/
+extern uint8 rest_enabled;                          /*!< Rest position flag.*/
+extern uint8 forced_open;                           /*!< Forced open flag (used in position with rest position control).*/
+extern counter_status CYDATA cycles_status;         /*!< Cycles counter state machine status.*/
+extern emg_status CYDATA emg_1_status;              /*!< First EMG sensor status.*/
+extern emg_status CYDATA emg_2_status;              /*!< Second EMG sensor status.*/ 
 
 // DMA Buffer
 
@@ -301,8 +343,6 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer.
 
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
-extern uint8 rest_enabled;                          /*!< Rest position flag.*/
-extern uint8 forced_open;                           /*!< Forced open flag (used in position with rest position control).*/
 extern int32 rest_pos_curr_ref;						/*!< Rest position current reference.*/
 
 

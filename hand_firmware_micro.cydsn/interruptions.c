@@ -95,6 +95,37 @@ static const uint8 pwm_preload_values[29] = {100,    //0 (11500)
                                               51,
                                               51};   //28 (25500)
 
+CYCODE uint8 pwm_preload_values_6v[32] = {  100,  //0 (6000)
+                                             76,
+                                             71,
+                                             68,
+                                             66,
+                                             64,   //5 (8750)
+                                             62,
+                                             60,
+                                             58,
+                                             56,
+                                             54,   //10 (11500)
+                                             53,
+                                             52,
+                                             51,
+                                             50,
+                                             49,   //15 (14250)
+                                             47,
+                                             46,
+                                             45,
+                                             44,
+                                             43,   //20 (17000)
+                                             42,
+                                             41,
+                                             40,
+                                             39,
+                                             38,   //25 (19750)
+                                             37,
+                                             37,
+                                             37,
+                                             37,
+                                             36};  //30 (22500)
 //==============================================================================
 //                                                            WATCHDOG INTERRUPT
 //==============================================================================
@@ -117,6 +148,19 @@ CY_ISR(ISR_RS485_RX_ExInterrupt) {
     
     interrupt_flag = TRUE;
      
+}
+
+//==============================================================================
+//                                                        CYCLES TIMER INTERRUPT
+//==============================================================================
+CY_ISR(ISR_CYCLES_Handler){
+
+    // Set cycles interrupt flag
+    
+    cycles_interrupt_flag = TRUE;
+    
+    CYCLES_TIMER_STATUS;
+
 }
 
 //==============================================================================
@@ -268,7 +312,7 @@ void interrupt_manager(){
 void function_scheduler(void) {
  
     static uint16 counter_calibration = DIV_INIT_VALUE;
-
+    CYBIT write_cycles = FALSE;
     timer_value0 = (uint32)MY_TIMER_ReadCounter();
 
     // Start ADC Conversion, SOC = 1
@@ -280,6 +324,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
   
     //---------------------------------- Get Encoders
@@ -291,6 +336,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }   
     
     encoder_reading(1);
@@ -300,6 +346,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
     
     encoder_reading(2);
@@ -309,6 +356,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Control Motor
@@ -320,6 +368,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Read conversion buffer - LOCK function
@@ -329,6 +378,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Control Overcurrent
@@ -340,6 +390,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     //---------------------------------- Calibration 
@@ -358,13 +409,13 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
     
-     
     //---------------------------------- Rest position check
     
     // Divider 10, freq = 500 Hz
-    if (c_mem.control_mode == CONTROL_ANGLE_AND_REST_POS){
+    if (c_mem.rest_position_flag == TRUE){
         if (counter_calibration == CALIBRATION_DIV) {
                 check_rest_position();
                 counter_calibration = 0;
@@ -375,9 +426,36 @@ void function_scheduler(void) {
         if (interrupt_flag){
             interrupt_flag = FALSE;
             interrupt_manager();
+			write_cycles = TRUE;
+        }
+    } 
+
+    //---------------------------------- Control Cycles Counter
+
+    cycles_counter_update();
+
+    // Check Cycles Interrupt 
+    
+    if (cycles_interrupt_flag){
+        cycles_interrupt_flag = FALSE;
+
+        // Cycles are written only every 120 seconds (CYCLES_TIMER interrupt)
+        // to save EEPROM writings (1M maximum)
+        if(can_write) {
+            cycles_status = PREPARE_DATA;
+            
+            //Update time variable
+            g_mem.total_time_on = g_mem.total_time_on + 120;  // Add 120 seconds.
         }
     }
-   
+    
+    // Check Interrupt 
+    
+    if (interrupt_flag){
+        interrupt_flag = FALSE;
+        interrupt_manager();
+    }
+    
     //---------------------------------- Update States
     
     // Load k-1 state
@@ -390,6 +468,7 @@ void function_scheduler(void) {
     if (interrupt_flag){
         interrupt_flag = FALSE;
         interrupt_manager();
+        write_cycles = TRUE;
     }
 
     timer_value = (uint32)MY_TIMER_ReadCounter();
@@ -584,6 +663,23 @@ void motor_control() {
         if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) 
             g_ref.pos[0] = c_mem.pos_lim_sup[0];
     }
+    
+    if (c_mem.rest_position_flag == TRUE) {
+        if (rest_enabled == 1){
+            // Change position reference to drive motor to rest position smoothly
+            g_ref.pos[0] = rest_pos_curr_ref;
+        }
+        
+        if (forced_open == 1) {
+            // Open the SoftHand as EMG PROPORTIONAL input mode 
+            if (err_emg_2 > 0)
+                g_ref.pos[0] = g_mem.rest_pos - (err_emg_2 * g_mem.rest_pos) / (1024 - c_mem.emg_threshold[1]);
+            else {
+                g_ref.pos[0] = g_mem.rest_pos;
+                forced_open = 0;
+            }
+        }
+    }
 
     switch(c_mem.control_mode) {
         // ======================= CURRENT AND POSITION CONTROL =======================
@@ -777,61 +873,6 @@ void motor_control() {
 				if (pwm_input > PWM_MAX_VALUE) 
                 	pwm_input = PWM_MAX_VALUE;
         	}
-
-        break;
-    
-        // =============== POSITION CONTROL WITH REST CHECK =================
-        case CONTROL_ANGLE_AND_REST_POS:
-            
-            if (rest_enabled == 1){
-                // Change position reference to drive motor to rest position smoothly
-                g_ref.pos[0] = rest_pos_curr_ref;
-            }
-            
-            if (forced_open == 1) {
-                // Open the SoftHand as EMG PROPORTIONAL input mode 
-                if (err_emg_2 > 0)
-                    g_ref.pos[0] = g_mem.rest_pos - (err_emg_2 * g_mem.rest_pos) / (1024 - c_mem.emg_threshold[1]);
-                else {
-                    g_ref.pos[0] = g_mem.rest_pos;
-                    forced_open = 0;
-                }
-            }
-            
-            
-            pos_error = g_ref.pos[0] - g_meas.pos[0];
-
-            pos_error_sum += pos_error;
-
-            // anti-windup (for integral control)
-            if (pos_error_sum > ANTI_WINDUP) {
-                pos_error_sum = ANTI_WINDUP;
-            } else if (pos_error_sum < -ANTI_WINDUP) {
-                pos_error_sum = -ANTI_WINDUP;
-            }
-
-            // Proportional
-            if (k_p != 0) 
-                pwm_input = (int32)(k_p * pos_error) >> 16;
-            
-
-            // Integral
-            if (k_i != 0) 
-                pwm_input += (int32)(k_i * pos_error_sum) >> 16;
-            
-
-            // Derivative
-            if (k_d != 0) 
-                pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16;
-            
-
-            // Update measure
-            prev_pos_err = pos_error;
-
-            if (pwm_input > 0)
-                motor_dir = TRUE;
-            else
-                motor_dir = FALSE;
 
         break;
     }
@@ -1085,10 +1126,7 @@ void analog_read_end() {
     /  =========================================================================
     */
 
-    int32 CYDATA i_aux;
-
-    static emg_status CYDATA emg_1_status = RESET; 
-    static emg_status CYDATA emg_2_status = RESET;                                             
+    int32 CYDATA i_aux;                                        
     
     static uint16 emg_counter_1 = 0;
     static uint16 emg_counter_2 = 0;
@@ -1173,7 +1211,9 @@ void analog_read_end() {
         // Calibration state machine
         switch(emg_1_status) {
             case NORMAL: // normal execution
-                i_aux = (int32)ADC_buf[2];
+                i_aux = (int32)ADC_buf[2 + g_mem.switch_emg];
+                if (i_aux < 0) 
+                    i_aux = 0;
                 i_aux = filter_ch1(i_aux);
                 i_aux = (i_aux << 10) / g_mem.emg_max_value[0];
     
@@ -1224,7 +1264,9 @@ void analog_read_end() {
             case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
                 // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
                 emg_counter_1++;
-                g_mem.emg_max_value[0] += filter_ch1((int32)ADC_buf[2]);
+                if (ADC_buf[2 + g_mem.switch_emg] < 0) 
+                    ADC_buf[2 + g_mem.switch_emg] = 0;
+                g_mem.emg_max_value[0] += filter_ch1((int32)ADC_buf[2 + g_mem.switch_emg]);
                 
                 if (interrupt_flag){
                     interrupt_flag = FALSE;
@@ -1259,7 +1301,9 @@ void analog_read_end() {
         // EMG 2 calibration state machine
         switch(emg_2_status) {
             case NORMAL: // normal execution
-                i_aux = (int32)ADC_buf[3];
+                i_aux = (int32)ADC_buf[3 - g_mem.switch_emg];
+                if (i_aux < 0)
+                    i_aux = 0;
                 i_aux = filter_ch2(i_aux);
                 i_aux = (i_aux << 10) / g_mem.emg_max_value[1];
     
@@ -1310,7 +1354,9 @@ void analog_read_end() {
             case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
                 // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
                 emg_counter_2++;
-                g_mem.emg_max_value[1] += filter_ch2((int32)ADC_buf[3]);
+                if (ADC_buf[3 - g_mem.switch_emg] < 0)
+                    ADC_buf[3 - g_mem.switch_emg] = 0;
+                g_mem.emg_max_value[1] += filter_ch2((int32)ADC_buf[3 - g_mem.switch_emg]);
     
                 if (interrupt_flag){
                     interrupt_flag = FALSE;
@@ -1467,17 +1513,183 @@ void overcurrent_control() {
 //                                                              PWM_LIMIT_SEARCH
 //==============================================================================
 
-void pwm_limit_search() {
-
+ void pwm_limit_search() {
+  
     uint8 CYDATA index;
-
-    if (dev_tension > 25500) {
-        dev_pwm_sat = 0;
-    } else if (dev_tension < 11500) {
-        dev_pwm_sat = 100;
+    uint16 CYDATA max_tension = 25500;
+    uint16 CYDATA min_tension = 11500;
+     
+    if (dev_tension > max_tension) {
+          dev_pwm_sat = 0;
+    } else if (dev_tension < min_tension) {
+          dev_pwm_sat = 100;
     } else {
-        index = (uint8)((dev_tension - 11500) >> 9);
+        index = (uint8)((dev_tension - min_tension) >> 9);
         dev_pwm_sat = pwm_preload_values[index];
+    }
+}
+
+
+//==============================================================================
+//                                                         CYCLES COUNTER UPDATE
+//==============================================================================
+
+void cycles_counter_update() {
+    static uint8 pos_cycle_status = STATE_INACTIVE;
+    static uint8 emg_cycle_status[2] = {STATE_INACTIVE, STATE_INACTIVE};
+    static uint8 rest_cycle_status = STATE_INACTIVE;
+    static int32 bin_threshold = 250;
+    static int32 thr_pos, max_pos;
+    uint8 i, bin_st, bin_max;
+    int32 curr_pos;
+    int32 step;
+    static uint32 timer_value_s, timer_value_e;
+    
+    curr_pos = (int32)(g_meas.pos[0] >> g_mem.res[0]);
+    
+    // State machine - Evaluate position counter update
+    switch (pos_cycle_status){
+        case STATE_INACTIVE:
+            if (pwm_sign == 1){
+                thr_pos = curr_pos; 
+                g_mem.wire_disp = g_mem.wire_disp + abs(max_pos - thr_pos);     //sum opening track
+                pos_cycle_status = STATE_ACTIVE;
+            }
+            break;
+        case STATE_ACTIVE:
+            if (pwm_sign == -1){
+                max_pos = curr_pos;
+                g_mem.wire_disp = g_mem.wire_disp + abs(max_pos - thr_pos);     //sum closure track
+                pos_cycle_status = COUNTER_INC;
+            }
+            break;
+        case COUNTER_INC:
+            if (abs(max_pos - thr_pos) > bin_threshold){
+                //update position histogram
+                step = ((int32)(g_mem.pos_lim_sup[0] >> g_mem.res[0]) / 10);
+                bin_st  = (uint8)(thr_pos/step);
+                bin_max = (uint8)(max_pos/step);
+                for (i=bin_st; i<= bin_max; i++){
+                    //position_hist counts how many times the SoftHand stays in bin while closing
+                    g_mem.position_hist[i] = g_mem.position_hist[i] + 1;
+                }
+                
+                //update current histogram
+                step = ((int32)(g_mem.current_limit) / 4);
+                if (g_meas.curr[0] > g_mem.current_limit)
+                    g_mem.current_hist[3] = g_mem.current_hist[3] + 1; 
+                else
+                    g_mem.current_hist[(uint8)(g_meas.curr[0]/step)] = g_mem.current_hist[(uint8)(g_meas.curr[0]/step)] + 1;
+            }
+            pos_cycle_status = STATE_INACTIVE;
+            break;
+    }
+    
+    // State machine - Evaluate EMG counter update
+    for (i=0; i<2 && emg_1_status == NORMAL && emg_2_status == NORMAL; i++){
+        switch (emg_cycle_status[i]){
+            case STATE_INACTIVE:
+                if (g_meas.emg[i] > g_mem.emg_threshold[i]){
+                    emg_cycle_status[i] = STATE_ACTIVE;
+                }
+                break;
+            case STATE_ACTIVE:
+                if (g_meas.emg[i] < 10){
+                    emg_cycle_status[i] = COUNTER_INC;
+                }
+                break;
+            case COUNTER_INC:
+                g_mem.emg_counter[i] = g_mem.emg_counter[i] + 1;
+                emg_cycle_status[i] = STATE_INACTIVE;
+                break;
+        }
+    }
+    
+    // State machine - Evaluate rest counter update
+    switch (rest_cycle_status){
+        case STATE_INACTIVE:
+            if (rest_enabled){
+                timer_value_s = (uint32)CYCLES_TIMER_ReadCounter();
+                rest_cycle_status = STATE_ACTIVE;
+            }
+            break;
+        case STATE_ACTIVE:
+            if (!rest_enabled){
+                timer_value_e = (uint32)CYCLES_TIMER_ReadCounter();
+                if (timer_value_s < timer_value_e) {
+                    timer_value_s = timer_value_s + (uint32)1200;
+                }
+                rest_cycle_status = COUNTER_INC;
+            }
+            break;
+        case COUNTER_INC: 
+            g_mem.total_time_rest = g_mem.total_time_rest + (uint32)((timer_value_s - timer_value_e)/10);
+            g_mem.rest_counter = g_mem.rest_counter + 1;
+            rest_cycle_status = STATE_INACTIVE;
+            break;
+    }
+            
+    // This function writes rows [row_start, row_end] on EEPROM
+    save_cycles_eeprom();
+}
+
+//==============================================================================
+//                                                            SAVE CYCLES EEPROM
+//==============================================================================
+
+void save_cycles_eeprom() {
+
+    cystatus status;
+    static uint8 row_number;
+    uint8 row_start = 11;
+    uint8* addr_start   = &g_mem.emg_counter[0];    //Data at beginning of the row 11
+    uint8* addr_start_c = &c_mem.emg_counter[0];
+    uint8 row_end   = row_start + EEPROM_COUNTERS_ROWS - 1;
+    static uint8* m_addr = NULL;
+
+    // This part of code writes rows [row_start, row_end] on EEPROM    
+    switch(cycles_status) {
+        case PREPARE_DATA:
+            // Store data in c_mem structure to have consistent counters
+            memcpy( addr_start_c, addr_start, EEPROM_BYTES_ROW*EEPROM_COUNTERS_ROWS );            
+            m_addr = addr_start;
+            row_number = row_start;
+            cycles_status = WRITE_CYCLES;
+            break;
+            
+        case WRITE_CYCLES:
+            EEPROM_UpdateTemperature();     //Check temperature of chip before writing
+            status = EEPROM_StartWrite((uint8*) m_addr, row_number);           
+            if(status == CYRET_STARTED || status == CYRET_SUCCESS) {
+                cycles_status = WAIT_QUERY;
+                can_write = FALSE;
+            }
+            break;
+            
+        case WAIT_QUERY:
+            status = EEPROM_Query();
+            if(status == CYRET_SUCCESS) {
+                if (row_number < row_end) {
+                    m_addr = m_addr + EEPROM_BYTES_ROW;
+                    row_number = row_number + 1;
+                    cycles_status = WRITE_CYCLES;
+                }
+                else {
+                    cycles_status = WRITE_END;
+                }
+            }
+            break;
+           
+        case WRITE_END:
+            can_write = TRUE;            
+            cycles_status = NONE;
+            
+            // Restore data saved in c_mem structure
+            memcpy( addr_start, addr_start_c, EEPROM_BYTES_ROW*EEPROM_COUNTERS_ROWS );
+            break;
+            
+        case NONE:
+            break;
     }
 }
 /* [] END OF FILE */

@@ -1,6 +1,6 @@
 // ======================================================================
 // hand_firmware_micro.v generated from TopDesign.cysch
-// 10/31/2017 at 14:56
+// 01/26/2018 at 17:27
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -1381,9 +1381,90 @@ module PWM_v3_30_10 (
 
 endmodule
 
+// Timer_v2_70(CaptureAlternatingFall=false, CaptureAlternatingRise=false, CaptureCount=2, CaptureCounterEnabled=false, CaptureInputEnabled=false, CaptureMode=0, CONTROL3=0, ControlRegRemoved=0, CtlModeReplacementString=SyncCtl, CyGetRegReplacementString=CY_GET_REG16, CySetRegReplacementString=CY_SET_REG16, DeviceFamily=PSoC3, EnableMode=0, FF16=false, FF8=false, FixedFunction=false, FixedFunctionUsed=0, HWCaptureCounterEnabled=false, InterruptOnCapture=false, InterruptOnFIFOFull=false, InterruptOnTC=true, IntOnCapture=0, IntOnFIFOFull=0, IntOnTC=1, NumberOfCaptures=1, param45=1, Period=1199, RegDefReplacementString=reg16, RegSizeReplacementString=uint16, Resolution=16, RstStatusReplacementString=rstSts, RunMode=0, SiliconRevision=3, SoftwareCaptureModeEnabled=false, SoftwareTriggerModeEnabled=false, TriggerInputEnabled=false, TriggerMode=0, UDB16=true, UDB24=false, UDB32=false, UDB8=false, UDBControlReg=true, UsesHWEnable=0, VerilogSectionReplacementString=sT16, CY_API_CALLBACK_HEADER_INCLUDE=, CY_COMMENT=, CY_COMPONENT_NAME=Timer_v2_70, CY_CONST_CONFIG=true, CY_CONTROL_FILE=<:default:>, CY_DATASHEET_FILE=<:default:>, CY_FITTER_NAME=CYCLES_TIMER, CY_INSTANCE_SHORT_NAME=CYCLES_TIMER, CY_MAJOR_VERSION=2, CY_MINOR_VERSION=70, CY_PDL_DRIVER_NAME=, CY_PDL_DRIVER_REQ_VERSION=, CY_PDL_DRIVER_SUBGROUP=, CY_PDL_DRIVER_VARIANT=, CY_REMOVE=false, CY_SUPPRESS_API_GEN=false, CY_VERSION=PSoC Creator  4.1 Update 1, INSTANCE_NAME=CYCLES_TIMER, )
+module Timer_v2_70_11 (
+    reset,
+    interrupt,
+    enable,
+    trigger,
+    capture,
+    capture_out,
+    tc,
+    clock);
+    input       reset;
+    output      interrupt;
+    input       enable;
+    input       trigger;
+    input       capture;
+    output      capture_out;
+    output      tc;
+    input       clock;
+
+    parameter CaptureCount = 2;
+    parameter CaptureCounterEnabled = 0;
+    parameter DeviceFamily = "PSoC3";
+    parameter InterruptOnCapture = 0;
+    parameter InterruptOnTC = 1;
+    parameter Resolution = 16;
+    parameter SiliconRevision = "3";
+
+          wire  Net_261;
+          wire  Net_260;
+          wire  Net_266;
+          wire  Net_102;
+          wire  Net_55;
+          wire  Net_57;
+          wire  Net_53;
+          wire  Net_51;
+
+    ZeroTerminal ZeroTerminal_1 (
+        .z(Net_260));
+
+	// VirtualMux_2 (cy_virtualmux_v1_0)
+	assign interrupt = Net_55;
+
+	// VirtualMux_3 (cy_virtualmux_v1_0)
+	assign tc = Net_53;
+
+    B_Timer_v2_70 TimerUDB (
+        .reset(reset),
+        .interrupt(Net_55),
+        .enable(enable),
+        .trigger(trigger),
+        .capture_in(capture),
+        .capture_out(capture_out),
+        .tc(Net_53),
+        .clock(clock));
+    defparam TimerUDB.Capture_Count = 2;
+    defparam TimerUDB.CaptureCounterEnabled = 0;
+    defparam TimerUDB.CaptureMode = 0;
+    defparam TimerUDB.EnableMode = 0;
+    defparam TimerUDB.InterruptOnCapture = 0;
+    defparam TimerUDB.Resolution = 16;
+    defparam TimerUDB.RunMode = 0;
+    defparam TimerUDB.TriggerMode = 0;
+
+    OneTerminal OneTerminal_1 (
+        .o(Net_102));
+
+	// VirtualMux_1 (cy_virtualmux_v1_0)
+	assign Net_266 = Net_102;
+
+
+
+endmodule
+
 // top
 module top ;
 
+          wire  Net_4041;
+          wire  Net_4036;
+          wire  Net_4035;
+          wire  Net_4034;
+          wire  Net_4033;
+          wire  Net_4032;
+          wire  Net_4031;
+          wire  Net_4030;
           wire  Net_4026;
           wire  Net_3694;
           wire  Net_3693;
@@ -1586,6 +1667,7 @@ module top ;
           wire  Net_3654;
           wire  Net_3653;
           wire  Net_3652;
+          wire  Net_5159;
           wire  Net_3961;
           wire  Net_3960;
           wire  Net_3925;
@@ -3777,6 +3859,45 @@ module top ;
 		  .is_digital(1))
 		CLOCK_PWM_1
 		 (.clock_out(Net_4015));
+
+
+    Timer_v2_70_11 CYCLES_TIMER (
+        .reset(Net_4030),
+        .interrupt(Net_4031),
+        .enable(1'b1),
+        .trigger(1'b1),
+        .capture(1'b0),
+        .capture_out(Net_4035),
+        .tc(Net_4036),
+        .clock(Net_5159));
+    defparam CYCLES_TIMER.CaptureCount = 2;
+    defparam CYCLES_TIMER.CaptureCounterEnabled = 0;
+    defparam CYCLES_TIMER.DeviceFamily = "PSoC3";
+    defparam CYCLES_TIMER.InterruptOnCapture = 0;
+    defparam CYCLES_TIMER.InterruptOnTC = 1;
+    defparam CYCLES_TIMER.Resolution = 16;
+    defparam CYCLES_TIMER.SiliconRevision = "3";
+
+
+	cy_clock_v1_0
+		#(.id("ec08f09b-11cf-4662-a6d5-18854155fb8e"),
+		  .source_clock_id("315365C3-2E3E-4f04-84A2-BB564A173261"),
+		  .divisor(0),
+		  .period("100000000000000"),
+		  .is_direct(0),
+		  .is_digital(1))
+		counter_cyc_clk
+		 (.clock_out(Net_5159));
+
+
+    ZeroTerminal ZeroTerminal_7 (
+        .z(Net_4030));
+
+
+	cy_isr_v1_0
+		#(.int_type(2'b10))
+		ISR_CYCLES
+		 (.int_signal(Net_4036));
 
 
 

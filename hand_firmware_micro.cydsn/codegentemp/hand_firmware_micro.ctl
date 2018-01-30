@@ -1,6 +1,6 @@
 -- ======================================================================
 -- hand_firmware_micro.ctl generated from hand_firmware_micro
--- 10/31/2017 at 14:56
+-- 01/26/2018 at 17:27
 -- This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 -- ======================================================================
 

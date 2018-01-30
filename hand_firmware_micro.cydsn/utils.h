@@ -242,6 +242,9 @@ void calibration();
 **/
 void check_rest_position();
 
+/** This function reset statistics counters **/
+void reset_counters();
+
 #endif
 
 /* [] END OF FILE */

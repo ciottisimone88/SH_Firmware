@@ -350,8 +350,8 @@ void calibration(void) {
 // return
 
 // Number of teeth of the two wheels
-#define N1 15           ///< Teeth of the first encoder wheel.
-#define N2 14           ///< Teeth of the second encoder wheel.
+#define N1 28//15           ///< Teeth of the first encoder wheel.
+#define N2 27//14           ///< Teeth of the second encoder wheel.
 
 #define I1 1            ///< First wheel invariant value.
 #define I2 (-1)         ///< Second wheel invariant value.
@@ -468,6 +468,26 @@ void check_rest_position(void) {     // 100 Hz frequency.
             rest_pos_curr_ref = c_mem.pos_lim_sup[0];
     }
 
+}
+
+//==============================================================================
+//                                                              RESET COUNTERS
+//==============================================================================
+void reset_counters() {
+    uint8 i;
+    
+    //Initialize counters        
+    g_mem.emg_counter[0] = g_mem.emg_counter[1] = 0;
+    for(i = 0; i< 10; i++){
+        g_mem.position_hist[i] = 0;
+    }
+    for(i = 0; i< 4; i++){
+        g_mem.current_hist[i] = 0;
+    }
+    g_mem.rest_counter = 0;
+    g_mem.wire_disp = 0;
+    g_mem.total_time_on = 0;
+    g_mem.total_time_rest = 0; 
 }
 
 /* [] END OF FILE */

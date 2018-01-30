@@ -69,12 +69,20 @@ uint8   dev_pwm_sat = 100;                  /*!< Device pwm saturation. By defau
 int32   dev_tension_f;                      /*!< Filtered power supply tension.*/
 int32   pow_tension;                        /*!< Computed power supply tension.*/
 
+counter_status CYDATA cycles_status = NONE;     /*!< Cycles counter state machine status.*/
+emg_status CYDATA emg_1_status = RESET;         /*!< First EMG sensor status.*/
+emg_status CYDATA emg_2_status = RESET;         /*!< Second EMG sensor status.*/  
+
 // Bit Flag
 
 CYBIT reset_last_value_flag;                /*!< This flag is set when the encoders last values must be resetted.*/
 CYBIT tension_valid;                        /*!< Tension validation bit.*/
 CYBIT interrupt_flag = FALSE;               /*!< Interrupt flag enabler.*/
 CYBIT watchdog_flag = FALSE;				/*!< Watchdog flag enabler.*/
+CYBIT cycles_interrupt_flag = FALSE;        /*!< Cycles timer interrupt flag enabler.*/
+CYBIT can_write = TRUE;                     /*!< Write to EEPROM flag.*/
+uint8 rest_enabled;                         /*!< Rest position flag.*/
+uint8 forced_open;                          /*!< Forced open flag (used in position with rest position control).*/       
 
 // DMA Buffer
 
@@ -82,9 +90,7 @@ int16 ADC_buf[4]; 							/*! ADC measurements buffer.*/
 
 // PWM value
 int8 pwm_sign;								/*!< Sign of pwm driven. Used to obtain current sign.*/
-
-uint8 rest_enabled;                         /*!< Rest position flag.*/
-uint8 forced_open;                          /*!< Forced open flag (used in position with rest position control).*/                               
+                            
 int32 rest_pos_curr_ref;					/*!< Rest position current reference.*/
 
 
