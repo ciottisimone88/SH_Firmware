@@ -46,36 +46,37 @@
 //                                                            Current Estimation
 //==============================================================================
 
-int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
+int32 curr_estim ( int32 CYDATA pos, int32 CYDATA vel, int32 CYDATA ref) {
 
-        static int32 virtual_pos_friction; 	//Virtual position used to estimate friction
-        static int32 err_pos_dt;			//Temporal evolution of error position.
-											//Needed to model the current transients due to reference steps.
-        int32 curr_estimate;
+    static int32 CYDATA virtual_pos_friction; 	//Virtual position used to estimate friction
+    static int32 CYDATA err_pos_dt;			    //Temporal evolution of error position.
+										//Needed to model the current transients due to reference steps.
 
-        if (pos < ZERO_TOL) 
-			virtual_pos_friction = pos;
-        else {
-			if ((pos - virtual_pos_friction) > ZMAX) 
-				virtual_pos_friction =  pos - ZMAX;
-        	else { 
-				if ((pos - virtual_pos_friction) < -ZMAX) 
-					virtual_pos_friction =  pos + ZMAX;
-			}
-		}        
-       
-        curr_estimate = pos * g_mem.curr_lookup[0] * (1 + pos * g_mem.curr_lookup[1]) + (pos - virtual_pos_friction) * (g_mem.curr_lookup[2] / ZMAX) + vel * g_mem.curr_lookup[3] * (1 + abs(vel) * g_mem.curr_lookup[4]) + (ref - err_pos_dt) * g_mem.curr_lookup[5];
-        
-        if (curr_estimate > c_mem.current_limit) 
-            curr_estimate = c_mem.current_limit;
-        else {
-			if (curr_estimate < -c_mem.current_limit)
-            	curr_estimate = -c_mem.current_limit;
+    int32 CYDATA curr_estimate;
+
+    if (pos < ZERO_TOL) 
+		virtual_pos_friction = pos;
+    else {
+		if ((pos - virtual_pos_friction) > ZMAX) 
+			virtual_pos_friction =  pos - ZMAX;
+    	else { 
+			if ((pos - virtual_pos_friction) < -ZMAX) 
+				virtual_pos_friction =  pos + ZMAX;
 		}
+	}        
+   
+    curr_estimate = pos * g_mem.curr_lookup[0] * (1 + pos * g_mem.curr_lookup[1]) + (pos - virtual_pos_friction) * (g_mem.curr_lookup[2] / ZMAX) + vel * g_mem.curr_lookup[3] * (1 + abs(vel) * g_mem.curr_lookup[4]) + (ref - err_pos_dt) * g_mem.curr_lookup[5];
+    
+    if (curr_estimate > c_mem.current_limit) 
+        curr_estimate = c_mem.current_limit;
+    else {
+		if (curr_estimate < -c_mem.current_limit)
+        	curr_estimate = -c_mem.current_limit;
+	}
 
-        err_pos_dt = (REFSPEED * ref + (1024 - REFSPEED) * err_pos_dt) / 1024;         
-        
-        return curr_estimate;        
+    err_pos_dt = (REFSPEED * ref + (1024 - REFSPEED) * err_pos_dt) / 1024;         
+    
+    return curr_estimate;        
 }
 
 //==============================================================================
@@ -271,7 +272,7 @@ uint32 my_mod(int32 val, int32 divisor) {
     if (val >= 0) {
         return (int32)(val % divisor);
     } else {
-        return (int32)(divisor - (-val % divisor));
+        return (int32)((divisor - (-val % divisor)) % divisor);
     }
 }
 

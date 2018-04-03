@@ -77,44 +77,45 @@ void commProcess(void){
     }
 
     switch(rx_cmd) {
-
-//=============================================================     CMD_ACTIVATE
-        case CMD_ACTIVATE:
-            cmd_activate();
-            break;
-
-//===========================================================     CMD_SET_INPUTS
-
-        case CMD_SET_INPUTS:
-            cmd_set_inputs();
-            break;
-
+        
 //=====================================================     CMD_GET_MEASUREMENTS
 
         case CMD_GET_MEASUREMENTS:
             cmd_get_measurements();
             break;
-
+            
 //=========================================================     CMD_GET_CURRENTS
 
         case CMD_GET_CURRENTS:
             cmd_get_currents();
             break;
             
-//=========================================================     CMD_GET_CURRENTS
-
+ //===================================================     CMD_GET_CURR_AND_MEAS
         case CMD_GET_CURR_AND_MEAS:
-            cmd_get_curr_meas();
+            cmd_get_curr_and_meas();
             break;
             
+//===========================================================     CMD_SET_INPUTS
+        case CMD_SET_INPUTS:
+            cmd_set_inputs();
+            break;
+            
+//=============================================================     CMD_ACTIVATE
+        case CMD_ACTIVATE:
+            cmd_activate();
+            break;
+            
+//=========================================================     CMD_GET_ACTIVATE   
+        case CMD_GET_ACTIVATE:
+            cmd_get_activate();
+            break;
+  
 //=========================================================     CMD_GET_CURR_DIFF
-         
         case CMD_GET_CURR_DIFF:
             cmd_get_currents_for_cuff();
             break;
             
 //=========================================================     CMD_GET_CURR_DIFF
-        
         case CMD_GET_VELOCITIES:
             cmd_get_velocities();
             break;
@@ -131,20 +132,12 @@ void commProcess(void){
             cmd_get_emg();
             break;
 
-//=============================================================     CMD_WATCHDOG
-            
+//=============================================================     CMD_WATCHDOG   
         case CMD_SET_WATCHDOG:
             cmd_set_watchdog();
-            break;
-            
-//=========================================================     CMD_GET_ACTIVATE
-            
-        case CMD_GET_ACTIVATE:
-            cmd_get_activate();
-            break;
-            
-//=========================================================     CMD_SET_BAUDRATE
-            
+            break;           
+
+//=========================================================     CMD_SET_BAUDRATE   
         case CMD_SET_BAUDRATE:
             cmd_set_baudrate();
             break;  
@@ -173,14 +166,12 @@ void commProcess(void){
             get_param_list( *((uint16 *) &g_rx.buffer[1]) );
             break;
 
-//=================================================================     CMD_PING
-            
+//=================================================================     CMD_PING  
         case CMD_PING:
             cmd_ping();
             break;
 
-//=========================================================     CMD_STORE_PARAMS
-            
+//=========================================================     CMD_STORE_PARAMS     
         case CMD_STORE_PARAMS:
             cmd_store_params();
             break;
@@ -257,7 +248,9 @@ void commProcess(void){
         default:
             break;
 
-    }
+    } //switch (rx_cmd)
+    
+    g_rx.ready = 0;
 }
 
 
@@ -1156,7 +1149,7 @@ void commWrite_old_id(uint8 *packet_data, uint16 packet_lenght, uint8 old_id)
     RS485_CTS_Write(0);
 }
 
-void commWrite(uint8 *packet_data, uint16 packet_lenght)
+void commWrite(uint8 *packet_data, const uint16 packet_lenght)
 {
     uint16 CYDATA index;    // iterator
 
@@ -1611,7 +1604,7 @@ void cmd_get_curr_meas(){
 
     // Calculate Checksum and send message to UART 
 
-    packet_data[5] = LCRChecksum (packet_data, 11);
+    packet_data[11] = LCRChecksum (packet_data, 11);
     
     commWrite(packet_data, 12);
 }

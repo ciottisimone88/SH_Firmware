@@ -228,14 +228,13 @@ void interrupt_manager(){
 
             //-----     wait for length     ------------------------------------
             case  WAIT_LENGTH:
-
- 
+                
                 data_packet_length = rx_data;
                 // check validity of pack length
                 if (data_packet_length <= 1) {
                     data_packet_length = 0;
                     state = WAIT_START;
-                } else if (data_packet_length > 128) {
+                } else if (data_packet_length > 127) {
                     data_packet_length = 0;
                     state = WAIT_START;
                 } else {
@@ -481,7 +480,6 @@ void motor_control() {
                 handle_value = g_meas.pos[2] * c_mem.motor_handle_ratio;
             else
                 handle_value = g_meas.pos[1] * c_mem.motor_handle_ratio;
-            
 
             // Read handle and use it as reference for the motor
             if (((handle_value - g_ref.pos[0]) > c_mem.max_step_pos) && (c_mem.max_step_pos != 0))
@@ -547,7 +545,7 @@ void motor_control() {
                 default:
                     break;
             }
-
+            
             break;
 
         case INPUT_MODE_EMG_FCFS_ADV:
@@ -606,14 +604,14 @@ void motor_control() {
         if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) 
             g_ref.pos[0] = c_mem.pos_lim_sup[0];
     }
-
+    
     switch(c_mem.control_mode) {
         // ======================= CURRENT AND POSITION CONTROL =======================
         case CURR_AND_POS_CONTROL:
             pos_error = g_ref.pos[0] - g_meas.pos[0];
 
             pos_error_sum += pos_error;
-
+            
             // error_sum saturation
             if (pos_error_sum > POS_INTEGRAL_SAT_LIMIT)
                 pos_error_sum = POS_INTEGRAL_SAT_LIMIT;
@@ -637,21 +635,15 @@ void motor_control() {
             // Derivative
             if (k_d_dl != 0)
                 i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16;
-                        
+            
             // Update previous position
             prev_pos_err = pos_error;
-
-            // // current set through position reference
-            // i_ref = g_ref.pos[0] >> g_mem.res[0];
 
             // motor direction depends on i_ref
             if (i_ref >= 0)
                 motor_dir = TRUE;
             else
                 motor_dir = FALSE;
-
-            // current ref must be positive
-            //i_ref = abs(i_ref);
 
             // saturate max current
             if (i_ref > c_mem.current_limit)
@@ -660,14 +652,6 @@ void motor_control() {
                 if (i_ref < -c_mem.current_limit)
                     i_ref = -c_mem.current_limit;
         	}
-
-            // saturate min current
-            /*if (i_ref < MIN_CURR_SAT_LIMIT && i_ref > 0) {
-                i_ref = MIN_CURR_SAT_LIMIT;
-            }*/
-
-            // // write i_ref on meas curr 2 for DEBUG
-            //g_meas.curr[1] = i_ref;
 
             // current error and curr error sum
             curr_error = i_ref - g_meas.curr[0];
@@ -703,7 +687,7 @@ void motor_control() {
                 if (pwm_input > PWM_MAX_VALUE)
                     pwm_input = PWM_MAX_VALUE;
             }
-
+            
             // Update previous current
             prev_curr_err = curr_error;
 
@@ -726,17 +710,14 @@ void motor_control() {
             // Proportional
             if (k_p != 0) 
                 pwm_input = (int32)(k_p * pos_error) >> 16;
-            
 
             // Integral
             if (k_i != 0) 
                 pwm_input += (int32)(k_i * pos_error_sum) >> 16;
-            
 
             // Derivative
             if (k_d != 0) 
                 pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16;
-            
 
             // Update measure
             prev_pos_err = pos_error;
@@ -745,7 +726,7 @@ void motor_control() {
                 motor_dir = TRUE;
             else
                 motor_dir = FALSE;
-
+            
         break;
 
         // ========================== CURRENT CONTROL ==========================
@@ -804,7 +785,6 @@ void motor_control() {
                 motor_dir = TRUE;
             else 
                 motor_dir = FALSE;
-            
 
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 
@@ -847,6 +827,7 @@ void motor_control() {
         if((g_ref.pos[0] >> g_mem.res[0]) < cycles_thr /*|| pwm_sign == 1*/)
             count_one = TRUE;
     }
+    
     
     pwm_sign = SIGN(pwm_input);
 
@@ -1112,8 +1093,12 @@ void analog_read_end() {
         g_meas.curr[0] = filter_i1((int16) (((int32)(ADC_buf[1] - 1638) * 25771) >> 13) * pwm_sign);
         
 		// Calculate current estimation and put it in the second part of the current measurement array;
-		g_meas.curr[1] = (int16) filter_curr_diff(((int32) g_meas.curr[0]) - curr_estim(g_meas.pos[0] >> g_mem.res[0], g_meas.vel[0] >> g_mem.res[0], g_ref.pos[0] >> g_mem.res[0]));
-
+		//g_meas.curr[1] = (int16) filter_curr_diff(((int32) g_meas.curr[0]) - curr_estim(g_meas.pos[0] >> g_mem.res[0], g_meas.vel[0] >> g_mem.res[0], g_ref.pos[0] >> g_mem.res[0]));
+        if(g_mem.curr_lookup[0] || g_mem.curr_lookup[1] || g_mem.curr_lookup[2] || g_mem.curr_lookup[3] || g_mem.curr_lookup[4] || g_mem.curr_lookup[5])
+            g_meas.curr[1] = (int16) ((int32) g_meas.curr[0]) - curr_estim(g_meas.pos[0] >> g_mem.res[0], g_meas.vel[0] >> g_mem.res[0], g_ref.pos[0] >> g_mem.res[0]);
+        else
+            g_meas.curr[1] = 0;
+            
         // Check Interrupt 
     
         if (interrupt_flag){
@@ -1130,186 +1115,188 @@ void analog_read_end() {
         // EMG 1 calibration state machine
         
         // Calibration state machine
-        switch(emg_1_status) {
-            case NORMAL: // normal execution
-                i_aux = (int32)ADC_buf[2];
-                i_aux = filter_ch1(i_aux);
-                i_aux = (i_aux << 10) / g_mem.emg_max_value[0];
-    
-                if (interrupt_flag){
-                    interrupt_flag = FALSE;
-                    interrupt_manager();
-                }
-                //Saturation
-                if (i_aux < 0)
-                    i_aux = 0;
-                else 
-                    if (i_aux > 1024) 
-                        i_aux = 1024;
-                
-                g_meas.emg[0] = i_aux;
-    
-                if (interrupt_flag){
-                    interrupt_flag = FALSE;
-                    interrupt_manager();
-                }
-                
-                break;
-
-            case RESET: // reset variables
-                emg_counter_1 = 0;
-                g_mem.emg_max_value[0] = 0;
-                emg_1_status = DISCARD; // goto next status
-                
-                break;
-
-            case DISCARD: // discard first EMG_SAMPLE_TO_DISCARD samples
-                emg_counter_1++;
-                if (emg_counter_1 == EMG_SAMPLE_TO_DISCARD) {
-                    emg_counter_1 = 0;          // reset counter
-                    LED_REG_Write(0x01);        // turn on LED
-                        
+        if(c_mem.input_mode != INPUT_MODE_EXTERNAL) {
+            switch(emg_1_status) {
+                case NORMAL: // normal execution
+                    i_aux = (int32)ADC_buf[2];
+                    i_aux = filter_ch1(i_aux);
+                    i_aux = (i_aux << 10) / g_mem.emg_max_value[0];
+        
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    //Saturation
+                    if (i_aux < 0)
+                        i_aux = 0;
+                    else 
+                        if (i_aux > 1024) 
+                            i_aux = 1024;
+                    
+                    g_meas.emg[0] = i_aux;
+        
                     if (interrupt_flag){
                         interrupt_flag = FALSE;
                         interrupt_manager();
                     }
                     
-                    emg_1_status = SUM_AND_MEAN;           // sum and mean status
-                }
-                break;
+                    break;
 
-            case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
-                // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
-                emg_counter_1++;
-                g_mem.emg_max_value[0] += filter_ch1((int32)ADC_buf[2]);
-                
-                if (interrupt_flag){
-                    interrupt_flag = FALSE;
-                    interrupt_manager();
-                }
-                
-                if (emg_counter_1 == SAMPLES_FOR_EMG_MEAN) {
-                    g_mem.emg_max_value[0] = g_mem.emg_max_value[0] / SAMPLES_FOR_EMG_MEAN; // calc mean
-    
-                    if (interrupt_flag){
-                        interrupt_flag = FALSE;
-                        interrupt_manager();
-                    }                    
+                case RESET: // reset variables
+                    emg_counter_1 = 0;
+                    g_mem.emg_max_value[0] = 0;
+                    emg_1_status = DISCARD; // goto next status
                     
-                    LED_REG_Write(0x00);        // led OFF
-                    emg_counter_1 = 0;          // reset counter
+                    break;
 
-                    emg_1_status = NORMAL;           // goto normal execution
-                }
-                break;
-
-            default:
-                break;
-        }
-    
-        if (interrupt_flag){
-            interrupt_flag = FALSE;
-            interrupt_manager();
-        }
-        // EMG 2 calibration state machine
-        switch(emg_2_status) {
-            case NORMAL: // normal execution
-                i_aux = (int32)ADC_buf[3];
-                i_aux = filter_ch2(i_aux);
-                i_aux = (i_aux << 10) / g_mem.emg_max_value[1];
-    
-                if (interrupt_flag){
-                    interrupt_flag = FALSE;
-                    interrupt_manager();
-                }
-                
-                if (i_aux < 0) 
-                    i_aux = 0;
-                else 
-                    if (i_aux > 1024)
-                        i_aux = 1024;
-                
-                g_meas.emg[1] = i_aux;
-
-                break;
-
-            case RESET: // reset variables
-                emg_counter_2 = 0;
-                g_mem.emg_max_value[1] = 0;
-    
-                if (interrupt_flag){
-                    interrupt_flag = FALSE;
-                    interrupt_manager();
-                }
-                
-                emg_2_status = WAIT; // wait for EMG 1 calibration
-                break;
-
-            case DISCARD: // discard first EMG_SAMPLE_TO_DISCARD samples
-                emg_counter_2++;
-                if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
-                    emg_counter_2 = 0;          // reset counter
-                    LED_REG_Write(0x01);        // turn on LED
-    
-                    if (interrupt_flag){
-                        interrupt_flag = FALSE;
-                        interrupt_manager();
-                    }
-                    
-                    emg_2_status = SUM_AND_MEAN;           // sum and mean status
-                }
-                break;
-
-            case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
-                // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
-                emg_counter_2++;
-                g_mem.emg_max_value[1] += filter_ch2((int32)ADC_buf[3]);
-    
-                if (interrupt_flag){
-                    interrupt_flag = FALSE;
-                    interrupt_manager();
-                }
-                
-                if (emg_counter_2 == SAMPLES_FOR_EMG_MEAN) {
-                    g_mem.emg_max_value[1] = g_mem.emg_max_value[1] / SAMPLES_FOR_EMG_MEAN; // calc mean
-                    LED_REG_Write(0x00);        // led OFF
-                    emg_counter_2 = 0;          // reset counter
-                
-                    if (interrupt_flag){
-                        interrupt_flag = FALSE;
-                        interrupt_manager();
-                    }
-                    
-                    // if EMG control mode active, activate motors accordingly with startup value
-                    if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
-                        (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
-                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
-                        (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
-                        if (c_mem.control_mode == CONTROL_ANGLE) {
-                            g_ref.pos[0] = g_meas.pos[0];
-                            g_ref.pos[1] = g_meas.pos[1];
+                case DISCARD: // discard first EMG_SAMPLE_TO_DISCARD samples
+                    emg_counter_1++;
+                    if (emg_counter_1 == EMG_SAMPLE_TO_DISCARD) {
+                        emg_counter_1 = 0;          // reset counter
+                        LED_REG_Write(0x01);        // turn on LED
+                            
+                        if (interrupt_flag){
+                            interrupt_flag = FALSE;
+                            interrupt_manager();
                         }
-                        g_ref.onoff = c_mem.activ;
-                        MOTOR_ON_OFF_Write(g_ref.onoff);
+                        
+                        emg_1_status = SUM_AND_MEAN;           // sum and mean status
                     }
-                    emg_2_status = NORMAL;           // goto normal execution
-                }
-                break;
+                    break;
 
-            case WAIT: // wait for EMG calibration to be done
-                if (emg_1_status == NORMAL)
-                    emg_2_status = DISCARD;           // goto discard sample
-                break;
+                case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
+                    // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
+                    emg_counter_1++;
+                    g_mem.emg_max_value[0] += filter_ch1((int32)ADC_buf[2]);
+                    
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    if (emg_counter_1 == SAMPLES_FOR_EMG_MEAN) {
+                        g_mem.emg_max_value[0] = g_mem.emg_max_value[0] / SAMPLES_FOR_EMG_MEAN; // calc mean
+        
+                        if (interrupt_flag){
+                            interrupt_flag = FALSE;
+                            interrupt_manager();
+                        }                    
+                        
+                        LED_REG_Write(0x00);        // led OFF
+                        emg_counter_1 = 0;          // reset counter
 
-            default:
-                break;
-        }
-            
-        if (interrupt_flag){
-            interrupt_flag = FALSE;
-            interrupt_manager();
-        }
-    }
+                        emg_1_status = NORMAL;           // goto normal execution
+                    }
+                    break;
+
+                default:
+                    break;
+            } //switch(emg_1_status)
+        
+            if (interrupt_flag){
+                interrupt_flag = FALSE;
+                interrupt_manager();
+            }
+            // EMG 2 calibration state machine
+            switch(emg_2_status) {
+                case NORMAL: // normal execution
+                    i_aux = (int32)ADC_buf[3];
+                    i_aux = filter_ch2(i_aux);
+                    i_aux = (i_aux << 10) / g_mem.emg_max_value[1];
+        
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    if (i_aux < 0) 
+                        i_aux = 0;
+                    else 
+                        if (i_aux > 1024)
+                            i_aux = 1024;
+                    
+                    g_meas.emg[1] = i_aux;
+
+                    break;
+
+                case RESET: // reset variables
+                    emg_counter_2 = 0;
+                    g_mem.emg_max_value[1] = 0;
+        
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    emg_2_status = WAIT; // wait for EMG 1 calibration
+                    break;
+
+                case DISCARD: // discard first EMG_SAMPLE_TO_DISCARD samples
+                    emg_counter_2++;
+                    if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
+                        emg_counter_2 = 0;          // reset counter
+                        LED_REG_Write(0x01);        // turn on LED
+        
+                        if (interrupt_flag){
+                            interrupt_flag = FALSE;
+                            interrupt_manager();
+                        }
+                        
+                        emg_2_status = SUM_AND_MEAN;           // sum and mean status
+                    }
+                    break;
+
+                case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
+                    // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
+                    emg_counter_2++;
+                    g_mem.emg_max_value[1] += filter_ch2((int32)ADC_buf[3]);
+        
+                    if (interrupt_flag){
+                        interrupt_flag = FALSE;
+                        interrupt_manager();
+                    }
+                    
+                    if (emg_counter_2 == SAMPLES_FOR_EMG_MEAN) {
+                        g_mem.emg_max_value[1] = g_mem.emg_max_value[1] / SAMPLES_FOR_EMG_MEAN; // calc mean
+                        LED_REG_Write(0x00);        // led OFF
+                        emg_counter_2 = 0;          // reset counter
+                    
+                        if (interrupt_flag){
+                            interrupt_flag = FALSE;
+                            interrupt_manager();
+                        }
+                        
+                        // if EMG control mode active, activate motors accordingly with startup value
+                        if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||
+                            (c_mem.input_mode == INPUT_MODE_EMG_INTEGRAL) ||
+                            (c_mem.input_mode == INPUT_MODE_EMG_FCFS) ||
+                            (c_mem.input_mode == INPUT_MODE_EMG_FCFS_ADV)) {
+                            if (c_mem.control_mode == CONTROL_ANGLE) {
+                                g_ref.pos[0] = g_meas.pos[0];
+                                g_ref.pos[1] = g_meas.pos[1];
+                            }
+                            g_ref.onoff = c_mem.activ;
+                            MOTOR_ON_OFF_Write(g_ref.onoff);
+                        }
+                        emg_2_status = NORMAL;           // goto normal execution
+                    }
+                    break;
+
+                case WAIT: // wait for EMG calibration to be done
+                    if (emg_1_status == NORMAL)
+                        emg_2_status = DISCARD;           // goto discard sample
+                    break;
+
+                default:
+                    break;
+            } //switch(emg_2_status)
+                
+            if (interrupt_flag){
+                interrupt_flag = FALSE;
+                interrupt_manager();
+            }
+        } //if(c_mem.input_mode != INPUT_MODE_EXTERNAL)
+    } // if(dev_tension > 0)
     else {
 
         emg_1_status = RESET; 
