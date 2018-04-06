@@ -1786,7 +1786,7 @@ void cmd_get_curr_and_meas(){
 
     // Positions
     for (index = NUM_OF_SENSORS; index--;) 
-        *((int16 *) &packet_data[(index << 2) + 5]) = (int16) (g_measOld.pos[index] >> g_mem.res[index]);
+        *((int16 *) &packet_data[(index << 1) + 5]) = (int16) (g_measOld.pos[index] >> g_mem.res[index]);
         
     // Calculate Checksum and send message to UART 
         

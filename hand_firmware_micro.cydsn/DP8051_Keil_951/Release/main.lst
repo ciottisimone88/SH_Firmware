@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   50          *
   51          */
   52          
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 2   
 
   53          
   54          // ----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ line level    source
  112   1          // CYCLES TIMER
  113   1          
  114   1          CYCLES_TIMER_Start();
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 3   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 3   
 
  115   1          ISR_CYCLES_StartEx(ISR_CYCLES_Handler);
  116   1          
@@ -190,7 +190,7 @@ line level    source
  167   1      
  168   1          CyDelay(10);                                        // Wait for encoders to have a valid value.
  169   1      
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 4   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 4   
 
  170   1          //---------------------------------------------------  Initialize referiment structure
  171   1          for (i = NUM_OF_MOTORS; i--;) 
@@ -254,7 +254,7 @@ line level    source
  229   2              while(FF_STATUS_Read() == 0){
  230   3                  // On interrupt from RS485
  231   3                  if (interrupt_flag){
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 5   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 5   
 
  232   4                      // Reset WDT
  233   4                      WATCHDOG_REFRESH_Write(0x01);
@@ -290,7 +290,7 @@ line level    source
  263          
  264          
  265          /* [] END OF FILE */
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 6   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 6   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -354,7 +354,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0050 7F00        E     MOV     R7,#LOW ISR_WATCHDOG_Handler
 0052 120000      E     LCALL   _ISR_WATCHDOG_StartEx
                                            ; SOURCE LINE # 126
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 7   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 7   
 
 0055 120000      E     LCALL   PWM_MOTORS_Start
                                            ; SOURCE LINE # 127
@@ -418,7 +418,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 150
 00AD 7B01              MOV     R3,#01H
 00AF 7A00        E     MOV     R2,#HIGH ADC_buf
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 8   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 8   
 
 00B1 7900        E     MOV     R1,#LOW ADC_buf
 00B3 E9                MOV     A,R1
@@ -482,7 +482,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0103 FF                MOV     R7,A
 0104 FE                MOV     R6,A
 0105 FD                MOV     R5,A
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 9   
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 9   
 
 0106 FC                MOV     R4,A
 0107 EB                MOV     A,R3
@@ -546,7 +546,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0158 E4                CLR     A
 0159 FF                MOV     R7,A
 015A FE                MOV     R6,A
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 10  
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 10  
 
 015B FD                MOV     R5,A
 015C FC                MOV     R4,A
@@ -610,7 +610,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 203
 01B4 900000      E     MOV     DPTR,#dev_pwm_sat
 01B7 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 11  
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 11  
 
 01B8 900000      E     MOV     DPTR,#dev_pwm_limit
 01BB F0                MOVX    @DPTR,A
@@ -674,7 +674,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0201 120000      E     LCALL   interrupt_manager
                                            ; SOURCE LINE # 239
 0204 80E9              SJMP    ?C0012
-C51 COMPILER V9.51   MAIN                                                                  01/26/2018 17:27:34 PAGE 12  
+C51 COMPILER V9.51   MAIN                                                                  01/31/2018 11:35:56 PAGE 12  
 
 0206         ?C0014:
                                            ; SOURCE LINE # 241
