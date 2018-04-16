@@ -253,7 +253,7 @@ void cmd_get_currents();
 /** This function gets the motor current in combination with encoder measurements 
     and puts it in the package to be sent to the user.
 **/
-void cmd_get_curr_meas();
+void cmd_get_curr_and_meas();
 //============================================================  cmd_get_currents_for_cuff()
 /** This function gets the motor current and puts it in the package to 
 	be sent to the Cuff device, using the \ref commWrite_to_cuff "commWrite_to_cuff"
