@@ -6,16 +6,14 @@ Utility functions declaration.
 
 
 {\ttfamily \#include $<$globals.\+h$>$}\newline
-Include dependency graph for utils.\+h\+:
-\nopagebreak
+Include dependency graph for utils.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{utils_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -105,6 +103,8 @@ int \textbf{ calc\+\_\+turns\+\_\+fcn} (const int32 pos1, const int32 pos2)
 void \textbf{ calibration} ()
 \item 
 void \textbf{ check\+\_\+rest\+\_\+position} ()
+\item 
+void \textbf{ reset\+\_\+counters} ()
 \end{DoxyCompactItemize}
 \end{Indent}
 
@@ -439,3 +439,10 @@ This functions approximates the value passed to the nearest integer
 {\em x} & The floating point value that needs to be rounded \\
 \hline
 \end{DoxyParams}
+\mbox{\label{utils_8h_a2640efff1e7b6f9c11615048ba43b0fd}} 
+\index{utils.\+h@{utils.\+h}!reset\+\_\+counters@{reset\+\_\+counters}}
+\index{reset\+\_\+counters@{reset\+\_\+counters}!utils.\+h@{utils.\+h}}
+\subsubsection{reset\+\_\+counters()}
+{\footnotesize\ttfamily void reset\+\_\+counters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function reset statistics counters 

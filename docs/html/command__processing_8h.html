@@ -95,8 +95,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Firmware information functions</div></td></tr>
-<tr class="memitem:abacf855ed80e3052a5bb5b243a0d809e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#abacf855ed80e3052a5bb5b243a0d809e">infoPrepare</a> (unsigned char *info_string)</td></tr>
-<tr class="separator:abacf855ed80e3052a5bb5b243a0d809e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad29b664ceb06efa22239c86183081d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#aad29b664ceb06efa22239c86183081d5">prepare_generic_info</a> (char *info_string)</td></tr>
+<tr class="separator:aad29b664ceb06efa22239c86183081d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36e3659e6603634b76ed735aa81bb97b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#a36e3659e6603634b76ed735aa81bb97b">prepare_counter_info</a> (char *info_string)</td></tr>
+<tr class="separator:a36e3659e6603634b76ed735aa81bb97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5dcf9e6d2a6421fbe636487e7f9f240"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#af5dcf9e6d2a6421fbe636487e7f9f240">infoSend</a> ()</td></tr>
 <tr class="separator:af5dcf9e6d2a6421fbe636487e7f9f240"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a525ccbc7ac3901d938dc352172ee2531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#a525ccbc7ac3901d938dc352172ee2531">infoGet</a> (uint16 info_type)</td></tr>
@@ -108,8 +110,7 @@ Functions</h2></td></tr>
 <tr class="separator:a517f4c61166381d40767fce9011e3c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af92ab4f3c1e0c0e8f5966bf2e2edeaba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#af92ab4f3c1e0c0e8f5966bf2e2edeaba">commWrite</a> (uint8 *packet_data, uint16 packet_lenght)</td></tr>
 <tr class="separator:af92ab4f3c1e0c0e8f5966bf2e2edeaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88e4b4d9bcf905337b5dfc6706499ce5"><td class="memItemLeft" align="right" valign="top"><a id="a88e4b4d9bcf905337b5dfc6706499ce5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b> (uint8 *packet_data, uint16 packet_lenght)</td></tr>
+<tr class="memitem:a88e4b4d9bcf905337b5dfc6706499ce5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#a88e4b4d9bcf905337b5dfc6706499ce5">commWrite_to_cuff</a> (uint8 *packet_data, uint16 packet_lenght)</td></tr>
 <tr class="separator:a88e4b4d9bcf905337b5dfc6706499ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Memory management functions</div></td></tr>
 <tr class="memitem:a5ef086c932682ca5f7549b74ead732aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#a5ef086c932682ca5f7549b74ead732aa">get_param_list</a> (uint16 index)</td></tr>
@@ -142,6 +143,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
 <tr class="separator:a0da9d76da2e4332137635f18e1d0004b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf613e251c1e14fe4fffe3e9e033f9f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#aaf613e251c1e14fe4fffe3e9e033f9f7">cmd_get_currents</a> ()</td></tr>
 <tr class="separator:aaf613e251c1e14fe4fffe3e9e033f9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45a90a8455bfdb6a7f0e118da2c6f0a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#a45a90a8455bfdb6a7f0e118da2c6f0a6">cmd_get_curr_and_meas</a> ()</td></tr>
+<tr class="separator:a45a90a8455bfdb6a7f0e118da2c6f0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accac7b4a0a0e43618bbb983c73106229"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#accac7b4a0a0e43618bbb983c73106229">cmd_get_currents_for_cuff</a> ()</td></tr>
 <tr class="separator:accac7b4a0a0e43618bbb983c73106229"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae579c6ac56fef33632f9c9f2c42b90a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8h.html#ae579c6ac56fef33632f9c9f2c42b90a0">cmd_get_emg</a> ()</td></tr>
@@ -222,6 +225,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
 
 </div>
 </div>
+<a id="a45a90a8455bfdb6a7f0e118da2c6f0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45a90a8455bfdb6a7f0e118da2c6f0a6">&#9670;&nbsp;</a></span>cmd_get_curr_and_meas()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cmd_get_curr_and_meas </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function gets the motor current and measures and puts it in the package to be sent. </p>
+
+</div>
+</div>
 <a id="aaf613e251c1e14fe4fffe3e9e033f9f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf613e251c1e14fe4fffe3e9e033f9f7">&#9670;&nbsp;</a></span>cmd_get_currents()</h2>
 
@@ -254,7 +275,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function gets the motor current and puts it in the package to be sent to the Cuff device, using the commWrite_to_cuff function. </p>
+<p>This function gets the motor current and puts it in the package to be sent to the Cuff device, using the <a class="el" href="command__processing_8h.html#a88e4b4d9bcf905337b5dfc6706499ce5">commWrite_to_cuff</a> function. </p>
 
 </div>
 </div>
@@ -518,6 +539,42 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
 
 </div>
 </div>
+<a id="a88e4b4d9bcf905337b5dfc6706499ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88e4b4d9bcf905337b5dfc6706499ce5">&#9670;&nbsp;</a></span>commWrite_to_cuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void commWrite_to_cuff </td>
+          <td>(</td>
+          <td class="paramtype">uint8 *&#160;</td>
+          <td class="paramname"><em>packet_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16&#160;</td>
+          <td class="paramname"><em>packet_lenght</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function writes on the serial port the package that needs to be sent to the Cuff device. It is used only when a specific device is connected to the hand. The Hand must have ID equal to the one of the Cuff plus one.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packet_data</td><td>The array of data that must be written. </td></tr>
+    <tr><td class="paramname">packet_lenght</td><td>The lenght of the data array. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5ef086c932682ca5f7549b74ead732aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ef086c932682ca5f7549b74ead732aa">&#9670;&nbsp;</a></span>get_param_list()</h2>
 
@@ -558,35 +615,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sends the firmware information prepared with <a class="el" href="command__processing_8h.html#abacf855ed80e3052a5bb5b243a0d809e">infoPrepare</a> through the serial port to the user interface. Is used when the ID is specified.</p>
+<p>This function sends the firmware information prepared with prepare_general_info or <a class="el" href="command__processing_8h.html#a36e3659e6603634b76ed735aa81bb97b">prepare_counter_info</a> through the serial port to the user interface. Is used when the ID is specified.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">info_type</td><td>The type of the information needed. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abacf855ed80e3052a5bb5b243a0d809e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abacf855ed80e3052a5bb5b243a0d809e">&#9670;&nbsp;</a></span>infoPrepare()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void infoPrepare </td>
-          <td>(</td>
-          <td class="paramtype">unsigned char *&#160;</td>
-          <td class="paramname"><em>info_string</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function is used to prepare the information string about the firmware of the device.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">info_string</td><td>An array of chars containing firmware information. </td></tr>
   </table>
   </dd>
 </dl>
@@ -607,7 +639,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sends the firmware information prepared with <a class="el" href="command__processing_8h.html#abacf855ed80e3052a5bb5b243a0d809e">infoPrepare</a> through the serial port to the user interface. Is used when no ID is specified. </p>
+<p>This function sends the firmware information prepared with infoPrepare through the serial port to the user interface. Is used when no ID is specified. </p>
 
 </div>
 </div>
@@ -727,6 +759,56 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A true value if the memory is correctly stored, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a36e3659e6603634b76ed735aa81bb97b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36e3659e6603634b76ed735aa81bb97b">&#9670;&nbsp;</a></span>prepare_counter_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void prepare_counter_info </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>info_string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is used to prepare an information string about the cycles counter of the hand</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info_string</td><td>An array of chars containing the requested informations. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aad29b664ceb06efa22239c86183081d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad29b664ceb06efa22239c86183081d5">&#9670;&nbsp;</a></span>prepare_generic_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void prepare_generic_info </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>info_string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is used to prepare a generic information string on the device parameters and measurements</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info_string</td><td>An array of chars containing the requested informations. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

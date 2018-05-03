@@ -1,9 +1,9 @@
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 1   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE UTILS
 OBJECT MODULE PLACED IN .\DP8051_Keil_951\Release\utils.obj
-COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
                     -utils.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(NDEBUG) WL(2) PR(.\DP8051_Keil_95
                     -1\Release/utils.lst) CD OT(8,SPEED) OJ(.\DP8051_Keil_951\Release\utils.obj)
 
@@ -62,7 +62,7 @@ line level    source
   50          //==============================================================================
   51          
   52          int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 2   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 2   
 
   53   1      
   54   1              static int32 virtual_pos_friction;      //Virtual position used to estimate friction.
@@ -126,7 +126,7 @@ line level    source
  110          //==============================================================================
  111          //                                                              First Emg Filter
  112          //==============================================================================
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 3   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 3   
 
  113          
  114          int32 filter_ch1(int32 new_value) {
@@ -190,7 +190,7 @@ line level    source
  172          int32 filter_vel_3(int32 new_value) {
  173   1      
  174   1          static int32 old_value, aux;
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 4   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 4   
 
  175   1      
  176   1          aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
@@ -254,7 +254,7 @@ line level    source
  234   1      
  235   1          return (aux /64);
  236   1      
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 5   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 5   
 
  237   1      }
  238          
@@ -318,7 +318,7 @@ line level    source
  296   2              return (int32)(divisor - (-val % divisor));
  297   2          }
  298   1      }
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 6   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 6   
 
  299          
  300          
@@ -382,7 +382,7 @@ line level    source
  358          
  359          // Number of ticks per turn
  360          #define M 65536          ///< Number of encoder ticks per turn.
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 7   
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 7   
 
  361          
  362          
@@ -411,118 +411,121 @@ line level    source
  385   1          int32 curr_pos = 0;
  386   1          static int32 rest_error;
  387   1          int32 handle_value = 0;
- 388   1          
- 389   1          if (first_time){
- 390   2              count = 0;
- 391   2              first_time = 0;
- 392   2          }
- 393   1          
- 394   1          curr_pos = (int32)(g_meas.pos[0] >> g_mem.res[0]);
- 395   1          
- 396   1          if (c_mem.input_mode == INPUT_MODE_ENCODER3) {
- 397   2              if (c_mem.double_encoder_on_off == 0)
- 398   2                  handle_value = g_meas.pos[1];
- 399   2              else
- 400   2                  handle_value = g_meas.pos[2];
- 401   2          }
- 402   1          
- 403   1          if ( ( (c_mem.input_mode >= 2 && g_meas.emg[0] < 200 && g_meas.emg[1] < 200) || (c_mem.input_mode == I
+ 388   1          float rest_vel_ticks_ms = ((float)g_mem.rest_vel)/1000.0;    //[ticks/s] -> [ticks/ms]
+ 389   1          
+ 390   1          if (first_time){
+ 391   2              count = 0;
+ 392   2              first_time = 0;
+ 393   2          }
+ 394   1          
+ 395   1          curr_pos = (int32)(g_meas.pos[0] >> g_mem.res[0]);
+ 396   1          
+ 397   1          if (c_mem.input_mode == INPUT_MODE_ENCODER3) {
+ 398   2              if (c_mem.double_encoder_on_off == 0)
+ 399   2                  handle_value = g_meas.pos[1];
+ 400   2              else
+ 401   2                  handle_value = g_meas.pos[2];
+ 402   2          }
+ 403   1          
+ 404   1          if ( ( (c_mem.input_mode >= 2 && g_meas.emg[0] < 200 && g_meas.emg[1] < 200) || (c_mem.input_mode == I
              -NPUT_MODE_ENCODER3 && handle_value < 50) ) && curr_pos < 10000){
- 404   2              if (flag_count == 1){
- 405   3                  count = count + 1;
- 406   3              }
- 407   2          }
- 408   1          else {
- 409   2              count = 0;
- 410   2              rest_enabled = 0;
- 411   2              flag_count = 1;
- 412   2          }
- 413   1          
- 414   1          /********** Velocity closure procedure *************
- 415   1          * m = error/time
- 416   1          * m = (g_mem.rest_pos - init_pos)/time
- 417   1          * time = g_mem.rest_pos/g_mem.rest_vel (g_mem.rest_vel in ticks/msec)
- 418   1          ***************************************************/
- 419   1          
- 420   1          if (count == (uint32)(g_mem.rest_delay/CALIBRATION_DIV)){ //10 seconds 
- 421   2              rest_enabled = 1;
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 8   
+ 405   2              if (flag_count == 1){
+ 406   3                  count = count + 1;
+ 407   3              }
+ 408   2          }
+ 409   1          else {
+ 410   2              count = 0;
+ 411   2              rest_enabled = 0;
+ 412   2              flag_count = 1;
+ 413   2          }
+ 414   1          
+ 415   1          /********** Velocity closure procedure *************
+ 416   1          * m = error/time
+ 417   1          * m = (g_mem.rest_pos - init_pos)/time
+ 418   1          * time = g_mem.rest_pos/g_mem.rest_vel (g_mem.rest_vel in ticks/msec)
+ 419   1          ***************************************************/
+ 420   1          
+ 421   1          if (count == (uint32)(g_mem.rest_delay/CALIBRATION_DIV)){  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 8   
 
- 422   2              rest_pos_curr_ref = g_meas.pos[0];
- 423   2              
- 424   2              // Ramp angular coefficient
- 425   2              m = ((float)(g_mem.rest_pos - g_meas.pos[0])/((float)g_mem.rest_pos))*(g_mem.rest_vel);
- 426   2              
- 427   2              // Stop condition threshold is related to m coefficient by g_mem.rest_ratio value
- 428   2              abs_err_thr = (int32)( (int32)(g_mem.rest_ratio*m*((float)CALIBRATION_DIV)) << g_mem.res[0]);
- 429   2              abs_err_thr = (abs_err_thr>0)?abs_err_thr:(0-abs_err_thr);
- 430   2              
- 431   2              rest_error = g_mem.rest_pos - g_meas.pos[0];    
+ 422   2              // This routine is executed every 10 firmware cycles -> g_mem.rest_delay must be major than 10 ms
+ 423   2              rest_enabled = 1;
+ 424   2              rest_pos_curr_ref = g_meas.pos[0];
+ 425   2              
+ 426   2              // Ramp angular coefficient
+ 427   2              m = ((float)(g_mem.rest_pos - g_meas.pos[0])/((float)g_mem.rest_pos))*(rest_vel_ticks_ms);
+ 428   2              
+ 429   2              // Stop condition threshold is related to m coefficient by g_mem.rest_ratio value
+ 430   2              abs_err_thr = (int32)( (int32)(((float)REST_POS_ERR_THR_GAIN)*m*((float)CALIBRATION_DIV)) << g_mem
+             -.res[0]);
+ 431   2              abs_err_thr = (abs_err_thr>0)?abs_err_thr:(0-abs_err_thr);
  432   2              
- 433   2              delta_inc = (int32)( ((int32)(m*(float)CALIBRATION_DIV)) << g_mem.res[0] );
- 434   2              delta_inc = (delta_inc>0)?delta_inc:(0-delta_inc);
- 435   2              
- 436   2              count = 0;
- 437   2              flag_count = 0;
- 438   2          }
- 439   1          
- 440   1          if (rest_enabled){
- 441   2      
- 442   2              if (rest_error < abs_err_thr && rest_error > -abs_err_thr){
- 443   3                  // Stop condition
- 444   3                  rest_pos_curr_ref = g_mem.rest_pos;
- 445   3                  
- 446   3                  if (c_mem.input_mode >= 2)   // EMG input mode
- 447   3                      forced_open = 1; 
- 448   3                  
- 449   3                  count = 0;
- 450   3              }
- 451   2              else {
- 452   3                  rest_error = g_mem.rest_pos - g_meas.pos[0];        
- 453   3      
- 454   3                  if (rest_error > 0){
- 455   4                      rest_pos_curr_ref = rest_pos_curr_ref + delta_inc;
- 456   4                  }
- 457   3                  if (rest_error < 0){
- 458   4                      rest_pos_curr_ref = rest_pos_curr_ref - delta_inc;
- 459   4                  }
- 460   3              } 
- 461   2          }
- 462   1          
- 463   1          // Position limit saturation
- 464   1          if (c_mem.pos_lim_flag) {
- 465   2              if (rest_pos_curr_ref < c_mem.pos_lim_inf[0]) 
- 466   2                  rest_pos_curr_ref = c_mem.pos_lim_inf[0];
- 467   2              if (rest_pos_curr_ref > c_mem.pos_lim_sup[0]) 
- 468   2                  rest_pos_curr_ref = c_mem.pos_lim_sup[0];
- 469   2          }
- 470   1      
- 471   1      }
- 472          
- 473          //==============================================================================
- 474          //                                                              RESET COUNTERS
+ 433   2              rest_error = g_mem.rest_pos - g_meas.pos[0];    
+ 434   2              
+ 435   2              delta_inc = (int32)( ((int32)(m*(float)CALIBRATION_DIV)) << g_mem.res[0] );
+ 436   2              delta_inc = (delta_inc>0)?delta_inc:(0-delta_inc);
+ 437   2              
+ 438   2              count = 0;
+ 439   2              flag_count = 0;
+ 440   2          }
+ 441   1          
+ 442   1          if (rest_enabled){
+ 443   2      
+ 444   2              if (rest_error < abs_err_thr && rest_error > -abs_err_thr){
+ 445   3                  // Stop condition
+ 446   3                  rest_pos_curr_ref = g_mem.rest_pos;
+ 447   3                  
+ 448   3                  if (c_mem.input_mode >= 2)   // EMG input mode
+ 449   3                      forced_open = 1; 
+ 450   3                  
+ 451   3                  count = 0;
+ 452   3              }
+ 453   2              else {
+ 454   3                  rest_error = g_mem.rest_pos - g_meas.pos[0];        
+ 455   3      
+ 456   3                  if (rest_error > 0){
+ 457   4                      rest_pos_curr_ref = rest_pos_curr_ref + delta_inc;
+ 458   4                  }
+ 459   3                  if (rest_error < 0){
+ 460   4                      rest_pos_curr_ref = rest_pos_curr_ref - delta_inc;
+ 461   4                  }
+ 462   3              } 
+ 463   2          }
+ 464   1          
+ 465   1          // Position limit saturation
+ 466   1          if (c_mem.pos_lim_flag) {
+ 467   2              if (rest_pos_curr_ref < c_mem.pos_lim_inf[0]) 
+ 468   2                  rest_pos_curr_ref = c_mem.pos_lim_inf[0];
+ 469   2              if (rest_pos_curr_ref > c_mem.pos_lim_sup[0]) 
+ 470   2                  rest_pos_curr_ref = c_mem.pos_lim_sup[0];
+ 471   2          }
+ 472   1      
+ 473   1      }
+ 474          
  475          //==============================================================================
- 476          void reset_counters() {
- 477   1          uint8 i;
- 478   1          
- 479   1          //Initialize counters        
- 480   1          g_mem.emg_counter[0] = g_mem.emg_counter[1] = 0;
- 481   1          for(i = 0; i< 10; i++){
- 482   2              g_mem.position_hist[i] = 0;
- 483   2          }
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 9   
+ 476          //                                                              RESET COUNTERS
+ 477          //==============================================================================
+ 478          void reset_counters() {
+ 479   1          uint8 i;
+ 480   1          
+ 481   1          //Initialize counters        
+ 482   1          g_mem.emg_counter[0] = g_mem.emg_counter[1] = 0;
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 9   
 
- 484   1          for(i = 0; i< 4; i++){
- 485   2              g_mem.current_hist[i] = 0;
- 486   2          }
- 487   1          g_mem.rest_counter = 0;
- 488   1          g_mem.wire_disp = 0;
- 489   1          g_mem.total_time_on = 0;
- 490   1          g_mem.total_time_rest = 0; 
- 491   1      }
- 492          
- 493          /* [] END OF FILE */
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 10  
+ 483   1          for(i = 0; i< 10; i++){
+ 484   2              g_mem.position_hist[i] = 0;
+ 485   2          }
+ 486   1          for(i = 0; i< 4; i++){
+ 487   2              g_mem.current_hist[i] = 0;
+ 488   2          }
+ 489   1          g_mem.rest_counter = 0;
+ 490   1          g_mem.wire_disp = 0;
+ 491   1          g_mem.total_time_on = 0;
+ 492   1          g_mem.total_time_rest = 0; 
+ 493   1      }
+ 494          
+ 495          /* [] END OF FILE */
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 10  
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -586,7 +589,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0045 900000      R     MOV     DPTR,#pos
 0048 E0                MOVX    A,@DPTR
 0049 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 11  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 11  
 
 004A A3                INC     DPTR
 004B E0                MOVX    A,@DPTR
@@ -650,7 +653,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0092 F8                MOV     R0,A
 0093 A3                INC     DPTR
 0094 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 12  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 12  
 
 0095 F9                MOV     R1,A
 0096 A3                INC     DPTR
@@ -714,7 +717,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00D9 3C                ADDC    A,R4
 00DA FC                MOV     R4,A
 00DB 900000      R     MOV     DPTR,#virtual_pos_friction
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 13  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 13  
 
 00DE 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 67
@@ -778,7 +781,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0131 F8                MOV     R0,A
 0132 A3                INC     DPTR
 0133 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 14  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 14  
 
 0134 F9                MOV     R1,A
 0135 A3                INC     DPTR
@@ -842,7 +845,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 018D FD                MOV     R5,A
 018E A3                INC     DPTR
 018F E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 15  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 15  
 
 0190 FE                MOV     R6,A
 0191 A3                INC     DPTR
@@ -906,7 +909,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01DF FD                MOV     R5,A
 01E0 EC                MOV     A,R4
 01E1 98                SUBB    A,R0
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 16  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 16  
 
 01E2 FC                MOV     R4,A
 01E3 120000      E     LCALL   ?C?FCASTL
@@ -970,7 +973,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0243 E0                MOVX    A,@DPTR
 0244 FD                MOV     R5,A
 0245 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 17  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 17  
 
 0246 E0                MOVX    A,@DPTR
 0247 FE                MOV     R6,A
@@ -1034,7 +1037,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0297 A3                INC     DPTR
 0298 E0                MOVX    A,@DPTR
 0299 FB                MOV     R3,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 18  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 18  
 
 029A D3                SETB    C
 029B 120000      E     LCALL   ?C?SLCMP
@@ -1098,7 +1101,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02E5 FF                MOV     R7,A
 02E6 C3                CLR     C
 02E7 E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 19  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 19  
 
 02E8 9F                SUBB    A,R7
 02E9 FF                MOV     R7,A
@@ -1162,7 +1165,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0338 2B                ADD     A,R3
 0339 FF                MOV     R7,A
 033A EE                MOV     A,R6
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 20  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 20  
 
 033B 3A                ADDC    A,R2
 033C FE                MOV     R6,A
@@ -1226,7 +1229,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0023 E0                MOVX    A,@DPTR
 0024 F9                MOV     R1,A
 0025 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 21  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 21  
 
 0026 E0                MOVX    A,@DPTR
 0027 FA                MOV     R2,A
@@ -1290,7 +1293,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0075 FE                MOV     R6,A
 0076 A3                INC     DPTR
 0077 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 22  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 22  
 
 0078 FF                MOV     R7,A
 0079 120000      E     LCALL   ?C?SLDIV
@@ -1354,7 +1357,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0044 7A04              MOV     R2,#04H
 0046 F9                MOV     R1,A
 0047 F8                MOV     R0,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 23  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 23  
 
 0048 120000      E     LCALL   ?C?SLDIV
 004B 900000      R     MOV     DPTR,#aux
@@ -1418,7 +1421,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0014 E0                MOVX    A,@DPTR
 0015 FA                MOV     R2,A
 0016 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 24  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 24  
 
 0017 E0                MOVX    A,@DPTR
 0018 FB                MOV     R3,A
@@ -1482,7 +1485,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 006A D001              POP     AR1
 006C D000              POP     AR0
 006E EF                MOV     A,R7
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 25  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 25  
 
 006F 2B                ADD     A,R3
 0070 FF                MOV     R7,A
@@ -1546,7 +1549,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 132
 0000 900000      R     MOV     DPTR,#new_value
 0003 120000      E     LCALL   ?C?LSTXDATA
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 26  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 26  
 
                                            ; SOURCE LINE # 136
 0006 E4                CLR     A
@@ -1610,7 +1613,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0054 FC                MOV     R4,A
 0055 900000      R     MOV     DPTR,#old_value
 0058 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 27  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 27  
 
 0059 F8                MOV     R0,A
 005A A3                INC     DPTR
@@ -1674,7 +1677,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00A8 A3                INC     DPTR
 00A9 E0                MOVX    A,@DPTR
 00AA FD                MOV     R5,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 28  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 28  
 
 00AB A3                INC     DPTR
 00AC E0                MOVX    A,@DPTR
@@ -1738,7 +1741,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 003F EC                MOV     A,R4
 0040 38                ADDC    A,R0
 0041 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 29  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 29  
 
 0042 E4                CLR     A
 0043 FB                MOV     R3,A
@@ -1802,7 +1805,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 000E C004              PUSH    AR4
 0010 C005              PUSH    AR5
 0012 C006              PUSH    AR6
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 30  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 30  
 
 0014 C007              PUSH    AR7
 0016 E4                CLR     A
@@ -1866,7 +1869,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0065 E4                CLR     A
 0066 7B40              MOV     R3,#040H
 0068 FA                MOV     R2,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 31  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 31  
 
 0069 F9                MOV     R1,A
 006A F8                MOV     R0,A
@@ -1930,7 +1933,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0037 2B                ADD     A,R3
 0038 FF                MOV     R7,A
 0039 EE                MOV     A,R6
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 32  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 32  
 
 003A 3A                ADDC    A,R2
 003B FE                MOV     R6,A
@@ -1994,7 +1997,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0000 7806              MOV     R0,#06H
 0002 120000      E     LCALL   ?C?LSHL
 0005 E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 33  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 33  
 
 0006 7B08              MOV     R3,#08H
 0008 FA                MOV     R2,A
@@ -2058,7 +2061,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005A E0                MOVX    A,@DPTR
 005B FE                MOV     R6,A
 005C A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 34  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 34  
 
 005D E0                MOVX    A,@DPTR
 005E FF                MOV     R7,A
@@ -2122,7 +2125,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0029 E0                MOVX    A,@DPTR
 002A FB                MOV     R3,A
 002B 120000      E     LCALL   ?C?LMUL
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 35  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 35  
 
 002E D003              POP     AR3
 0030 D002              POP     AR2
@@ -2186,7 +2189,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007C         ?C0020:
 007C 22                RET     
              ; FUNCTION _filter_acc_2 (END)
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 36  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 36  
 
 
              ; FUNCTION _filter_acc_3 (BEGIN)
@@ -2250,7 +2253,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 215
 0051 900000      R     MOV     DPTR,#aux
 0054 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 37  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 37  
 
 0055 FC                MOV     R4,A
 0056 A3                INC     DPTR
@@ -2314,7 +2317,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0021 F8                MOV     R0,A
 0022 A3                INC     DPTR
 0023 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 38  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 38  
 
 0024 F9                MOV     R1,A
 0025 A3                INC     DPTR
@@ -2378,7 +2381,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0073 A3                INC     DPTR
 0074 E0                MOVX    A,@DPTR
 0075 FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 39  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 39  
 
 0076 A3                INC     DPTR
 0077 E0                MOVX    A,@DPTR
@@ -2442,7 +2445,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0042 E4                CLR     A
 0043 FB                MOV     R3,A
 0044 7A04              MOV     R2,#04H
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 40  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 40  
 
 0046 F9                MOV     R1,A
 0047 F8                MOV     R0,A
@@ -2506,7 +2509,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0011 8603              MOV     AR3,@R0
 0013 08                INC     R0
 0014 08                INC     R0
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 41  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 41  
 
 0015 06                INC     @R0
 0016 E6                MOV     A,@R0
@@ -2570,7 +2573,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0064 13                RRC     A
 0065 CE                XCH     A,R6
 0066 13                RRC     A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 42  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 42  
 
 0067         ?C0075:
 0067 D8F9              DJNZ    R0,?C0074
@@ -2634,7 +2637,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 003D 7C3F              MOV     R4,#03FH
 003F 900000      R     MOV     DPTR,#x
 0042 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 43  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 43  
 
 0043 F8                MOV     R0,A
 0044 A3                INC     DPTR
@@ -2698,7 +2701,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0033 E0                MOVX    A,@DPTR
 0034 FD                MOV     R5,A
 0035 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 44  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 44  
 
 0036 E0                MOVX    A,@DPTR
 0037 FE                MOV     R6,A
@@ -2762,7 +2765,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007C FD                MOV     R5,A
 007D EC                MOV     A,R4
 007E 98                SUBB    A,R0
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 45  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 45  
 
 007F FC                MOV     R4,A
                                            ; SOURCE LINE # 297
@@ -2826,7 +2829,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0043 EB                MOV     A,R3
 0044 2F                ADD     A,R7
 0045 FF                MOV     R7,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 46  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 46  
 
 0046 EA                MOV     A,R2
 0047 3E                ADDC    A,R6
@@ -2890,7 +2893,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 008D E0                MOVX    A,@DPTR
 008E FF                MOV     R7,A
 008F C004              PUSH    AR4
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 47  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 47  
 
 0091 C005              PUSH    AR5
 0093 C006              PUSH    AR6
@@ -2954,7 +2957,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00DF E0                MOVX    A,@DPTR
 00E0 F9                MOV     R1,A
 00E1 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 48  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 48  
 
 00E2 E0                MOVX    A,@DPTR
 00E3 FA                MOV     R2,A
@@ -3018,7 +3021,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 327
 012F         ?C0038:
 012F 22                RET     
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 49  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 49  
 
              ; FUNCTION calibration (END)
 
@@ -3082,7 +3085,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 004D 99                SUBB    A,R1
 004E FD                MOV     R5,A
 004F EC                MOV     A,R4
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 50  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 50  
 
 0050 98                SUBB    A,R0
 0051 FC                MOV     R4,A
@@ -3146,7 +3149,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00AA E4                CLR     A
 00AB 3E                ADDC    A,R6
 00AC FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 51  
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 51  
 
 00AD E4                CLR     A
 00AE 3D                ADDC    A,R5
@@ -3199,979 +3202,988 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 000F FC                MOV     R4,A
 0010 900000      R     MOV     DPTR,#handle_value
 0013 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 389
-0016 900000      R     MOV     DPTR,#first_time
+                                           ; SOURCE LINE # 388
+0016 900000      E     MOV     DPTR,#g_mem+09EH
 0019 E0                MOVX    A,@DPTR
-001A 6010              JZ      ?C0040
+001A FC                MOV     R4,A
+001B A3                INC     DPTR
+001C E0                MOVX    A,@DPTR
+001D FD                MOV     R5,A
+001E A3                INC     DPTR
+001F E0                MOVX    A,@DPTR
+0020 FE                MOV     R6,A
+0021 A3                INC     DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 52  
+
+0022 E0                MOVX    A,@DPTR
+0023 FF                MOV     R7,A
+0024 EC                MOV     A,R4
+0025 120000      E     LCALL   ?C?FCASTL
+0028 E4                CLR     A
+0029 FB                MOV     R3,A
+002A FA                MOV     R2,A
+002B 797A              MOV     R1,#07AH
+002D 7844              MOV     R0,#044H
+002F 120000      E     LCALL   ?C?FPDIV
+0032 900000      R     MOV     DPTR,#rest_vel_ticks_ms
+0035 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 390
-001C E4                CLR     A
-001D FF                MOV     R7,A
-001E FE                MOV     R6,A
-001F FD                MOV     R5,A
-0020 FC                MOV     R4,A
-0021 900000      R     MOV     DPTR,#count
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 52  
-
-0024 120000      E     LCALL   ?C?LSTXDATA
+0038 900000      R     MOV     DPTR,#first_time
+003B E0                MOVX    A,@DPTR
+003C 6010              JZ      ?C0040
                                            ; SOURCE LINE # 391
-0027 E4                CLR     A
-0028 900000      R     MOV     DPTR,#first_time
-002B F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 392
-002C         ?C0040:
-                                           ; SOURCE LINE # 394
-002C 900000      E     MOV     DPTR,#g_meas
-002F E0                MOVX    A,@DPTR
-0030 FC                MOV     R4,A
-0031 A3                INC     DPTR
-0032 E0                MOVX    A,@DPTR
-0033 FD                MOV     R5,A
-0034 A3                INC     DPTR
-0035 E0                MOVX    A,@DPTR
-0036 FE                MOV     R6,A
-0037 A3                INC     DPTR
-0038 E0                MOVX    A,@DPTR
-0039 FF                MOV     R7,A
-003A 900000      E     MOV     DPTR,#g_mem+035H
-003D E0                MOVX    A,@DPTR
-003E F9                MOV     R1,A
-003F F8                MOV     R0,A
-0040 120000      E     LCALL   ?C?SLSHR
-0043 900000      R     MOV     DPTR,#curr_pos
+003E E4                CLR     A
+003F FF                MOV     R7,A
+0040 FE                MOV     R6,A
+0041 FD                MOV     R5,A
+0042 FC                MOV     R4,A
+0043 900000      R     MOV     DPTR,#count
 0046 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 396
-0049 900000      E     MOV     DPTR,#c_mem+033H
-004C E0                MOVX    A,@DPTR
-004D FB                MOV     R3,A
-004E B40130            CJNE    A,#01H,?C0041
-                                           ; SOURCE LINE # 397
-0051 900000      E     MOV     DPTR,#c_mem+079H
+                                           ; SOURCE LINE # 392
+0049 E4                CLR     A
+004A 900000      R     MOV     DPTR,#first_time
+004D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 393
+004E         ?C0040:
+                                           ; SOURCE LINE # 395
+004E 900000      E     MOV     DPTR,#g_meas
+0051 E0                MOVX    A,@DPTR
+0052 FC                MOV     R4,A
+0053 A3                INC     DPTR
 0054 E0                MOVX    A,@DPTR
-0055 7016              JNZ     ?C0042
-                                           ; SOURCE LINE # 398
-0057 900000      E     MOV     DPTR,#g_meas+04H
+0055 FD                MOV     R5,A
+0056 A3                INC     DPTR
+0057 E0                MOVX    A,@DPTR
+0058 FE                MOV     R6,A
+0059 A3                INC     DPTR
 005A E0                MOVX    A,@DPTR
-005B FC                MOV     R4,A
-005C A3                INC     DPTR
-005D E0                MOVX    A,@DPTR
-005E FD                MOV     R5,A
-005F A3                INC     DPTR
-0060 E0                MOVX    A,@DPTR
-0061 FE                MOV     R6,A
-0062 A3                INC     DPTR
-0063 E0                MOVX    A,@DPTR
-0064 FF                MOV     R7,A
-0065 900000      R     MOV     DPTR,#handle_value
+005B FF                MOV     R7,A
+005C 900000      E     MOV     DPTR,#g_mem+035H
+005F E0                MOVX    A,@DPTR
+0060 F9                MOV     R1,A
+0061 F8                MOV     R0,A
+0062 120000      E     LCALL   ?C?SLSHR
+0065 900000      R     MOV     DPTR,#curr_pos
 0068 120000      E     LCALL   ?C?LSTXDATA
-006B 8014              SJMP    ?C0041
-006D         ?C0042:
-                                           ; SOURCE LINE # 400
-006D 900000      E     MOV     DPTR,#g_meas+08H
-0070 E0                MOVX    A,@DPTR
-0071 FC                MOV     R4,A
-0072 A3                INC     DPTR
-0073 E0                MOVX    A,@DPTR
-0074 FD                MOV     R5,A
-0075 A3                INC     DPTR
+                                           ; SOURCE LINE # 397
+006B 900000      E     MOV     DPTR,#c_mem+033H
+006E E0                MOVX    A,@DPTR
+006F FB                MOV     R3,A
+0070 B40130            CJNE    A,#01H,?C0041
+                                           ; SOURCE LINE # 398
+0073 900000      E     MOV     DPTR,#c_mem+079H
 0076 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 53  
+0077 7016              JNZ     ?C0042
+                                           ; SOURCE LINE # 399
+0079 900000      E     MOV     DPTR,#g_meas+04H
+007C E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 53  
 
-0077 FE                MOV     R6,A
-0078 A3                INC     DPTR
-0079 E0                MOVX    A,@DPTR
-007A FF                MOV     R7,A
-007B 900000      R     MOV     DPTR,#handle_value
-007E 120000      E     LCALL   ?C?LSTXDATA
+007D FC                MOV     R4,A
+007E A3                INC     DPTR
+007F E0                MOVX    A,@DPTR
+0080 FD                MOV     R5,A
+0081 A3                INC     DPTR
+0082 E0                MOVX    A,@DPTR
+0083 FE                MOV     R6,A
+0084 A3                INC     DPTR
+0085 E0                MOVX    A,@DPTR
+0086 FF                MOV     R7,A
+0087 900000      R     MOV     DPTR,#handle_value
+008A 120000      E     LCALL   ?C?LSTXDATA
+008D 8014              SJMP    ?C0041
+008F         ?C0042:
                                            ; SOURCE LINE # 401
-0081         ?C0041:
-                                           ; SOURCE LINE # 403
-0081 EB                MOV     A,R3
-0082 C3                CLR     C
-0083 9402              SUBB    A,#02H
-0085 4033              JC      ?C0046
-0087 E4                CLR     A
-0088 7FC8              MOV     R7,#0C8H
-008A FE                MOV     R6,A
-008B FD                MOV     R5,A
-008C FC                MOV     R4,A
-008D 900000      E     MOV     DPTR,#g_meas+017H
-0090 E0                MOVX    A,@DPTR
-0091 F8                MOV     R0,A
-0092 A3                INC     DPTR
-0093 E0                MOVX    A,@DPTR
-0094 F9                MOV     R1,A
-0095 A3                INC     DPTR
-0096 E0                MOVX    A,@DPTR
-0097 FA                MOV     R2,A
-0098 A3                INC     DPTR
-0099 E0                MOVX    A,@DPTR
-009A FB                MOV     R3,A
-009B 120000      E     LCALL   ?C?SLCMP
-009E 501A              JNC     ?C0046
-00A0 E4                CLR     A
-00A1 7FC8              MOV     R7,#0C8H
-00A3 FE                MOV     R6,A
-00A4 FD                MOV     R5,A
-00A5 FC                MOV     R4,A
-00A6 900000      E     MOV     DPTR,#g_meas+01BH
-00A9 E0                MOVX    A,@DPTR
-00AA F8                MOV     R0,A
-00AB A3                INC     DPTR
-00AC E0                MOVX    A,@DPTR
-00AD F9                MOV     R1,A
-00AE A3                INC     DPTR
-00AF E0                MOVX    A,@DPTR
-00B0 FA                MOV     R2,A
-00B1 A3                INC     DPTR
-00B2 E0                MOVX    A,@DPTR
-00B3 FB                MOV     R3,A
-00B4 C3                CLR     C
-00B5 120000      E     LCALL   ?C?SLCMP
-00B8 4021              JC      ?C0045
-00BA         ?C0046:
-00BA 900000      E     MOV     DPTR,#c_mem+033H
-00BD E0                MOVX    A,@DPTR
-00BE 6401              XRL     A,#01H
-00C0 705C              JNZ     ?C0044
-00C2 7F32              MOV     R7,#032H
-00C4 FE                MOV     R6,A
-00C5 FD                MOV     R5,A
-00C6 FC                MOV     R4,A
-00C7 900000      R     MOV     DPTR,#handle_value
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 54  
-
-00CA E0                MOVX    A,@DPTR
-00CB F8                MOV     R0,A
-00CC A3                INC     DPTR
-00CD E0                MOVX    A,@DPTR
-00CE F9                MOV     R1,A
-00CF A3                INC     DPTR
-00D0 E0                MOVX    A,@DPTR
-00D1 FA                MOV     R2,A
-00D2 A3                INC     DPTR
-00D3 E0                MOVX    A,@DPTR
-00D4 FB                MOV     R3,A
-00D5 C3                CLR     C
-00D6 120000      E     LCALL   ?C?SLCMP
-00D9 5043              JNC     ?C0044
-00DB         ?C0045:
-00DB E4                CLR     A
-00DC 7F10              MOV     R7,#010H
-00DE 7E27              MOV     R6,#027H
-00E0 FD                MOV     R5,A
-00E1 FC                MOV     R4,A
-00E2 900000      R     MOV     DPTR,#curr_pos
-00E5 E0                MOVX    A,@DPTR
-00E6 F8                MOV     R0,A
-00E7 A3                INC     DPTR
-00E8 E0                MOVX    A,@DPTR
-00E9 F9                MOV     R1,A
-00EA A3                INC     DPTR
-00EB E0                MOVX    A,@DPTR
-00EC FA                MOV     R2,A
-00ED A3                INC     DPTR
-00EE E0                MOVX    A,@DPTR
-00EF FB                MOV     R3,A
-00F0 C3                CLR     C
-00F1 120000      E     LCALL   ?C?SLCMP
-00F4 5028              JNC     ?C0044
+008F 900000      E     MOV     DPTR,#g_meas+08H
+0092 E0                MOVX    A,@DPTR
+0093 FC                MOV     R4,A
+0094 A3                INC     DPTR
+0095 E0                MOVX    A,@DPTR
+0096 FD                MOV     R5,A
+0097 A3                INC     DPTR
+0098 E0                MOVX    A,@DPTR
+0099 FE                MOV     R6,A
+009A A3                INC     DPTR
+009B E0                MOVX    A,@DPTR
+009C FF                MOV     R7,A
+009D 900000      R     MOV     DPTR,#handle_value
+00A0 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 402
+00A3         ?C0041:
                                            ; SOURCE LINE # 404
-00F6 900000      R     MOV     DPTR,#flag_count
-00F9 E0                MOVX    A,@DPTR
-00FA B40136            CJNE    A,#01H,?C0048
+00A3 EB                MOV     A,R3
+00A4 C3                CLR     C
+00A5 9402              SUBB    A,#02H
+00A7 4033              JC      ?C0046
+00A9 E4                CLR     A
+00AA 7FC8              MOV     R7,#0C8H
+00AC FE                MOV     R6,A
+00AD FD                MOV     R5,A
+00AE FC                MOV     R4,A
+00AF 900000      E     MOV     DPTR,#g_meas+017H
+00B2 E0                MOVX    A,@DPTR
+00B3 F8                MOV     R0,A
+00B4 A3                INC     DPTR
+00B5 E0                MOVX    A,@DPTR
+00B6 F9                MOV     R1,A
+00B7 A3                INC     DPTR
+00B8 E0                MOVX    A,@DPTR
+00B9 FA                MOV     R2,A
+00BA A3                INC     DPTR
+00BB E0                MOVX    A,@DPTR
+00BC FB                MOV     R3,A
+00BD 120000      E     LCALL   ?C?SLCMP
+00C0 501A              JNC     ?C0046
+00C2 E4                CLR     A
+00C3 7FC8              MOV     R7,#0C8H
+00C5 FE                MOV     R6,A
+00C6 FD                MOV     R5,A
+00C7 FC                MOV     R4,A
+00C8 900000      E     MOV     DPTR,#g_meas+01BH
+00CB E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 54  
+
+00CC F8                MOV     R0,A
+00CD A3                INC     DPTR
+00CE E0                MOVX    A,@DPTR
+00CF F9                MOV     R1,A
+00D0 A3                INC     DPTR
+00D1 E0                MOVX    A,@DPTR
+00D2 FA                MOV     R2,A
+00D3 A3                INC     DPTR
+00D4 E0                MOVX    A,@DPTR
+00D5 FB                MOV     R3,A
+00D6 C3                CLR     C
+00D7 120000      E     LCALL   ?C?SLCMP
+00DA 4021              JC      ?C0045
+00DC         ?C0046:
+00DC 900000      E     MOV     DPTR,#c_mem+033H
+00DF E0                MOVX    A,@DPTR
+00E0 6401              XRL     A,#01H
+00E2 705C              JNZ     ?C0044
+00E4 7F32              MOV     R7,#032H
+00E6 FE                MOV     R6,A
+00E7 FD                MOV     R5,A
+00E8 FC                MOV     R4,A
+00E9 900000      R     MOV     DPTR,#handle_value
+00EC E0                MOVX    A,@DPTR
+00ED F8                MOV     R0,A
+00EE A3                INC     DPTR
+00EF E0                MOVX    A,@DPTR
+00F0 F9                MOV     R1,A
+00F1 A3                INC     DPTR
+00F2 E0                MOVX    A,@DPTR
+00F3 FA                MOV     R2,A
+00F4 A3                INC     DPTR
+00F5 E0                MOVX    A,@DPTR
+00F6 FB                MOV     R3,A
+00F7 C3                CLR     C
+00F8 120000      E     LCALL   ?C?SLCMP
+00FB 5043              JNC     ?C0044
+00FD         ?C0045:
+00FD E4                CLR     A
+00FE 7F10              MOV     R7,#010H
+0100 7E27              MOV     R6,#027H
+0102 FD                MOV     R5,A
+0103 FC                MOV     R4,A
+0104 900000      R     MOV     DPTR,#curr_pos
+0107 E0                MOVX    A,@DPTR
+0108 F8                MOV     R0,A
+0109 A3                INC     DPTR
+010A E0                MOVX    A,@DPTR
+010B F9                MOV     R1,A
+010C A3                INC     DPTR
+010D E0                MOVX    A,@DPTR
+010E FA                MOV     R2,A
+010F A3                INC     DPTR
+0110 E0                MOVX    A,@DPTR
+0111 FB                MOV     R3,A
+0112 C3                CLR     C
+0113 120000      E     LCALL   ?C?SLCMP
+0116 5028              JNC     ?C0044
                                            ; SOURCE LINE # 405
-00FD 900000      R     MOV     DPTR,#count
-0100 E0                MOVX    A,@DPTR
-0101 FC                MOV     R4,A
-0102 A3                INC     DPTR
-0103 E0                MOVX    A,@DPTR
-0104 FD                MOV     R5,A
-0105 A3                INC     DPTR
-0106 E0                MOVX    A,@DPTR
-0107 FE                MOV     R6,A
-0108 A3                INC     DPTR
-0109 E0                MOVX    A,@DPTR
-010A 2401              ADD     A,#01H
-010C FF                MOV     R7,A
-010D E4                CLR     A
-010E 3E                ADDC    A,R6
-010F FE                MOV     R6,A
-0110 E4                CLR     A
-0111 3D                ADDC    A,R5
-0112 FD                MOV     R5,A
-0113 E4                CLR     A
-0114 3C                ADDC    A,R4
-0115 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 55  
+0118 900000      R     MOV     DPTR,#flag_count
+011B E0                MOVX    A,@DPTR
+011C B40136            CJNE    A,#01H,?C0048
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 55  
 
-0116 900000      R     MOV     DPTR,#count
-0119 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 406
+011F 900000      R     MOV     DPTR,#count
+0122 E0                MOVX    A,@DPTR
+0123 FC                MOV     R4,A
+0124 A3                INC     DPTR
+0125 E0                MOVX    A,@DPTR
+0126 FD                MOV     R5,A
+0127 A3                INC     DPTR
+0128 E0                MOVX    A,@DPTR
+0129 FE                MOV     R6,A
+012A A3                INC     DPTR
+012B E0                MOVX    A,@DPTR
+012C 2401              ADD     A,#01H
+012E FF                MOV     R7,A
+012F E4                CLR     A
+0130 3E                ADDC    A,R6
+0131 FE                MOV     R6,A
+0132 E4                CLR     A
+0133 3D                ADDC    A,R5
+0134 FD                MOV     R5,A
+0135 E4                CLR     A
+0136 3C                ADDC    A,R4
+0137 FC                MOV     R4,A
+0138 900000      R     MOV     DPTR,#count
+013B 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 407
-011C 8015              SJMP    ?C0048
-011E         ?C0044:
                                            ; SOURCE LINE # 408
+013E 8015              SJMP    ?C0048
+0140         ?C0044:
                                            ; SOURCE LINE # 409
-011E E4                CLR     A
-011F FF                MOV     R7,A
-0120 FE                MOV     R6,A
-0121 FD                MOV     R5,A
-0122 FC                MOV     R4,A
-0123 900000      R     MOV     DPTR,#count
-0126 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 410
-0129 E4                CLR     A
-012A 900000      E     MOV     DPTR,#rest_enabled
-012D F0                MOVX    @DPTR,A
+0140 E4                CLR     A
+0141 FF                MOV     R7,A
+0142 FE                MOV     R6,A
+0143 FD                MOV     R5,A
+0144 FC                MOV     R4,A
+0145 900000      R     MOV     DPTR,#count
+0148 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 411
-012E 900000      R     MOV     DPTR,#flag_count
-0131 04                INC     A
-0132 F0                MOVX    @DPTR,A
+014B E4                CLR     A
+014C 900000      E     MOV     DPTR,#rest_enabled
+014F F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 412
-0133         ?C0048:
-                                           ; SOURCE LINE # 420
-0133 E4                CLR     A
-0134 FB                MOV     R3,A
-0135 FA                MOV     R2,A
-0136 7920              MOV     R1,#020H
-0138 7841              MOV     R0,#041H
-013A 900000      E     MOV     DPTR,#g_mem+09AH
-013D E0                MOVX    A,@DPTR
-013E FC                MOV     R4,A
-013F A3                INC     DPTR
-0140 E0                MOVX    A,@DPTR
-0141 FD                MOV     R5,A
-0142 A3                INC     DPTR
-0143 E0                MOVX    A,@DPTR
-0144 FE                MOV     R6,A
-0145 A3                INC     DPTR
-0146 E0                MOVX    A,@DPTR
-0147 FF                MOV     R7,A
-0148 120000      E     LCALL   ?C?FPDIV
-014B 120000      E     LCALL   ?C?CASTF
-014E 900000      R     MOV     DPTR,#count
-0151 E0                MOVX    A,@DPTR
-0152 F8                MOV     R0,A
-0153 A3                INC     DPTR
-0154 E0                MOVX    A,@DPTR
-0155 F9                MOV     R1,A
-0156 A3                INC     DPTR
-0157 E0                MOVX    A,@DPTR
-0158 FA                MOV     R2,A
-0159 A3                INC     DPTR
-015A E0                MOVX    A,@DPTR
-015B FB                MOV     R3,A
-015C C3                CLR     C
-015D 120000      E     LCALL   ?C?ULCMP
-0160 6003              JZ      $ + 5H
-0162 020000      R     LJMP    ?C0049
+0150 900000      R     MOV     DPTR,#flag_count
+0153 04                INC     A
+0154 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 413
+0155         ?C0048:
                                            ; SOURCE LINE # 421
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 56  
+0155 E4                CLR     A
+0156 7B0A              MOV     R3,#0AH
+0158 FA                MOV     R2,A
+0159 F9                MOV     R1,A
+015A F8                MOV     R0,A
+015B 900000      E     MOV     DPTR,#g_mem+09AH
+015E E0                MOVX    A,@DPTR
+015F FC                MOV     R4,A
+0160 A3                INC     DPTR
+0161 E0                MOVX    A,@DPTR
+0162 FD                MOV     R5,A
+0163 A3                INC     DPTR
+0164 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 56  
 
-0165 900000      E     MOV     DPTR,#rest_enabled
-0168 04                INC     A
-0169 F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 422
-016A 900000      E     MOV     DPTR,#g_meas
-016D E0                MOVX    A,@DPTR
-016E FC                MOV     R4,A
-016F A3                INC     DPTR
-0170 E0                MOVX    A,@DPTR
-0171 FD                MOV     R5,A
-0172 A3                INC     DPTR
-0173 E0                MOVX    A,@DPTR
-0174 FE                MOV     R6,A
-0175 A3                INC     DPTR
-0176 E0                MOVX    A,@DPTR
-0177 FF                MOV     R7,A
-0178 900000      E     MOV     DPTR,#rest_pos_curr_ref
-017B 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 425
-017E 900000      E     MOV     DPTR,#g_meas
-0181 E0                MOVX    A,@DPTR
-0182 F8                MOV     R0,A
-0183 A3                INC     DPTR
-0184 E0                MOVX    A,@DPTR
-0185 F9                MOV     R1,A
-0186 A3                INC     DPTR
-0187 E0                MOVX    A,@DPTR
-0188 FA                MOV     R2,A
-0189 A3                INC     DPTR
-018A E0                MOVX    A,@DPTR
-018B FB                MOV     R3,A
-018C 900000      E     MOV     DPTR,#g_mem+096H
-018F E0                MOVX    A,@DPTR
-0190 FC                MOV     R4,A
-0191 A3                INC     DPTR
-0192 E0                MOVX    A,@DPTR
-0193 FD                MOV     R5,A
-0194 A3                INC     DPTR
-0195 E0                MOVX    A,@DPTR
-0196 FE                MOV     R6,A
-0197 A3                INC     DPTR
-0198 E0                MOVX    A,@DPTR
-0199 C3                CLR     C
-019A 9B                SUBB    A,R3
-019B FF                MOV     R7,A
-019C EE                MOV     A,R6
-019D 9A                SUBB    A,R2
-019E FE                MOV     R6,A
-019F ED                MOV     A,R5
-01A0 99                SUBB    A,R1
-01A1 FD                MOV     R5,A
-01A2 EC                MOV     A,R4
-01A3 98                SUBB    A,R0
-01A4 FC                MOV     R4,A
-01A5 120000      E     LCALL   ?C?FCASTL
-01A8 C004              PUSH    AR4
-01AA C005              PUSH    AR5
-01AC C006              PUSH    AR6
-01AE C007              PUSH    AR7
-01B0 900000      E     MOV     DPTR,#g_mem+096H
+0165 FE                MOV     R6,A
+0166 A3                INC     DPTR
+0167 E0                MOVX    A,@DPTR
+0168 FF                MOV     R7,A
+0169 120000      E     LCALL   ?C?SLDIV
+016C 900000      R     MOV     DPTR,#count
+016F E0                MOVX    A,@DPTR
+0170 F8                MOV     R0,A
+0171 A3                INC     DPTR
+0172 E0                MOVX    A,@DPTR
+0173 F9                MOV     R1,A
+0174 A3                INC     DPTR
+0175 E0                MOVX    A,@DPTR
+0176 FA                MOV     R2,A
+0177 A3                INC     DPTR
+0178 E0                MOVX    A,@DPTR
+0179 FB                MOV     R3,A
+017A C3                CLR     C
+017B 120000      E     LCALL   ?C?ULCMP
+017E 6003              JZ      $ + 5H
+0180 020000      R     LJMP    ?C0049
+                                           ; SOURCE LINE # 423
+0183 900000      E     MOV     DPTR,#rest_enabled
+0186 04                INC     A
+0187 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 424
+0188 900000      E     MOV     DPTR,#g_meas
+018B E0                MOVX    A,@DPTR
+018C FC                MOV     R4,A
+018D A3                INC     DPTR
+018E E0                MOVX    A,@DPTR
+018F FD                MOV     R5,A
+0190 A3                INC     DPTR
+0191 E0                MOVX    A,@DPTR
+0192 FE                MOV     R6,A
+0193 A3                INC     DPTR
+0194 E0                MOVX    A,@DPTR
+0195 FF                MOV     R7,A
+0196 900000      E     MOV     DPTR,#rest_pos_curr_ref
+0199 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 427
+019C 900000      E     MOV     DPTR,#g_meas
+019F E0                MOVX    A,@DPTR
+01A0 F8                MOV     R0,A
+01A1 A3                INC     DPTR
+01A2 E0                MOVX    A,@DPTR
+01A3 F9                MOV     R1,A
+01A4 A3                INC     DPTR
+01A5 E0                MOVX    A,@DPTR
+01A6 FA                MOV     R2,A
+01A7 A3                INC     DPTR
+01A8 E0                MOVX    A,@DPTR
+01A9 FB                MOV     R3,A
+01AA 900000      E     MOV     DPTR,#g_mem+096H
+01AD E0                MOVX    A,@DPTR
+01AE FC                MOV     R4,A
+01AF A3                INC     DPTR
+01B0 E0                MOVX    A,@DPTR
+01B1 FD                MOV     R5,A
+01B2 A3                INC     DPTR
 01B3 E0                MOVX    A,@DPTR
-01B4 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 57  
+01B4 FE                MOV     R6,A
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 57  
 
 01B5 A3                INC     DPTR
 01B6 E0                MOVX    A,@DPTR
-01B7 FD                MOV     R5,A
-01B8 A3                INC     DPTR
-01B9 E0                MOVX    A,@DPTR
-01BA FE                MOV     R6,A
-01BB A3                INC     DPTR
-01BC E0                MOVX    A,@DPTR
-01BD FF                MOV     R7,A
-01BE EC                MOV     A,R4
-01BF 120000      E     LCALL   ?C?FCASTL
-01C2 A804              MOV     R0,AR4
-01C4 A905              MOV     R1,AR5
-01C6 AA06              MOV     R2,AR6
-01C8 AB07              MOV     R3,AR7
-01CA D007              POP     AR7
-01CC D006              POP     AR6
-01CE D005              POP     AR5
-01D0 D004              POP     AR4
-01D2 120000      E     LCALL   ?C?FPDIV
-01D5 900000      E     MOV     DPTR,#g_mem+09EH
-01D8 E0                MOVX    A,@DPTR
-01D9 F8                MOV     R0,A
-01DA A3                INC     DPTR
-01DB E0                MOVX    A,@DPTR
-01DC F9                MOV     R1,A
-01DD A3                INC     DPTR
-01DE E0                MOVX    A,@DPTR
-01DF FA                MOV     R2,A
-01E0 A3                INC     DPTR
-01E1 E0                MOVX    A,@DPTR
-01E2 FB                MOV     R3,A
-01E3 120000      E     LCALL   ?C?FPMUL
-01E6 900000      R     MOV     DPTR,#m
-01E9 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 428
-01EC 900000      R     MOV     DPTR,#m
-01EF E0                MOVX    A,@DPTR
-01F0 FC                MOV     R4,A
-01F1 A3                INC     DPTR
-01F2 E0                MOVX    A,@DPTR
-01F3 FD                MOV     R5,A
-01F4 A3                INC     DPTR
-01F5 E0                MOVX    A,@DPTR
-01F6 FE                MOV     R6,A
-01F7 A3                INC     DPTR
-01F8 E0                MOVX    A,@DPTR
-01F9 FF                MOV     R7,A
-01FA 900000      E     MOV     DPTR,#g_mem+0A2H
-01FD E0                MOVX    A,@DPTR
-01FE F8                MOV     R0,A
-01FF A3                INC     DPTR
-0200 E0                MOVX    A,@DPTR
-0201 F9                MOV     R1,A
-0202 A3                INC     DPTR
-0203 E0                MOVX    A,@DPTR
-0204 FA                MOV     R2,A
-0205 A3                INC     DPTR
-0206 E0                MOVX    A,@DPTR
-0207 FB                MOV     R3,A
-0208 120000      E     LCALL   ?C?FPMUL
-020B E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 58  
+01B7 C3                CLR     C
+01B8 9B                SUBB    A,R3
+01B9 FF                MOV     R7,A
+01BA EE                MOV     A,R6
+01BB 9A                SUBB    A,R2
+01BC FE                MOV     R6,A
+01BD ED                MOV     A,R5
+01BE 99                SUBB    A,R1
+01BF FD                MOV     R5,A
+01C0 EC                MOV     A,R4
+01C1 98                SUBB    A,R0
+01C2 FC                MOV     R4,A
+01C3 120000      E     LCALL   ?C?FCASTL
+01C6 C004              PUSH    AR4
+01C8 C005              PUSH    AR5
+01CA C006              PUSH    AR6
+01CC C007              PUSH    AR7
+01CE 900000      E     MOV     DPTR,#g_mem+096H
+01D1 E0                MOVX    A,@DPTR
+01D2 FC                MOV     R4,A
+01D3 A3                INC     DPTR
+01D4 E0                MOVX    A,@DPTR
+01D5 FD                MOV     R5,A
+01D6 A3                INC     DPTR
+01D7 E0                MOVX    A,@DPTR
+01D8 FE                MOV     R6,A
+01D9 A3                INC     DPTR
+01DA E0                MOVX    A,@DPTR
+01DB FF                MOV     R7,A
+01DC EC                MOV     A,R4
+01DD 120000      E     LCALL   ?C?FCASTL
+01E0 A804              MOV     R0,AR4
+01E2 A905              MOV     R1,AR5
+01E4 AA06              MOV     R2,AR6
+01E6 AB07              MOV     R3,AR7
+01E8 D007              POP     AR7
+01EA D006              POP     AR6
+01EC D005              POP     AR5
+01EE D004              POP     AR4
+01F0 120000      E     LCALL   ?C?FPDIV
+01F3 900000      R     MOV     DPTR,#rest_vel_ticks_ms
+01F6 E0                MOVX    A,@DPTR
+01F7 F8                MOV     R0,A
+01F8 A3                INC     DPTR
+01F9 E0                MOVX    A,@DPTR
+01FA F9                MOV     R1,A
+01FB A3                INC     DPTR
+01FC E0                MOVX    A,@DPTR
+01FD FA                MOV     R2,A
+01FE A3                INC     DPTR
+01FF E0                MOVX    A,@DPTR
+0200 FB                MOV     R3,A
+0201 120000      E     LCALL   ?C?FPMUL
+0204 900000      R     MOV     DPTR,#m
+0207 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 430
+020A E4                CLR     A
+020B FF                MOV     R7,A
+020C FE                MOV     R6,A
+020D 7DC8              MOV     R5,#0C8H
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 58  
 
-020C FB                MOV     R3,A
-020D FA                MOV     R2,A
-020E 7920              MOV     R1,#020H
-0210 7841              MOV     R0,#041H
-0212 120000      E     LCALL   ?C?FPMUL
-0215 120000      E     LCALL   ?C?CASTF
-0218 900000      E     MOV     DPTR,#g_mem+035H
-021B E0                MOVX    A,@DPTR
-021C F9                MOV     R1,A
-021D F8                MOV     R0,A
-021E 120000      E     LCALL   ?C?LSHL
-0221 900000      R     MOV     DPTR,#abs_err_thr
-0224 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 429
-0227 E4                CLR     A
-0228 FF                MOV     R7,A
-0229 FE                MOV     R6,A
-022A FD                MOV     R5,A
-022B FC                MOV     R4,A
-022C 900000      R     MOV     DPTR,#abs_err_thr
-022F E0                MOVX    A,@DPTR
-0230 F8                MOV     R0,A
-0231 A3                INC     DPTR
-0232 E0                MOVX    A,@DPTR
-0233 F9                MOV     R1,A
-0234 A3                INC     DPTR
-0235 E0                MOVX    A,@DPTR
-0236 FA                MOV     R2,A
-0237 A3                INC     DPTR
-0238 E0                MOVX    A,@DPTR
-0239 FB                MOV     R3,A
-023A D3                SETB    C
-023B 120000      E     LCALL   ?C?SLCMP
-023E 4010              JC      ?C0050
-0240 900000      R     MOV     DPTR,#abs_err_thr
-0243 E0                MOVX    A,@DPTR
-0244 FC                MOV     R4,A
-0245 A3                INC     DPTR
-0246 E0                MOVX    A,@DPTR
-0247 FD                MOV     R5,A
-0248 A3                INC     DPTR
-0249 E0                MOVX    A,@DPTR
-024A FE                MOV     R6,A
-024B A3                INC     DPTR
-024C E0                MOVX    A,@DPTR
-024D FF                MOV     R7,A
-024E 8011              SJMP    ?C0051
-0250         ?C0050:
-0250 900000      R     MOV     DPTR,#abs_err_thr
+020F 7C42              MOV     R4,#042H
+0211 900000      R     MOV     DPTR,#m
+0214 E0                MOVX    A,@DPTR
+0215 F8                MOV     R0,A
+0216 A3                INC     DPTR
+0217 E0                MOVX    A,@DPTR
+0218 F9                MOV     R1,A
+0219 A3                INC     DPTR
+021A E0                MOVX    A,@DPTR
+021B FA                MOV     R2,A
+021C A3                INC     DPTR
+021D E0                MOVX    A,@DPTR
+021E FB                MOV     R3,A
+021F 120000      E     LCALL   ?C?FPMUL
+0222 120000      E     LCALL   ?C?CASTF
+0225 900000      E     MOV     DPTR,#g_mem+035H
+0228 E0                MOVX    A,@DPTR
+0229 F9                MOV     R1,A
+022A F8                MOV     R0,A
+022B 120000      E     LCALL   ?C?LSHL
+022E 900000      R     MOV     DPTR,#abs_err_thr
+0231 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 431
+0234 E4                CLR     A
+0235 FF                MOV     R7,A
+0236 FE                MOV     R6,A
+0237 FD                MOV     R5,A
+0238 FC                MOV     R4,A
+0239 900000      R     MOV     DPTR,#abs_err_thr
+023C E0                MOVX    A,@DPTR
+023D F8                MOV     R0,A
+023E A3                INC     DPTR
+023F E0                MOVX    A,@DPTR
+0240 F9                MOV     R1,A
+0241 A3                INC     DPTR
+0242 E0                MOVX    A,@DPTR
+0243 FA                MOV     R2,A
+0244 A3                INC     DPTR
+0245 E0                MOVX    A,@DPTR
+0246 FB                MOV     R3,A
+0247 D3                SETB    C
+0248 120000      E     LCALL   ?C?SLCMP
+024B 4010              JC      ?C0050
+024D 900000      R     MOV     DPTR,#abs_err_thr
+0250 E0                MOVX    A,@DPTR
+0251 FC                MOV     R4,A
+0252 A3                INC     DPTR
 0253 E0                MOVX    A,@DPTR
-0254 FC                MOV     R4,A
+0254 FD                MOV     R5,A
 0255 A3                INC     DPTR
 0256 E0                MOVX    A,@DPTR
-0257 FD                MOV     R5,A
+0257 FE                MOV     R6,A
 0258 A3                INC     DPTR
 0259 E0                MOVX    A,@DPTR
-025A FE                MOV     R6,A
-025B A3                INC     DPTR
-025C E0                MOVX    A,@DPTR
-025D FF                MOV     R7,A
-025E 120000      E     LCALL   ?C?LNEG
-0261         ?C0051:
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 59  
+025A FF                MOV     R7,A
+025B 8011              SJMP    ?C0051
+025D         ?C0050:
+025D 900000      R     MOV     DPTR,#abs_err_thr
+0260 E0                MOVX    A,@DPTR
+0261 FC                MOV     R4,A
+0262 A3                INC     DPTR
+0263 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 59  
 
-0261 900000      R     MOV     DPTR,#abs_err_thr
-0264 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 431
-0267 900000      E     MOV     DPTR,#g_meas
-026A E0                MOVX    A,@DPTR
-026B F8                MOV     R0,A
-026C A3                INC     DPTR
-026D E0                MOVX    A,@DPTR
-026E F9                MOV     R1,A
-026F A3                INC     DPTR
-0270 E0                MOVX    A,@DPTR
-0271 FA                MOV     R2,A
-0272 A3                INC     DPTR
-0273 E0                MOVX    A,@DPTR
-0274 FB                MOV     R3,A
-0275 900000      E     MOV     DPTR,#g_mem+096H
-0278 E0                MOVX    A,@DPTR
-0279 FC                MOV     R4,A
-027A A3                INC     DPTR
-027B E0                MOVX    A,@DPTR
-027C FD                MOV     R5,A
-027D A3                INC     DPTR
-027E E0                MOVX    A,@DPTR
-027F FE                MOV     R6,A
-0280 A3                INC     DPTR
-0281 E0                MOVX    A,@DPTR
-0282 C3                CLR     C
-0283 9B                SUBB    A,R3
-0284 FF                MOV     R7,A
-0285 EE                MOV     A,R6
-0286 9A                SUBB    A,R2
-0287 FE                MOV     R6,A
-0288 ED                MOV     A,R5
-0289 99                SUBB    A,R1
-028A FD                MOV     R5,A
-028B EC                MOV     A,R4
-028C 98                SUBB    A,R0
-028D FC                MOV     R4,A
-028E 900000      R     MOV     DPTR,#rest_error
-0291 120000      E     LCALL   ?C?LSTXDATA
+0264 FD                MOV     R5,A
+0265 A3                INC     DPTR
+0266 E0                MOVX    A,@DPTR
+0267 FE                MOV     R6,A
+0268 A3                INC     DPTR
+0269 E0                MOVX    A,@DPTR
+026A FF                MOV     R7,A
+026B 120000      E     LCALL   ?C?LNEG
+026E         ?C0051:
+026E 900000      R     MOV     DPTR,#abs_err_thr
+0271 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 433
-0294 E4                CLR     A
-0295 FF                MOV     R7,A
-0296 FE                MOV     R6,A
-0297 7D20              MOV     R5,#020H
-0299 7C41              MOV     R4,#041H
-029B 900000      R     MOV     DPTR,#m
-029E E0                MOVX    A,@DPTR
-029F F8                MOV     R0,A
-02A0 A3                INC     DPTR
-02A1 E0                MOVX    A,@DPTR
-02A2 F9                MOV     R1,A
-02A3 A3                INC     DPTR
-02A4 E0                MOVX    A,@DPTR
-02A5 FA                MOV     R2,A
-02A6 A3                INC     DPTR
-02A7 E0                MOVX    A,@DPTR
-02A8 FB                MOV     R3,A
-02A9 120000      E     LCALL   ?C?FPMUL
-02AC 120000      E     LCALL   ?C?CASTF
-02AF 900000      E     MOV     DPTR,#g_mem+035H
-02B2 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 60  
+0274 900000      E     MOV     DPTR,#g_meas
+0277 E0                MOVX    A,@DPTR
+0278 F8                MOV     R0,A
+0279 A3                INC     DPTR
+027A E0                MOVX    A,@DPTR
+027B F9                MOV     R1,A
+027C A3                INC     DPTR
+027D E0                MOVX    A,@DPTR
+027E FA                MOV     R2,A
+027F A3                INC     DPTR
+0280 E0                MOVX    A,@DPTR
+0281 FB                MOV     R3,A
+0282 900000      E     MOV     DPTR,#g_mem+096H
+0285 E0                MOVX    A,@DPTR
+0286 FC                MOV     R4,A
+0287 A3                INC     DPTR
+0288 E0                MOVX    A,@DPTR
+0289 FD                MOV     R5,A
+028A A3                INC     DPTR
+028B E0                MOVX    A,@DPTR
+028C FE                MOV     R6,A
+028D A3                INC     DPTR
+028E E0                MOVX    A,@DPTR
+028F C3                CLR     C
+0290 9B                SUBB    A,R3
+0291 FF                MOV     R7,A
+0292 EE                MOV     A,R6
+0293 9A                SUBB    A,R2
+0294 FE                MOV     R6,A
+0295 ED                MOV     A,R5
+0296 99                SUBB    A,R1
+0297 FD                MOV     R5,A
+0298 EC                MOV     A,R4
+0299 98                SUBB    A,R0
+029A FC                MOV     R4,A
+029B 900000      R     MOV     DPTR,#rest_error
+029E 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 435
+02A1 E4                CLR     A
+02A2 FF                MOV     R7,A
+02A3 FE                MOV     R6,A
+02A4 7D20              MOV     R5,#020H
+02A6 7C41              MOV     R4,#041H
+02A8 900000      R     MOV     DPTR,#m
+02AB E0                MOVX    A,@DPTR
+02AC F8                MOV     R0,A
+02AD A3                INC     DPTR
+02AE E0                MOVX    A,@DPTR
+02AF F9                MOV     R1,A
+02B0 A3                INC     DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 60  
 
-02B3 F9                MOV     R1,A
-02B4 F8                MOV     R0,A
-02B5 120000      E     LCALL   ?C?LSHL
-02B8 900000      R     MOV     DPTR,#delta_inc
-02BB 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 434
-02BE E4                CLR     A
-02BF FF                MOV     R7,A
-02C0 FE                MOV     R6,A
-02C1 FD                MOV     R5,A
-02C2 FC                MOV     R4,A
-02C3 900000      R     MOV     DPTR,#delta_inc
-02C6 E0                MOVX    A,@DPTR
-02C7 F8                MOV     R0,A
-02C8 A3                INC     DPTR
-02C9 E0                MOVX    A,@DPTR
-02CA F9                MOV     R1,A
-02CB A3                INC     DPTR
-02CC E0                MOVX    A,@DPTR
-02CD FA                MOV     R2,A
-02CE A3                INC     DPTR
-02CF E0                MOVX    A,@DPTR
-02D0 FB                MOV     R3,A
-02D1 D3                SETB    C
-02D2 120000      E     LCALL   ?C?SLCMP
-02D5 4010              JC      ?C0052
-02D7 900000      R     MOV     DPTR,#delta_inc
-02DA E0                MOVX    A,@DPTR
-02DB FC                MOV     R4,A
-02DC A3                INC     DPTR
-02DD E0                MOVX    A,@DPTR
-02DE FD                MOV     R5,A
-02DF A3                INC     DPTR
-02E0 E0                MOVX    A,@DPTR
-02E1 FE                MOV     R6,A
-02E2 A3                INC     DPTR
-02E3 E0                MOVX    A,@DPTR
-02E4 FF                MOV     R7,A
-02E5 8011              SJMP    ?C0053
-02E7         ?C0052:
-02E7 900000      R     MOV     DPTR,#delta_inc
+02B1 E0                MOVX    A,@DPTR
+02B2 FA                MOV     R2,A
+02B3 A3                INC     DPTR
+02B4 E0                MOVX    A,@DPTR
+02B5 FB                MOV     R3,A
+02B6 120000      E     LCALL   ?C?FPMUL
+02B9 120000      E     LCALL   ?C?CASTF
+02BC 900000      E     MOV     DPTR,#g_mem+035H
+02BF E0                MOVX    A,@DPTR
+02C0 F9                MOV     R1,A
+02C1 F8                MOV     R0,A
+02C2 120000      E     LCALL   ?C?LSHL
+02C5 900000      R     MOV     DPTR,#delta_inc
+02C8 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 436
+02CB E4                CLR     A
+02CC FF                MOV     R7,A
+02CD FE                MOV     R6,A
+02CE FD                MOV     R5,A
+02CF FC                MOV     R4,A
+02D0 900000      R     MOV     DPTR,#delta_inc
+02D3 E0                MOVX    A,@DPTR
+02D4 F8                MOV     R0,A
+02D5 A3                INC     DPTR
+02D6 E0                MOVX    A,@DPTR
+02D7 F9                MOV     R1,A
+02D8 A3                INC     DPTR
+02D9 E0                MOVX    A,@DPTR
+02DA FA                MOV     R2,A
+02DB A3                INC     DPTR
+02DC E0                MOVX    A,@DPTR
+02DD FB                MOV     R3,A
+02DE D3                SETB    C
+02DF 120000      E     LCALL   ?C?SLCMP
+02E2 4010              JC      ?C0052
+02E4 900000      R     MOV     DPTR,#delta_inc
+02E7 E0                MOVX    A,@DPTR
+02E8 FC                MOV     R4,A
+02E9 A3                INC     DPTR
 02EA E0                MOVX    A,@DPTR
-02EB FC                MOV     R4,A
+02EB FD                MOV     R5,A
 02EC A3                INC     DPTR
 02ED E0                MOVX    A,@DPTR
-02EE FD                MOV     R5,A
+02EE FE                MOV     R6,A
 02EF A3                INC     DPTR
 02F0 E0                MOVX    A,@DPTR
-02F1 FE                MOV     R6,A
-02F2 A3                INC     DPTR
-02F3 E0                MOVX    A,@DPTR
-02F4 FF                MOV     R7,A
-02F5 120000      E     LCALL   ?C?LNEG
-02F8         ?C0053:
-02F8 900000      R     MOV     DPTR,#delta_inc
-02FB 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 436
-02FE E4                CLR     A
-02FF FF                MOV     R7,A
-0300 FE                MOV     R6,A
-0301 FD                MOV     R5,A
-0302 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 61  
+02F1 FF                MOV     R7,A
+02F2 8011              SJMP    ?C0053
+02F4         ?C0052:
+02F4 900000      R     MOV     DPTR,#delta_inc
+02F7 E0                MOVX    A,@DPTR
+02F8 FC                MOV     R4,A
+02F9 A3                INC     DPTR
+02FA E0                MOVX    A,@DPTR
+02FB FD                MOV     R5,A
+02FC A3                INC     DPTR
+02FD E0                MOVX    A,@DPTR
+02FE FE                MOV     R6,A
+02FF A3                INC     DPTR
+0300 E0                MOVX    A,@DPTR
+0301 FF                MOV     R7,A
+0302 120000      E     LCALL   ?C?LNEG
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 61  
 
-0303 900000      R     MOV     DPTR,#count
-0306 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 437
-0309 E4                CLR     A
-030A 900000      R     MOV     DPTR,#flag_count
-030D F0                MOVX    @DPTR,A
+0305         ?C0053:
+0305 900000      R     MOV     DPTR,#delta_inc
+0308 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 438
-030E         ?C0049:
+030B E4                CLR     A
+030C FF                MOV     R7,A
+030D FE                MOV     R6,A
+030E FD                MOV     R5,A
+030F FC                MOV     R4,A
+0310 900000      R     MOV     DPTR,#count
+0313 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 439
+0316 E4                CLR     A
+0317 900000      R     MOV     DPTR,#flag_count
+031A F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 440
-030E 900000      E     MOV     DPTR,#rest_enabled
-0311 E0                MOVX    A,@DPTR
-0312 7003              JNZ     $ + 5H
-0314 020000      R     LJMP    ?C0054
+031B         ?C0049:
                                            ; SOURCE LINE # 442
-0317 900000      R     MOV     DPTR,#abs_err_thr
-031A E0                MOVX    A,@DPTR
-031B FC                MOV     R4,A
-031C A3                INC     DPTR
-031D E0                MOVX    A,@DPTR
-031E FD                MOV     R5,A
-031F A3                INC     DPTR
-0320 E0                MOVX    A,@DPTR
-0321 FE                MOV     R6,A
-0322 A3                INC     DPTR
-0323 E0                MOVX    A,@DPTR
-0324 FF                MOV     R7,A
-0325 900000      R     MOV     DPTR,#rest_error
-0328 E0                MOVX    A,@DPTR
-0329 F8                MOV     R0,A
-032A A3                INC     DPTR
-032B E0                MOVX    A,@DPTR
-032C F9                MOV     R1,A
-032D A3                INC     DPTR
-032E E0                MOVX    A,@DPTR
-032F FA                MOV     R2,A
-0330 A3                INC     DPTR
-0331 E0                MOVX    A,@DPTR
-0332 FB                MOV     R3,A
-0333 C3                CLR     C
-0334 120000      E     LCALL   ?C?SLCMP
-0337 5053              JNC     ?C0055
-0339 900000      R     MOV     DPTR,#abs_err_thr
-033C E0                MOVX    A,@DPTR
-033D FC                MOV     R4,A
-033E A3                INC     DPTR
-033F E0                MOVX    A,@DPTR
-0340 FD                MOV     R5,A
-0341 A3                INC     DPTR
-0342 E0                MOVX    A,@DPTR
-0343 FE                MOV     R6,A
-0344 A3                INC     DPTR
-0345 E0                MOVX    A,@DPTR
-0346 FF                MOV     R7,A
-0347 120000      E     LCALL   ?C?LNEG
-034A 900000      R     MOV     DPTR,#rest_error
-034D E0                MOVX    A,@DPTR
-034E F8                MOV     R0,A
-034F A3                INC     DPTR
-0350 E0                MOVX    A,@DPTR
+031B 900000      E     MOV     DPTR,#rest_enabled
+031E E0                MOVX    A,@DPTR
+031F 7003              JNZ     $ + 5H
+0321 020000      R     LJMP    ?C0054
+                                           ; SOURCE LINE # 444
+0324 900000      R     MOV     DPTR,#abs_err_thr
+0327 E0                MOVX    A,@DPTR
+0328 FC                MOV     R4,A
+0329 A3                INC     DPTR
+032A E0                MOVX    A,@DPTR
+032B FD                MOV     R5,A
+032C A3                INC     DPTR
+032D E0                MOVX    A,@DPTR
+032E FE                MOV     R6,A
+032F A3                INC     DPTR
+0330 E0                MOVX    A,@DPTR
+0331 FF                MOV     R7,A
+0332 900000      R     MOV     DPTR,#rest_error
+0335 E0                MOVX    A,@DPTR
+0336 F8                MOV     R0,A
+0337 A3                INC     DPTR
+0338 E0                MOVX    A,@DPTR
+0339 F9                MOV     R1,A
+033A A3                INC     DPTR
+033B E0                MOVX    A,@DPTR
+033C FA                MOV     R2,A
+033D A3                INC     DPTR
+033E E0                MOVX    A,@DPTR
+033F FB                MOV     R3,A
+0340 C3                CLR     C
+0341 120000      E     LCALL   ?C?SLCMP
+0344 5053              JNC     ?C0055
+0346 900000      R     MOV     DPTR,#abs_err_thr
+0349 E0                MOVX    A,@DPTR
+034A FC                MOV     R4,A
+034B A3                INC     DPTR
+034C E0                MOVX    A,@DPTR
+034D FD                MOV     R5,A
+034E A3                INC     DPTR
+034F E0                MOVX    A,@DPTR
+0350 FE                MOV     R6,A
 0351 A3                INC     DPTR
 0352 E0                MOVX    A,@DPTR
-0353 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 62  
+0353 FF                MOV     R7,A
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 62  
 
-0354 E0                MOVX    A,@DPTR
-0355 D3                SETB    C
-0356 120000      E     LCALL   ?C?SLCMP
-0359 4031              JC      ?C0055
-                                           ; SOURCE LINE # 444
-035B 900000      E     MOV     DPTR,#g_mem+096H
-035E E0                MOVX    A,@DPTR
-035F FC                MOV     R4,A
+0354 120000      E     LCALL   ?C?LNEG
+0357 900000      R     MOV     DPTR,#rest_error
+035A E0                MOVX    A,@DPTR
+035B F8                MOV     R0,A
+035C A3                INC     DPTR
+035D E0                MOVX    A,@DPTR
+035E A3                INC     DPTR
+035F E0                MOVX    A,@DPTR
 0360 A3                INC     DPTR
 0361 E0                MOVX    A,@DPTR
-0362 FD                MOV     R5,A
-0363 A3                INC     DPTR
-0364 E0                MOVX    A,@DPTR
-0365 FE                MOV     R6,A
-0366 A3                INC     DPTR
-0367 E0                MOVX    A,@DPTR
-0368 FF                MOV     R7,A
-0369 900000      E     MOV     DPTR,#rest_pos_curr_ref
-036C 120000      E     LCALL   ?C?LSTXDATA
+0362 D3                SETB    C
+0363 120000      E     LCALL   ?C?SLCMP
+0366 4031              JC      ?C0055
                                            ; SOURCE LINE # 446
-036F 900000      E     MOV     DPTR,#c_mem+033H
-0372 E0                MOVX    A,@DPTR
-0373 C3                CLR     C
-0374 9402              SUBB    A,#02H
-0376 4006              JC      ?C0056
-                                           ; SOURCE LINE # 447
-0378 900000      E     MOV     DPTR,#forced_open
-037B 7401              MOV     A,#01H
-037D F0                MOVX    @DPTR,A
-037E         ?C0056:
+0368 900000      E     MOV     DPTR,#g_mem+096H
+036B E0                MOVX    A,@DPTR
+036C FC                MOV     R4,A
+036D A3                INC     DPTR
+036E E0                MOVX    A,@DPTR
+036F FD                MOV     R5,A
+0370 A3                INC     DPTR
+0371 E0                MOVX    A,@DPTR
+0372 FE                MOV     R6,A
+0373 A3                INC     DPTR
+0374 E0                MOVX    A,@DPTR
+0375 FF                MOV     R7,A
+0376 900000      E     MOV     DPTR,#rest_pos_curr_ref
+0379 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 448
+037C 900000      E     MOV     DPTR,#c_mem+033H
+037F E0                MOVX    A,@DPTR
+0380 C3                CLR     C
+0381 9402              SUBB    A,#02H
+0383 4006              JC      ?C0056
                                            ; SOURCE LINE # 449
-037E E4                CLR     A
-037F FF                MOV     R7,A
-0380 FE                MOV     R6,A
-0381 FD                MOV     R5,A
-0382 FC                MOV     R4,A
-0383 900000      R     MOV     DPTR,#count
-0386 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 450
-0389 020000      R     LJMP    ?C0054
-038C         ?C0055:
+0385 900000      E     MOV     DPTR,#forced_open
+0388 7401              MOV     A,#01H
+038A F0                MOVX    @DPTR,A
+038B         ?C0056:
                                            ; SOURCE LINE # 451
+038B E4                CLR     A
+038C FF                MOV     R7,A
+038D FE                MOV     R6,A
+038E FD                MOV     R5,A
+038F FC                MOV     R4,A
+0390 900000      R     MOV     DPTR,#count
+0393 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 452
-038C 900000      E     MOV     DPTR,#g_meas
-038F E0                MOVX    A,@DPTR
-0390 F8                MOV     R0,A
-0391 A3                INC     DPTR
-0392 E0                MOVX    A,@DPTR
-0393 F9                MOV     R1,A
-0394 A3                INC     DPTR
-0395 E0                MOVX    A,@DPTR
-0396 FA                MOV     R2,A
-0397 A3                INC     DPTR
-0398 E0                MOVX    A,@DPTR
-0399 FB                MOV     R3,A
-039A 900000      E     MOV     DPTR,#g_mem+096H
-039D E0                MOVX    A,@DPTR
-039E FC                MOV     R4,A
-039F A3                INC     DPTR
-03A0 E0                MOVX    A,@DPTR
-03A1 FD                MOV     R5,A
-03A2 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 63  
-
-03A3 E0                MOVX    A,@DPTR
-03A4 FE                MOV     R6,A
-03A5 A3                INC     DPTR
-03A6 E0                MOVX    A,@DPTR
-03A7 C3                CLR     C
-03A8 9B                SUBB    A,R3
-03A9 FF                MOV     R7,A
-03AA EE                MOV     A,R6
-03AB 9A                SUBB    A,R2
-03AC FE                MOV     R6,A
-03AD ED                MOV     A,R5
-03AE 99                SUBB    A,R1
-03AF FD                MOV     R5,A
-03B0 EC                MOV     A,R4
-03B1 98                SUBB    A,R0
-03B2 FC                MOV     R4,A
-03B3 900000      R     MOV     DPTR,#rest_error
-03B6 120000      E     LCALL   ?C?LSTXDATA
+0396 020000      R     LJMP    ?C0054
+0399         ?C0055:
+                                           ; SOURCE LINE # 453
                                            ; SOURCE LINE # 454
-03B9 E4                CLR     A
-03BA FF                MOV     R7,A
-03BB FE                MOV     R6,A
+0399 900000      E     MOV     DPTR,#g_meas
+039C E0                MOVX    A,@DPTR
+039D F8                MOV     R0,A
+039E A3                INC     DPTR
+039F E0                MOVX    A,@DPTR
+03A0 F9                MOV     R1,A
+03A1 A3                INC     DPTR
+03A2 E0                MOVX    A,@DPTR
+03A3 FA                MOV     R2,A
+03A4 A3                INC     DPTR
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 63  
+
+03A5 E0                MOVX    A,@DPTR
+03A6 FB                MOV     R3,A
+03A7 900000      E     MOV     DPTR,#g_mem+096H
+03AA E0                MOVX    A,@DPTR
+03AB FC                MOV     R4,A
+03AC A3                INC     DPTR
+03AD E0                MOVX    A,@DPTR
+03AE FD                MOV     R5,A
+03AF A3                INC     DPTR
+03B0 E0                MOVX    A,@DPTR
+03B1 FE                MOV     R6,A
+03B2 A3                INC     DPTR
+03B3 E0                MOVX    A,@DPTR
+03B4 C3                CLR     C
+03B5 9B                SUBB    A,R3
+03B6 FF                MOV     R7,A
+03B7 EE                MOV     A,R6
+03B8 9A                SUBB    A,R2
+03B9 FE                MOV     R6,A
+03BA ED                MOV     A,R5
+03BB 99                SUBB    A,R1
 03BC FD                MOV     R5,A
-03BD FC                MOV     R4,A
-03BE 900000      R     MOV     DPTR,#rest_error
-03C1 E0                MOVX    A,@DPTR
-03C2 F8                MOV     R0,A
-03C3 A3                INC     DPTR
-03C4 E0                MOVX    A,@DPTR
-03C5 F9                MOV     R1,A
-03C6 A3                INC     DPTR
-03C7 E0                MOVX    A,@DPTR
-03C8 FA                MOV     R2,A
-03C9 A3                INC     DPTR
-03CA E0                MOVX    A,@DPTR
-03CB FB                MOV     R3,A
-03CC D3                SETB    C
-03CD 120000      E     LCALL   ?C?SLCMP
-03D0 402E              JC      ?C0058
-                                           ; SOURCE LINE # 455
-03D2 900000      E     MOV     DPTR,#rest_pos_curr_ref
-03D5 E0                MOVX    A,@DPTR
-03D6 FC                MOV     R4,A
-03D7 A3                INC     DPTR
-03D8 E0                MOVX    A,@DPTR
-03D9 FD                MOV     R5,A
-03DA A3                INC     DPTR
-03DB E0                MOVX    A,@DPTR
-03DC FE                MOV     R6,A
-03DD A3                INC     DPTR
-03DE E0                MOVX    A,@DPTR
-03DF FF                MOV     R7,A
-03E0 900000      R     MOV     DPTR,#delta_inc
-03E3 E0                MOVX    A,@DPTR
-03E4 F8                MOV     R0,A
-03E5 A3                INC     DPTR
-03E6 E0                MOVX    A,@DPTR
-03E7 F9                MOV     R1,A
-03E8 A3                INC     DPTR
-03E9 E0                MOVX    A,@DPTR
-03EA FA                MOV     R2,A
-03EB A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 64  
-
-03EC E0                MOVX    A,@DPTR
-03ED FB                MOV     R3,A
-03EE EF                MOV     A,R7
-03EF 2B                ADD     A,R3
-03F0 FF                MOV     R7,A
-03F1 EE                MOV     A,R6
-03F2 3A                ADDC    A,R2
-03F3 FE                MOV     R6,A
-03F4 ED                MOV     A,R5
-03F5 39                ADDC    A,R1
-03F6 FD                MOV     R5,A
-03F7 EC                MOV     A,R4
-03F8 38                ADDC    A,R0
-03F9 FC                MOV     R4,A
-03FA 900000      E     MOV     DPTR,#rest_pos_curr_ref
-03FD 120000      E     LCALL   ?C?LSTXDATA
+03BD EC                MOV     A,R4
+03BE 98                SUBB    A,R0
+03BF FC                MOV     R4,A
+03C0 900000      R     MOV     DPTR,#rest_error
+03C3 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 456
-0400         ?C0058:
+03C6 E4                CLR     A
+03C7 FF                MOV     R7,A
+03C8 FE                MOV     R6,A
+03C9 FD                MOV     R5,A
+03CA FC                MOV     R4,A
+03CB 900000      R     MOV     DPTR,#rest_error
+03CE E0                MOVX    A,@DPTR
+03CF F8                MOV     R0,A
+03D0 A3                INC     DPTR
+03D1 E0                MOVX    A,@DPTR
+03D2 F9                MOV     R1,A
+03D3 A3                INC     DPTR
+03D4 E0                MOVX    A,@DPTR
+03D5 FA                MOV     R2,A
+03D6 A3                INC     DPTR
+03D7 E0                MOVX    A,@DPTR
+03D8 FB                MOV     R3,A
+03D9 D3                SETB    C
+03DA 120000      E     LCALL   ?C?SLCMP
+03DD 402E              JC      ?C0058
                                            ; SOURCE LINE # 457
-0400 E4                CLR     A
-0401 FF                MOV     R7,A
-0402 FE                MOV     R6,A
+03DF 900000      E     MOV     DPTR,#rest_pos_curr_ref
+03E2 E0                MOVX    A,@DPTR
+03E3 FC                MOV     R4,A
+03E4 A3                INC     DPTR
+03E5 E0                MOVX    A,@DPTR
+03E6 FD                MOV     R5,A
+03E7 A3                INC     DPTR
+03E8 E0                MOVX    A,@DPTR
+03E9 FE                MOV     R6,A
+03EA A3                INC     DPTR
+03EB E0                MOVX    A,@DPTR
+03EC FF                MOV     R7,A
+03ED 900000      R     MOV     DPTR,#delta_inc
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 64  
+
+03F0 E0                MOVX    A,@DPTR
+03F1 F8                MOV     R0,A
+03F2 A3                INC     DPTR
+03F3 E0                MOVX    A,@DPTR
+03F4 F9                MOV     R1,A
+03F5 A3                INC     DPTR
+03F6 E0                MOVX    A,@DPTR
+03F7 FA                MOV     R2,A
+03F8 A3                INC     DPTR
+03F9 E0                MOVX    A,@DPTR
+03FA FB                MOV     R3,A
+03FB EF                MOV     A,R7
+03FC 2B                ADD     A,R3
+03FD FF                MOV     R7,A
+03FE EE                MOV     A,R6
+03FF 3A                ADDC    A,R2
+0400 FE                MOV     R6,A
+0401 ED                MOV     A,R5
+0402 39                ADDC    A,R1
 0403 FD                MOV     R5,A
-0404 FC                MOV     R4,A
-0405 900000      R     MOV     DPTR,#rest_error
-0408 E0                MOVX    A,@DPTR
-0409 F8                MOV     R0,A
-040A A3                INC     DPTR
-040B E0                MOVX    A,@DPTR
-040C F9                MOV     R1,A
-040D A3                INC     DPTR
-040E E0                MOVX    A,@DPTR
-040F FA                MOV     R2,A
-0410 A3                INC     DPTR
-0411 E0                MOVX    A,@DPTR
-0412 FB                MOV     R3,A
-0413 C3                CLR     C
-0414 120000      E     LCALL   ?C?SLCMP
-0417 502F              JNC     ?C0054
+0404 EC                MOV     A,R4
+0405 38                ADDC    A,R0
+0406 FC                MOV     R4,A
+0407 900000      E     MOV     DPTR,#rest_pos_curr_ref
+040A 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 458
-0419 900000      E     MOV     DPTR,#rest_pos_curr_ref
-041C E0                MOVX    A,@DPTR
-041D FC                MOV     R4,A
-041E A3                INC     DPTR
-041F E0                MOVX    A,@DPTR
-0420 FD                MOV     R5,A
-0421 A3                INC     DPTR
-0422 E0                MOVX    A,@DPTR
-0423 FE                MOV     R6,A
-0424 A3                INC     DPTR
-0425 E0                MOVX    A,@DPTR
-0426 FF                MOV     R7,A
-0427 900000      R     MOV     DPTR,#delta_inc
-042A E0                MOVX    A,@DPTR
-042B F8                MOV     R0,A
-042C A3                INC     DPTR
-042D E0                MOVX    A,@DPTR
-042E F9                MOV     R1,A
-042F A3                INC     DPTR
-0430 E0                MOVX    A,@DPTR
-0431 FA                MOV     R2,A
-0432 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 65  
-
-0433 E0                MOVX    A,@DPTR
-0434 FB                MOV     R3,A
-0435 C3                CLR     C
-0436 EF                MOV     A,R7
-0437 9B                SUBB    A,R3
-0438 FF                MOV     R7,A
-0439 EE                MOV     A,R6
-043A 9A                SUBB    A,R2
-043B FE                MOV     R6,A
-043C ED                MOV     A,R5
-043D 99                SUBB    A,R1
-043E FD                MOV     R5,A
-043F EC                MOV     A,R4
-0440 98                SUBB    A,R0
-0441 FC                MOV     R4,A
-0442 900000      E     MOV     DPTR,#rest_pos_curr_ref
-0445 120000      E     LCALL   ?C?LSTXDATA
+040D         ?C0058:
                                            ; SOURCE LINE # 459
+040D E4                CLR     A
+040E FF                MOV     R7,A
+040F FE                MOV     R6,A
+0410 FD                MOV     R5,A
+0411 FC                MOV     R4,A
+0412 900000      R     MOV     DPTR,#rest_error
+0415 E0                MOVX    A,@DPTR
+0416 F8                MOV     R0,A
+0417 A3                INC     DPTR
+0418 E0                MOVX    A,@DPTR
+0419 F9                MOV     R1,A
+041A A3                INC     DPTR
+041B E0                MOVX    A,@DPTR
+041C FA                MOV     R2,A
+041D A3                INC     DPTR
+041E E0                MOVX    A,@DPTR
+041F FB                MOV     R3,A
+0420 C3                CLR     C
+0421 120000      E     LCALL   ?C?SLCMP
+0424 502F              JNC     ?C0054
                                            ; SOURCE LINE # 460
-                                           ; SOURCE LINE # 461
-0448         ?C0054:
-                                           ; SOURCE LINE # 464
-0448 900000      E     MOV     DPTR,#c_mem+050H
-044B E0                MOVX    A,@DPTR
-044C 606A              JZ      ?C0063
-                                           ; SOURCE LINE # 465
-044E A3                INC     DPTR
-044F E0                MOVX    A,@DPTR
-0450 FC                MOV     R4,A
-0451 A3                INC     DPTR
-0452 E0                MOVX    A,@DPTR
-0453 FD                MOV     R5,A
-0454 A3                INC     DPTR
-0455 E0                MOVX    A,@DPTR
-0456 FE                MOV     R6,A
-0457 A3                INC     DPTR
-0458 E0                MOVX    A,@DPTR
-0459 FF                MOV     R7,A
-045A 900000      E     MOV     DPTR,#rest_pos_curr_ref
-045D E0                MOVX    A,@DPTR
-045E F8                MOV     R0,A
-045F A3                INC     DPTR
-0460 E0                MOVX    A,@DPTR
-0461 F9                MOV     R1,A
-0462 A3                INC     DPTR
-0463 E0                MOVX    A,@DPTR
-0464 FA                MOV     R2,A
-0465 A3                INC     DPTR
-0466 E0                MOVX    A,@DPTR
-0467 FB                MOV     R3,A
-0468 C3                CLR     C
-0469 120000      E     LCALL   ?C?SLCMP
-046C 5014              JNC     ?C0061
-                                           ; SOURCE LINE # 466
-046E 900000      E     MOV     DPTR,#c_mem+051H
-0471 E0                MOVX    A,@DPTR
-0472 FC                MOV     R4,A
-0473 A3                INC     DPTR
-0474 E0                MOVX    A,@DPTR
-0475 FD                MOV     R5,A
-0476 A3                INC     DPTR
-0477 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 66  
+0426 900000      E     MOV     DPTR,#rest_pos_curr_ref
+0429 E0                MOVX    A,@DPTR
+042A FC                MOV     R4,A
+042B A3                INC     DPTR
+042C E0                MOVX    A,@DPTR
+042D FD                MOV     R5,A
+042E A3                INC     DPTR
+042F E0                MOVX    A,@DPTR
+0430 FE                MOV     R6,A
+0431 A3                INC     DPTR
+0432 E0                MOVX    A,@DPTR
+0433 FF                MOV     R7,A
+0434 900000      R     MOV     DPTR,#delta_inc
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 65  
 
-0478 FE                MOV     R6,A
-0479 A3                INC     DPTR
-047A E0                MOVX    A,@DPTR
-047B FF                MOV     R7,A
-047C 900000      E     MOV     DPTR,#rest_pos_curr_ref
-047F 120000      E     LCALL   ?C?LSTXDATA
-0482         ?C0061:
+0437 E0                MOVX    A,@DPTR
+0438 F8                MOV     R0,A
+0439 A3                INC     DPTR
+043A E0                MOVX    A,@DPTR
+043B F9                MOV     R1,A
+043C A3                INC     DPTR
+043D E0                MOVX    A,@DPTR
+043E FA                MOV     R2,A
+043F A3                INC     DPTR
+0440 E0                MOVX    A,@DPTR
+0441 FB                MOV     R3,A
+0442 C3                CLR     C
+0443 EF                MOV     A,R7
+0444 9B                SUBB    A,R3
+0445 FF                MOV     R7,A
+0446 EE                MOV     A,R6
+0447 9A                SUBB    A,R2
+0448 FE                MOV     R6,A
+0449 ED                MOV     A,R5
+044A 99                SUBB    A,R1
+044B FD                MOV     R5,A
+044C EC                MOV     A,R4
+044D 98                SUBB    A,R0
+044E FC                MOV     R4,A
+044F 900000      E     MOV     DPTR,#rest_pos_curr_ref
+0452 120000      E     LCALL   ?C?LSTXDATA
+                                           ; SOURCE LINE # 461
+                                           ; SOURCE LINE # 462
+                                           ; SOURCE LINE # 463
+0455         ?C0054:
+                                           ; SOURCE LINE # 466
+0455 900000      E     MOV     DPTR,#c_mem+050H
+0458 E0                MOVX    A,@DPTR
+0459 606A              JZ      ?C0063
                                            ; SOURCE LINE # 467
-0482 900000      E     MOV     DPTR,#c_mem+059H
-0485 E0                MOVX    A,@DPTR
-0486 FC                MOV     R4,A
-0487 A3                INC     DPTR
-0488 E0                MOVX    A,@DPTR
-0489 FD                MOV     R5,A
-048A A3                INC     DPTR
-048B E0                MOVX    A,@DPTR
-048C FE                MOV     R6,A
-048D A3                INC     DPTR
-048E E0                MOVX    A,@DPTR
-048F FF                MOV     R7,A
-0490 900000      E     MOV     DPTR,#rest_pos_curr_ref
-0493 E0                MOVX    A,@DPTR
-0494 F8                MOV     R0,A
-0495 A3                INC     DPTR
-0496 E0                MOVX    A,@DPTR
-0497 F9                MOV     R1,A
-0498 A3                INC     DPTR
-0499 E0                MOVX    A,@DPTR
-049A FA                MOV     R2,A
-049B A3                INC     DPTR
-049C E0                MOVX    A,@DPTR
-049D FB                MOV     R3,A
-049E D3                SETB    C
-049F 120000      E     LCALL   ?C?SLCMP
-04A2 4014              JC      ?C0063
+045B A3                INC     DPTR
+045C E0                MOVX    A,@DPTR
+045D FC                MOV     R4,A
+045E A3                INC     DPTR
+045F E0                MOVX    A,@DPTR
+0460 FD                MOV     R5,A
+0461 A3                INC     DPTR
+0462 E0                MOVX    A,@DPTR
+0463 FE                MOV     R6,A
+0464 A3                INC     DPTR
+0465 E0                MOVX    A,@DPTR
+0466 FF                MOV     R7,A
+0467 900000      E     MOV     DPTR,#rest_pos_curr_ref
+046A E0                MOVX    A,@DPTR
+046B F8                MOV     R0,A
+046C A3                INC     DPTR
+046D E0                MOVX    A,@DPTR
+046E F9                MOV     R1,A
+046F A3                INC     DPTR
+0470 E0                MOVX    A,@DPTR
+0471 FA                MOV     R2,A
+0472 A3                INC     DPTR
+0473 E0                MOVX    A,@DPTR
+0474 FB                MOV     R3,A
+0475 C3                CLR     C
+0476 120000      E     LCALL   ?C?SLCMP
+0479 5014              JNC     ?C0061
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 66  
+
                                            ; SOURCE LINE # 468
-04A4 900000      E     MOV     DPTR,#c_mem+059H
-04A7 E0                MOVX    A,@DPTR
-04A8 FC                MOV     R4,A
-04A9 A3                INC     DPTR
-04AA E0                MOVX    A,@DPTR
-04AB FD                MOV     R5,A
-04AC A3                INC     DPTR
-04AD E0                MOVX    A,@DPTR
-04AE FE                MOV     R6,A
-04AF A3                INC     DPTR
-04B0 E0                MOVX    A,@DPTR
-04B1 FF                MOV     R7,A
-04B2 900000      E     MOV     DPTR,#rest_pos_curr_ref
-04B5 120000      E     LCALL   ?C?LSTXDATA
+047B 900000      E     MOV     DPTR,#c_mem+051H
+047E E0                MOVX    A,@DPTR
+047F FC                MOV     R4,A
+0480 A3                INC     DPTR
+0481 E0                MOVX    A,@DPTR
+0482 FD                MOV     R5,A
+0483 A3                INC     DPTR
+0484 E0                MOVX    A,@DPTR
+0485 FE                MOV     R6,A
+0486 A3                INC     DPTR
+0487 E0                MOVX    A,@DPTR
+0488 FF                MOV     R7,A
+0489 900000      E     MOV     DPTR,#rest_pos_curr_ref
+048C 120000      E     LCALL   ?C?LSTXDATA
+048F         ?C0061:
                                            ; SOURCE LINE # 469
+048F 900000      E     MOV     DPTR,#c_mem+059H
+0492 E0                MOVX    A,@DPTR
+0493 FC                MOV     R4,A
+0494 A3                INC     DPTR
+0495 E0                MOVX    A,@DPTR
+0496 FD                MOV     R5,A
+0497 A3                INC     DPTR
+0498 E0                MOVX    A,@DPTR
+0499 FE                MOV     R6,A
+049A A3                INC     DPTR
+049B E0                MOVX    A,@DPTR
+049C FF                MOV     R7,A
+049D 900000      E     MOV     DPTR,#rest_pos_curr_ref
+04A0 E0                MOVX    A,@DPTR
+04A1 F8                MOV     R0,A
+04A2 A3                INC     DPTR
+04A3 E0                MOVX    A,@DPTR
+04A4 F9                MOV     R1,A
+04A5 A3                INC     DPTR
+04A6 E0                MOVX    A,@DPTR
+04A7 FA                MOV     R2,A
+04A8 A3                INC     DPTR
+04A9 E0                MOVX    A,@DPTR
+04AA FB                MOV     R3,A
+04AB D3                SETB    C
+04AC 120000      E     LCALL   ?C?SLCMP
+04AF 4014              JC      ?C0063
+                                           ; SOURCE LINE # 470
+04B1 900000      E     MOV     DPTR,#c_mem+059H
+04B4 E0                MOVX    A,@DPTR
+04B5 FC                MOV     R4,A
+04B6 A3                INC     DPTR
+04B7 E0                MOVX    A,@DPTR
+04B8 FD                MOV     R5,A
+04B9 A3                INC     DPTR
+04BA E0                MOVX    A,@DPTR
+04BB FE                MOV     R6,A
+04BC A3                INC     DPTR
+04BD E0                MOVX    A,@DPTR
+04BE FF                MOV     R7,A
+04BF 900000      E     MOV     DPTR,#rest_pos_curr_ref
+04C2 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 471
-04B8         ?C0063:
-04B8 22                RET     
+                                           ; SOURCE LINE # 473
+04C5         ?C0063:
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 67  
+
+04C5 22                RET     
              ; FUNCTION check_rest_position (END)
 
              ; FUNCTION reset_counters (BEGIN)
-                                           ; SOURCE LINE # 476
-                                           ; SOURCE LINE # 480
+                                           ; SOURCE LINE # 478
+                                           ; SOURCE LINE # 482
 0000 E4                CLR     A
 0001 FF                MOV     R7,A
 0002 FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 67  
-
 0003 FD                MOV     R5,A
 0004 FC                MOV     R4,A
 0005 900000      E     MOV     DPTR,#g_mem+0B4H
@@ -4183,7 +4195,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 000F FC                MOV     R4,A
 0010 900000      E     MOV     DPTR,#g_mem+0B0H
 0013 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 481
+                                           ; SOURCE LINE # 483
 ;---- Variable 'i' assigned to Register 'R3' ----
 0016 E4                CLR     A
 0017 FB                MOV     R3,A
@@ -4192,7 +4204,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0019 C3                CLR     C
 001A 940A              SUBB    A,#0AH
 001C 5019              JNC     ?C0065
-                                           ; SOURCE LINE # 482
+                                           ; SOURCE LINE # 484
 001E E4                CLR     A
 001F FF                MOV     R7,A
 0020 FE                MOV     R6,A
@@ -4207,11 +4219,11 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 002D 3400        E     ADDC    A,#HIGH g_mem+0B8H
 002F F583              MOV     DPH,A
 0031 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 483
+                                           ; SOURCE LINE # 485
 0034 0B                INC     R3
 0035 80E1              SJMP    ?C0064
 0037         ?C0065:
-                                           ; SOURCE LINE # 484
+                                           ; SOURCE LINE # 486
 0037 E4                CLR     A
 0038 FB                MOV     R3,A
 0039         ?C0067:
@@ -4219,12 +4231,14 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 003A C3                CLR     C
 003B 9404              SUBB    A,#04H
 003D 5019              JNC     ?C0068
-                                           ; SOURCE LINE # 485
+                                           ; SOURCE LINE # 487
 003F E4                CLR     A
 0040 FF                MOV     R7,A
 0041 FE                MOV     R6,A
 0042 FD                MOV     R5,A
 0043 FC                MOV     R4,A
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 68  
+
 0044 EB                MOV     A,R3
 0045 25E0              ADD     A,ACC
 0047 25E0              ADD     A,ACC
@@ -4234,13 +4248,11 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 004E 3400        E     ADDC    A,#HIGH g_mem+0E0H
 0050 F583              MOV     DPH,A
 0052 120000      E     LCALL   ?C?LSTXDATA
-C51 COMPILER V9.51   UTILS                                                                 02/21/2018 11:59:40 PAGE 68  
-
-                                           ; SOURCE LINE # 486
+                                           ; SOURCE LINE # 488
 0055 0B                INC     R3
 0056 80E1              SJMP    ?C0067
 0058         ?C0068:
-                                           ; SOURCE LINE # 487
+                                           ; SOURCE LINE # 489
 0058 E4                CLR     A
 0059 FF                MOV     R7,A
 005A FE                MOV     R6,A
@@ -4248,7 +4260,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005C FC                MOV     R4,A
 005D 900000      E     MOV     DPTR,#g_mem+0F0H
 0060 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 488
+                                           ; SOURCE LINE # 490
 0063 E4                CLR     A
 0064 FF                MOV     R7,A
 0065 FE                MOV     R6,A
@@ -4256,7 +4268,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0067 FC                MOV     R4,A
 0068 900000      E     MOV     DPTR,#g_mem+0F4H
 006B 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 489
+                                           ; SOURCE LINE # 491
 006E E4                CLR     A
 006F FF                MOV     R7,A
 0070 FE                MOV     R6,A
@@ -4264,7 +4276,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0072 FC                MOV     R4,A
 0073 900000      E     MOV     DPTR,#g_mem+0F8H
 0076 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 490
+                                           ; SOURCE LINE # 492
 0079 E4                CLR     A
 007A FF                MOV     R7,A
 007B FE                MOV     R6,A
@@ -4272,16 +4284,16 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007D FC                MOV     R4,A
 007E 900000      E     MOV     DPTR,#g_mem+0FCH
 0081 120000      E     LCALL   ?C?LSTXDATA
-                                           ; SOURCE LINE # 491
+                                           ; SOURCE LINE # 493
 0084 22                RET     
              ; FUNCTION reset_counters (END)
 
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   4662    ----
+   CODE SIZE        =   4675    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =    129      52
+   XDATA SIZE       =    129      56
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----       1
    IDATA SIZE       =   ----       3
@@ -4289,6 +4301,8 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    EDATA SIZE       =   ----    ----
    HDATA SIZE       =   ----    ----
    XDATA CONST SIZE =   ----    ----
+C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 69  
+
    FAR CONST SIZE   =   ----    ----
 END OF MODULE INFORMATION.
 

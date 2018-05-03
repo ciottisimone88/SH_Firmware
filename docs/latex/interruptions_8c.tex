@@ -9,8 +9,7 @@ Interruption handling and firmware core functions.
 {\ttfamily \#include $<$command\+\_\+processing.\+h$>$}\newline
 {\ttfamily \#include $<$globals.\+h$>$}\newline
 {\ttfamily \#include $<$utils.\+h$>$}\newline
-Include dependency graph for interruptions.\+c\+:
-\nopagebreak
+Include dependency graph for interruptions.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -26,6 +25,9 @@ Include dependency graph for interruptions.\+c\+:
 \mbox{\label{interruptions_8c_a7692d8c3185943c5bdfaa6de0a172ad3}} 
 {\bfseries C\+Y\+\_\+\+I\+SR} (I\+S\+R\+\_\+\+R\+S485\+\_\+\+R\+X\+\_\+\+Ex\+Interrupt)
 \item 
+\mbox{\label{interruptions_8c_a2347671848e5c23aa5df4ce2f2fd869d}} 
+{\bfseries C\+Y\+\_\+\+I\+SR} (I\+S\+R\+\_\+\+C\+Y\+C\+L\+E\+S\+\_\+\+Handler)
+\item 
 void \textbf{ interrupt\+\_\+manager} ()
 \item 
 void \textbf{ function\+\_\+scheduler} (void)
@@ -39,11 +41,18 @@ void \textbf{ analog\+\_\+read\+\_\+end} ()
 void \textbf{ overcurrent\+\_\+control} ()
 \item 
 void \textbf{ pwm\+\_\+limit\+\_\+search} ()
+\item 
+void \textbf{ cycles\+\_\+counter\+\_\+update} ()
+\item 
+void \textbf{ save\+\_\+cycles\+\_\+eeprom} ()
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 static const uint8 {\bfseries pwm\+\_\+preload\+\_\+values} [29]
+\item 
+\mbox{\label{interruptions_8c_ade15ebab678018bae72c12a91e93a6e5}} 
+C\+Y\+C\+O\+DE uint8 {\bfseries pwm\+\_\+preload\+\_\+values\+\_\+6v} [32]
 \end{DoxyCompactItemize}
 
 
@@ -70,7 +79,13 @@ October 01, 2017
 \subsubsection{analog\+\_\+read\+\_\+end()}
 {\footnotesize\ttfamily void analog\+\_\+read\+\_\+end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function executes and terminates the analog readings. \mbox{\label{interruptions_8c_af8d2e8be60bb142650c4fcf4b782fb14}} 
+This function executes and terminates the analog readings. \mbox{\label{interruptions_8c_a77877c16b42f6f384f7c80d3002aed22}} 
+\index{interruptions.\+c@{interruptions.\+c}!cycles\+\_\+counter\+\_\+update@{cycles\+\_\+counter\+\_\+update}}
+\index{cycles\+\_\+counter\+\_\+update@{cycles\+\_\+counter\+\_\+update}!interruptions.\+c@{interruptions.\+c}}
+\subsubsection{cycles\+\_\+counter\+\_\+update()}
+{\footnotesize\ttfamily void cycles\+\_\+counter\+\_\+update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function increases the cycles counters variables, depending on Soft\+Hand position and the current absorbed by the motor. \mbox{\label{interruptions_8c_af8d2e8be60bb142650c4fcf4b782fb14}} 
 \index{interruptions.\+c@{interruptions.\+c}!encoder\+\_\+reading@{encoder\+\_\+reading}}
 \index{encoder\+\_\+reading@{encoder\+\_\+reading}!interruptions.\+c@{interruptions.\+c}}
 \subsubsection{encoder\+\_\+reading()}
@@ -107,13 +122,19 @@ This function controls the motor direction and velocity, depending on the input 
 \subsubsection{overcurrent\+\_\+control()}
 {\footnotesize\ttfamily void overcurrent\+\_\+control (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function increases or decreases the pwm value, depending on the current absorbed by the motor. \mbox{\label{interruptions_8c_ab7b287cf5df2ea548297b951be2f20d4}} 
+This function increases or decreases the pwm maximum value, depending on the current absorbed by the motor. \mbox{\label{interruptions_8c_ab7b287cf5df2ea548297b951be2f20d4}} 
 \index{interruptions.\+c@{interruptions.\+c}!pwm\+\_\+limit\+\_\+search@{pwm\+\_\+limit\+\_\+search}}
 \index{pwm\+\_\+limit\+\_\+search@{pwm\+\_\+limit\+\_\+search}!interruptions.\+c@{interruptions.\+c}}
 \subsubsection{pwm\+\_\+limit\+\_\+search()}
 {\footnotesize\ttfamily void pwm\+\_\+limit\+\_\+search (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function scales the pwm value of the motor, depending on the power supply voltage, in order to not make the motor wind too fast. 
+This function scales the pwm value of the motor, depending on the power supply voltage, in order to not make the motor wind too fast. \mbox{\label{interruptions_8c_ad86170580c30277d97216739e8508a13}} 
+\index{interruptions.\+c@{interruptions.\+c}!save\+\_\+cycles\+\_\+eeprom@{save\+\_\+cycles\+\_\+eeprom}}
+\index{save\+\_\+cycles\+\_\+eeprom@{save\+\_\+cycles\+\_\+eeprom}!interruptions.\+c@{interruptions.\+c}}
+\subsubsection{save\+\_\+cycles\+\_\+eeprom()}
+{\footnotesize\ttfamily void save\+\_\+cycles\+\_\+eeprom (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function saves cycles counters variables into E\+E\+P\+R\+OM memory. 
 
 \subsection{Variable Documentation}
 \mbox{\label{interruptions_8c_aee1865719263cf20251f918e8825703d}} 

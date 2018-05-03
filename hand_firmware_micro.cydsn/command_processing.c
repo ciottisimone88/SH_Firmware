@@ -307,8 +307,8 @@ void infoGet(uint16 info_type) {
 
 void get_param_list(uint16 index) {
     //Package to be sent variables
-    uint8 packet_data[1951] = "";
-    uint16 packet_lenght = 1951;
+    uint8 packet_data[1901] = "";
+    uint16 packet_lenght = 1901;
 
     //Auxiliary variables
     uint8 CYDATA i;
@@ -340,12 +340,11 @@ void get_param_list(uint16 index) {
     char rest_pos_str[20] = "21 - Rest position:";
     char rest_pos_delay_str[36] = "22 - Rest position time delay (ms):";
     char rest_vel_str[35] = "23 - Rest vel closure (ticks/sec):";
-    char rest_ratio_str[17] = "24 - Rest ratio:";
-    char curr_lookup_str[21] = "25 - Current lookup:";
-    char rest_pos_flag_str[29] = "26 - Rest position flag:";
-    char emg_inversion_str[24] = "27 - EMG inversion:";
-    char reset_counters_str[25] = "28 - Reset counters:";
-    char date_maint_str[37] = "29 - Date of maintenance [DD/MM/YY]:";
+    char curr_lookup_str[21] = "24 - Current lookup:";
+    char rest_pos_flag_str[29] = "25 - Rest position flag:";
+    char emg_inversion_str[24] = "26 - EMG inversion:";
+    char reset_counters_str[25] = "27 - Reset counters:";
+    char date_maint_str[37] = "28 - Date of maintenance [DD/MM/YY]:";
 
     //Parameters menus
     const char input_mode_menu[99] = "0 -> Usb\n1 -> Handle\n2 -> EMG proportional\n3 -> EMG Integral\n4 -> EMG FCFS\n5 -> EMG FCFS Advanced\n";
@@ -377,7 +376,6 @@ void get_param_list(uint16 index) {
     uint8 CYDATA rest_pos_str_len = strlen(rest_pos_str);
     uint8 CYDATA rest_pos_delay_str_len = strlen(rest_pos_delay_str);
     uint8 CYDATA rest_vel_str_len = strlen(rest_vel_str);
-    uint8 CYDATA rest_ratio_str_len = strlen(rest_ratio_str);
     uint8 CYDATA date_maint_str_len = strlen(date_maint_str);
 
     packet_data[0] = CMD_GET_PARAM_LIST;
@@ -682,42 +680,35 @@ void get_param_list(uint16 index) {
                 
             /*-----------REST POSITION TIME DELAY----------*/
             
-            packet_data[1052] = TYPE_FLOAT;
+            packet_data[1052] = TYPE_INT32;
             packet_data[1053] = 1;
-            *((float *)( packet_data + 1054 )) = c_mem.rest_delay;
+            *((int32 *)( packet_data + 1054 )) = c_mem.rest_delay;
             for(i = rest_pos_delay_str_len; i != 0; i--)
                 packet_data[1058 + rest_pos_delay_str_len - i] = rest_pos_delay_str[rest_pos_delay_str_len - i];
                 
             /*-----------REST POSITION VELOCITY----------*/
             
-            packet_data[1102] = TYPE_FLOAT;
+            packet_data[1102] = TYPE_INT32;
             packet_data[1103] = 1;
-            *((float *)( packet_data + 1104 )) = (float)(c_mem.rest_vel*1000.0);
+            *((int32 *)( packet_data + 1104 )) = c_mem.rest_vel;
             for(i = rest_vel_str_len; i != 0; i--)
                 packet_data[1108 + rest_vel_str_len - i] = rest_vel_str[rest_vel_str_len - i];   
                 
-            /*-----------REST RATIO----------*/
-            
-            packet_data[1152] = TYPE_FLOAT;
-            packet_data[1153] = 1;
-            *((float *)( packet_data + 1154 )) = (float)(c_mem.rest_ratio);
-            for(i = rest_ratio_str_len; i != 0; i--)
-                packet_data[1158 + rest_ratio_str_len - i] = rest_ratio_str[rest_ratio_str_len - i];   
                 
             /*---------CURRENT LOOKUP TABLE---------*/
 
-            packet_data[1202] = TYPE_FLOAT;
-            packet_data[1203] = 6;
+            packet_data[1152] = TYPE_FLOAT;
+            packet_data[1153] = 6;
             for(i = 0; i < LOOKUP_DIM; i++)
-                *((float *) ( packet_data + 1204 + (i * 4) )) = c_mem.curr_lookup[i];
+                *((float *) ( packet_data + 1154 + (i * 4) )) = c_mem.curr_lookup[i];
             for(i = curr_lookup_str_len; i != 0; i--)
-                packet_data[1228 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
+                packet_data[1178 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
             
             /*-----------REST POSITION FLAG-----------*/            
             
-            packet_data[1252] = TYPE_FLAG;
-            packet_data[1253] = 1;
-            packet_data[1254] = c_mem.rest_position_flag;
+            packet_data[1202] = TYPE_FLAG;
+            packet_data[1203] = 1;
+            packet_data[1204] = c_mem.rest_position_flag;
             if(c_mem.rest_position_flag) {
                 strcat(rest_pos_flag_str, " YES\0");
                 string_lenght = 29;
@@ -727,15 +718,15 @@ void get_param_list(uint16 index) {
                 string_lenght = 28;
             }
             for(i = string_lenght; i != 0; i--)
-                packet_data[1255 + string_lenght - i] = rest_pos_flag_str[string_lenght - i];
+                packet_data[1205 + string_lenght - i] = rest_pos_flag_str[string_lenght - i];
             //The following byte indicates the number of menus at the end of the packet to send
-            packet_data[1255 + string_lenght] = 3;
+            packet_data[1205 + string_lenght] = 3;
             
             /*-----------EMG INVERSION FLAG-----------*/            
             
-            packet_data[1302] = TYPE_FLAG;
-            packet_data[1303] = 1;
-            packet_data[1304] = c_mem.switch_emg;
+            packet_data[1252] = TYPE_FLAG;
+            packet_data[1253] = 1;
+            packet_data[1254] = c_mem.switch_emg;
             if(c_mem.switch_emg) {
                 strcat(emg_inversion_str, " YES\0");
                 string_lenght = 24;
@@ -745,43 +736,43 @@ void get_param_list(uint16 index) {
                 string_lenght = 23;
             }
             for(i = string_lenght; i != 0; i--)
-                packet_data[1305 + string_lenght - i] = emg_inversion_str[string_lenght - i];
+                packet_data[1255 + string_lenght - i] = emg_inversion_str[string_lenght - i];
             //The following byte indicates the number of menus at the end of the packet to send
-            packet_data[1305 + string_lenght] = 3;
+            packet_data[1255 + string_lenght] = 3;
             
             /*-----------RESET COUNTERS FLAG-----------*/            
             
-            packet_data[1352] = TYPE_FLAG;
-            packet_data[1353] = 1;
-            packet_data[1354] = 1;
+            packet_data[1302] = TYPE_FLAG;
+            packet_data[1303] = 1;
+            packet_data[1304] = 1;
             strcat(reset_counters_str, " NO\0");
             string_lenght = 24;
            
             for(i = string_lenght; i != 0; i--)
-                packet_data[1355 + string_lenght - i] = reset_counters_str[string_lenght - i];
+                packet_data[1305 + string_lenght - i] = reset_counters_str[string_lenght - i];
             //The following byte indicates the number of menus at the end of the packet to send
-            packet_data[1355 + string_lenght] = 3;
+            packet_data[1305 + string_lenght] = 3;
             
             /*-------------DATE OF MAINTENANCE------------*/
             
-            packet_data[1402] = TYPE_UINT8;
-            packet_data[1403] = 3;
-            packet_data[i + 1404] = c_mem.maint_day;
-            packet_data[i + 1405] = c_mem.maint_month;
-            packet_data[i + 1406] = c_mem.maint_year;
+            packet_data[1352] = TYPE_UINT8;
+            packet_data[1353] = 3;
+            packet_data[i + 1354] = c_mem.maint_day;
+            packet_data[i + 1355] = c_mem.maint_month;
+            packet_data[i + 1356] = c_mem.maint_year;
             for(i = date_maint_str_len; i != 0; i--)
-                packet_data[1407 + date_maint_str_len - i] = date_maint_str[date_maint_str_len - i];
+                packet_data[1357 + date_maint_str_len - i] = date_maint_str[date_maint_str_len - i];
                 
             /*------------PARAMETERS MENU-----------*/
 
             for(i = input_mode_menu_len; i != 0; i--)
-                packet_data[1452 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
+                packet_data[1402 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
 
             for(i = control_mode_menu_len; i != 0; i--)
-                packet_data[1602 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
+                packet_data[1552 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
 
             for(i = yes_no_menu_len; i!= 0; i--)
-                packet_data[1752 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
+                packet_data[1702 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
             commWrite(packet_data, packet_lenght);
@@ -943,40 +934,36 @@ void get_param_list(uint16 index) {
             g_mem.rest_pos = g_mem.rest_pos << g_mem.res[0];
         break;   
 //============================================================     set_rest_delay_pos
-        case 22:        //Rest Position Time Delay - float
-            g_mem.rest_delay = *((float *) &g_rx.buffer[3]);
+        case 22:        //Rest Position Time Delay - int32
+            g_mem.rest_delay = *((int32 *) &g_rx.buffer[3]);
+            if (g_mem.rest_delay < 10) g_mem.rest_delay = 10;
         break;   
 //============================================================     set_rest_vel
-        case 23:        //Rest Position Velocity - float
-            g_mem.rest_vel = *((float *) &g_rx.buffer[3]);
-            g_mem.rest_vel = g_mem.rest_vel/1000.0;       //conversion [s -> ms]
-        break;     
-//============================================================     set_rest_ratio
-        case 24:        //Rest Ratio - float
-            g_mem.rest_ratio = *((float *) &g_rx.buffer[3]);
-        break;                 
+        case 23:       //Rest Position Velocity - int32
+            g_mem.rest_vel = *((int32 *) &g_rx.buffer[3]);
+        break;                    
 //===================================================     set_curr_lookup_table
-        case 25:        //Current lookup table - float
+        case 24:        //Current lookup table - float
             for(i = 0; i < LOOKUP_DIM; i++)
                 g_mem.curr_lookup[i] = *((float *) &g_rx.buffer[3 + i*4]);
         break;
 //=======================================================     set_rest_position_flag
-        case 26:        //Rest position flag - int8
+        case 25:        //Rest position flag - int8
             g_mem.rest_position_flag = *((uint8*) &g_rx.buffer[3]);
         break; 
 //===================================================     set_switch_emg
-        case 27:        //EMG inversion - uint8
+        case 26:        //EMG inversion - uint8
             g_mem.switch_emg = g_rx.buffer[3];
         break;             
 //===================================================     reset_counters
-        case 28:        //Reset counters - uint8
+        case 27:        //Reset counters - uint8
             aux_uchar = *((uint8*) &g_rx.buffer[3]);
             if (aux_uchar) {
                 reset_counters();
             }
         break;
 //========================================================    set_maintenance_date
-        case 29:         //Maintenance date - uint8[3]
+        case 28:         //Maintenance date - uint8[3]
             g_mem.maint_day     = g_rx.buffer[3];
             g_mem.maint_month   = g_rx.buffer[4];
             g_mem.maint_year    = g_rx.buffer[5];
@@ -1252,21 +1239,17 @@ void prepare_generic_info(char *info_string)
         strcat(info_string, str);
         strcat(info_string, "\r\n");
 
-        sprintf(str, "Rest time delay (ms): %f", (float)g_mem.rest_delay);
+        sprintf(str, "Rest time delay (ms): %d", (int)g_mem.rest_delay);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
         
-        sprintf(str, "Rest velocity closure (ticks/sec): %f", (float)(g_mem.rest_vel*1000));
+        sprintf(str, "Rest velocity closure (ticks/sec): %d", (int)g_mem.rest_vel);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
         
         sprintf(str, "Rest position: %d", (int)(g_mem.rest_pos >> c_mem.res[0]));
         strcat(info_string, str);
         strcat(info_string, "\r\n");   
-        
-        sprintf(str, "Rest ratio: %f", (float)(g_mem.rest_ratio));
-        strcat(info_string, str);
-        strcat(info_string, "\r\n");  
         
         sprintf(str, "debug: %ld", (uint32)timer_value0 - (uint32)timer_value); //5000001
         strcat(info_string, str);
@@ -1594,15 +1577,15 @@ uint8 memInit(void)
     g_mem.motor_handle_ratio = 22;
 
     //Initialize rest position parameters        
+    g_mem.rest_position_flag = 1;
     g_mem.rest_pos = (int32)7000 << g_mem.res[0]; // 56000
-    g_mem.rest_delay = 5000;
-    g_mem.rest_vel = 2; //*1000
-    g_mem.rest_ratio = 5.0;
+    g_mem.rest_delay = 10;
+    g_mem.rest_vel = 10000;
+    g_mem.switch_emg = 0;
     
-    for(i=0; i<5; i++) {
+    for(i=0; i<9; i++) {
         g_mem.unused_bytes[i] = 0;
     }
-    g_mem.switch_emg = 0;
     
     //Initialize counters        
     g_mem.emg_counter[0] = g_mem.emg_counter[1] = 0;

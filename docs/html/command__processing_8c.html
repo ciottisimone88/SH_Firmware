@@ -102,14 +102,15 @@ Functions</h2></td></tr>
 <tr class="separator:a5ef086c932682ca5f7549b74ead732aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8969cb5fdb4916f259075029741e727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#ac8969cb5fdb4916f259075029741e727">setZeros</a> ()</td></tr>
 <tr class="separator:ac8969cb5fdb4916f259075029741e727"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abacf855ed80e3052a5bb5b243a0d809e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#abacf855ed80e3052a5bb5b243a0d809e">infoPrepare</a> (unsigned char *info_string)</td></tr>
-<tr class="separator:abacf855ed80e3052a5bb5b243a0d809e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad29b664ceb06efa22239c86183081d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#aad29b664ceb06efa22239c86183081d5">prepare_generic_info</a> (char *info_string)</td></tr>
+<tr class="separator:aad29b664ceb06efa22239c86183081d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36e3659e6603634b76ed735aa81bb97b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#a36e3659e6603634b76ed735aa81bb97b">prepare_counter_info</a> (char *info_string)</td></tr>
+<tr class="separator:a36e3659e6603634b76ed735aa81bb97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a517f4c61166381d40767fce9011e3c96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#a517f4c61166381d40767fce9011e3c96">commWrite_old_id</a> (uint8 *packet_data, uint16 packet_lenght, uint8 old_id)</td></tr>
 <tr class="separator:a517f4c61166381d40767fce9011e3c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af92ab4f3c1e0c0e8f5966bf2e2edeaba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#af92ab4f3c1e0c0e8f5966bf2e2edeaba">commWrite</a> (uint8 *packet_data, uint16 packet_lenght)</td></tr>
 <tr class="separator:af92ab4f3c1e0c0e8f5966bf2e2edeaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88e4b4d9bcf905337b5dfc6706499ce5"><td class="memItemLeft" align="right" valign="top"><a id="a88e4b4d9bcf905337b5dfc6706499ce5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b> (uint8 *packet_data, uint16 packet_lenght)</td></tr>
+<tr class="memitem:a88e4b4d9bcf905337b5dfc6706499ce5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#a88e4b4d9bcf905337b5dfc6706499ce5">commWrite_to_cuff</a> (uint8 *packet_data, uint16 packet_lenght)</td></tr>
 <tr class="separator:a88e4b4d9bcf905337b5dfc6706499ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6205a6e88f72f4cc321a7d8abca23e26"><td class="memItemLeft" align="right" valign="top">uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#a6205a6e88f72f4cc321a7d8abca23e26">LCRChecksum</a> (uint8 *data_array, uint8 data_length)</td></tr>
 <tr class="separator:a6205a6e88f72f4cc321a7d8abca23e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,8 +136,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>commWrite_to_cuff</b>
 <tr class="separator:a107fc9f2982f9a953bdd82aa07279499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a554d563001517bfbc44400a1e999b393"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#a554d563001517bfbc44400a1e999b393">cmd_get_activate</a> ()</td></tr>
 <tr class="separator:a554d563001517bfbc44400a1e999b393"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45a90a8455bfdb6a7f0e118da2c6f0a6"><td class="memItemLeft" align="right" valign="top"><a id="a45a90a8455bfdb6a7f0e118da2c6f0a6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>cmd_get_curr_and_meas</b> ()</td></tr>
+<tr class="memitem:a45a90a8455bfdb6a7f0e118da2c6f0a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#a45a90a8455bfdb6a7f0e118da2c6f0a6">cmd_get_curr_and_meas</a> ()</td></tr>
 <tr class="separator:a45a90a8455bfdb6a7f0e118da2c6f0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf613e251c1e14fe4fffe3e9e033f9f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="command__processing_8c.html#aaf613e251c1e14fe4fffe3e9e033f9f7">cmd_get_currents</a> ()</td></tr>
 <tr class="separator:aaf613e251c1e14fe4fffe3e9e033f9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,6 +223,24 @@ reg8 *&#160;</td><td class="memItemRight" valign="bottom"><b>EEPROM_ADDR</b> = (
 
 </div>
 </div>
+<a id="a45a90a8455bfdb6a7f0e118da2c6f0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45a90a8455bfdb6a7f0e118da2c6f0a6">&#9670;&nbsp;</a></span>cmd_get_curr_and_meas()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cmd_get_curr_and_meas </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function gets the motor current and measures and puts it in the package to be sent. </p>
+
+</div>
+</div>
 <a id="aaf613e251c1e14fe4fffe3e9e033f9f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf613e251c1e14fe4fffe3e9e033f9f7">&#9670;&nbsp;</a></span>cmd_get_currents()</h2>
 
@@ -255,7 +273,7 @@ reg8 *&#160;</td><td class="memItemRight" valign="bottom"><b>EEPROM_ADDR</b> = (
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function gets the motor current and puts it in the package to be sent to the Cuff device, using the commWrite_to_cuff function. </p>
+<p>This function gets the motor current and puts it in the package to be sent to the Cuff device, using the <a class="el" href="command__processing_8h.html#a88e4b4d9bcf905337b5dfc6706499ce5">commWrite_to_cuff</a> function. </p>
 
 </div>
 </div>
@@ -518,6 +536,42 @@ reg8 *&#160;</td><td class="memItemRight" valign="bottom"><b>EEPROM_ADDR</b> = (
 
 </div>
 </div>
+<a id="a88e4b4d9bcf905337b5dfc6706499ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88e4b4d9bcf905337b5dfc6706499ce5">&#9670;&nbsp;</a></span>commWrite_to_cuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void commWrite_to_cuff </td>
+          <td>(</td>
+          <td class="paramtype">uint8 *&#160;</td>
+          <td class="paramname"><em>packet_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16&#160;</td>
+          <td class="paramname"><em>packet_lenght</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function writes on the serial port the package that needs to be sent to the Cuff device. It is used only when a specific device is connected to the hand. The Hand must have ID equal to the one of the Cuff plus one.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packet_data</td><td>The array of data that must be written. </td></tr>
+    <tr><td class="paramname">packet_lenght</td><td>The lenght of the data array. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5ef086c932682ca5f7549b74ead732aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ef086c932682ca5f7549b74ead732aa">&#9670;&nbsp;</a></span>get_param_list()</h2>
 
@@ -558,35 +612,10 @@ reg8 *&#160;</td><td class="memItemRight" valign="bottom"><b>EEPROM_ADDR</b> = (
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sends the firmware information prepared with <a class="el" href="command__processing_8h.html#abacf855ed80e3052a5bb5b243a0d809e">infoPrepare</a> through the serial port to the user interface. Is used when the ID is specified.</p>
+<p>This function sends the firmware information prepared with prepare_general_info or <a class="el" href="command__processing_8h.html#a36e3659e6603634b76ed735aa81bb97b">prepare_counter_info</a> through the serial port to the user interface. Is used when the ID is specified.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">info_type</td><td>The type of the information needed. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abacf855ed80e3052a5bb5b243a0d809e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abacf855ed80e3052a5bb5b243a0d809e">&#9670;&nbsp;</a></span>infoPrepare()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void infoPrepare </td>
-          <td>(</td>
-          <td class="paramtype">unsigned char *&#160;</td>
-          <td class="paramname"><em>info_string</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function is used to prepare the information string about the firmware of the device.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">info_string</td><td>An array of chars containing firmware information. </td></tr>
   </table>
   </dd>
 </dl>
@@ -607,7 +636,7 @@ reg8 *&#160;</td><td class="memItemRight" valign="bottom"><b>EEPROM_ADDR</b> = (
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sends the firmware information prepared with <a class="el" href="command__processing_8h.html#abacf855ed80e3052a5bb5b243a0d809e">infoPrepare</a> through the serial port to the user interface. Is used when no ID is specified. </p>
+<p>This function sends the firmware information prepared with infoPrepare through the serial port to the user interface. Is used when no ID is specified. </p>
 
 </div>
 </div>
@@ -727,6 +756,56 @@ reg8 *&#160;</td><td class="memItemRight" valign="bottom"><b>EEPROM_ADDR</b> = (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A true value if the memory is correctly stored, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a36e3659e6603634b76ed735aa81bb97b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36e3659e6603634b76ed735aa81bb97b">&#9670;&nbsp;</a></span>prepare_counter_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void prepare_counter_info </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>info_string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is used to prepare an information string about the cycles counter of the hand</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info_string</td><td>An array of chars containing the requested informations. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aad29b664ceb06efa22239c86183081d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad29b664ceb06efa22239c86183081d5">&#9670;&nbsp;</a></span>prepare_generic_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void prepare_generic_info </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>info_string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is used to prepare a generic information string on the device parameters and measurements</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info_string</td><td>An array of chars containing the requested informations. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

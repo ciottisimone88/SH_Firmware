@@ -6,8 +6,7 @@ Global variables.
 
 
 {\ttfamily \#include $<$globals.\+h$>$}\newline
-Include dependency graph for globals.\+c\+:
-\nopagebreak
+Include dependency graph for globals.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -45,6 +44,12 @@ int32 \textbf{ dev\+\_\+tension\+\_\+f}
 \item 
 int32 \textbf{ pow\+\_\+tension}
 \item 
+\textbf{ counter\+\_\+status} C\+Y\+D\+A\+TA \textbf{ cycles\+\_\+status} = \textbf{ N\+O\+NE}
+\item 
+\textbf{ emg\+\_\+status} C\+Y\+D\+A\+TA \textbf{ emg\+\_\+1\+\_\+status} = \textbf{ R\+E\+S\+ET}
+\item 
+\textbf{ emg\+\_\+status} C\+Y\+D\+A\+TA \textbf{ emg\+\_\+2\+\_\+status} = \textbf{ R\+E\+S\+ET}
+\item 
 C\+Y\+B\+IT \textbf{ reset\+\_\+last\+\_\+value\+\_\+flag}
 \item 
 C\+Y\+B\+IT \textbf{ tension\+\_\+valid}
@@ -53,14 +58,18 @@ C\+Y\+B\+IT \textbf{ interrupt\+\_\+flag} = F\+A\+L\+SE
 \item 
 C\+Y\+B\+IT \textbf{ watchdog\+\_\+flag} = F\+A\+L\+SE
 \item 
-\mbox{\label{globals_8c_abb22f0a4462a0b4db27496654f2175a0}} 
-int16 {\bfseries A\+D\+C\+\_\+buf} [4]
+C\+Y\+B\+IT \textbf{ cycles\+\_\+interrupt\+\_\+flag} = F\+A\+L\+SE
 \item 
-int8 \textbf{ pwm\+\_\+sign}
+C\+Y\+B\+IT \textbf{ can\+\_\+write} = T\+R\+UE
 \item 
 uint8 \textbf{ rest\+\_\+enabled}
 \item 
 uint8 \textbf{ forced\+\_\+open}
+\item 
+\mbox{\label{globals_8c_abb22f0a4462a0b4db27496654f2175a0}} 
+int16 {\bfseries A\+D\+C\+\_\+buf} [4]
+\item 
+int8 \textbf{ pwm\+\_\+sign}
 \item 
 int32 \textbf{ rest\+\_\+pos\+\_\+curr\+\_\+ref}
 \end{DoxyCompactItemize}
@@ -95,13 +104,31 @@ Memory parameters. \mbox{\label{globals_8c_aed96fdd8308fe2c4fc07c3b5db1c7bbb}}
 \subsubsection{calib}
 {\footnotesize\ttfamily struct \textbf{ st\+\_\+calib} calib}
 
-Calibration variables. \mbox{\label{globals_8c_a910e6d34a0bb2e8dbaf576e06bdf56f5}} 
+Calibration variables. \mbox{\label{globals_8c_acd57396ca1b2a02a76877acecd29ddb0}} 
+\index{globals.\+c@{globals.\+c}!can\+\_\+write@{can\+\_\+write}}
+\index{can\+\_\+write@{can\+\_\+write}!globals.\+c@{globals.\+c}}
+\subsubsection{can\+\_\+write}
+{\footnotesize\ttfamily C\+Y\+B\+IT can\+\_\+write = T\+R\+UE}
+
+Write to E\+E\+P\+R\+OM flag. \mbox{\label{globals_8c_a910e6d34a0bb2e8dbaf576e06bdf56f5}} 
 \index{globals.\+c@{globals.\+c}!cycle\+\_\+time@{cycle\+\_\+time}}
 \index{cycle\+\_\+time@{cycle\+\_\+time}!globals.\+c@{globals.\+c}}
 \subsubsection{cycle\+\_\+time}
 {\footnotesize\ttfamily float cycle\+\_\+time}
 
-Variable used to calculate how much time a cycle takes. \mbox{\label{globals_8c_a21f4f67e4203dea0b9956589eaa6cef3}} 
+Variable used to calculate how much time a cycle takes. \mbox{\label{globals_8c_a9c58c534e60c7991a92a13d012e7ef86}} 
+\index{globals.\+c@{globals.\+c}!cycles\+\_\+interrupt\+\_\+flag@{cycles\+\_\+interrupt\+\_\+flag}}
+\index{cycles\+\_\+interrupt\+\_\+flag@{cycles\+\_\+interrupt\+\_\+flag}!globals.\+c@{globals.\+c}}
+\subsubsection{cycles\+\_\+interrupt\+\_\+flag}
+{\footnotesize\ttfamily C\+Y\+B\+IT cycles\+\_\+interrupt\+\_\+flag = F\+A\+L\+SE}
+
+Cycles timer interrupt flag enabler. \mbox{\label{globals_8c_a9087b28d15f17c6475922ba6943b14f3}} 
+\index{globals.\+c@{globals.\+c}!cycles\+\_\+status@{cycles\+\_\+status}}
+\index{cycles\+\_\+status@{cycles\+\_\+status}!globals.\+c@{globals.\+c}}
+\subsubsection{cycles\+\_\+status}
+{\footnotesize\ttfamily \textbf{ counter\+\_\+status} C\+Y\+D\+A\+TA cycles\+\_\+status = \textbf{ N\+O\+NE}}
+
+Cycles counter state machine status. \mbox{\label{globals_8c_a21f4f67e4203dea0b9956589eaa6cef3}} 
 \index{globals.\+c@{globals.\+c}!dev\+\_\+pwm\+\_\+limit@{dev\+\_\+pwm\+\_\+limit}}
 \index{dev\+\_\+pwm\+\_\+limit@{dev\+\_\+pwm\+\_\+limit}!globals.\+c@{globals.\+c}}
 \subsubsection{dev\+\_\+pwm\+\_\+limit}
@@ -125,7 +152,19 @@ Power supply tension. \mbox{\label{globals_8c_a600f1f02d397d3ffd8b03b8a4edace02}
 \subsubsection{dev\+\_\+tension\+\_\+f}
 {\footnotesize\ttfamily int32 dev\+\_\+tension\+\_\+f}
 
-Filtered power supply tension. \mbox{\label{globals_8c_a0f13b80a0c329fa3176eb1e72ef36fb8}} 
+Filtered power supply tension. \mbox{\label{globals_8c_a433230c4343adf14967e6f4f9082b199}} 
+\index{globals.\+c@{globals.\+c}!emg\+\_\+1\+\_\+status@{emg\+\_\+1\+\_\+status}}
+\index{emg\+\_\+1\+\_\+status@{emg\+\_\+1\+\_\+status}!globals.\+c@{globals.\+c}}
+\subsubsection{emg\+\_\+1\+\_\+status}
+{\footnotesize\ttfamily \textbf{ emg\+\_\+status} C\+Y\+D\+A\+TA emg\+\_\+1\+\_\+status = \textbf{ R\+E\+S\+ET}}
+
+First E\+MG sensor status. \mbox{\label{globals_8c_a7eef8180f636a73854d52b58e2be4e51}} 
+\index{globals.\+c@{globals.\+c}!emg\+\_\+2\+\_\+status@{emg\+\_\+2\+\_\+status}}
+\index{emg\+\_\+2\+\_\+status@{emg\+\_\+2\+\_\+status}!globals.\+c@{globals.\+c}}
+\subsubsection{emg\+\_\+2\+\_\+status}
+{\footnotesize\ttfamily \textbf{ emg\+\_\+status} C\+Y\+D\+A\+TA emg\+\_\+2\+\_\+status = \textbf{ R\+E\+S\+ET}}
+
+Second E\+MG sensor status. \mbox{\label{globals_8c_a0f13b80a0c329fa3176eb1e72ef36fb8}} 
 \index{globals.\+c@{globals.\+c}!forced\+\_\+open@{forced\+\_\+open}}
 \index{forced\+\_\+open@{forced\+\_\+open}!globals.\+c@{globals.\+c}}
 \subsubsection{forced\+\_\+open}

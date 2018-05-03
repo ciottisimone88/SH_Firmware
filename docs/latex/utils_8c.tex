@@ -7,8 +7,7 @@ Definition of utility functions.
 
 {\ttfamily \#include $<$utils.\+h$>$}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
-Include dependency graph for utils.\+c\+:
-\nopagebreak
+Include dependency graph for utils.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -19,11 +18,11 @@ Include dependency graph for utils.\+c\+:
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\label{utils_8c_abd7b39be02bc15d79b73e5cf2b531299}} 
-\#define \textbf{ N1}~15
-\begin{DoxyCompactList}\small\item\em Teeth of the first encoder wheel. \end{DoxyCompactList}\item 
+\#define {\bfseries N1}~15
+\item 
 \mbox{\label{utils_8c_acd864640121c7df2c19f61f7baa507e4}} 
-\#define \textbf{ N2}~14
-\begin{DoxyCompactList}\small\item\em Teeth of the second encoder wheel. \end{DoxyCompactList}\item 
+\#define {\bfseries N2}~14
+\item 
 \mbox{\label{utils_8c_ae7dee1f3e548d0fefe0f67c994de03e4}} 
 \#define \textbf{ I1}~1
 \begin{DoxyCompactList}\small\item\em First wheel invariant value. \end{DoxyCompactList}\item 
@@ -73,6 +72,8 @@ void \textbf{ calibration} (void)
 int \textbf{ calc\+\_\+turns\+\_\+fcn} (const int32 pos1, const int32 pos2)
 \item 
 void \textbf{ check\+\_\+rest\+\_\+position} (void)
+\item 
+void \textbf{ reset\+\_\+counters} ()
 \end{DoxyCompactItemize}
 
 
@@ -379,3 +380,10 @@ This functions approximates the value passed to the nearest integer
 {\em x} & The floating point value that needs to be rounded \\
 \hline
 \end{DoxyParams}
+\mbox{\label{utils_8c_a2640efff1e7b6f9c11615048ba43b0fd}} 
+\index{utils.\+c@{utils.\+c}!reset\+\_\+counters@{reset\+\_\+counters}}
+\index{reset\+\_\+counters@{reset\+\_\+counters}!utils.\+c@{utils.\+c}}
+\subsubsection{reset\+\_\+counters()}
+{\footnotesize\ttfamily void reset\+\_\+counters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function reset statistics counters 

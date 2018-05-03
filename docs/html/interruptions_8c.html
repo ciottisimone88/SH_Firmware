@@ -97,6 +97,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7692d8c3185943c5bdfaa6de0a172ad3"><td class="memItemLeft" align="right" valign="top"><a id="a7692d8c3185943c5bdfaa6de0a172ad3"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CY_ISR</b> (ISR_RS485_RX_ExInterrupt)</td></tr>
 <tr class="separator:a7692d8c3185943c5bdfaa6de0a172ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2347671848e5c23aa5df4ce2f2fd869d"><td class="memItemLeft" align="right" valign="top"><a id="a2347671848e5c23aa5df4ce2f2fd869d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CY_ISR</b> (ISR_CYCLES_Handler)</td></tr>
+<tr class="separator:a2347671848e5c23aa5df4ce2f2fd869d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9790811526002d99b25a814afd02cbae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interruptions_8c.html#a9790811526002d99b25a814afd02cbae">interrupt_manager</a> ()</td></tr>
 <tr class="separator:a9790811526002d99b25a814afd02cbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39df971c4e9f194be50c54dfd7aeabfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interruptions_8c.html#a39df971c4e9f194be50c54dfd7aeabfe">function_scheduler</a> (void)</td></tr>
@@ -111,11 +114,18 @@ Functions</h2></td></tr>
 <tr class="separator:a4e92908805632dc8cab2936d89bb3ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7b287cf5df2ea548297b951be2f20d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interruptions_8c.html#ab7b287cf5df2ea548297b951be2f20d4">pwm_limit_search</a> ()</td></tr>
 <tr class="separator:ab7b287cf5df2ea548297b951be2f20d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77877c16b42f6f384f7c80d3002aed22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interruptions_8c.html#a77877c16b42f6f384f7c80d3002aed22">cycles_counter_update</a> ()</td></tr>
+<tr class="separator:a77877c16b42f6f384f7c80d3002aed22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad86170580c30277d97216739e8508a13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interruptions_8c.html#ad86170580c30277d97216739e8508a13">save_cycles_eeprom</a> ()</td></tr>
+<tr class="separator:ad86170580c30277d97216739e8508a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aee1865719263cf20251f918e8825703d"><td class="memItemLeft" align="right" valign="top">static const uint8&#160;</td><td class="memItemRight" valign="bottom"><b>pwm_preload_values</b> [29]</td></tr>
 <tr class="separator:aee1865719263cf20251f918e8825703d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade15ebab678018bae72c12a91e93a6e5"><td class="memItemLeft" align="right" valign="top"><a id="ade15ebab678018bae72c12a91e93a6e5"></a>
+CYCODE uint8&#160;</td><td class="memItemRight" valign="bottom"><b>pwm_preload_values_6v</b> [32]</td></tr>
+<tr class="separator:ade15ebab678018bae72c12a91e93a6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interruption handling and firmware core functions. </p>
@@ -140,6 +150,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This function executes and terminates the analog readings. </p>
+
+</div>
+</div>
+<a id="a77877c16b42f6f384f7c80d3002aed22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77877c16b42f6f384f7c80d3002aed22">&#9670;&nbsp;</a></span>cycles_counter_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cycles_counter_update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function increases the cycles counters variables, depending on SoftHand position and the current absorbed by the motor. </p>
 
 </div>
 </div>
@@ -237,7 +265,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function increases or decreases the pwm value, depending on the current absorbed by the motor. </p>
+<p>This function increases or decreases the pwm maximum value, depending on the current absorbed by the motor. </p>
 
 </div>
 </div>
@@ -256,6 +284,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This function scales the pwm value of the motor, depending on the power supply voltage, in order to not make the motor wind too fast. </p>
+
+</div>
+</div>
+<a id="ad86170580c30277d97216739e8508a13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad86170580c30277d97216739e8508a13">&#9670;&nbsp;</a></span>save_cycles_eeprom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void save_cycles_eeprom </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function saves cycles counters variables into EEPROM memory. </p>
 
 </div>
 </div>

@@ -33,7 +33,6 @@ var searchData=
   ['cmd_5fstore_5fdefault_5fparams',['CMD_STORE_DEFAULT_PARAMS',['../commands_8h.html#abf0494aabdc65d654a54044eddc9210ba17d9c730cd01059737de14b9f062e44c',1,'commands.h']]],
   ['cmd_5fstore_5fparams',['CMD_STORE_PARAMS',['../commands_8h.html#abf0494aabdc65d654a54044eddc9210bac7d1170961179d8dc5ec1b4aeb4f3116',1,'commands.h']]],
   ['control_5fangle',['CONTROL_ANGLE',['../commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa20c655b0cd3c61eec041dc6da114880d',1,'commands.h']]],
-  ['control_5fangle_5fand_5frest_5fpos',['CONTROL_ANGLE_AND_REST_POS',['../commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aac458ddede29ca87dd8f95220fad9433e',1,'commands.h']]],
   ['control_5fcurrent',['CONTROL_CURRENT',['../commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa52205add0ea0ad05b25dc5c346a5ee38',1,'commands.h']]],
   ['control_5fpwm',['CONTROL_PWM',['../commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa5b03a0bf46af8ab4b7340ee8a2efca3c',1,'commands.h']]],
   ['curr_5fand_5fpos_5fcontrol',['CURR_AND_POS_CONTROL',['../commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa3385b0c8c7d7070041b92396eaa0c3af',1,'commands.h']]]

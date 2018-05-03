@@ -5,8 +5,7 @@
 Definitions for Soft\+Hand commands, parameters and packages.  
 
 
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -19,7 +18,10 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 \mbox{\label{commands_8h_a2ba44fc5b8a316bd307d0baa9ab629ef}} 
 \#define \textbf{ I\+N\+F\+O\+\_\+\+A\+LL}~0
-\begin{DoxyCompactList}\small\item\em All system information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Generic device informations. \end{DoxyCompactList}\item 
+\mbox{\label{commands_8h_a3a52d8c1fc0a681a8b8bdb9434ec1ee6}} 
+\#define \textbf{ C\+Y\+C\+L\+E\+S\+\_\+\+I\+N\+FO}~1
+\begin{DoxyCompactList}\small\item\em Cycles counter informations. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \end{Indent}
 \subsection*{Enumerations}
 \begin{Indent}\textbf{ qb\+Move and qb\+Hand Commands}\par
@@ -134,13 +136,10 @@ enum \textbf{ qbmove\+\_\+input\+\_\+mode} \{ \newline
 \textbf{ I\+N\+P\+U\+T\+\_\+\+M\+O\+D\+E\+\_\+\+E\+M\+G\+\_\+\+F\+C\+F\+S\+\_\+\+A\+DV} = 5
  \}
 \item 
-enum \textbf{ qbmove\+\_\+control\+\_\+mode} \{ \newline
-\textbf{ C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+LE} = 0, 
+enum \textbf{ qbmove\+\_\+control\+\_\+mode} \{ \textbf{ C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+LE} = 0, 
 \textbf{ C\+O\+N\+T\+R\+O\+L\+\_\+\+P\+WM} = 1, 
 \textbf{ C\+O\+N\+T\+R\+O\+L\+\_\+\+C\+U\+R\+R\+E\+NT} = 2, 
-\textbf{ C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL} = 3, 
-\newline
-\textbf{ C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+L\+E\+\_\+\+A\+N\+D\+\_\+\+R\+E\+S\+T\+\_\+\+P\+OS} = 4
+\textbf{ C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL} = 3
  \}
 \item 
 \mbox{\label{commands_8h_a17c218160a8b2c5f25db27616793d564}} 
@@ -346,10 +345,6 @@ C\+O\+N\+T\+R\+O\+L\+\_\+\+C\+U\+R\+R\+E\+NT&Current control. \\
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL@{C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL}!commands.\+h@{commands.\+h}}\index{commands.\+h@{commands.\+h}!C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL@{C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL}}}\mbox{\label{commands_8h_a6960e5b914fe207839e82d6f66a6b87aa3385b0c8c7d7070041b92396eaa0c3af}} 
 C\+U\+R\+R\+\_\+\+A\+N\+D\+\_\+\+P\+O\+S\+\_\+\+C\+O\+N\+T\+R\+OL&Current and position control. \\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+L\+E\+\_\+\+A\+N\+D\+\_\+\+R\+E\+S\+T\+\_\+\+P\+OS@{C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+L\+E\+\_\+\+A\+N\+D\+\_\+\+R\+E\+S\+T\+\_\+\+P\+OS}!commands.\+h@{commands.\+h}}\index{commands.\+h@{commands.\+h}!C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+L\+E\+\_\+\+A\+N\+D\+\_\+\+R\+E\+S\+T\+\_\+\+P\+OS@{C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+L\+E\+\_\+\+A\+N\+D\+\_\+\+R\+E\+S\+T\+\_\+\+P\+OS}}}\mbox{\label{commands_8h_a6960e5b914fe207839e82d6f66a6b87aac458ddede29ca87dd8f95220fad9433e}} 
-C\+O\+N\+T\+R\+O\+L\+\_\+\+A\+N\+G\+L\+E\+\_\+\+A\+N\+D\+\_\+\+R\+E\+S\+T\+\_\+\+P\+OS&Position control with rest position check. \\
 \hline
 
 \end{DoxyEnumFields}

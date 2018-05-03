@@ -23,5 +23,6 @@ var searchData=
   ['param_5fpos_5flimit',['PARAM_POS_LIMIT',['../commands_8h.html#a0f1ee428e49fc602d6fde71d7ff80f36a02e68c657a942155b8bd2b037b755011',1,'commands.h']]],
   ['param_5fpos_5flimit_5fflag',['PARAM_POS_LIMIT_FLAG',['../commands_8h.html#a0f1ee428e49fc602d6fde71d7ff80f36ae1ba46d5587fe44580417535c0ccf4fc',1,'commands.h']]],
   ['param_5fpos_5fresolution',['PARAM_POS_RESOLUTION',['../commands_8h.html#a0f1ee428e49fc602d6fde71d7ff80f36a6857aadbe11091d0d3cebe2c22da1eba',1,'commands.h']]],
-  ['param_5fstartup_5factivation',['PARAM_STARTUP_ACTIVATION',['../commands_8h.html#a0f1ee428e49fc602d6fde71d7ff80f36a9f7e2f9c7b92726e1ffd5dda3af47fd8',1,'commands.h']]]
+  ['param_5fstartup_5factivation',['PARAM_STARTUP_ACTIVATION',['../commands_8h.html#a0f1ee428e49fc602d6fde71d7ff80f36a9f7e2f9c7b92726e1ffd5dda3af47fd8',1,'commands.h']]],
+  ['prepare_5fdata',['PREPARE_DATA',['../globals_8h.html#a368077232a067805e98c61f28948abeea94da702fc1c8e3bfb2db7c95e6395035',1,'globals.h']]]
 ];

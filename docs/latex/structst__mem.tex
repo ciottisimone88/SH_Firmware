@@ -91,6 +91,33 @@ float \textbf{ rest\+\_\+delay}
 float \textbf{ rest\+\_\+vel}
 \item 
 float \textbf{ rest\+\_\+ratio}
+\item 
+uint8 \textbf{ maint\+\_\+day}
+\item 
+uint8 \textbf{ maint\+\_\+month}
+\item 
+uint8 \textbf{ maint\+\_\+year}
+\item 
+uint8 \textbf{ switch\+\_\+emg}
+\item 
+uint8 \textbf{ rest\+\_\+position\+\_\+flag}
+\item 
+\mbox{\label{structst__mem_a13769793684b23af8c0cdf6ccf3bd696}} 
+uint8 {\bfseries unused\+\_\+bytes} [5]
+\item 
+uint32 \textbf{ emg\+\_\+counter} [2]
+\item 
+uint32 \textbf{ position\+\_\+hist} [10]
+\item 
+uint32 \textbf{ current\+\_\+hist} [4]
+\item 
+uint32 \textbf{ rest\+\_\+counter}
+\item 
+uint32 \textbf{ wire\+\_\+disp}
+\item 
+uint32 \textbf{ total\+\_\+time\+\_\+on}
+\item 
+uint32 \textbf{ total\+\_\+time\+\_\+rest}
 \end{DoxyCompactItemize}
 
 
@@ -130,7 +157,13 @@ Motor Control mode. \mbox{\label{structst__mem_a29cec4cab946141aae2509b04e2f5097
 \subsubsection{curr\+\_\+lookup}
 {\footnotesize\ttfamily float curr\+\_\+lookup[\textbf{ L\+O\+O\+K\+U\+P\+\_\+\+D\+IM}]}
 
-Table of values to get estimated curr. \mbox{\label{structst__mem_a96f2aec80e40c1bbe82186a4261ab7ac}} 
+Table of values to get estimated curr. \mbox{\label{structst__mem_a5fbf9566abdebf78712e7986d399e749}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!current\+\_\+hist@{current\+\_\+hist}}
+\index{current\+\_\+hist@{current\+\_\+hist}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{current\+\_\+hist}
+{\footnotesize\ttfamily uint32 current\+\_\+hist[4]}
+
+Current histogram -\/ 4 zones. \mbox{\label{structst__mem_a96f2aec80e40c1bbe82186a4261ab7ac}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!current\+\_\+limit@{current\+\_\+limit}}
 \index{current\+\_\+limit@{current\+\_\+limit}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{current\+\_\+limit}
@@ -148,7 +181,13 @@ Double encoder O\+N/\+O\+FF. \mbox{\label{structst__mem_a78f0b0c6db2a7118cd15ec0
 \subsubsection{emg\+\_\+calibration\+\_\+flag}
 {\footnotesize\ttfamily uint8 emg\+\_\+calibration\+\_\+flag}
 
-Enable emg calibration on startup. \mbox{\label{structst__mem_aeb71cf2bff2584abb616d4b5dcc4c4af}} 
+Enable emg calibration on startup. \mbox{\label{structst__mem_a4f0e42865ba18f09c8cd90f8cd36534c}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!emg\+\_\+counter@{emg\+\_\+counter}}
+\index{emg\+\_\+counter@{emg\+\_\+counter}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{emg\+\_\+counter}
+{\footnotesize\ttfamily uint32 emg\+\_\+counter[2]}
+
+Counter for E\+MG activation -\/ both channels. \mbox{\label{structst__mem_aeb71cf2bff2584abb616d4b5dcc4c4af}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!emg\+\_\+max\+\_\+value@{emg\+\_\+max\+\_\+value}}
 \index{emg\+\_\+max\+\_\+value@{emg\+\_\+max\+\_\+value}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{emg\+\_\+max\+\_\+value}
@@ -268,7 +307,25 @@ Measurement multiplier. \mbox{\label{structst__mem_ab544f035124be893918bafb611fe
 \subsubsection{m\+\_\+off}
 {\footnotesize\ttfamily int32 m\+\_\+off[\textbf{ N\+U\+M\+\_\+\+O\+F\+\_\+\+S\+E\+N\+S\+O\+RS}]}
 
-Measurement offset. \mbox{\label{structst__mem_a14fe3ed96d232dced2d33efc493a0667}} 
+Measurement offset. \mbox{\label{structst__mem_ac2ef182894cf0000bdd2b54a8cee6017}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!maint\+\_\+day@{maint\+\_\+day}}
+\index{maint\+\_\+day@{maint\+\_\+day}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{maint\+\_\+day}
+{\footnotesize\ttfamily uint8 maint\+\_\+day}
+
+Day of maintenance. \mbox{\label{structst__mem_aaa5d3780f760d6ac17c1046b8477fdcb}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!maint\+\_\+month@{maint\+\_\+month}}
+\index{maint\+\_\+month@{maint\+\_\+month}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{maint\+\_\+month}
+{\footnotesize\ttfamily uint8 maint\+\_\+month}
+
+Month of maintenance. \mbox{\label{structst__mem_a1f57bd5d8df292f5a0e4f2d4f6df0beb}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!maint\+\_\+year@{maint\+\_\+year}}
+\index{maint\+\_\+year@{maint\+\_\+year}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{maint\+\_\+year}
+{\footnotesize\ttfamily uint8 maint\+\_\+year}
+
+Year of maintenance. \mbox{\label{structst__mem_a14fe3ed96d232dced2d33efc493a0667}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!max\+\_\+step\+\_\+neg@{max\+\_\+step\+\_\+neg}}
 \index{max\+\_\+step\+\_\+neg@{max\+\_\+step\+\_\+neg}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{max\+\_\+step\+\_\+neg}
@@ -304,13 +361,25 @@ Inferior position limit for motors. \mbox{\label{structst__mem_a818808d7c3249997
 \subsubsection{pos\+\_\+lim\+\_\+sup}
 {\footnotesize\ttfamily int32 pos\+\_\+lim\+\_\+sup[\textbf{ N\+U\+M\+\_\+\+O\+F\+\_\+\+M\+O\+T\+O\+RS}]}
 
-Superior position limit for motors. \mbox{\label{structst__mem_ac2e19d167eac4c8ca9ce97c646e78595}} 
+Superior position limit for motors. \mbox{\label{structst__mem_ab6a7872da6e5008df9709e4d0a57b7ab}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!position\+\_\+hist@{position\+\_\+hist}}
+\index{position\+\_\+hist@{position\+\_\+hist}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{position\+\_\+hist}
+{\footnotesize\ttfamily uint32 position\+\_\+hist[10]}
+
+Positions histogram -\/ 10 zones. \mbox{\label{structst__mem_ac2e19d167eac4c8ca9ce97c646e78595}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!res@{res}}
 \index{res@{res}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{res}
 {\footnotesize\ttfamily uint8 res[\textbf{ N\+U\+M\+\_\+\+O\+F\+\_\+\+S\+E\+N\+S\+O\+RS}]}
 
-Angle resolution. \mbox{\label{structst__mem_a5d9f92583ac10c78cbb3c0da7a373f6a}} 
+Angle resolution. \mbox{\label{structst__mem_ac3b4a645a1b680f6f03e6efdf9d7a2df}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!rest\+\_\+counter@{rest\+\_\+counter}}
+\index{rest\+\_\+counter@{rest\+\_\+counter}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{rest\+\_\+counter}
+{\footnotesize\ttfamily uint32 rest\+\_\+counter}
+
+Counter for rest position occurrences. \mbox{\label{structst__mem_a5d9f92583ac10c78cbb3c0da7a373f6a}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!rest\+\_\+delay@{rest\+\_\+delay}}
 \index{rest\+\_\+delay@{rest\+\_\+delay}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{rest\+\_\+delay}
@@ -322,7 +391,13 @@ Hand rest position delay while in E\+MG mode. \mbox{\label{structst__mem_a27742d
 \subsubsection{rest\+\_\+pos}
 {\footnotesize\ttfamily int32 rest\+\_\+pos}
 
-Hand rest position while in E\+MG mode. \mbox{\label{structst__mem_a36ce85c7c822c5a1c014aed67f47f5e7}} 
+Hand rest position while in E\+MG mode. \mbox{\label{structst__mem_a8a4aa5efee4b9d62ea71a1459cf3ac3b}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!rest\+\_\+position\+\_\+flag@{rest\+\_\+position\+\_\+flag}}
+\index{rest\+\_\+position\+\_\+flag@{rest\+\_\+position\+\_\+flag}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{rest\+\_\+position\+\_\+flag}
+{\footnotesize\ttfamily uint8 rest\+\_\+position\+\_\+flag}
+
+Enable rest position feature. \mbox{\label{structst__mem_a36ce85c7c822c5a1c014aed67f47f5e7}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!rest\+\_\+ratio@{rest\+\_\+ratio}}
 \index{rest\+\_\+ratio@{rest\+\_\+ratio}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{rest\+\_\+ratio}
@@ -334,13 +409,37 @@ Hand rest ratio between velocity closure and rest position error \mbox{\label{st
 \subsubsection{rest\+\_\+vel}
 {\footnotesize\ttfamily float rest\+\_\+vel}
 
-Hand velocity closure for rest position reaching \mbox{\label{structst__mem_a1aae70aad54a04c7b41a8d2dcd7aba14}} 
+Hand velocity closure for rest position reaching \mbox{\label{structst__mem_a90c7b59f97a26bf3da8b26b145b32919}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!switch\+\_\+emg@{switch\+\_\+emg}}
+\index{switch\+\_\+emg@{switch\+\_\+emg}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{switch\+\_\+emg}
+{\footnotesize\ttfamily uint8 switch\+\_\+emg}
+
+E\+MG opening/closure switch. \mbox{\label{structst__mem_afb43d3b7ca83fb698b54d4b6f52d8b45}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!total\+\_\+time\+\_\+on@{total\+\_\+time\+\_\+on}}
+\index{total\+\_\+time\+\_\+on@{total\+\_\+time\+\_\+on}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{total\+\_\+time\+\_\+on}
+{\footnotesize\ttfamily uint32 total\+\_\+time\+\_\+on}
+
+Total time of system power (in seconds). \mbox{\label{structst__mem_ace38ca6ca20492e8f6cc0f4684d6dd44}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!total\+\_\+time\+\_\+rest@{total\+\_\+time\+\_\+rest}}
+\index{total\+\_\+time\+\_\+rest@{total\+\_\+time\+\_\+rest}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{total\+\_\+time\+\_\+rest}
+{\footnotesize\ttfamily uint32 total\+\_\+time\+\_\+rest}
+
+Total time of system while rest position is maintained. \mbox{\label{structst__mem_a1aae70aad54a04c7b41a8d2dcd7aba14}} 
 \index{st\+\_\+mem@{st\+\_\+mem}!watchdog\+\_\+period@{watchdog\+\_\+period}}
 \index{watchdog\+\_\+period@{watchdog\+\_\+period}!st\+\_\+mem@{st\+\_\+mem}}
 \subsubsection{watchdog\+\_\+period}
 {\footnotesize\ttfamily uint8 watchdog\+\_\+period}
 
-Watchdog period setted, 255 = disable. 
+Watchdog period setted, 255 = disable. \mbox{\label{structst__mem_a0286ab74bf93202e73bd343c1d340e42}} 
+\index{st\+\_\+mem@{st\+\_\+mem}!wire\+\_\+disp@{wire\+\_\+disp}}
+\index{wire\+\_\+disp@{wire\+\_\+disp}!st\+\_\+mem@{st\+\_\+mem}}
+\subsubsection{wire\+\_\+disp}
+{\footnotesize\ttfamily uint32 wire\+\_\+disp}
+
+Counter for total wire displacement measurement. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

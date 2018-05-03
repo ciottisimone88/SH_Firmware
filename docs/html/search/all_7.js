@@ -6,7 +6,6 @@ var searchData=
   ['ind',['ind',['../structst__data.html#a5d76dba8ca72d027d149ffcf8760f2ca',1,'st_data']]],
   ['info_5fall',['INFO_ALL',['../commands_8h.html#a2ba44fc5b8a316bd307d0baa9ab629ef',1,'commands.h']]],
   ['infoget',['infoGet',['../command__processing_8c.html#a525ccbc7ac3901d938dc352172ee2531',1,'infoGet(uint16 info_type):&#160;command_processing.c'],['../command__processing_8h.html#a525ccbc7ac3901d938dc352172ee2531',1,'infoGet(uint16 info_type):&#160;command_processing.c']]],
-  ['infoprepare',['infoPrepare',['../command__processing_8c.html#abacf855ed80e3052a5bb5b243a0d809e',1,'infoPrepare(unsigned char *info_string):&#160;command_processing.c'],['../command__processing_8h.html#abacf855ed80e3052a5bb5b243a0d809e',1,'infoPrepare(unsigned char *info_string):&#160;command_processing.c']]],
   ['infosend',['infoSend',['../command__processing_8c.html#a0f8a936c0c43abd1e7ba5add8cbcbf70',1,'infoSend(void):&#160;command_processing.c'],['../command__processing_8h.html#af5dcf9e6d2a6421fbe636487e7f9f240',1,'infoSend():&#160;command_processing.c']]],
   ['input_5fmode',['input_mode',['../structst__mem.html#ae5cc8b2ae06016f1fcf5b2f964618a12',1,'st_mem']]],
   ['input_5fmode_5femg_5ffcfs',['INPUT_MODE_EMG_FCFS',['../commands_8h.html#a4c6f8687cc4a70ce967c910614fbc6cda63042e0fb1fcf5bf0008b15442eea194',1,'commands.h']]],

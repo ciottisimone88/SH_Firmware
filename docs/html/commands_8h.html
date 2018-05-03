@@ -91,8 +91,12 @@ Macros</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">QB Move Information Strings</div></td></tr>
 <tr class="memitem:a2ba44fc5b8a316bd307d0baa9ab629ef"><td class="memItemLeft" align="right" valign="top"><a id="a2ba44fc5b8a316bd307d0baa9ab629ef"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8h.html#a2ba44fc5b8a316bd307d0baa9ab629ef">INFO_ALL</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memdesc:a2ba44fc5b8a316bd307d0baa9ab629ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">All system information. <br /></td></tr>
+<tr class="memdesc:a2ba44fc5b8a316bd307d0baa9ab629ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic device informations. <br /></td></tr>
 <tr class="separator:a2ba44fc5b8a316bd307d0baa9ab629ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a52d8c1fc0a681a8b8bdb9434ec1ee6"><td class="memItemLeft" align="right" valign="top"><a id="a3a52d8c1fc0a681a8b8bdb9434ec1ee6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8h.html#a3a52d8c1fc0a681a8b8bdb9434ec1ee6">CYCLES_INFO</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:a3a52d8c1fc0a681a8b8bdb9434ec1ee6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cycles counter informations. <br /></td></tr>
+<tr class="separator:a3a52d8c1fc0a681a8b8bdb9434ec1ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -210,14 +214,10 @@ qbMove and qbHand Parameters</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a4c6f8687cc4a70ce967c910614fbc6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6960e5b914fe207839e82d6f66a6b87a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87a">qbmove_control_mode</a> { <br />
-&#160;&#160;<a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa20c655b0cd3c61eec041dc6da114880d">CONTROL_ANGLE</a> = 0, 
+<tr class="memitem:a6960e5b914fe207839e82d6f66a6b87a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87a">qbmove_control_mode</a> { <a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa20c655b0cd3c61eec041dc6da114880d">CONTROL_ANGLE</a> = 0, 
 <a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa5b03a0bf46af8ab4b7340ee8a2efca3c">CONTROL_PWM</a> = 1, 
 <a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa52205add0ea0ad05b25dc5c346a5ee38">CONTROL_CURRENT</a> = 2, 
-<a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa3385b0c8c7d7070041b92396eaa0c3af">CURR_AND_POS_CONTROL</a> = 3, 
-<br />
-&#160;&#160;<a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aac458ddede29ca87dd8f95220fad9433e">CONTROL_ANGLE_AND_REST_POS</a> = 4
-<br />
+<a class="el" href="commands_8h.html#a6960e5b914fe207839e82d6f66a6b87aa3385b0c8c7d7070041b92396eaa0c3af">CURR_AND_POS_CONTROL</a> = 3
  }</td></tr>
 <tr class="separator:a6960e5b914fe207839e82d6f66a6b87a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17c218160a8b2c5f25db27616793d564"><td class="memItemLeft" align="right" valign="top"><a id="a17c218160a8b2c5f25db27616793d564"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>motor_supply_tipe</b> { <b>MAXON_24V</b> = 0, 
@@ -353,8 +353,6 @@ qbMove and qbHand Parameters</h2></td></tr>
 <tr><td class="fieldname"><a id="a6960e5b914fe207839e82d6f66a6b87aa52205add0ea0ad05b25dc5c346a5ee38"></a>CONTROL_CURRENT&#160;</td><td class="fielddoc"><p>Current control. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a6960e5b914fe207839e82d6f66a6b87aa3385b0c8c7d7070041b92396eaa0c3af"></a>CURR_AND_POS_CONTROL&#160;</td><td class="fielddoc"><p>Current and position control. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6960e5b914fe207839e82d6f66a6b87aac458ddede29ca87dd8f95220fad9433e"></a>CONTROL_ANGLE_AND_REST_POS&#160;</td><td class="fielddoc"><p>Position control with rest position check. </p>
 </td></tr>
 </table>
 

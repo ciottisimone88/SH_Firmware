@@ -1132,7 +1132,7 @@ void analog_read_end() {
     static uint16 emg_counter_2 = 0;
 	static uint8 first_tension_valid = TRUE;
     static int32 pow_tension = 12000;       //12000 mV (12 V)
-    static uint8 count = 0;
+    static uint16 count = 0;
     static uint32 count2 = 0;
 
 
@@ -1473,8 +1473,8 @@ void analog_read_end() {
             LED_BLINK_EN_Write(1);
             
             // Disable motors because of not fully charged battery
-            g_refNew.onoff = 0x00;
-            MOTOR_ON_OFF_Write(g_refNew.onoff); // Deactivate motors
+          //  g_refNew.onoff = 0x00;
+          //  MOTOR_ON_OFF_Write(g_refNew.onoff); // Deactivate motors
         }
     }
         

@@ -41,10 +41,10 @@
 * \copyright    (C) 2012-2016 qbrobotics. All rights reserved.
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 * \mainpage     Firmware
-* \brief        This is the firmware of the SoftHand Pro board.
-* \version      1.0
+* \brief        This is the firmware of the SoftHand board.
+* \version      6.1.5
 *
-* \details      This is the firmware of the SoftHand Pro board. It can control a motor and
+* \details      This is the firmware of the SoftHand board. It can control a motor and
 *               read its encoder. Also can read and convert analog measurements
 *               connected to the PSoC microcontroller.                
 *

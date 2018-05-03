@@ -57,13 +57,13 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.6 Centro Piaggio"
+#define VERSION                 "SH-PRO v6.1.7 Centro Piaggio"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           29      /*!< Number of parameters saved in the EEPROM.*/
+#define NUM_OF_PARAMS           28      /*!< Number of parameters saved in the EEPROM.*/
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -122,9 +122,8 @@
 
 #define EMG_SAMPLE_TO_DISCARD   500     /*!< Number of sample to discard before calibration.*/
 #define SAMPLES_FOR_MEAN        100     /*!< Number of samples used to mean current values.*/
-
 #define SAMPLES_FOR_EMG_MEAN    1000    /*!< Number of samples used to mean emg values.*/
-
+#define REST_POS_ERR_THR_GAIN   10      /*!< Gain related to stop condition threshold in rest position routine.*/
 #define CALIB_DECIMATION        1
 #define NUM_OF_CLOSURES         5
 
@@ -230,20 +229,20 @@ struct st_mem {
     uint8   activate_pwm_rescaling;     /*!< Activation of PWM rescaling for 12V motors.*/                  //1 19
 
     float   curr_lookup[LOOKUP_DIM];    /*!< Table of values to get estimated curr.*/                       //24
-
+    // End of row eight. curr_lookup[0] is on row eight, while others are on row nine and curr_lookup[5] is on row ten.
     uint8   baud_rate;                  /*!< Baud Rate setted.*/                                            //1
     uint8   watchdog_period;            /*!< Watchdog period setted, 255 = disable.*/                       //1
 
     int32   rest_pos;                   /*!< Hand rest position while in EMG mode.*/                        //4
-    float  rest_delay;                 /*!< Hand rest position delay while in EMG mode.*/                  //4
-    float  rest_vel;                   /*!< Hand velocity closure for rest position reaching*/             //4
-    float   rest_ratio;                 /*!< Hand rest ratio between velocity closure and rest position error*/  //4
+    int32   rest_delay;                 /*!< Hand rest position delay while in EMG mode.*/                  //4
+    int32   rest_vel;                   /*!< Hand velocity closure for rest position reaching.*/            //4
+    // End of row ten. rest_vel is half on row ten and half on row eleven.
     uint8   maint_day;                  /*!< Day of maintenance.*/                                          //1
     uint8   maint_month;                /*!< Month of maintenance.*/                                        //1
     uint8   maint_year;                 /*!< Year of maintenance.*/                                         //1
     uint8   switch_emg;                 /*!< EMG opening/closure switch.*/                                  //1
     uint8   rest_position_flag;         /*!< Enable rest position feature.*/                                        //1    
-    uint8   unused_bytes[5];
+    uint8   unused_bytes[9];
     // End of row eleven.
     
     uint32  emg_counter[2];             /*!< Counter for EMG activation - both channels.*/                  //8
