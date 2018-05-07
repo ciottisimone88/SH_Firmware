@@ -504,6 +504,7 @@ void motor_control() {
     int32 CYDATA k_p_dl = c_mem.k_p_dl;  
     int32 CYDATA k_i_dl = c_mem.k_i_dl; 
     int32 CYDATA k_d_dl = c_mem.k_d_dl;
+    int32 CYDATA pos_error_max = ((int32)c_mem.current_limit << 13)/(k_p_dl);
     
     int32 CYDATA k_p_c_dl = c_mem.k_p_c_dl;  
     int32 CYDATA k_i_c_dl = c_mem.k_i_c_dl; 
@@ -687,6 +688,14 @@ void motor_control() {
             pos_error = g_ref.pos[0] - g_meas.pos[0];
 
             pos_error_sum += pos_error;
+            
+            // pos error max saturation
+            if (pos_error > pos_error_max)
+                pos_error = pos_error_max;
+            else {
+                if (pos_error < -pos_error_max)
+                    pos_error = -pos_error_max;
+            }
 
             // error_sum saturation
             if (pos_error_sum > POS_INTEGRAL_SAT_LIMIT)
@@ -702,15 +711,15 @@ void motor_control() {
             
             // Proportional
             if (k_p_dl != 0)
-                i_ref += (int32)(k_p_dl * pos_error) >> 16;
+                i_ref += (int32)(k_p_dl * pos_error) >> 13;
 
             // Integral
             if (k_i_dl != 0)
-                i_ref += (int32)(k_i_dl * pos_error_sum) >> 16;
+                i_ref += (int32)(k_i_dl * pos_error_sum) >> 13;
 
             // Derivative
             if (k_d_dl != 0)
-                i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16;
+                i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 13;
                         
             // Update previous position
             prev_pos_err = pos_error;
@@ -746,15 +755,15 @@ void motor_control() {
 
             // Proportional
             if (k_p_c_dl != 0)
-                pwm_input += (int32)(k_p_c_dl * curr_error) >> 16;
+                pwm_input += (int32)(k_p_c_dl * curr_error) >> 13;
 
             // Integral
             if (k_i_c_dl != 0)
-                pwm_input += (int32)(k_i_c_dl * curr_error_sum) >> 16;
+                pwm_input += (int32)(k_i_c_dl * curr_error_sum) >> 13;
 
             // Derivative
             if (k_d_c_dl != 0)
-                pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 16;
+                pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 13;
 
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 

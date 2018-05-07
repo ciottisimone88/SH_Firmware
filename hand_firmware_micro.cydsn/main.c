@@ -42,7 +42,7 @@
 * \copyright    (C) 2017 Centro "E.Piaggio". All rights reserved.
 * \mainpage     Firmware
 * \brief        This is the firmware of the SoftHand board.
-* \version      6.1.5
+* \version      6.1.7
 *
 * \details      This is the firmware of the SoftHand board. It can control a motor and
 *               read its encoder. Also can read and convert analog measurements

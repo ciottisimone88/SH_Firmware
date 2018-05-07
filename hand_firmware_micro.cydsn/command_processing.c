@@ -401,9 +401,9 @@ void get_param_list(uint16 index) {
                 *((float *) (packet_data + 62)) = (float) c_mem.k_d / 65536;
             }
             else {
-                *((float *) (packet_data + 54)) = (float) c_mem.k_p_dl / 65536;
-                *((float *) (packet_data + 58)) = (float) c_mem.k_i_dl / 65536;
-                *((float *) (packet_data + 62)) = (float) c_mem.k_d_dl / 65536;
+                *((float *) (packet_data + 54)) = (float) c_mem.k_p_dl / 8192;
+                *((float *) (packet_data + 58)) = (float) c_mem.k_i_dl / 8192;
+                *((float *) (packet_data + 62)) = (float) c_mem.k_d_dl / 8192;
             }
 
             for(i = pos_pid_str_len; i != 0; i--)
@@ -419,9 +419,9 @@ void get_param_list(uint16 index) {
                 *((float *) (packet_data + 112)) = (float) c_mem.k_d_c / 65536;
             }
             else {
-                *((float *) (packet_data + 104)) = (float) c_mem.k_p_c_dl / 65536;
-                *((float *) (packet_data + 108)) = (float) c_mem.k_i_c_dl / 65536;
-                *((float *) (packet_data + 112)) = (float) c_mem.k_d_c_dl / 65536;
+                *((float *) (packet_data + 104)) = (float) c_mem.k_p_c_dl / 8192;
+                *((float *) (packet_data + 108)) = (float) c_mem.k_i_c_dl / 8192;
+                *((float *) (packet_data + 112)) = (float) c_mem.k_d_c_dl / 8192;
             }
             
             for(i = curr_pid_str_len; i != 0; i--)
@@ -791,9 +791,11 @@ void get_param_list(uint16 index) {
                 g_mem.k_d = *((float *) &g_rx.buffer[3 + 8]) * 65536;
             }
             else {
-                g_mem.k_p_dl = *((float *) &g_rx.buffer[3]) * 65536;
-                g_mem.k_i_dl = *((float *) &g_rx.buffer[3 + 4]) * 65536;
-                g_mem.k_d_dl = *((float *) &g_rx.buffer[3 + 8]) * 65536;
+                g_mem.k_p_dl = *((float *) &g_rx.buffer[3]) * 8192;
+                g_mem.k_i_dl = *((float *) &g_rx.buffer[3 + 4]) * 8192;
+                g_mem.k_d_dl = *((float *) &g_rx.buffer[3 + 8]) * 8192;
+                
+                if (g_mem.k_p_dl > 8192 * (0.6)) g_mem.k_p_dl = 8192 * (0.6);
             }
         break;
 
@@ -805,9 +807,9 @@ void get_param_list(uint16 index) {
                 g_mem.k_d_c = *((float *) &g_rx.buffer[3 + 8]) * 65536;
             }
             else {
-                g_mem.k_p_c_dl = *((float *) &g_rx.buffer[3]) * 65536;
-                g_mem.k_i_c_dl = *((float *) &g_rx.buffer[3 + 4]) * 65536;
-                g_mem.k_d_c_dl = *((float *) &g_rx.buffer[3 + 8]) * 65536;
+                g_mem.k_p_c_dl = *((float *) &g_rx.buffer[3]) * 8192;
+                g_mem.k_i_c_dl = *((float *) &g_rx.buffer[3 + 4]) * 8192;
+                g_mem.k_d_c_dl = *((float *) &g_rx.buffer[3 + 8]) * 8192;
             }
             
         break;
@@ -1525,12 +1527,12 @@ uint8 memInit(void)
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
 
-    g_mem.k_p_dl        =   0.1 * 65536;
-    g_mem.k_i_dl        =     0 * 65536;
-    g_mem.k_d_dl        =     0 * 65536;
-    g_mem.k_p_c_dl      =   0.3 * 65536;
-    g_mem.k_i_c_dl      =0.0002 * 65536;
-    g_mem.k_d_c_dl      =     0 * 65536;
+    g_mem.k_p_dl        =   0.1 * 8192;
+    g_mem.k_i_dl        =     0 * 8192;
+    g_mem.k_d_dl        =     0 * 8192;
+    g_mem.k_p_c_dl      =   0.3 * 8192;
+    g_mem.k_i_c_dl      =0.0002 * 8192;
+    g_mem.k_d_c_dl      =     0 * 8192;
 
     g_mem.activ         = 0;
     g_mem.input_mode    = INPUT_MODE_EXTERNAL;
