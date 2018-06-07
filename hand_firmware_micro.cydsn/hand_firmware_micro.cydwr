@@ -291,6 +291,7 @@
   <Group key="Component">
     <Group key="v1">
       <Data key="cy_boot" value="cy_boot_v5_50" />
+      <Data key="Em_EEPROM_Dynamic" value="Em_EEPROM_Dynamic_v2_0" />
       <Data key="LIN_Dynamic" value="LIN_Dynamic_v3_40" />
     </Group>
   </Group>
@@ -783,13 +784,55 @@
     </Group>
   </Group>
   <Group key="Interrupt">
-    <Data key="1ca3c2f2-a780-4f31-b4ed-c05a79ac0c39" value="5" />
-    <Data key="1fbbc466-6fc0-4404-a143-bdce0106c756/b6592af9-e743-4dfd-a597-27f9102033ee" value="7" />
-    <Data key="2c3c978d-0dee-43a9-a021-5225114844ee" value="0" />
-    <Data key="815d3981-fed9-4da5-a278-eb4ca724d08a" value="7" />
-    <Data key="7453cff9-ca0a-4d76-a4f7-b15ee6221a4d" value="5" />
-    <Data key="da2e47c8-e431-4d1b-b5cf-4f4ee9eca716" value="4" />
-    <Data key="e976d13c-b2f7-4883-85dd-4c56c42b9291" value="6" />
+    <Group key="1ca3c2f2-a780-4f31-b4ed-c05a79ac0c39">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="5" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="1fbbc466-6fc0-4404-a143-bdce0106c756/b6592af9-e743-4dfd-a597-27f9102033ee">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="7" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="2c3c978d-0dee-43a9-a021-5225114844ee">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="0" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="815d3981-fed9-4da5-a278-eb4ca724d08a">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="7" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="7453cff9-ca0a-4d76-a4f7-b15ee6221a4d">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="5" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="da2e47c8-e431-4d1b-b5cf-4f4ee9eca716">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="4" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
+    <Group key="e976d13c-b2f7-4883-85dd-4c56c42b9291">
+      <Group key="DP8051">
+        <Data key="Assigned" value="True" />
+        <Data key="Priority" value="6" />
+        <Data key="Vector" value="-1" />
+      </Group>
+    </Group>
   </Group>
   <Group key="Pin2">
     <Group key="0aa71f5d-dc9c-479f-97db-8f13edf8d170">
@@ -1088,6 +1131,7 @@
     <Data key="CYDEV_BOOTLOADER_IO_COMP" value="" />
     <Data key="CYDEV_BOOTLOADER_WAIT_COMMAND" value="True" />
     <Data key="CYDEV_BOOTLOADER_WAIT_TIME" value="10" />
+    <Data key="CYDEV_CONFIG_FASTBOOT_ENABLED" value="True" />
     <Data key="CYDEV_CONFIG_FORCE_ROUTE" value="False" />
     <Data key="CYDEV_CONFIG_UNUSED_IO" value="AllowButWarn" />
     <Data key="CYDEV_CONFIGURATION_CLEAR_SRAM" value="True" />
@@ -1109,5 +1153,6 @@
     <Data key="CYDEV_VDDIO1" value="5.0" />
     <Data key="CYDEV_VDDIO2" value="5.0" />
     <Data key="CYDEV_VDDIO3" value="5.0" />
+    <Data key="CYDEV_WO_NVL_ENABLED" value="False" />
   </Group>
 </DesignWideResources>

@@ -104,7 +104,7 @@
 #define PWM_MAX_VALUE           100     /*!< Maximum value of the PWM signal.*/
 
 #define ANTI_WINDUP             1000    /*!< Anti windup saturation.*/ 
-#define DEFAULT_CURRENT_LIMIT   1500    /*!< Default Current limit, 0 stands for unlimited.*/
+#define DEFAULT_CURRENT_LIMIT   750     /*!< Default Current limit, 0 stands for unlimited.*/
 
 #define CURRENT_HYSTERESIS      10      /*!< milliAmperes of hysteresis for current control.*/
 
