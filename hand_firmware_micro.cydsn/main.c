@@ -170,7 +170,7 @@ int main()
     //---------------------------------------------------  Initialize referiment structure
     for (i = NUM_OF_MOTORS; i--;) 
         g_ref.pos[i] = 0;
-
+    g_ref.curr_offset = 0;
 
     if (c_mem.emg_calibration_flag) {
         if ((c_mem.input_mode == INPUT_MODE_EMG_PROPORTIONAL) ||

@@ -706,7 +706,7 @@ void motor_control() {
             }
             
             // ------ position PID control ------
-
+            
             i_ref = 0;
             
             // Proportional
@@ -724,6 +724,8 @@ void motor_control() {
             // Update previous position
             prev_pos_err = pos_error;
 
+            i_ref += g_ref.curr_offset;
+                            
             // motor direction depends on i_ref
             if (i_ref >= 0)
                 motor_dir = TRUE;

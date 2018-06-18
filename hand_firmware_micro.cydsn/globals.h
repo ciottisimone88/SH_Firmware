@@ -57,7 +57,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.7 Centro Piaggio"
+#define VERSION                 "SH-PRO v6.1.7 Centro Piaggio 13.06.2018"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -147,6 +147,7 @@ struct st_ref {
     int32 curr[NUM_OF_MOTORS];      /*!< Motor current reference.*/
     int32 pwm[NUM_OF_MOTORS];       /*!< Motor direct pwm control.*/
     uint8 onoff;                    /*!< Motor drivers enable.*/
+    int32 curr_offset;              /*!< Current offset used in CURR_AND_POS_CONTROL.*/
 };
 
 //=============================================================     measurements
@@ -343,7 +344,6 @@ extern int16 ADC_buf[4];                            /*! ADC measurements buffer.
 extern int8 pwm_sign;                               /*!< Sign of pwm driven. Used to obtain current sign.*/
 
 extern int32 rest_pos_curr_ref;						/*!< Rest position current reference.*/
-
 
 
 // -----------------------------------------------------------------------------

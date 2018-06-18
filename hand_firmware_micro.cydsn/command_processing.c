@@ -1696,11 +1696,24 @@ void cmd_set_inputs(){
             g_refNew.pwm[1] = *((int16 *) &g_rx.buffer[3]);
         }
         else {
-            g_refNew.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
-            g_refNew.pos[0] = g_refNew.pos[0] << g_mem.res[0];
+            if(g_mem.control_mode == CURR_AND_POS_CONTROL) {
+                // first input: position, second input: current_offset
+                g_refNew.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
+                g_refNew.pos[0] = g_refNew.pos[0] << g_mem.res[0];
+                
+                g_refNew.curr_offset = *((int16 *) &g_rx.buffer[3]);
+                if (g_refNew.curr_offset < 0) {
+                    g_refNew.curr_offset = 0;
+                }
+            }
+            else {
+                // CONTROL_ANGLE
+                g_refNew.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
+                g_refNew.pos[0] = g_refNew.pos[0] << g_mem.res[0];
 
-            g_refNew.pos[1] = *((int16 *) &g_rx.buffer[3]);   // motor 2
-            g_refNew.pos[1] = g_refNew.pos[1] << g_mem.res[1];
+                g_refNew.pos[1] = *((int16 *) &g_rx.buffer[3]);   // motor 2
+                g_refNew.pos[1] = g_refNew.pos[1] << g_mem.res[1];
+            }
         }
     }
 

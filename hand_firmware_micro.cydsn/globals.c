@@ -93,5 +93,4 @@ int8 pwm_sign;								/*!< Sign of pwm driven. Used to obtain current sign.*/
                             
 int32 rest_pos_curr_ref;					/*!< Rest position current reference.*/
 
-
 /* END OF FILE */

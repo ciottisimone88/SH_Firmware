@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 1   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE UTILS
@@ -62,7 +62,7 @@ line level    source
   50          //==============================================================================
   51          
   52          int32 curr_estim ( int32 pos, int32 vel, int32 ref ) {
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 2   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 2   
 
   53   1      
   54   1              static int32 virtual_pos_friction;      //Virtual position used to estimate friction.
@@ -126,7 +126,7 @@ line level    source
  110          //==============================================================================
  111          //                                                              First Emg Filter
  112          //==============================================================================
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 3   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 3   
 
  113          
  114          int32 filter_ch1(int32 new_value) {
@@ -190,7 +190,7 @@ line level    source
  172          int32 filter_vel_3(int32 new_value) {
  173   1      
  174   1          static int32 old_value, aux;
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 4   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 4   
 
  175   1      
  176   1          aux = (old_value * (1024 - GAMMA) + (new_value << 6) * (GAMMA)) /1024;
@@ -254,7 +254,7 @@ line level    source
  234   1      
  235   1          return (aux /64);
  236   1      
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 5   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 5   
 
  237   1      }
  238          
@@ -318,7 +318,7 @@ line level    source
  296   2              return (int32)(divisor - (-val % divisor));
  297   2          }
  298   1      }
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 6   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 6   
 
  299          
  300          
@@ -382,7 +382,7 @@ line level    source
  358          
  359          // Number of ticks per turn
  360          #define M 65536          ///< Number of encoder ticks per turn.
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 7   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 7   
 
  361          
  362          
@@ -446,7 +446,7 @@ line level    source
  419   1          ***************************************************/
  420   1          
  421   1          if (count == (uint32)(g_mem.rest_delay/CALIBRATION_DIV)){  
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 8   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 8   
 
  422   2              // This routine is executed every 10 firmware cycles -> g_mem.rest_delay must be major than 10 ms
  423   2              rest_enabled = 1;
@@ -510,7 +510,7 @@ line level    source
  480   1          
  481   1          //Initialize counters        
  482   1          g_mem.emg_counter[0] = g_mem.emg_counter[1] = 0;
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 9   
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 9   
 
  483   1          for(i = 0; i< 10; i++){
  484   2              g_mem.position_hist[i] = 0;
@@ -525,7 +525,7 @@ line level    source
  493   1      }
  494          
  495          /* [] END OF FILE */
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 10  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 10  
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -589,7 +589,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0045 900000      R     MOV     DPTR,#pos
 0048 E0                MOVX    A,@DPTR
 0049 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 11  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 11  
 
 004A A3                INC     DPTR
 004B E0                MOVX    A,@DPTR
@@ -653,7 +653,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0092 F8                MOV     R0,A
 0093 A3                INC     DPTR
 0094 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 12  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 12  
 
 0095 F9                MOV     R1,A
 0096 A3                INC     DPTR
@@ -717,7 +717,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00D9 3C                ADDC    A,R4
 00DA FC                MOV     R4,A
 00DB 900000      R     MOV     DPTR,#virtual_pos_friction
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 13  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 13  
 
 00DE 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 67
@@ -781,7 +781,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0131 F8                MOV     R0,A
 0132 A3                INC     DPTR
 0133 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 14  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 14  
 
 0134 F9                MOV     R1,A
 0135 A3                INC     DPTR
@@ -845,7 +845,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 018D FD                MOV     R5,A
 018E A3                INC     DPTR
 018F E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 15  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 15  
 
 0190 FE                MOV     R6,A
 0191 A3                INC     DPTR
@@ -909,7 +909,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01DF FD                MOV     R5,A
 01E0 EC                MOV     A,R4
 01E1 98                SUBB    A,R0
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 16  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 16  
 
 01E2 FC                MOV     R4,A
 01E3 120000      E     LCALL   ?C?FCASTL
@@ -973,7 +973,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0243 E0                MOVX    A,@DPTR
 0244 FD                MOV     R5,A
 0245 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 17  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 17  
 
 0246 E0                MOVX    A,@DPTR
 0247 FE                MOV     R6,A
@@ -1037,7 +1037,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0297 A3                INC     DPTR
 0298 E0                MOVX    A,@DPTR
 0299 FB                MOV     R3,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 18  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 18  
 
 029A D3                SETB    C
 029B 120000      E     LCALL   ?C?SLCMP
@@ -1101,7 +1101,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02E5 FF                MOV     R7,A
 02E6 C3                CLR     C
 02E7 E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 19  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 19  
 
 02E8 9F                SUBB    A,R7
 02E9 FF                MOV     R7,A
@@ -1165,7 +1165,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0338 2B                ADD     A,R3
 0339 FF                MOV     R7,A
 033A EE                MOV     A,R6
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 20  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 20  
 
 033B 3A                ADDC    A,R2
 033C FE                MOV     R6,A
@@ -1229,7 +1229,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0023 E0                MOVX    A,@DPTR
 0024 F9                MOV     R1,A
 0025 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 21  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 21  
 
 0026 E0                MOVX    A,@DPTR
 0027 FA                MOV     R2,A
@@ -1293,7 +1293,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0075 FE                MOV     R6,A
 0076 A3                INC     DPTR
 0077 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 22  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 22  
 
 0078 FF                MOV     R7,A
 0079 120000      E     LCALL   ?C?SLDIV
@@ -1357,7 +1357,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0044 7A04              MOV     R2,#04H
 0046 F9                MOV     R1,A
 0047 F8                MOV     R0,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 23  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 23  
 
 0048 120000      E     LCALL   ?C?SLDIV
 004B 900000      R     MOV     DPTR,#aux
@@ -1421,7 +1421,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0014 E0                MOVX    A,@DPTR
 0015 FA                MOV     R2,A
 0016 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 24  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 24  
 
 0017 E0                MOVX    A,@DPTR
 0018 FB                MOV     R3,A
@@ -1485,7 +1485,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 006A D001              POP     AR1
 006C D000              POP     AR0
 006E EF                MOV     A,R7
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 25  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 25  
 
 006F 2B                ADD     A,R3
 0070 FF                MOV     R7,A
@@ -1549,7 +1549,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 132
 0000 900000      R     MOV     DPTR,#new_value
 0003 120000      E     LCALL   ?C?LSTXDATA
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 26  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 26  
 
                                            ; SOURCE LINE # 136
 0006 E4                CLR     A
@@ -1613,7 +1613,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0054 FC                MOV     R4,A
 0055 900000      R     MOV     DPTR,#old_value
 0058 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 27  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 27  
 
 0059 F8                MOV     R0,A
 005A A3                INC     DPTR
@@ -1677,7 +1677,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00A8 A3                INC     DPTR
 00A9 E0                MOVX    A,@DPTR
 00AA FD                MOV     R5,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 28  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 28  
 
 00AB A3                INC     DPTR
 00AC E0                MOVX    A,@DPTR
@@ -1741,7 +1741,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 003F EC                MOV     A,R4
 0040 38                ADDC    A,R0
 0041 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 29  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 29  
 
 0042 E4                CLR     A
 0043 FB                MOV     R3,A
@@ -1805,7 +1805,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 000E C004              PUSH    AR4
 0010 C005              PUSH    AR5
 0012 C006              PUSH    AR6
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 30  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 30  
 
 0014 C007              PUSH    AR7
 0016 E4                CLR     A
@@ -1869,7 +1869,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0065 E4                CLR     A
 0066 7B40              MOV     R3,#040H
 0068 FA                MOV     R2,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 31  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 31  
 
 0069 F9                MOV     R1,A
 006A F8                MOV     R0,A
@@ -1933,7 +1933,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0037 2B                ADD     A,R3
 0038 FF                MOV     R7,A
 0039 EE                MOV     A,R6
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 32  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 32  
 
 003A 3A                ADDC    A,R2
 003B FE                MOV     R6,A
@@ -1997,7 +1997,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0000 7806              MOV     R0,#06H
 0002 120000      E     LCALL   ?C?LSHL
 0005 E4                CLR     A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 33  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 33  
 
 0006 7B08              MOV     R3,#08H
 0008 FA                MOV     R2,A
@@ -2061,7 +2061,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005A E0                MOVX    A,@DPTR
 005B FE                MOV     R6,A
 005C A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 34  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 34  
 
 005D E0                MOVX    A,@DPTR
 005E FF                MOV     R7,A
@@ -2125,7 +2125,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0029 E0                MOVX    A,@DPTR
 002A FB                MOV     R3,A
 002B 120000      E     LCALL   ?C?LMUL
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 35  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 35  
 
 002E D003              POP     AR3
 0030 D002              POP     AR2
@@ -2189,7 +2189,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007C         ?C0020:
 007C 22                RET     
              ; FUNCTION _filter_acc_2 (END)
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 36  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 36  
 
 
              ; FUNCTION _filter_acc_3 (BEGIN)
@@ -2253,7 +2253,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 215
 0051 900000      R     MOV     DPTR,#aux
 0054 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 37  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 37  
 
 0055 FC                MOV     R4,A
 0056 A3                INC     DPTR
@@ -2317,7 +2317,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0021 F8                MOV     R0,A
 0022 A3                INC     DPTR
 0023 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 38  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 38  
 
 0024 F9                MOV     R1,A
 0025 A3                INC     DPTR
@@ -2381,7 +2381,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0073 A3                INC     DPTR
 0074 E0                MOVX    A,@DPTR
 0075 FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 39  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 39  
 
 0076 A3                INC     DPTR
 0077 E0                MOVX    A,@DPTR
@@ -2445,7 +2445,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0042 E4                CLR     A
 0043 FB                MOV     R3,A
 0044 7A04              MOV     R2,#04H
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 40  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 40  
 
 0046 F9                MOV     R1,A
 0047 F8                MOV     R0,A
@@ -2509,7 +2509,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0011 8603              MOV     AR3,@R0
 0013 08                INC     R0
 0014 08                INC     R0
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 41  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 41  
 
 0015 06                INC     @R0
 0016 E6                MOV     A,@R0
@@ -2573,7 +2573,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0064 13                RRC     A
 0065 CE                XCH     A,R6
 0066 13                RRC     A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 42  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 42  
 
 0067         ?C0075:
 0067 D8F9              DJNZ    R0,?C0074
@@ -2637,7 +2637,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 003D 7C3F              MOV     R4,#03FH
 003F 900000      R     MOV     DPTR,#x
 0042 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 43  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 43  
 
 0043 F8                MOV     R0,A
 0044 A3                INC     DPTR
@@ -2701,7 +2701,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0033 E0                MOVX    A,@DPTR
 0034 FD                MOV     R5,A
 0035 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 44  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 44  
 
 0036 E0                MOVX    A,@DPTR
 0037 FE                MOV     R6,A
@@ -2765,7 +2765,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 007C FD                MOV     R5,A
 007D EC                MOV     A,R4
 007E 98                SUBB    A,R0
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 45  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 45  
 
 007F FC                MOV     R4,A
                                            ; SOURCE LINE # 297
@@ -2829,7 +2829,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0043 EB                MOV     A,R3
 0044 2F                ADD     A,R7
 0045 FF                MOV     R7,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 46  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 46  
 
 0046 EA                MOV     A,R2
 0047 3E                ADDC    A,R6
@@ -2893,7 +2893,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 008D E0                MOVX    A,@DPTR
 008E FF                MOV     R7,A
 008F C004              PUSH    AR4
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 47  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 47  
 
 0091 C005              PUSH    AR5
 0093 C006              PUSH    AR6
@@ -2957,7 +2957,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00DF E0                MOVX    A,@DPTR
 00E0 F9                MOV     R1,A
 00E1 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 48  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 48  
 
 00E2 E0                MOVX    A,@DPTR
 00E3 FA                MOV     R2,A
@@ -3021,7 +3021,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 327
 012F         ?C0038:
 012F 22                RET     
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 49  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 49  
 
              ; FUNCTION calibration (END)
 
@@ -3085,7 +3085,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 004D 99                SUBB    A,R1
 004E FD                MOV     R5,A
 004F EC                MOV     A,R4
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 50  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 50  
 
 0050 98                SUBB    A,R0
 0051 FC                MOV     R4,A
@@ -3149,7 +3149,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00AA E4                CLR     A
 00AB 3E                ADDC    A,R6
 00AC FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 51  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 51  
 
 00AD E4                CLR     A
 00AE 3D                ADDC    A,R5
@@ -3213,7 +3213,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 001F E0                MOVX    A,@DPTR
 0020 FE                MOV     R6,A
 0021 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 52  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 52  
 
 0022 E0                MOVX    A,@DPTR
 0023 FF                MOV     R7,A
@@ -3277,7 +3277,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 399
 0079 900000      E     MOV     DPTR,#g_meas+04H
 007C E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 53  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 53  
 
 007D FC                MOV     R4,A
 007E A3                INC     DPTR
@@ -3341,7 +3341,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00C7 FC                MOV     R4,A
 00C8 900000      E     MOV     DPTR,#g_meas+01BH
 00CB E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 54  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 54  
 
 00CC F8                MOV     R0,A
 00CD A3                INC     DPTR
@@ -3405,7 +3405,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0118 900000      R     MOV     DPTR,#flag_count
 011B E0                MOVX    A,@DPTR
 011C B40136            CJNE    A,#01H,?C0048
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 55  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 55  
 
                                            ; SOURCE LINE # 406
 011F 900000      R     MOV     DPTR,#count
@@ -3469,7 +3469,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0162 FD                MOV     R5,A
 0163 A3                INC     DPTR
 0164 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 56  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 56  
 
 0165 FE                MOV     R6,A
 0166 A3                INC     DPTR
@@ -3533,7 +3533,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01B2 A3                INC     DPTR
 01B3 E0                MOVX    A,@DPTR
 01B4 FE                MOV     R6,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 57  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 57  
 
 01B5 A3                INC     DPTR
 01B6 E0                MOVX    A,@DPTR
@@ -3597,7 +3597,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 020B FF                MOV     R7,A
 020C FE                MOV     R6,A
 020D 7DC8              MOV     R5,#0C8H
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 58  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 58  
 
 020F 7C42              MOV     R4,#042H
 0211 900000      R     MOV     DPTR,#m
@@ -3661,7 +3661,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0261 FC                MOV     R4,A
 0262 A3                INC     DPTR
 0263 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 59  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 59  
 
 0264 FD                MOV     R5,A
 0265 A3                INC     DPTR
@@ -3725,7 +3725,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02AE E0                MOVX    A,@DPTR
 02AF F9                MOV     R1,A
 02B0 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 60  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 60  
 
 02B1 E0                MOVX    A,@DPTR
 02B2 FA                MOV     R2,A
@@ -3789,7 +3789,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0300 E0                MOVX    A,@DPTR
 0301 FF                MOV     R7,A
 0302 120000      E     LCALL   ?C?LNEG
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 61  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 61  
 
 0305         ?C0053:
 0305 900000      R     MOV     DPTR,#delta_inc
@@ -3853,7 +3853,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0351 A3                INC     DPTR
 0352 E0                MOVX    A,@DPTR
 0353 FF                MOV     R7,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 62  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 62  
 
 0354 120000      E     LCALL   ?C?LNEG
 0357 900000      R     MOV     DPTR,#rest_error
@@ -3917,7 +3917,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03A2 E0                MOVX    A,@DPTR
 03A3 FA                MOV     R2,A
 03A4 A3                INC     DPTR
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 63  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 63  
 
 03A5 E0                MOVX    A,@DPTR
 03A6 FB                MOV     R3,A
@@ -3981,7 +3981,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03EB E0                MOVX    A,@DPTR
 03EC FF                MOV     R7,A
 03ED 900000      R     MOV     DPTR,#delta_inc
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 64  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 64  
 
 03F0 E0                MOVX    A,@DPTR
 03F1 F8                MOV     R0,A
@@ -4045,7 +4045,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0432 E0                MOVX    A,@DPTR
 0433 FF                MOV     R7,A
 0434 900000      R     MOV     DPTR,#delta_inc
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 65  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 65  
 
 0437 E0                MOVX    A,@DPTR
 0438 F8                MOV     R0,A
@@ -4109,7 +4109,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0475 C3                CLR     C
 0476 120000      E     LCALL   ?C?SLCMP
 0479 5014              JNC     ?C0061
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 66  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 66  
 
                                            ; SOURCE LINE # 468
 047B 900000      E     MOV     DPTR,#c_mem+051H
@@ -4173,7 +4173,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 471
                                            ; SOURCE LINE # 473
 04C5         ?C0063:
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 67  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 67  
 
 04C5 22                RET     
              ; FUNCTION check_rest_position (END)
@@ -4237,7 +4237,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0041 FE                MOV     R6,A
 0042 FD                MOV     R5,A
 0043 FC                MOV     R4,A
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 68  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 68  
 
 0044 EB                MOV     A,R3
 0045 25E0              ADD     A,ACC
@@ -4301,7 +4301,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    EDATA SIZE       =   ----    ----
    HDATA SIZE       =   ----    ----
    XDATA CONST SIZE =   ----    ----
-C51 COMPILER V9.51   UTILS                                                                 05/03/2018 10:23:00 PAGE 69  
+C51 COMPILER V9.51   UTILS                                                                 06/13/2018 12:24:29 PAGE 69  
 
    FAR CONST SIZE   =   ----    ----
 END OF MODULE INFORMATION.
