@@ -1094,11 +1094,11 @@ void prepare_generic_info(char *info_string)
             strcat(info_string, str);
         }
         else { 
-            sprintf(str, "P -> %f  ", ((double) c_mem.k_p_dl / 65536));
+            sprintf(str, "P -> %f  ", ((double) c_mem.k_p_dl / 8192));
             strcat(info_string, str);
-            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_dl / 65536));
+            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_dl / 8192));
             strcat(info_string, str);
-            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_dl / 65536));
+            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_dl / 8192));
             strcat(info_string, str);
         }
 
@@ -1112,11 +1112,11 @@ void prepare_generic_info(char *info_string)
             strcat(info_string, str);
         }
         else {
-            sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c_dl / 65536));
+            sprintf(str, "P -> %f  ", ((double) c_mem.k_p_c_dl / 8192));
             strcat(info_string, str);
-            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c_dl / 65536));
+            sprintf(str, "I -> %f  ", ((double) c_mem.k_i_c_dl / 8192));
             strcat(info_string, str);
-            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c_dl / 65536));
+            sprintf(str, "D -> %f\r\n", ((double) c_mem.k_d_c_dl / 8192));
             strcat(info_string, str);
         }
 
