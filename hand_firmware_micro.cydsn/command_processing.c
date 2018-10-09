@@ -297,8 +297,8 @@ void infoGet(uint16 info_type) {
 
 void get_param_list(uint16 index) {
     //Package to be sent variables
-    uint8 packet_data[1551] = "";
-    uint16 packet_lenght = 1551;
+    uint8 packet_data[1601] = "";
+    uint16 packet_lenght = 1601;
 
     //Auxiliary variables
     uint8 CYDATA i;
@@ -328,6 +328,7 @@ void get_param_list(uint16 index) {
     char handle_ratio_str[25] = "19 - Motor handle ratio:"; 
     char motor_type_str[24] = "20 - PWM rescaling:";
     char curr_lookup_str[21] = "21 - Current lookup:";
+    char max_pwm_rate_str[19] = "22 - Max PWM rate:";
 
     //Parameters menus
     char input_mode_menu[99] = "0 -> Usb\n1 -> Handle\n2 -> EMG proportional\n3 -> EMG Integral\n4 -> EMG FCFS\n5 -> EMG FCFS Advanced\n";
@@ -350,6 +351,8 @@ void get_param_list(uint16 index) {
     uint8 CYDATA emg_thr_str_len = strlen(emg_thr_str);
     uint8 CYDATA emg_max_val_str_len = strlen(emg_max_val_str);
     uint8 CYDATA emg_max_speed_str_len = strlen(emg_max_speed_str);
+    
+    uint8 CYDATA max_pwm_rate_str_len = strlen(max_pwm_rate_str);
 
     uint8 CYDATA handle_ratio_str_len = strlen(handle_ratio_str);
     uint8 CYDATA curr_lookup_str_len = strlen(curr_lookup_str);
@@ -657,17 +660,25 @@ void get_param_list(uint16 index) {
                 *((float *) ( packet_data + 1004 + (i * 4) )) = c_mem.curr_lookup[i];
             for(i = curr_lookup_str_len; i != 0; i--)
                 packet_data[1028 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
+             
+             /*------------RATE LIMITER-----------*/
+            
+            packet_data[1052] = TYPE_UINT8;
+            packet_data[1053] = 1;
+            packet_data[1054] = c_mem.max_pwm_rate;
+            for(i = max_pwm_rate_str_len; i != 0; i--)
+                packet_data[1055 + max_pwm_rate_str_len - i] = max_pwm_rate_str[max_pwm_rate_str_len - i];
                 
             /*------------PARAMETERS MENU-----------*/
 
             for(i = input_mode_menu_len; i != 0; i--)
-                packet_data[1052 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
+                packet_data[1102 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
 
             for(i = control_mode_menu_len; i != 0; i--)
-                packet_data[1202 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
+                packet_data[1252 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
 
             for(i = yes_no_menu_len; i!= 0; i--)
-                packet_data[1352 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
+                packet_data[1402 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
             commWrite(packet_data, packet_lenght);
@@ -827,6 +838,10 @@ void get_param_list(uint16 index) {
         case 21:        //Current lookup table - float
             for(i = 0; i < LOOKUP_DIM; i++)
                 g_mem.curr_lookup[i] = *((float *) &g_rx.buffer[3 + i*4]);
+        break;
+//===================================================     set_max_pwm_rate
+        case 22:        //Max pwm rate - uint8
+            g_mem.max_pwm_rate = *((uint8*) &g_rx.buffer[3]);
         break;
     }
 }
@@ -1094,6 +1109,10 @@ void prepare_generic_info(char *info_string)
         sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
+        
+        sprintf(str, "Max pwm rate: %u", g_mem.max_pwm_rate);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
 
         sprintf(str, "debug: %ld", (uint32)timer_value0 - (uint32)timer_value); //5000001
         strcat(info_string, str);
@@ -1322,9 +1341,9 @@ uint8 memInit(void)
     //initialize memory settings
     g_mem.id            = 1;
 
-    g_mem.k_p           = 0.015 * 65536;
+    g_mem.k_p           = 0.040 * 65536;
     g_mem.k_i           =     0 * 65536;
-    g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter previous value 0.2
+    g_mem.k_d           = 0.060 * 65536; //Used with "old-style" derivative
     g_mem.k_p_c         =     1 * 65536;
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
@@ -1386,7 +1405,9 @@ uint8 memInit(void)
         g_mem.unused_bytes_2[2*i] = 0;
     }
     for(i = 0; i < (LOOKUP_DIM - 1); i++)
-        g_mem.unused_bytes_1[i] = 0; 
+        g_mem.unused_bytes_1[i] = 0;
+        
+    g_mem.max_pwm_rate = 1;
     
     // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;

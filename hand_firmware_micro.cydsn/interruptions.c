@@ -458,6 +458,10 @@ void motor_control() {
     
     static int32 prev_pos_err;      // previous position error for deriv. control
     static int32 prev_curr_err;     // previous current error for deriv. control
+    
+    static int32 prev_pos;          // previous position used only for derivative part of PID control
+    static int32 prev_curr;         // previous current only for derivative part of PID control
+    static int32 prev_pwm = 0;      // previous pwm value used to smooth pwm signal action
 
     static CYBIT motor_dir = FALSE;
 
@@ -634,10 +638,12 @@ void motor_control() {
 
             // Derivative
             if (k_d_dl != 0)
-                i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16;
+                i_ref += (int32)(k_d_dl * (prev_pos - g_meas.pos[0])) >> 16; //Derivativo "vecchio stile"
+                //i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16; //Derivativo teoricamente corretto
             
             // Update previous position
             prev_pos_err = pos_error;
+            prev_pos     = g_meas.pos[0]; 
 
             // motor direction depends on i_ref
             if (i_ref >= 0)
@@ -678,7 +684,8 @@ void motor_control() {
 
             // Derivative
             if (k_d_c_dl != 0)
-                pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 16;
+                pwm_input += (int32)(k_d_c_dl * (prev_curr - g_meas.curr[0])) >> 16; //Derivativo "vecchio stampo"
+                //pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 16; //Derivativo teoricamente corretto
 
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 
@@ -690,6 +697,7 @@ void motor_control() {
             
             // Update previous current
             prev_curr_err = curr_error;
+            prev_curr = g_meas.curr[0];
 
         break;
 
@@ -717,10 +725,12 @@ void motor_control() {
 
             // Derivative
             if (k_d != 0) 
-                pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16;
+                pwm_input += (int32)(k_d * (prev_pos - g_meas.pos[0])) >> 16; // Derivativo "vecchio stampo"
+                //pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16; // Derivativo teoricamente corretto
 
             // Update measure
             prev_pos_err = pos_error;
+            prev_pos     = g_meas.pos[0];
 
             if (pwm_input > 0)
                 motor_dir = TRUE;
@@ -765,9 +775,12 @@ void motor_control() {
 
                 // Derivative
                 if (k_d_c != 0)
-                    pwm_input += (int32)(k_d_c * (curr_error - prev_curr_err)) >> 16;
+                    pwm_input += (int32)(k_d_c * (prev_curr - g_meas.curr[0])) >> 16; //Derivativo "vecchio stampo"
+                    //pwm_input += (int32)(k_d_c * (curr_error - prev_curr_err)) >> 16; //Derivativo teoricamente corretto
                 
+                //Update previous value
                 prev_curr_err = curr_error;
+                prev_curr = g_meas.curr[0];
                 
                 if (pwm_input >= 0) 
                     motor_dir = TRUE;
@@ -803,6 +816,29 @@ void motor_control() {
         pwm_input =  PWM_MAX_VALUE;
     if(pwm_input < -PWM_MAX_VALUE) 
         pwm_input = -PWM_MAX_VALUE;
+    
+    //// RATE LIMITER ////
+
+    if((pwm_input-prev_pwm) > c_mem.max_pwm_rate){ //Caso chiusura 0->19000 chiusura graduale no frenata
+        if(pwm_input == PWM_MAX_VALUE) //Start chiusura
+            pwm_input = prev_pwm + c_mem.max_pwm_rate;
+        //else //Fine chiusura = frenata
+            //pwm_input = prev_pwm + c_mem.max_pwm_rate;
+    }
+
+    if((pwm_input-prev_pwm) < -c_mem.max_pwm_rate){ //Caso apertura 19000->0 Partenza graduale no frenata
+        if(pwm_input == -PWM_MAX_VALUE) //Start apertura
+            pwm_input = prev_pwm - c_mem.max_pwm_rate;
+        //else //Fine apertura = frenata in apertura
+            //pwm_input = prev_pwm - c_mem.max_pwm_rate;
+    }
+
+    if(pwm_input >  PWM_MAX_VALUE) 
+        pwm_input =  PWM_MAX_VALUE;
+    if(pwm_input < -PWM_MAX_VALUE) 
+        pwm_input = -PWM_MAX_VALUE;
+    
+    prev_pwm = pwm_input;
 
 
     if (c_mem.control_mode != CONTROL_PWM) 

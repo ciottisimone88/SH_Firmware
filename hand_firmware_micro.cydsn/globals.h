@@ -54,13 +54,13 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.7"
+#define VERSION                 "SH-PRO v6.1.8"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           21      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           22      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -215,7 +215,8 @@ struct st_mem {
     uint32  cycles_counter;             /*!< Counter for hand cycles closures */                            //4
     int8    unused_bytes_2[12];                                                                             //12    16
     //End of row eleven.
-                                                                                                    //TOT           170 bytes
+    uint8   max_pwm_rate;               /*!< Maximum pwm rate used to drive the motor between steps of control*/
+                                                                                                    //TOT           171 bytes
 };
 
 //=================================================     device related variables
