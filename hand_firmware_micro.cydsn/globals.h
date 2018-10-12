@@ -46,21 +46,21 @@
 
 //=================================================================     includes
 #include <device.h>
-#include "stdlib.h"
-#include "math.h"
+#include "STDLIB.H"
+#include "MATH.H"
 #include "commands.h"
 
 //==============================================================================
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.8"
+#define VERSION                 "SH-PRO v6.1.9"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
 #define NUM_OF_EMGS             2       /*!< Number of emg channels.*/
 #define NUM_OF_ANALOG_INPUTS    4       /*!< Total number of analogic inputs.*/
-#define NUM_OF_PARAMS           22      /*!< Number of parameters saved in the EEPROM */
+#define NUM_OF_PARAMS           23      /*!< Number of parameters saved in the EEPROM */
 
 //==============================================================================
 //                                                               SYNCHRONIZATION
@@ -215,7 +215,8 @@ struct st_mem {
     uint32  cycles_counter;             /*!< Counter for hand cycles closures */                            //4
     int8    unused_bytes_2[12];                                                                             //12    16
     //End of row eleven.
-    uint8   max_pwm_rate;               /*!< Maximum pwm rate used to drive the motor between steps of control*/
+    uint8   closing_pwm_rate;           /*!< Pwm rate used when closing the hand*/
+    uint8   opening_pwm_rate;           /*!< Pwm rate used when opening the hand*/
                                                                                                     //TOT           171 bytes
 };
 
@@ -278,6 +279,11 @@ extern float cycle_time;							/*!< Variable used to calculate in how much time 
 extern int32    dev_tension;                        /*!< Power supply tension */
 extern uint8    dev_pwm_limit;                      /*!< Device pwm limit. It may change during execution */
 extern uint8    dev_pwm_sat;                        /*!< Device pwm saturation */
+
+extern uint16   pos_steps;
+extern int32    delta_pos;
+extern int32    old_pos;
+extern int32    n_steps;
 
 extern uint32 cycles_reader;                        /*!< Used to read count cycles*/
 extern const uint16 cycles_thr;                     /*!< Cycles counter threshold*/

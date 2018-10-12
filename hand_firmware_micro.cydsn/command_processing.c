@@ -297,8 +297,8 @@ void infoGet(uint16 info_type) {
 
 void get_param_list(uint16 index) {
     //Package to be sent variables
-    uint8 packet_data[1601] = "";
-    uint16 packet_lenght = 1601;
+    uint8 packet_data[1701] = "";
+    uint16 packet_lenght = 1701;
 
     //Auxiliary variables
     uint8 CYDATA i;
@@ -328,8 +328,9 @@ void get_param_list(uint16 index) {
     char handle_ratio_str[25] = "19 - Motor handle ratio:"; 
     char motor_type_str[24] = "20 - PWM rescaling:";
     char curr_lookup_str[21] = "21 - Current lookup:";
-    char max_pwm_rate_str[19] = "22 - Max PWM rate:";
-
+    char closing_pwm_rate_str[23] = "22 - Closing PWM rate:";
+    char opening_pwm_rate_str[23] = "23 - Opening PWM rate:";
+    
     //Parameters menus
     char input_mode_menu[99] = "0 -> Usb\n1 -> Handle\n2 -> EMG proportional\n3 -> EMG Integral\n4 -> EMG FCFS\n5 -> EMG FCFS Advanced\n";
     char control_mode_menu[63] = "0 -> Position\n1 -> PWM\n2 -> Current\n3 -> Position and Current\n";
@@ -352,7 +353,8 @@ void get_param_list(uint16 index) {
     uint8 CYDATA emg_max_val_str_len = strlen(emg_max_val_str);
     uint8 CYDATA emg_max_speed_str_len = strlen(emg_max_speed_str);
     
-    uint8 CYDATA max_pwm_rate_str_len = strlen(max_pwm_rate_str);
+    uint8 CYDATA closing_pwm_rate_str_len = strlen(closing_pwm_rate_str);
+    uint8 CYDATA opening_pwm_rate_str_len = strlen(opening_pwm_rate_str);
 
     uint8 CYDATA handle_ratio_str_len = strlen(handle_ratio_str);
     uint8 CYDATA curr_lookup_str_len = strlen(curr_lookup_str);
@@ -661,24 +663,32 @@ void get_param_list(uint16 index) {
             for(i = curr_lookup_str_len; i != 0; i--)
                 packet_data[1028 + curr_lookup_str_len - i] = curr_lookup_str[curr_lookup_str_len - i];
              
-             /*------------RATE LIMITER-----------*/
+            /*-----------CLOSING LIMITER-----------*/
             
             packet_data[1052] = TYPE_UINT8;
             packet_data[1053] = 1;
-            packet_data[1054] = c_mem.max_pwm_rate;
-            for(i = max_pwm_rate_str_len; i != 0; i--)
-                packet_data[1055 + max_pwm_rate_str_len - i] = max_pwm_rate_str[max_pwm_rate_str_len - i];
+            packet_data[1054] = c_mem.closing_pwm_rate;
+            for(i = closing_pwm_rate_str_len; i != 0; i--)
+                packet_data[1055 + closing_pwm_rate_str_len - i] = closing_pwm_rate_str[closing_pwm_rate_str_len - i];
+                
+            /*-----------OPENING LIMITER-----------*/
+            
+            packet_data[1102] = TYPE_UINT8;
+            packet_data[1103] = 1;
+            packet_data[1104] = c_mem.opening_pwm_rate;
+            for(i = opening_pwm_rate_str_len; i != 0; i--)
+                packet_data[1105 + opening_pwm_rate_str_len - i] = opening_pwm_rate_str[opening_pwm_rate_str_len - i];
                 
             /*------------PARAMETERS MENU-----------*/
 
             for(i = input_mode_menu_len; i != 0; i--)
-                packet_data[1102 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
+                packet_data[1202 + input_mode_menu_len - i] = input_mode_menu[input_mode_menu_len - i];
 
             for(i = control_mode_menu_len; i != 0; i--)
-                packet_data[1252 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
+                packet_data[1352 + control_mode_menu_len - i] = control_mode_menu[control_mode_menu_len - i];
 
             for(i = yes_no_menu_len; i!= 0; i--)
-                packet_data[1402 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
+                packet_data[1502 + yes_no_menu_len - i] = yes_no_menu[yes_no_menu_len - i];
 
             packet_data[packet_lenght - 1] = LCRChecksum(packet_data,packet_lenght - 1);
             commWrite(packet_data, packet_lenght);
@@ -834,14 +844,21 @@ void get_param_list(uint16 index) {
         case 20:        //Motor type - uint8
             g_mem.activate_pwm_rescaling = g_rx.buffer[3];
         break;
+            
 //===================================================     set_curr_lookup_table
         case 21:        //Current lookup table - float
             for(i = 0; i < LOOKUP_DIM; i++)
                 g_mem.curr_lookup[i] = *((float *) &g_rx.buffer[3 + i*4]);
         break;
+                
 //===================================================     set_max_pwm_rate
         case 22:        //Max pwm rate - uint8
-            g_mem.max_pwm_rate = *((uint8*) &g_rx.buffer[3]);
+            g_mem.closing_pwm_rate = *((uint8*) &g_rx.buffer[3]);
+        break;
+            
+//===================================================     set_max_pwm_rate
+        case 23:        //Max pwm rate - uint8
+            g_mem.opening_pwm_rate = *((uint8*) &g_rx.buffer[3]);
         break;
     }
 }
@@ -1110,7 +1127,10 @@ void prepare_generic_info(char *info_string)
         strcat(info_string, str);
         strcat(info_string, "\r\n");
         
-        sprintf(str, "Max pwm rate: %u", g_mem.max_pwm_rate);
+        sprintf(str, "Closing pwm rate: %d", (int)g_mem.closing_pwm_rate);
+        strcat(info_string, str);
+        strcat(info_string, "\r\n");
+        sprintf(str, "Opening pwm rate: %d", (int)g_mem.opening_pwm_rate);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
 
@@ -1341,9 +1361,9 @@ uint8 memInit(void)
     //initialize memory settings
     g_mem.id            = 1;
 
-    g_mem.k_p           = 0.040 * 65536;
+    g_mem.k_p           = 0.015 * 65536;
     g_mem.k_i           =     0 * 65536;
-    g_mem.k_d           = 0.060 * 65536; //Used with "old-style" derivative
+    g_mem.k_d           = 0.007 * 65536; //Used also with "old-style" derivative and avoids metallic clatter
     g_mem.k_p_c         =     1 * 65536;
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
@@ -1407,7 +1427,8 @@ uint8 memInit(void)
     for(i = 0; i < (LOOKUP_DIM - 1); i++)
         g_mem.unused_bytes_1[i] = 0;
         
-    g_mem.max_pwm_rate = 1;
+    g_mem.closing_pwm_rate = 3;     //This value is ok for 24V motors
+    g_mem.opening_pwm_rate = 3;     //This value is ok for 24V motors
     
     // set the initialized flag to show EEPROM has been populated
     g_mem.flag = TRUE;
@@ -1502,9 +1523,15 @@ void cmd_set_inputs(){
             g_refNew.pwm[0] = *((int16 *) &g_rx.buffer[1]);
             g_refNew.pwm[1] = *((int16 *) &g_rx.buffer[3]);
         }
-        else {
+        else { //Direct angle control
             g_refNew.pos[0] = *((int16 *) &g_rx.buffer[1]);   // motor 1
             g_refNew.pos[0] = g_refNew.pos[0] << g_mem.res[0];
+            
+            //Step inputs are divided in gradual steps to avoid current peaks
+            delta_pos = 101 * SIGN(g_refNew.pos[0] - g_ref.pos[0]);     //Step amplitude fixed to 101 which we found was a good value. 101 = (19000 - 0) / 1500
+            pos_steps = 1;  // The pos_steps counter is reset every time a new input is received
+            n_steps = (int32) ((g_refNew.pos[0] - g_ref.pos[0]) / delta_pos) + 1;
+            old_pos = g_ref.pos[0];
 
             g_refNew.pos[1] = *((int16 *) &g_rx.buffer[3]);   // motor 2
             g_refNew.pos[1] = g_refNew.pos[1] << g_mem.res[1];
@@ -1535,7 +1562,9 @@ void cmd_activate(){
     if ((g_mem.control_mode == CONTROL_ANGLE) || (g_mem.control_mode == CURR_AND_POS_CONTROL)) {
         g_refNew.pos[0] = g_meas.pos[0];
         g_refNew.pos[1] = g_meas.pos[1];
+        old_pos = g_refNew.pos[0];      //Necessary because every activation the board receives a new reference position
     }
+    pos_steps = 1; // The pos_steps counter is reset every time a new input is received or the motor is activated   
 
     // Activate/Disactivate motors
     MOTOR_ON_OFF_Write(g_refNew.onoff);
