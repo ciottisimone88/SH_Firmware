@@ -462,7 +462,6 @@ void motor_control() {
     static int32 prev_pos;          // previous position used only for derivative part of PID control
     static int32 prev_curr;         // previous current only for derivative part of PID control
     static int32 prev_pwm = 0;      // previous pwm value used to smooth pwm signal action
-    static int32 counter = 0;       // counter used to slow the motor while braking
 
     static CYBIT motor_dir = FALSE;
 
@@ -639,8 +638,8 @@ void motor_control() {
 
             // Derivative
             if (k_d_dl != 0)
-                i_ref += (int32)(k_d_dl * (prev_pos - g_meas.pos[0])) >> 16; //"Old-style" derivative
-                //i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16; //Theoretically correct derivative
+                i_ref += (int32)(k_d_dl * (prev_pos - g_meas.pos[0])) >> 16; //Derivativo "vecchio stile"
+                //i_ref += (int32)(k_d_dl * (pos_error - prev_pos_err)) >> 16; //Derivativo teoricamente corretto
             
             // Update previous position
             prev_pos_err = pos_error;
@@ -685,8 +684,8 @@ void motor_control() {
 
             // Derivative
             if (k_d_c_dl != 0)
-                pwm_input += (int32)(k_d_c_dl * (prev_curr - g_meas.curr[0])) >> 16; //"Old-style" derivative
-                //pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 16; //Theoretically correct derivative
+                pwm_input += (int32)(k_d_c_dl * (prev_curr - g_meas.curr[0])) >> 16; //Derivativo "vecchio stampo"
+                //pwm_input += (int32)(k_d_c_dl * (curr_error - prev_curr_err)) >> 16; //Derivativo teoricamente corretto
 
             // pwm_input saturation
             if (pwm_input < -PWM_MAX_VALUE) 
@@ -704,12 +703,7 @@ void motor_control() {
 
         // ============================== POSITION CONTROL =====================
         case CONTROL_ANGLE:
-            if((((pos_steps*delta_pos + old_pos < g_ref.pos[0]) && (g_ref.pos[0] > old_pos)) || ((pos_steps*delta_pos + old_pos > g_ref.pos[0]) && (g_ref.pos[0] < old_pos))) && delta_pos !=0){
-                pos_error = ((2 - ((float)pos_steps)/((float)n_steps))*pos_steps*delta_pos + old_pos) - g_meas.pos[0];
-                pos_steps += 1;
-            }
-            else
-                pos_error = g_ref.pos[0] - g_meas.pos[0];
+            pos_error = g_ref.pos[0] - g_meas.pos[0];
 
             pos_error_sum += pos_error;
 
@@ -731,8 +725,8 @@ void motor_control() {
 
             // Derivative
             if (k_d != 0) 
-                pwm_input += (int32)(k_d * (prev_pos - g_meas.pos[0])) >> 16; // "Old-style" derivative
-                //pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16; // Theoretically correct derivative
+                pwm_input += (int32)(k_d * (prev_pos - g_meas.pos[0])) >> 16; // Derivativo "vecchio stampo"
+                //pwm_input += (int32)(k_d * (pos_error - prev_pos_err)) >> 16; // Derivativo teoricamente corretto
 
             // Update measure
             prev_pos_err = pos_error;
@@ -781,8 +775,8 @@ void motor_control() {
 
                 // Derivative
                 if (k_d_c != 0)
-                    pwm_input += (int32)(k_d_c * (prev_curr - g_meas.curr[0])) >> 16; //"Old-style" derivative
-                    //pwm_input += (int32)(k_d_c * (curr_error - prev_curr_err)) >> 16; //Theoretically correct derivative
+                    pwm_input += (int32)(k_d_c * (prev_curr - g_meas.curr[0])) >> 16; //Derivativo "vecchio stampo"
+                    //pwm_input += (int32)(k_d_c * (curr_error - prev_curr_err)) >> 16; //Derivativo teoricamente corretto
                 
                 //Update previous value
                 prev_curr_err = curr_error;
@@ -824,25 +818,29 @@ void motor_control() {
         pwm_input = -PWM_MAX_VALUE;
     
     //// RATE LIMITER ////
-    if((pwm_input-prev_pwm) > (int32)c_mem.closing_pwm_rate){ //Hand closing case 0->19000 gradually closing. Not considering the braking case
-        //if(pwm_input == PWM_MAX_VALUE) //Start closing
-            pwm_input = prev_pwm + c_mem.closing_pwm_rate;
+
+    if((pwm_input-prev_pwm) > c_mem.max_pwm_rate){ //Caso chiusura 0->19000 chiusura graduale no frenata
+        if(pwm_input == PWM_MAX_VALUE) //Start chiusura
+            pwm_input = prev_pwm + c_mem.max_pwm_rate;
+        //else //Fine chiusura = frenata
+            //pwm_input = prev_pwm + c_mem.max_pwm_rate;
     }
-  
-    if((pwm_input-prev_pwm) < -(int32)c_mem.opening_pwm_rate) { //Hand opening case 19000->0 gradually starting. Not considering the braking case
-        //if(pwm_input == -PWM_MAX_VALUE) //Start opening
-            pwm_input = prev_pwm - c_mem.opening_pwm_rate;   
-    } 
-    
+
+    if((pwm_input-prev_pwm) < -c_mem.max_pwm_rate){ //Caso apertura 19000->0 Partenza graduale no frenata
+        if(pwm_input == -PWM_MAX_VALUE) //Start apertura
+            pwm_input = prev_pwm - c_mem.max_pwm_rate;
+        //else //Fine apertura = frenata in apertura
+            //pwm_input = prev_pwm - c_mem.max_pwm_rate;
+    }
+
     if(pwm_input >  PWM_MAX_VALUE) 
         pwm_input =  PWM_MAX_VALUE;
     if(pwm_input < -PWM_MAX_VALUE) 
         pwm_input = -PWM_MAX_VALUE;
     
     prev_pwm = pwm_input;
-    
-    
-    // PWM limitation depending on dev_pwm_limit 
+
+
     if (c_mem.control_mode != CONTROL_PWM) 
         pwm_input = (((pwm_input << 10) / PWM_MAX_VALUE) * dev_pwm_limit) >> 10;
     
@@ -1129,9 +1127,9 @@ void analog_read_end() {
 
         // Filter and Set currents
         g_meas.curr[0] = filter_i1((int16) (((int32)(ADC_buf[1] - 1638) * 25771) >> 13) * pwm_sign);
-        //tmp_print_3 = g_meas.curr[0];
         
 		// Calculate current estimation and put it in the second part of the current measurement array;
+		//g_meas.curr[1] = (int16) filter_curr_diff(((int32) g_meas.curr[0]) - curr_estim(g_meas.pos[0] >> g_mem.res[0], g_meas.vel[0] >> g_mem.res[0], g_ref.pos[0] >> g_mem.res[0]));
         if(g_mem.curr_lookup[0] || g_mem.curr_lookup[1] || g_mem.curr_lookup[2] || g_mem.curr_lookup[3] || g_mem.curr_lookup[4] || g_mem.curr_lookup[5])
             g_meas.curr[1] = (int16) ((int32) g_meas.curr[0]) - curr_estim(g_meas.pos[0] >> g_mem.res[0], g_meas.vel[0] >> g_mem.res[0], g_ref.pos[0] >> g_mem.res[0]);
         else
@@ -1380,7 +1378,7 @@ void overcurrent_control() {
     if (c_mem.current_limit != 0) {
         // if the current is over the limit
         if (g_meas.curr[0] > c_mem.current_limit) {
-            //decrease pwm_limit
+            //decrese pwm_limit
             dev_pwm_limit--;
         // if the current is in the safe zone
         } else if (g_meas.curr[0] < (c_mem.current_limit - CURRENT_HYSTERESIS)) {

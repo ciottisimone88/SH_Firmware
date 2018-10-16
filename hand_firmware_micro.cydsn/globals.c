@@ -64,14 +64,9 @@ int8 debug_cycles;
 
 // Device Data
 
-int32   dev_tension;                    // Power supply tension
+int32   dev_tension;                // Power supply tension
 uint8   dev_pwm_limit;
-uint8   dev_pwm_sat = PWM_MAX_VALUE;    //By default the saturation value must not exceed the max pwm value
-
-uint16  pos_steps = 1;
-int32   delta_pos = 0;
-int32   old_pos = 0;
-int32   n_steps = 0;
+uint8   dev_pwm_sat = 100;          //By default the saturation value must not exceed 100
 
 uint32 cycles_reader = 0;
 const uint16 cycles_thr = 7000;
