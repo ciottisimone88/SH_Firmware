@@ -271,7 +271,7 @@ void infoSend(void){
 //==============================================================================
 
 void infoGet(uint16 info_type) {
-    char packet_string[1500] = "";
+    char packet_string[1600] = "";
     
     //==================================     choose info type and prepare string
 
@@ -701,6 +701,7 @@ void get_param_list(uint16 index) {
                 g_mem.k_i_dl = *((float *) &g_rx.buffer[3 + 4]) * 65536;
                 g_mem.k_d_dl = *((float *) &g_rx.buffer[3 + 8]) * 65536;
             }
+            g_mem.wrt_active = FALSE;
         break;
 
 //==================================================     set_curr_pid_parameters
@@ -715,7 +716,7 @@ void get_param_list(uint16 index) {
                 g_mem.k_i_c_dl = *((float *) &g_rx.buffer[3 + 4]) * 65536;
                 g_mem.k_d_c_dl = *((float *) &g_rx.buffer[3 + 8]) * 65536;
             }
-            
+            g_mem.wrt_active = FALSE;
         break;
 
 //===================================================     set_startup_activation        
@@ -724,6 +725,7 @@ void get_param_list(uint16 index) {
                 g_mem.activ = 0x03;
             else
                 g_mem.activ = 0x00;
+            g_mem.wrt_active = FALSE;
         break;
 
 //===========================================================     set_input_mode        
@@ -734,13 +736,15 @@ void get_param_list(uint16 index) {
 //=========================================================     set_control_mode
         case 6:         //Control mode - uint8
             g_mem.control_mode = g_rx.buffer[3];
+            g_mem.wrt_active = FALSE;
         break;
         
 //===========================================================     set_resolution
         case 7:         //Resolution - uint8[3]
             for (i =0; i < NUM_OF_SENSORS; i++) {
-                g_mem.res[i] = g_rx.buffer[i+3];
+                g_mem.res[i] = g_rx.buffer[i+3];                
             }
+            g_mem.wrt_active = FALSE;
         break;
         
 //===============================================================     set_offset
@@ -752,17 +756,20 @@ void get_param_list(uint16 index) {
                 g_meas.rot[i] = 0;
             }
             reset_last_value_flag = 1;
+            g_mem.wrt_active = FALSE;
         break;
         
 //===========================================================     set_multiplier
         case 9:         //Multipliers - float[3]
             for(i = 0; i < NUM_OF_SENSORS; ++i)
                 g_mem.m_mult[i] = *((float *) &g_rx.buffer[3 + i * 4]);
+            g_mem.wrt_active = FALSE;  
         break;
         
 //=====================================================     set_pos_limit_enable
         case 10:        //Position limit flag - uint8
             g_mem.pos_lim_flag = *((uint8 *) &g_rx.buffer[3]);
+            g_mem.wrt_active = FALSE;
         break;
 
 //============================================================     set_pos_limit
@@ -774,6 +781,7 @@ void get_param_list(uint16 index) {
                 g_mem.pos_lim_inf[i] = g_mem.pos_lim_inf[i] << g_mem.res[i];
                 g_mem.pos_lim_sup[i] = g_mem.pos_lim_sup[i] << g_mem.res[i];
             }
+            g_mem.wrt_active = FALSE;
         break;
 
 //==================================================     set_max_steps_per_cycle
@@ -785,12 +793,13 @@ void get_param_list(uint16 index) {
             aux_int = *((int32 *) &g_rx.buffer[3 + 4]);
             if (aux_int >= 0) 
                 g_mem.max_step_pos = aux_int;
-            
+            g_mem.wrt_active = FALSE;
         break;
         
 //========================================================     set_current_limit
         case 13:        //Current limit - int16
             g_mem.current_limit = *((int16*) &g_rx.buffer[3]);
+            g_mem.wrt_active = FALSE;
         break;
         
 //=======================================================     set_emg_calib_flag
@@ -823,6 +832,7 @@ void get_param_list(uint16 index) {
             } else {
                 g_mem.double_encoder_on_off = 0;
             }
+            g_mem.wrt_active = FALSE;
         break;
         
 //===================================================     set_motor_handle_ratio
@@ -838,12 +848,23 @@ void get_param_list(uint16 index) {
         case 21:        //Current lookup table - float
             for(i = 0; i < LOOKUP_DIM; i++)
                 g_mem.curr_lookup[i] = *((float *) &g_rx.buffer[3 + i*4]);
+            g_mem.wrt_active = FALSE;
         break;
 //===================================================     set_max_pwm_rate
         case 22:        //Max pwm rate - uint8
             g_mem.max_pwm_rate = *((uint8*) &g_rx.buffer[3]);
+            g_mem.wrt_active = FALSE;
+        break;
+//===================================================     rst_wrt_active - test only
+        case 99:
+            g_mem.wrt_active = *((uint8*) &g_rx.buffer[3]);
+        break;
+//===================================================     rst_cycles - test only        
+        case 100:
+            cycles_reader = *((uint32*) &g_rx.buffer[3]);
         break;
     }
+    sendAcknowledgment(ACK_OK);
 }
 
 //==============================================================================
@@ -861,7 +882,7 @@ void setZeros()
         g_meas.rot[i] = 0;
     }
     reset_last_value_flag = 1;
-
+    g_mem.wrt_active = FALSE;
     sendAcknowledgment(ACK_OK);
 }
 
@@ -877,7 +898,10 @@ void prepare_generic_info(char *info_string)
         char str[100];
         strcpy(info_string, "");
         strcat(info_string, "\r\n");
-        strcat(info_string, "Firmware version: ");
+        if(g_mem.wrt_active)
+            strcat(info_string, "Firmware version: ");
+        else
+            strcat(info_string, "Firmware version - Not active: ");
         strcat(info_string, VERSION);
         strcat(info_string, ".\r\n\r\n");
 
@@ -1110,7 +1134,7 @@ void prepare_generic_info(char *info_string)
         strcat(info_string, str);
         strcat(info_string, "\r\n");
         
-        sprintf(str, "Max pwm rate: %u", g_mem.max_pwm_rate);
+        sprintf(str, "Max pwm rate: %d", (int)g_mem.max_pwm_rate);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
 
@@ -1341,9 +1365,9 @@ uint8 memInit(void)
     //initialize memory settings
     g_mem.id            = 1;
 
-    g_mem.k_p           = 0.040 * 65536;
+    g_mem.k_p           = 0.015 * 65536;
     g_mem.k_i           =     0 * 65536;
-    g_mem.k_d           = 0.060 * 65536; //Used with "old-style" derivative
+    g_mem.k_d           = 0.007 * 65536;  //Changed in order to avoid metallic clatter previous value 0.2
     g_mem.k_p_c         =     1 * 65536;
     g_mem.k_i_c         = 0.001 * 65536;
     g_mem.k_d_c         =     0 * 65536;
@@ -1576,7 +1600,7 @@ void cmd_get_curr_and_meas(){
 
     // Positions
     for (index = NUM_OF_SENSORS; index--;) 
-        *((int16 *) &packet_data[(index << 2) + 5]) = (int16) (g_measOld.pos[index] >> g_mem.res[index]);
+        *((int16 *) &packet_data[(index << 1) + 5]) = (int16) (g_measOld.pos[index] >> g_mem.res[index]);
         
     // Calculate Checksum and send message to UART 
         

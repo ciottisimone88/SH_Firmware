@@ -54,7 +54,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.8"
+#define VERSION                 "SH-PRO v6.1.9"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/
@@ -216,6 +216,8 @@ struct st_mem {
     int8    unused_bytes_2[12];                                                                             //12    16
     //End of row eleven.
     uint8   max_pwm_rate;               /*!< Maximum pwm rate used to drive the motor between steps of control*/
+    uint8   wrt_active;                 /*!< Can be active or not*/
+    int8    unused_bytes_3[14];
                                                                                                     //TOT           171 bytes
 };
 
