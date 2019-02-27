@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   50          *
   51          */
   52          
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 2   
 
   53          
   54          // ----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ line level    source
  112   1          // CYCLES TIMER
  113   1          
  114   1          CYCLES_TIMER_Start();
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 3   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 3   
 
  115   1          ISR_CYCLES_StartEx(ISR_CYCLES_Handler);
  116   1          
@@ -190,7 +190,7 @@ line level    source
  167   1      
  168   1          CyDelay(10);                                        // Wait for encoders to have a valid value.
  169   1      
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 4   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 4   
 
  170   1          //---------------------------------------------------  Initialize referiment structure
  171   1          for (i = NUM_OF_MOTORS; i--;) 
@@ -237,60 +237,59 @@ line level    source
  212   1              
  213   1          //------------------------------------------------- Initialize rest position variables    
  214   1              rest_enabled = 1;
- 215   1          forced_open = 0;
- 216   1          g_mem.rest_position_flag = TRUE;
- 217   1      
- 218   1          //============================================================     main loop
- 219   1      
- 220   1          for(;;)
- 221   1          {
- 222   2              // Put the FF reset pin to LOW
- 223   2              RESET_FF_Write(0x00);
- 224   2      
- 225   2              // Call function scheduler
- 226   2              function_scheduler();
- 227   2      
- 228   2              //  Wait until the FF is set to 1
- 229   2              while(FF_STATUS_Read() == 0){
- 230   3                  // On interrupt from RS485
- 231   3                  if (interrupt_flag){
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 5   
+ 215   1          forced_open = 0; 
+ 216   1      
+ 217   1          //============================================================     main loop
+ 218   1      
+ 219   1          for(;;)
+ 220   1          {
+ 221   2              // Put the FF reset pin to LOW
+ 222   2              RESET_FF_Write(0x00);
+ 223   2      
+ 224   2              // Call function scheduler
+ 225   2              function_scheduler();
+ 226   2      
+ 227   2              //  Wait until the FF is set to 1
+ 228   2              while(FF_STATUS_Read() == 0){
+ 229   3                  // On interrupt from RS485
+ 230   3                  if (interrupt_flag){
+ 231   4                      // Reset WDT
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 5   
 
- 232   4                      // Reset WDT
- 233   4                      WATCHDOG_REFRESH_Write(0x01);
- 234   4                      // Reset flags
- 235   4                      interrupt_flag = FALSE;
- 236   4                      watchdog_flag = FALSE;
- 237   4                      // Manage Interrupt on rs485
- 238   4                      interrupt_manager();
- 239   4                  }
- 240   3                  // On interrupt from WDT
- 241   3                  else { 
- 242   4                      if (watchdog_flag){
- 243   5                          // Reset WDT
- 244   5                          WATCHDOG_REFRESH_Write(0x01);
- 245   5                          // Disactivate motors
- 246   5                          g_refNew.onoff = 0x00;
- 247   5                      }
- 248   4                  }
- 249   3              };
- 250   2      
- 251   2              // Command a FF reset
- 252   2              RESET_FF_Write(0x01);
- 253   2      
- 254   2              // Wait for FF to be reset
- 255   2              while(FF_STATUS_Read() == 1);
- 256   2      
- 257   2              if(UART_RS485_ReadRxStatus() & UART_RS485_RX_STS_SOFT_BUFF_OVER)
- 258   2                  UART_RS485_ClearRxBuffer();
- 259   2          }
- 260   1          return 0;
- 261   1      }
+ 232   4                      WATCHDOG_REFRESH_Write(0x01);
+ 233   4                      // Reset flags
+ 234   4                      interrupt_flag = FALSE;
+ 235   4                      watchdog_flag = FALSE;
+ 236   4                      // Manage Interrupt on rs485
+ 237   4                      interrupt_manager();
+ 238   4                  }
+ 239   3                  // On interrupt from WDT
+ 240   3                  else { 
+ 241   4                      if (watchdog_flag){
+ 242   5                          // Reset WDT
+ 243   5                          WATCHDOG_REFRESH_Write(0x01);
+ 244   5                          // Disactivate motors
+ 245   5                          g_refNew.onoff = 0x00;
+ 246   5                      }
+ 247   4                  }
+ 248   3              };
+ 249   2      
+ 250   2              // Command a FF reset
+ 251   2              RESET_FF_Write(0x01);
+ 252   2      
+ 253   2              // Wait for FF to be reset
+ 254   2              while(FF_STATUS_Read() == 1);
+ 255   2      
+ 256   2              if(UART_RS485_ReadRxStatus() & UART_RS485_RX_STS_SOFT_BUFF_OVER)
+ 257   2                  UART_RS485_ClearRxBuffer();
+ 258   2          }
+ 259   1          return 0;
+ 260   1      }
+ 261          
  262          
  263          
- 264          
- 265          /* [] END OF FILE */
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 6   
+ 264          /* [] END OF FILE */
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 6   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -354,7 +353,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0050 7F00        E     MOV     R7,#LOW ISR_WATCHDOG_Handler
 0052 120000      E     LCALL   _ISR_WATCHDOG_StartEx
                                            ; SOURCE LINE # 126
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 7   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 7   
 
 0055 120000      E     LCALL   PWM_MOTORS_Start
                                            ; SOURCE LINE # 127
@@ -418,7 +417,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 150
 00AD 7B01              MOV     R3,#01H
 00AF 7A00        E     MOV     R2,#HIGH ADC_buf
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 8   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 8   
 
 00B1 7900        E     MOV     R1,#LOW ADC_buf
 00B3 E9                MOV     A,R1
@@ -482,7 +481,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0103 FF                MOV     R7,A
 0104 FE                MOV     R6,A
 0105 FD                MOV     R5,A
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 9   
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 9   
 
 0106 FC                MOV     R4,A
 0107 EB                MOV     A,R3
@@ -546,7 +545,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 188
 015B 7B03              MOV     R3,#03H
 015D         ?C0008:
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 10  
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 10  
 
 015D AF03              MOV     R7,AR3
 015F 1B                DEC     R3
@@ -610,7 +609,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01B1 FE                MOV     R6,A
 01B2 FD                MOV     R5,A
 01B3 FC                MOV     R4,A
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 11  
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 11  
 
 01B4 900000      E     MOV     DPTR,#g_meas+01BH
 01B7 120000      E     LCALL   ?C?LSTXDATA
@@ -651,83 +650,79 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01E8 E4                CLR     A
 01E9 900000      E     MOV     DPTR,#forced_open
 01EC F0                MOVX    @DPTR,A
-                                           ; SOURCE LINE # 216
-01ED 900000      E     MOV     DPTR,#g_mem+0A6H
-01F0 04                INC     A
-01F1 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 219
+01ED         ?C0010:
                                            ; SOURCE LINE # 220
-01F2         ?C0010:
-                                           ; SOURCE LINE # 221
-                                           ; SOURCE LINE # 223
-01F2 E4                CLR     A
-01F3 FF                MOV     R7,A
-01F4 120000      E     LCALL   _RESET_FF_Write
-                                           ; SOURCE LINE # 226
-01F7 120000      E     LCALL   function_scheduler
-01FA         ?C0012:
-                                           ; SOURCE LINE # 229
-01FA 120000      E     LCALL   FF_STATUS_Read
-01FD EF                MOV     A,R7
-01FE 7020              JNZ     ?C0013
-                                           ; SOURCE LINE # 231
-0200 30000E            JNB     interrupt_flag,?C0014
-                                           ; SOURCE LINE # 233
-0203 7F01              MOV     R7,#01H
-0205 120000      E     LCALL   _WATCHDOG_REFRESH_Write
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 12  
-
+                                           ; SOURCE LINE # 222
+01ED E4                CLR     A
+01EE FF                MOV     R7,A
+01EF 120000      E     LCALL   _RESET_FF_Write
+                                           ; SOURCE LINE # 225
+01F2 120000      E     LCALL   function_scheduler
+01F5         ?C0012:
+                                           ; SOURCE LINE # 228
+01F5 120000      E     LCALL   FF_STATUS_Read
+01F8 EF                MOV     A,R7
+01F9 7020              JNZ     ?C0013
+                                           ; SOURCE LINE # 230
+01FB 30000E            JNB     interrupt_flag,?C0014
+                                           ; SOURCE LINE # 232
+01FE 7F01              MOV     R7,#01H
+0200 120000      E     LCALL   _WATCHDOG_REFRESH_Write
+                                           ; SOURCE LINE # 234
+0203 C200        E     CLR     interrupt_flag
                                            ; SOURCE LINE # 235
-0208 C200        E     CLR     interrupt_flag
-                                           ; SOURCE LINE # 236
-020A C200        E     CLR     watchdog_flag
+0205 C200        E     CLR     watchdog_flag
+C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 12  
+
+                                           ; SOURCE LINE # 237
+0207 120000      E     LCALL   interrupt_manager
                                            ; SOURCE LINE # 238
-020C 120000      E     LCALL   interrupt_manager
-                                           ; SOURCE LINE # 239
-020F 80E9              SJMP    ?C0012
-0211         ?C0014:
+020A 80E9              SJMP    ?C0012
+020C         ?C0014:
+                                           ; SOURCE LINE # 240
                                            ; SOURCE LINE # 241
-                                           ; SOURCE LINE # 242
-0211 3000E6            JNB     watchdog_flag,?C0012
-                                           ; SOURCE LINE # 244
-0214 7F01              MOV     R7,#01H
-0216 120000      E     LCALL   _WATCHDOG_REFRESH_Write
+020C 3000E6            JNB     watchdog_flag,?C0012
+                                           ; SOURCE LINE # 243
+020F 7F01              MOV     R7,#01H
+0211 120000      E     LCALL   _WATCHDOG_REFRESH_Write
+                                           ; SOURCE LINE # 245
+0214 E4                CLR     A
+0215 900000      E     MOV     DPTR,#g_refNew+018H
+0218 F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 246
-0219 E4                CLR     A
-021A 900000      E     MOV     DPTR,#g_refNew+018H
-021D F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 247
                                            ; SOURCE LINE # 248
-                                           ; SOURCE LINE # 249
-021E 80DA              SJMP    ?C0012
-0220         ?C0013:
-                                           ; SOURCE LINE # 252
-0220 7F01              MOV     R7,#01H
-0222 120000      E     LCALL   _RESET_FF_Write
-0225         ?C0017:
-                                           ; SOURCE LINE # 255
-0225 120000      E     LCALL   FF_STATUS_Read
-0228 EF                MOV     A,R7
-0229 6401              XRL     A,#01H
-022B 60F8              JZ      ?C0017
-022D         ?C0018:
+0219 80DA              SJMP    ?C0012
+021B         ?C0013:
+                                           ; SOURCE LINE # 251
+021B 7F01              MOV     R7,#01H
+021D 120000      E     LCALL   _RESET_FF_Write
+0220         ?C0017:
+                                           ; SOURCE LINE # 254
+0220 120000      E     LCALL   FF_STATUS_Read
+0223 EF                MOV     A,R7
+0224 6401              XRL     A,#01H
+0226 60F8              JZ      ?C0017
+0228         ?C0018:
+                                           ; SOURCE LINE # 256
+0228 120000      E     LCALL   UART_RS485_ReadRxStatus
+022B EF                MOV     A,R7
+022C 30E7BE            JNB     ACC.7,?C0010
                                            ; SOURCE LINE # 257
-022D 120000      E     LCALL   UART_RS485_ReadRxStatus
-0230 EF                MOV     A,R7
-0231 30E7BE            JNB     ACC.7,?C0010
+022F 120000      E     LCALL   UART_RS485_ClearRxBuffer
                                            ; SOURCE LINE # 258
-0234 120000      E     LCALL   UART_RS485_ClearRxBuffer
+0232 80B9              SJMP    ?C0010
                                            ; SOURCE LINE # 259
-0237 80B9              SJMP    ?C0010
                                            ; SOURCE LINE # 260
-                                           ; SOURCE LINE # 261
-0239         ?C0020:
-0239 22                RET     
+0234         ?C0020:
+0234 22                RET     
              ; FUNCTION main (END)
 
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    570    ----
+   CODE SIZE        =    565    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----       2
    PDATA SIZE       =   ----    ----
@@ -738,8 +733,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    HDATA SIZE       =   ----    ----
    XDATA CONST SIZE =   ----    ----
    FAR CONST SIZE   =   ----    ----
-C51 COMPILER V9.51   MAIN                                                                  06/13/2018 12:24:28 PAGE 13  
-
 END OF MODULE INFORMATION.
 
 

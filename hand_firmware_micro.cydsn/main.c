@@ -212,8 +212,7 @@ int main()
 	
     //------------------------------------------------- Initialize rest position variables    
 	rest_enabled = 1;
-    forced_open = 0;
-    g_mem.rest_position_flag = TRUE;
+    forced_open = 0; 
 
     //============================================================     main loop
 

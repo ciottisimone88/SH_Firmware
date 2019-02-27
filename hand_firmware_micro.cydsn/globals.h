@@ -57,7 +57,7 @@
 //                                                                        DEVICE
 //==============================================================================
 
-#define VERSION                 "SH-PRO v6.1.7 Centro Piaggio 13.06.2018"
+#define VERSION                 "SH-PRO v6.1.7 Centro Piaggio 27.02.2019"
 
 #define NUM_OF_MOTORS           2       /*!< Number of motors.*/
 #define NUM_OF_SENSORS          3       /*!< Number of encoders.*/

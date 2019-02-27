@@ -1240,18 +1240,20 @@ void prepare_generic_info(char *info_string)
         sprintf(str, "EMG max speed: %d", (int)g_mem.emg_speed);
         strcat(info_string, str);
         strcat(info_string, "\r\n");
-
-        sprintf(str, "Rest time delay (ms): %d", (int)g_mem.rest_delay);
-        strcat(info_string, str);
-        strcat(info_string, "\r\n");
-        
-        sprintf(str, "Rest velocity closure (ticks/sec): %d", (int)g_mem.rest_vel);
-        strcat(info_string, str);
-        strcat(info_string, "\r\n");
-        
-        sprintf(str, "Rest position: %d", (int)(g_mem.rest_pos >> c_mem.res[0]));
-        strcat(info_string, str);
-        strcat(info_string, "\r\n");   
+    
+        if (g_mem.rest_position_flag == TRUE) {
+            sprintf(str, "Rest time delay (ms): %d", (int)g_mem.rest_delay);
+            strcat(info_string, str);
+            strcat(info_string, "\r\n");
+            
+            sprintf(str, "Rest velocity closure (ticks/sec): %d", (int)g_mem.rest_vel);
+            strcat(info_string, str);
+            strcat(info_string, "\r\n");
+            
+            sprintf(str, "Rest position: %d", (int)(g_mem.rest_pos >> c_mem.res[0]));
+            strcat(info_string, str);
+            strcat(info_string, "\r\n");   
+        }
         
         sprintf(str, "debug: %ld", (uint32)timer_value0 - (uint32)timer_value); //5000001
         strcat(info_string, str);
@@ -1579,7 +1581,7 @@ uint8 memInit(void)
     g_mem.motor_handle_ratio = 22;
 
     //Initialize rest position parameters        
-    g_mem.rest_position_flag = 1;
+    g_mem.rest_position_flag = FALSE;
     g_mem.rest_pos = (int32)7000 << g_mem.res[0]; // 56000
     g_mem.rest_delay = 10;
     g_mem.rest_vel = 10000;
