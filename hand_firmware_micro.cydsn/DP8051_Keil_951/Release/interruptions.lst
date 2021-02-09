@@ -1,9 +1,9 @@
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 1   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE INTERRUPTIONS
 OBJECT MODULE PLACED IN .\DP8051_Keil_951\Release\interruptions.obj
-COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
                     -interruptions.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(NDEBUG) WL(2) PR(.\DP8051
                     -_Keil_951\Release/interruptions.lst) CD OT(8,SPEED) OJ(.\DP8051_Keil_951\Release\interruptions.obj)
 
@@ -62,7 +62,7 @@ line level    source
   50          #include <utils.h>
   51          
   52          
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 2   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 2   
 
   53          //==============================================================================
   54          //                                                            RS485 RX INTERRUPT
@@ -126,7 +126,7 @@ line level    source
  112                                                       50,
  113                                                       49,   //15 (14250)
  114                                                       47,
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 3   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 3   
 
  115                                                       46,
  116                                                       45,
@@ -190,7 +190,7 @@ line level    source
  174          // - WAIT_ID:       Waits for ID;
  175          // - WAIT_LENGTH:   Data length;
  176          // - RECEIVE:       Receive all bytes;
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 4   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 4   
 
  177          // - UNLOAD:        Wait for another device end of transmission;
  178          //
@@ -254,7 +254,7 @@ line level    source
  236   3                      else                //packet is for others
  237   3                          rx_data_type = TRUE;
  238   3                      
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 5   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 5   
 
  239   3                      data_packet_length = 0;
  240   3                      state = WAIT_LENGTH;
@@ -318,7 +318,7 @@ line level    source
  298   4                          package_count++;
  299   4                      }
  300   3                      break;
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 6   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 6   
 
  301   3              }
  302   2          }
@@ -382,7 +382,7 @@ line level    source
  360   2          }
  361   1      
  362   1          //---------------------------------- Control Motor
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 7   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 7   
 
  363   1         
  364   1          motor_control();
@@ -446,7 +446,7 @@ line level    source
  422   3              }
  423   2              counter_calibration++;
  424   2      
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 8   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 8   
 
  425   2              // Check Interrupt     
  426   2              if (interrupt_flag){
@@ -510,7 +510,7 @@ line level    source
  484          void motor_control() {
  485   1      
  486   1          int32 CYDATA pwm_input = 0;
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 9   
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 9   
 
  487   1      
  488   1          int32 CYDATA pos_error;         // position error
@@ -574,7 +574,7 @@ line level    source
  546   2                      g_ref.pos[0] += c_mem.max_step_pos;
  547   2                  else {
  548   3                      if (((handle_value - g_ref.pos[0]) < c_mem.max_step_neg) && (c_mem.max_step_neg != 0))
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 10  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 10  
 
  549   3                          g_ref.pos[0] += c_mem.max_step_neg;
  550   3                      else
@@ -638,7 +638,7 @@ line level    source
  604   3      
  605   3                      default:
  606   3                          break;
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 11  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 11  
 
  607   3                  }
  608   2      
@@ -702,7 +702,7 @@ line level    source
  664   2              if (g_ref.pos[0] > c_mem.pos_lim_sup[0]) 
  665   2                  g_ref.pos[0] = c_mem.pos_lim_sup[0];
  666   2          }
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 12  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 12  
 
  667   1          
  668   1          if (c_mem.rest_position_flag == TRUE) {
@@ -766,7 +766,7 @@ line level    source
  725   2                  prev_pos_err = pos_error;
  726   2      
  727   2                  i_ref += g_ref.curr_offset;
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 13  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 13  
 
  728   2                                  
  729   2                  // motor direction depends on i_ref
@@ -830,7 +830,7 @@ line level    source
  787   2                  pos_error_sum += pos_error;
  788   2      
  789   2                  // anti-windup (for integral control)
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 14  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 14  
 
  790   2                  if (pos_error_sum > ANTI_WINDUP)
  791   2                      pos_error_sum = ANTI_WINDUP;
@@ -894,7 +894,7 @@ line level    source
  849   3                      if (k_p_c != 0)
  850   3                          pwm_input += (int32)(k_p_c * curr_error) >> 16;
  851   3      
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 15  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 15  
 
  852   3                      // Integral
  853   3                      if (k_i_c != 0)
@@ -958,7 +958,7 @@ line level    source
  911   1      }
  912          
  913          //==============================================================================
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 16  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 16  
 
  914          //                                                               ENCODER READING
  915          //==============================================================================
@@ -1022,7 +1022,7 @@ line level    source
  973   2                                                          // -> |:|:|id|dim|CMD|CHK|(data---
  974   2                                                          // subtract half of max value
  975   2                                                          // and shift to have 16 bit val
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 17  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 17  
 
  976   2      
  977   2              // Initialize last_value_encoder
@@ -1086,7 +1086,7 @@ line level    source
 1033   1          switch(index) {
 1034   2              case 0:
 1035   2                  speed_encoder = (int16)filter_vel_1((11*value_encoder - 18* v_value[0] + 9 * vv_value[0] -2 * 
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 18  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 18  
 
              -vvv_value[0]));
 1036   2              break;
@@ -1150,7 +1150,7 @@ line level    source
 1089   4                      init_rot = calc_turns_fcn(g_meas.pos[0],g_meas.pos[1]);
 1090   4                      
 1091   4                      if (c_mem.m_mult[0] < 0)
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 19  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 19  
 
 1092   4                          init_rot = -init_rot;
 1093   4                      
@@ -1214,7 +1214,7 @@ line level    source
 1151   1          
 1152   1          while(!ADC_STATUS_Read()){
 1153   2              if (interrupt_flag){
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 20  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 20  
 
 1154   3                  interrupt_flag = FALSE;
 1155   3                  interrupt_manager();
@@ -1278,7 +1278,7 @@ line level    source
 1211   3                  interrupt_manager();
 1212   3              }
 1213   2      
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 21  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 21  
 
 1214   2              // if calibration is not needed go to "normal execution"
 1215   2              if (!g_mem.emg_calibration_flag){
@@ -1342,7 +1342,7 @@ line level    source
 1273   3                      break;
 1274   3      
 1275   3                  case SUM_AND_MEAN: // sum first SAMPLES_FOR_EMG_MEAN samples
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 22  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 22  
 
 1276   3                      // NOTE max(value)*SAMPLES_FOR_EMG_MEAN must fit in 32bit
 1277   3                      emg_counter_1++;
@@ -1406,7 +1406,7 @@ line level    source
 1335   3      
 1336   3                  case RESET: // reset variables
 1337   3                      emg_counter_2 = 0;
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 23  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 23  
 
 1338   3                      g_mem.emg_max_value[1] = 0;
 1339   3          
@@ -1470,7 +1470,7 @@ line level    source
 1397   3                      break;
 1398   3      
 1399   3                  case WAIT_EoC:  // wait for end of calibration procedure (only for LED visibility reasons)
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 24  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 24  
 
 1400   3                      emg_counter_2++;
 1401   3                      if (emg_counter_2 == EMG_SAMPLE_TO_DISCARD) {
@@ -1534,7 +1534,7 @@ line level    source
 1459   3              }
 1460   2      
 1461   2              // Reset current
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 25  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 25  
 
 1462   2              g_meas.curr[0] = 0;
 1463   2      
@@ -1598,7 +1598,7 @@ line level    source
 1519   2                      dev_pwm_limit = dev_pwm_sat;
 1520   2          }
 1521   1      }
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 26  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 26  
 
 1522          
 1523          //==============================================================================
@@ -1662,7 +1662,7 @@ line level    source
 1581   3                      bin_st  = (uint8)(thr_pos/step);
 1582   3                      bin_max = (uint8)(max_pos/step);
 1583   3                      for (i=bin_st; i<= bin_max; i++){
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 27  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 27  
 
 1584   4                          //position_hist counts how many times the SoftHand stays in bin while closing
 1585   4                          g_mem.position_hist[i] = g_mem.position_hist[i] + 1;
@@ -1726,7 +1726,7 @@ line level    source
 1642   1                  
 1643   1          // This function writes rows [row_start, row_end] on EEPROM
 1644   1          save_cycles_eeprom();
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 28  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 28  
 
 1645   1      }
 1646          
@@ -1790,7 +1790,7 @@ line level    source
 1704   2          }
 1705   1      }
 1706          /* [] END OF FILE */
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 29  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 29  
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -1854,7 +1854,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0003 120000      E     LCALL   UART_RS485_GetRxBufferSize
 0006 EF                MOV     A,R7
 0007 7003              JNZ     $ + 5H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 30  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 30  
 
 0009 020000      R     LJMP    ?C0027
 000C E500        R     MOV     A,package_count
@@ -1918,7 +1918,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0064 120000      E     LCALL   _infoGet
                                            ; SOURCE LINE # 228
 0067 809A              SJMP    ?C0004
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 31  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 31  
 
                                            ; SOURCE LINE # 231
 0069         ?C0011:
@@ -1982,7 +1982,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00AA 750003      R     MOV     state,#03H
 00AD 020000      R     LJMP    ?C0004
 00B0         ?C0020:
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 32  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 32  
 
                                            ; SOURCE LINE # 261
 00B0 750004      R     MOV     state,#04H
@@ -2046,7 +2046,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00FF 0500        R     INC     package_count
                                            ; SOURCE LINE # 287
                                            ; SOURCE LINE # 288
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 33  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 33  
 
 0101 020000      R     LJMP    ?C0004
                                            ; SOURCE LINE # 291
@@ -2110,7 +2110,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 001C 120000      R     LCALL   _encoder_reading
                                            ; SOURCE LINE # 336
 001F 300007            JNB     interrupt_flag,?C0029
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 34  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 34  
 
                                            ; SOURCE LINE # 337
 0022 C200        E     CLR     interrupt_flag
@@ -2174,7 +2174,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0061 120000      R     LCALL   overcurrent_control
                                            ; SOURCE LINE # 390
 0064 300007            JNB     interrupt_flag,?C0034
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 35  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 35  
 
                                            ; SOURCE LINE # 391
 0067 C200        E     CLR     interrupt_flag
@@ -2238,7 +2238,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00AA 900000      R     MOV     DPTR,#counter_calibration
 00AD E0                MOVX    A,@DPTR
 00AE 7004              JNZ     ?C0310
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 36  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 36  
 
 00B0 A3                INC     DPTR
 00B1 E0                MOVX    A,@DPTR
@@ -2302,7 +2302,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00F2 E0                MOVX    A,@DPTR
 00F3 2478              ADD     A,#078H
 00F5 FF                MOV     R7,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 37  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 37  
 
 00F6 E4                CLR     A
 00F7 3E                ADDC    A,R6
@@ -2366,7 +2366,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 014E D200        R     SETB    write_cycles
                                            ; SOURCE LINE # 472
 0150         ?C0044:
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 38  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 38  
 
                                            ; SOURCE LINE # 474
 0150 120000      E     LCALL   MY_TIMER_ReadCounter
@@ -2430,7 +2430,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
              ; FUNCTION motor_control (BEGIN)
                                            ; SOURCE LINE # 484
                                            ; SOURCE LINE # 486
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 39  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 39  
 
 0000 E4                CLR     A
 0001 F500        R     MOV     pwm_input+03H,A
@@ -2494,7 +2494,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0049 FD                MOV     R5,A
 004A A3                INC     DPTR
 004B E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 40  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 40  
 
 004C FE                MOV     R6,A
 004D A3                INC     DPTR
@@ -2558,7 +2558,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0093 A3                INC     DPTR
 0094 E0                MOVX    A,@DPTR
 0095 FD                MOV     R5,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 41  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 41  
 
 0096 A3                INC     DPTR
 0097 E0                MOVX    A,@DPTR
@@ -2622,7 +2622,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00E8 E0                MOVX    A,@DPTR
 00E9 F500        R     MOV     k_p_c_dl+03H,A
 00EB 8E00        R     MOV     k_p_c_dl+02H,R6
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 42  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 42  
 
 00ED 8D00        R     MOV     k_p_c_dl+01H,R5
 00EF 8C00        R     MOV     k_p_c_dl,R4
@@ -2686,7 +2686,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0135 9A                SUBB    A,R2
 0136 F500        R     MOV     err_emg_1+02H,A
 0138 ED                MOV     A,R5
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 43  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 43  
 
 0139 9400              SUBB    A,#00H
 013B F500        R     MOV     err_emg_1+01H,A
@@ -2750,7 +2750,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0191 900000      E     MOV     DPTR,#c_mem+079H
 0194 E0                MOVX    A,@DPTR
 0195 6024              JZ      ?C0048
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 44  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 44  
 
                                            ; SOURCE LINE # 539
 0197 A3                INC     DPTR
@@ -2814,7 +2814,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01E4 A3                INC     DPTR
 01E5 E0                MOVX    A,@DPTR
 01E6 F9                MOV     R1,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 45  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 45  
 
 01E7 A3                INC     DPTR
 01E8 E0                MOVX    A,@DPTR
@@ -2878,7 +2878,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0231 E0                MOVX    A,@DPTR
 0232 FE                MOV     R6,A
 0233 A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 46  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 46  
 
 0234 E0                MOVX    A,@DPTR
 0235 FF                MOV     R7,A
@@ -2942,7 +2942,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 027C F9                MOV     R1,A
 027D A3                INC     DPTR
 027E E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 47  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 47  
 
 027F FA                MOV     R2,A
 0280 A3                INC     DPTR
@@ -3006,7 +3006,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02C9 020000      R     LJMP    ?C0046
 02CC         ?C0052:
                                            ; SOURCE LINE # 551
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 48  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 48  
 
 02CC AF00        R     MOV     R7,handle_value+03H
 02CE AE00        R     MOV     R6,handle_value+02H
@@ -3070,7 +3070,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 031D D007              POP     AR7
 031F D006              POP     AR6
 0321 120000      E     LCALL   ?C?SLDIV
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 49  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 49  
 
 0324 900000      E     MOV     DPTR,#g_ref
 0327 120000      E     LCALL   ?C?LSTXDATA
@@ -3134,7 +3134,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0376 120000      E     LCALL   ?C?LMUL
 0379 C006              PUSH    AR6
 037B C007              PUSH    AR7
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 50  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 50  
 
 037D 900000      E     MOV     DPTR,#c_mem+06BH
 0380 E0                MOVX    A,@DPTR
@@ -3198,7 +3198,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03C9 5003              JNC     $ + 5H
 03CB 020000      R     LJMP    ?C0046
                                            ; SOURCE LINE # 568
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 51  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 51  
 
 03CE 900000      E     MOV     DPTR,#g_mem+078H
 03D1 E0                MOVX    A,@DPTR
@@ -3262,7 +3262,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0421 ED                MOV     A,R5
 0422 99                SUBB    A,R1
 0423 FD                MOV     R5,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 52  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 52  
 
 0424 EC                MOV     A,R4
 0425 98                SUBB    A,R0
@@ -3326,7 +3326,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 581
 0474 E4                CLR     A
 0475 FF                MOV     R7,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 53  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 53  
 
 0476 FE                MOV     R6,A
 0477 FD                MOV     R5,A
@@ -3390,7 +3390,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 04C7 F8                MOV     R0,A
 04C8 120000      E     LCALL   ?C?LMUL
 04CB C006              PUSH    AR6
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 54  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 54  
 
 04CD C007              PUSH    AR7
 04CF 900000      E     MOV     DPTR,#c_mem+06BH
@@ -3454,7 +3454,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0518 A800        R     MOV     R0,err_emg_2
 051A C3                CLR     C
 051B 120000      E     LCALL   ?C?SLCMP
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 55  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 55  
 
 051E 5008              JNC     ?C0068
                                            ; SOURCE LINE # 599
@@ -3518,7 +3518,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0574 E0                MOVX    A,@DPTR
 0575 FD                MOV     R5,A
 0576 A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 56  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 56  
 
 0577 E0                MOVX    A,@DPTR
 0578 FE                MOV     R6,A
@@ -3582,7 +3582,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 05BE FD                MOV     R5,A
 05BF FC                MOV     R4,A
 05C0 AB00        R     MOV     R3,err_emg_1+03H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 57  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 57  
 
 05C2 AA00        R     MOV     R2,err_emg_1+02H
 05C4 A900        R     MOV     R1,err_emg_1+01H
@@ -3646,7 +3646,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0614 A800        R     MOV     R0,err_emg_2
 0616 C3                CLR     C
 0617 120000      E     LCALL   ?C?SLCMP
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 58  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 58  
 
 061A 5008              JNC     ?C0076
                                            ; SOURCE LINE # 630
@@ -3710,7 +3710,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0671 E0                MOVX    A,@DPTR
 0672 F8                MOV     R0,A
 0673 A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 59  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 59  
 
 0674 E0                MOVX    A,@DPTR
 0675 F9                MOV     R1,A
@@ -3774,7 +3774,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 06BD FF                MOV     R7,A
 06BE FE                MOV     R6,A
 06BF FD                MOV     R5,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 60  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 60  
 
 06C0 FC                MOV     R4,A
 06C1 AB00        R     MOV     R3,err_emg_2+03H
@@ -3838,7 +3838,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0719 9B                SUBB    A,R3
 071A FF                MOV     R7,A
 071B EE                MOV     A,R6
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 61  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 61  
 
 071C 9A                SUBB    A,R2
 071D FE                MOV     R6,A
@@ -3902,7 +3902,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0759 E0                MOVX    A,@DPTR
 075A FE                MOV     R6,A
 075B A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 62  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 62  
 
 075C E0                MOVX    A,@DPTR
 075D FF                MOV     R7,A
@@ -3966,7 +3966,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 07A9 B40114            CJNE    A,#01H,?C0087
                                            ; SOURCE LINE # 671
 07AC 900000      E     MOV     DPTR,#rest_pos_curr_ref
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 63  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 63  
 
 07AF E0                MOVX    A,@DPTR
 07B0 FC                MOV     R4,A
@@ -4030,7 +4030,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 07FF FF                MOV     R7,A
 0800 7404              MOV     A,#04H
 0802 9E                SUBB    A,R6
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 64  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 64  
 
 0803 FE                MOV     R6,A
 0804 AB07              MOV     R3,AR7
@@ -4094,7 +4094,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0852 F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 681
                                            ; SOURCE LINE # 682
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 65  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 65  
 
                                            ; SOURCE LINE # 683
 0853         ?C0086:
@@ -4158,7 +4158,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 089F E0                MOVX    A,@DPTR
 08A0 FD                MOV     R5,A
 08A1 A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 66  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 66  
 
 08A2 E0                MOVX    A,@DPTR
 08A3 FE                MOV     R6,A
@@ -4222,7 +4222,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0909 8C00        R     MOV     pos_error,R4
                                            ; SOURCE LINE # 698
 090B         ?C0094:
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 67  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 67  
 
                                            ; SOURCE LINE # 701
 090B 7F80              MOV     R7,#080H
@@ -4286,7 +4286,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 710
 0961 E4                CLR     A
 0962 F500        R     MOV     i_ref+03H,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 68  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 68  
 
 0964 F500        R     MOV     i_ref+02H,A
 0966 F500        R     MOV     i_ref+01H,A
@@ -4350,7 +4350,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 09BF FE                MOV     R6,A
 09C0 A3                INC     DPTR
 09C1 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 69  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 69  
 
 09C2 FF                MOV     R7,A
 09C3 A800        R     MOV     R0,k_i_dl
@@ -4414,7 +4414,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0A17 A900        R     MOV     R1,k_d_dl+01H
 0A19 A800        R     MOV     R0,k_d_dl
 0A1B 120000      E     LCALL   ?C?LMUL
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 70  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 70  
 
 0A1E 780D              MOV     R0,#0DH
 0A20 120000      E     LCALL   ?C?SLSHR
@@ -4478,7 +4478,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0A78 D200        R     SETB    motor_dir
 0A7A 8002              SJMP    ?C0103
 0A7C         ?C0102:
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 71  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 71  
 
                                            ; SOURCE LINE # 733
 0A7C C200        R     CLR     motor_dir
@@ -4542,7 +4542,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0AC8 A900        R     MOV     R1,i_ref+01H
 0ACA A800        R     MOV     R0,i_ref
 0ACC C3                CLR     C
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 72  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 72  
 
 0ACD 120000      E     LCALL   ?C?SLCMP
 0AD0 501A              JNC     ?C0105
@@ -4606,7 +4606,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0B19 FE                MOV     R6,A
 0B1A A3                INC     DPTR
 0B1B E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 73  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 73  
 
 0B1C 2500        R     ADD     A,curr_error+03H
 0B1E FF                MOV     R7,A
@@ -4670,7 +4670,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0B72 FB                MOV     R3,A
 0B73 C3                CLR     C
 0B74 120000      E     LCALL   ?C?SLCMP
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 74  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 74  
 
 0B77 500E              JNC     ?C0108
                                            ; SOURCE LINE # 751
@@ -4734,7 +4734,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0BD3 A800        R     MOV     R0,k_i_c_dl
 0BD5 C3                CLR     C
 0BD6 120000      E     LCALL   ?C?SLCMP
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 75  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 75  
 
 0BD9 602C              JZ      ?C0111
                                            ; SOURCE LINE # 764
@@ -4798,7 +4798,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0C2B 9B                SUBB    A,R3
 0C2C FF                MOV     R7,A
 0C2D E500        R     MOV     A,curr_error+02H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 76  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 76  
 
 0C2F 9A                SUBB    A,R2
 0C30 FE                MOV     R6,A
@@ -4862,7 +4862,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0C8B A800        R     MOV     R0,pwm_input
 0C8D D3                SETB    C
 0C8E 120000      E     LCALL   ?C?SLCMP
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 77  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 77  
 
 0C91 400A              JC      ?C0114
                                            ; SOURCE LINE # 775
@@ -4926,7 +4926,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0CDD FC                MOV     R4,A
 0CDE A3                INC     DPTR
 0CDF E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 78  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 78  
 
 0CE0 FD                MOV     R5,A
 0CE1 A3                INC     DPTR
@@ -4990,7 +4990,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0D32 A3                INC     DPTR
 0D33 E0                MOVX    A,@DPTR
 0D34 F9                MOV     R1,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 79  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 79  
 
 0D35 A3                INC     DPTR
 0D36 E0                MOVX    A,@DPTR
@@ -5054,7 +5054,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0D8F 900000      R     MOV     DPTR,#pos_error_sum
 0D92 E0                MOVX    A,@DPTR
 0D93 FC                MOV     R4,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 80  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 80  
 
 0D94 A3                INC     DPTR
 0D95 E0                MOVX    A,@DPTR
@@ -5118,7 +5118,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0DE5 E500        R     MOV     A,pos_error+01H
 0DE7 99                SUBB    A,R1
 0DE8 FD                MOV     R5,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 81  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 81  
 
 0DE9 E500        R     MOV     A,pos_error
 0DEB 98                SUBB    A,R0
@@ -5182,7 +5182,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0E48 020000      R     LJMP    ?C0091
                                            ; SOURCE LINE # 826
 0E4B 900000      E     MOV     DPTR,#g_ref+08H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 82  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 82  
 
 0E4E E0                MOVX    A,@DPTR
 0E4F FC                MOV     R4,A
@@ -5246,7 +5246,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0E9C 9F                SUBB    A,R7
 0E9D FF                MOV     R7,A
 0E9E E4                CLR     A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 83  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 83  
 
 0E9F 9E                SUBB    A,R6
 0EA0 FE                MOV     R6,A
@@ -5310,7 +5310,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0EEE 98                SUBB    A,R0
 0EEF F500        R     MOV     curr_error,A
                                            ; SOURCE LINE # 837
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 84  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 84  
 
 0EF1 900000      R     MOV     DPTR,#curr_error_sum
 0EF4 E0                MOVX    A,@DPTR
@@ -5374,7 +5374,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0F47 900000      R     MOV     DPTR,#curr_error_sum
 0F4A E0                MOVX    A,@DPTR
 0F4B F8                MOV     R0,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 85  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 85  
 
 0F4C A3                INC     DPTR
 0F4D E0                MOVX    A,@DPTR
@@ -5438,7 +5438,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0FA8 F500        R     MOV     pwm_input,A
 0FAA         ?C0133:
                                            ; SOURCE LINE # 853
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 86  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 86  
 
 0FAA E4                CLR     A
 0FAB FF                MOV     R7,A
@@ -5502,7 +5502,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 1001 A3                INC     DPTR
 1002 E0                MOVX    A,@DPTR
 1003 F9                MOV     R1,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 87  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 87  
 
 1004 A3                INC     DPTR
 1005 E0                MOVX    A,@DPTR
@@ -5566,7 +5566,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 863
 1060 D200        R     SETB    motor_dir
 1062 8072              SJMP    ?C0091
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 88  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 88  
 
 1064         ?C0136:
                                            ; SOURCE LINE # 865
@@ -5630,7 +5630,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 10AD 75009C      R     MOV     pwm_input+03H,#09CH
 10B0 F500        R     MOV     pwm_input+02H,A
 10B2 F500        R     MOV     pwm_input+01H,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 89  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 89  
 
 10B4 F500        R     MOV     pwm_input,A
 10B6 801E              SJMP    ?C0091
@@ -5694,7 +5694,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 1107 500B              JNC     ?C0145
                                            ; SOURCE LINE # 896
 1109 74FF              MOV     A,#0FFH
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 90  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 90  
 
 110B 75009C      R     MOV     pwm_input+03H,#09CH
 110E F500        R     MOV     pwm_input+02H,A
@@ -5758,7 +5758,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 116C         ?C0148:
 116C 900000      E     MOV     DPTR,#pwm_sign
 116F EF                MOV     A,R7
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 91  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 91  
 
 1170 F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 905
@@ -5822,7 +5822,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0028 25E0              ADD     A,ACC
 002A 25E0              ADD     A,ACC
 002C 2400        R     ADD     A,#LOW last_value_encoder
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 92  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 92  
 
 002E F582              MOV     DPL,A
 0030 E4                CLR     A
@@ -5886,7 +5886,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0085 900000      R     MOV     DPTR,#data_encoder
 0088 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 966
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 93  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 93  
 
 008B         ?C0158:
                                            ; SOURCE LINE # 969
@@ -5950,7 +5950,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00DC E0                MOVX    A,@DPTR
 00DD FA                MOV     R2,A
 00DE A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 94  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 94  
 
 00DF E0                MOVX    A,@DPTR
 00E0 2F                ADD     A,R7
@@ -6014,7 +6014,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 012F A3                INC     DPTR
 0130 E0                MOVX    A,@DPTR
 0131 FA                MOV     R2,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 95  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 95  
 
 0132 A3                INC     DPTR
 0133 E0                MOVX    A,@DPTR
@@ -6078,7 +6078,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 017C 8068              SJMP    ?C0165
 017E         ?C0164:
                                            ; SOURCE LINE # 1007
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 96  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 96  
 
                                            ; SOURCE LINE # 1008
 017E 7F00              MOV     R7,#00H
@@ -6142,7 +6142,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01CF E0                MOVX    A,@DPTR
 01D0 04                INC     A
 01D1 F0                MOVX    @DPTR,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 97  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 97  
 
                                            ; SOURCE LINE # 1013
 01D2 7400        R     MOV     A,#LOW error
@@ -6206,7 +6206,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 021F E0                MOVX    A,@DPTR
 0220 FB                MOV     R3,A
 0221 C000              PUSH    AR0
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 98  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 98  
 
 0223 7400        E     MOV     A,#LOW g_meas+014H
 0225 2500        R     ADD     A,index
@@ -6270,7 +6270,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0278 E0                MOVX    A,@DPTR
 0279 FC                MOV     R4,A
 027A A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 99  
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 99  
 
 027B E0                MOVX    A,@DPTR
 027C FD                MOV     R5,A
@@ -6334,7 +6334,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1033
 02CD E500        R     MOV     A,index
 02CF 14                DEC     A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 100 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 100 
 
 02D0 7003              JNZ     $ + 5H
 02D2 020000      R     LJMP    ?C0173
@@ -6398,7 +6398,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0324 EE                MOV     A,R6
 0325 9A                SUBB    A,R2
 0326 FE                MOV     R6,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 101 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 101 
 
 0327 ED                MOV     A,R5
 0328 99                SUBB    A,R1
@@ -6462,7 +6462,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0376 A3                INC     DPTR
 0377 E0                MOVX    A,@DPTR
 0378 FA                MOV     R2,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 102 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 102 
 
 0379 A3                INC     DPTR
 037A E0                MOVX    A,@DPTR
@@ -6526,7 +6526,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03CB C007              PUSH    AR7
 03CD E4                CLR     A
 03CE 7F0B              MOV     R7,#0BH
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 103 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 103 
 
 03D0 FE                MOV     R6,A
 03D1 FD                MOV     R5,A
@@ -6590,7 +6590,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0420 EF                MOV     A,R7
 0421 2B                ADD     A,R3
 0422 FF                MOV     R7,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 104 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 104 
 
 0423 EE                MOV     A,R6
 0424 3A                ADDC    A,R2
@@ -6654,7 +6654,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0474 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 1040
 0477 020000      R     LJMP    ?C0171
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 105 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 105 
 
                                            ; SOURCE LINE # 1042
 047A         ?C0174:
@@ -6718,7 +6718,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 04C4 FC                MOV     R4,A
 04C5 C004              PUSH    AR4
 04C7 C005              PUSH    AR5
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 106 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 106 
 
 04C9 C006              PUSH    AR6
 04CB C007              PUSH    AR7
@@ -6782,7 +6782,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0519 A905              MOV     R1,AR5
 051B AA06              MOV     R2,AR6
 051D AB07              MOV     R3,AR7
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 107 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 107 
 
 051F D007              POP     AR7
 0521 D006              POP     AR6
@@ -6846,7 +6846,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 056D FE                MOV     R6,A
 056E A3                INC     DPTR
 056F E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 108 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 108 
 
 0570 FF                MOV     R7,A
 0571 EC                MOV     A,R4
@@ -6910,7 +6910,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 05CE 3400        R     ADDC    A,#HIGH vvv_value
 05D0 F583              MOV     DPH,A
 05D2 120000      E     LCALL   ?C?LSTXDATA
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 109 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 109 
 
                                            ; SOURCE LINE # 1071
 05D5 E500        R     MOV     A,index
@@ -6974,7 +6974,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 062E 5004              JNC     ?C0176
                                            ; SOURCE LINE # 1084
 0630 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 110 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 110 
 
 0631 04                INC     A
 0632 F0                MOVX    @DPTR,A
@@ -7038,7 +7038,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 067B A3                INC     DPTR
 067C E0                MOVX    A,@DPTR
 067D FB                MOV     R3,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 111 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 111 
 
 067E 120000      E     LCALL   ?C?FPCMP3
 0681 5017              JNC     ?C0179
@@ -7102,7 +7102,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 06CB E0                MOVX    A,@DPTR
 06CC FA                MOV     R2,A
 06CD A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 112 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 112 
 
 06CE E0                MOVX    A,@DPTR
 06CF FB                MOV     R3,A
@@ -7166,7 +7166,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0720 A3                INC     DPTR
 0721 E0                MOVX    A,@DPTR
 0722 FD                MOV     R5,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 113 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 113 
 
 0723 A3                INC     DPTR
 0724 E0                MOVX    A,@DPTR
@@ -7230,7 +7230,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0003 EF                MOV     A,R7
 0004 700A              JNZ     ?C0183
                                            ; SOURCE LINE # 1153
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 114 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 114 
 
 0006 3000F7            JNB     interrupt_flag,?C0182
                                            ; SOURCE LINE # 1154
@@ -7294,7 +7294,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005D 900000      R     MOV     DPTR,#count
 0060 E0                MOVX    A,@DPTR
 0061 6403              XRL     A,#03H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 115 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 115 
 
 0063 7004              JNZ     ?C0313
 0065 A3                INC     DPTR
@@ -7358,7 +7358,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1175
 00AF E4                CLR     A
 00B0 7FE0              MOV     R7,#0E0H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 116 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 116 
 
 00B2 7E2E              MOV     R6,#02EH
 00B4 FD                MOV     R5,A
@@ -7422,7 +7422,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00FD A3                INC     DPTR
 00FE E0                MOVX    A,@DPTR
 00FF FA                MOV     R2,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 117 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 117 
 
 0100 A3                INC     DPTR
 0101 E0                MOVX    A,@DPTR
@@ -7486,7 +7486,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0148 120000      R     LCALL   pwm_limit_search
 014B         ?C0195:
                                            ; SOURCE LINE # 1202
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 118 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 118 
 
 014B 900000      E     MOV     DPTR,#ADC_buf+03H
 014E E0                MOVX    A,@DPTR
@@ -7550,7 +7550,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01AB FC                MOV     R4,A
 01AC A3                INC     DPTR
 01AD E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 119 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 119 
 
 01AE FD                MOV     R5,A
 01AF A3                INC     DPTR
@@ -7614,7 +7614,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0206 98                SUBB    A,R0
 0207 FC                MOV     R4,A
 0208 120000      E     LCALL   _filter_curr_diff
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 120 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 120 
 
 020B EE                MOV     A,R6
 020C 33                RLC     A
@@ -7678,7 +7678,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 025E 8E00        R     MOV     i_aux+02H,R6
 0260 F500        R     MOV     i_aux+01H,A
 0262 F500        R     MOV     i_aux,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 121 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 121 
 
                                            ; SOURCE LINE # 1226
 0264 E4                CLR     A
@@ -7742,7 +7742,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 02B9 E4                CLR     A
 02BA FF                MOV     R7,A
 02BB FE                MOV     R6,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 122 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 122 
 
 02BC FD                MOV     R5,A
 02BD FC                MOV     R4,A
@@ -7806,7 +7806,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0315 F0                MOVX    @DPTR,A
 0316 A3                INC     DPTR
 0317 F0                MOVX    @DPTR,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 123 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 123 
 
                                            ; SOURCE LINE # 1253
 0318 FF                MOV     R7,A
@@ -7870,7 +7870,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0362 020000      R     LJMP    ?C0198
                                            ; SOURCE LINE # 1275
 0365         ?C0210:
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 124 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 124 
 
                                            ; SOURCE LINE # 1277
 0365 900000      R     MOV     DPTR,#emg_counter_1+01H
@@ -7934,7 +7934,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03B3 C003              PUSH    AR3
 03B5 900000      E     MOV     DPTR,#g_mem+0A5H
 03B8 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 125 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 125 
 
 03B9 25E0              ADD     A,ACC
 03BB 2400        E     ADD     A,#LOW ADC_buf+04H
@@ -7998,7 +7998,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0409 FD                MOV     R5,A
 040A A3                INC     DPTR
 040B E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 126 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 126 
 
 040C FE                MOV     R6,A
 040D A3                INC     DPTR
@@ -8062,7 +8062,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0452 7003              JNZ     $ + 5H
 0454 020000      R     LJMP    ?C0229
 0457 14                DEC     A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 127 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 127 
 
 0458 7003              JNZ     $ + 5H
 045A 020000      R     LJMP    ?C0234
@@ -8126,7 +8126,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 04B1 AC00        R     MOV     R4,i_aux
 04B3 120000      E     LCALL   _filter_ch2
 04B6 8F00        R     MOV     i_aux+03H,R7
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 128 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 128 
 
 04B8 8E00        R     MOV     i_aux+02H,R6
 04BA 8D00        R     MOV     i_aux+01H,R5
@@ -8190,7 +8190,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 050A AA00        R     MOV     R2,i_aux+02H
 050C A900        R     MOV     R1,i_aux+01H
 050E A800        R     MOV     R0,i_aux
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 129 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 129 
 
 0510 D3                SETB    C
 0511 120000      E     LCALL   ?C?SLCMP
@@ -8254,7 +8254,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1350
 055E 900000      R     MOV     DPTR,#emg_counter_2
 0561 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 130 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 130 
 
 0562 6401              XRL     A,#01H
 0564 7004              JNZ     ?C0319
@@ -8318,7 +8318,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 05AE F583              MOV     DPH,A
 05B0 E0                MOVX    A,@DPTR
 05B1 FC                MOV     R4,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 131 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 131 
 
 05B2 A3                INC     DPTR
 05B3 E0                MOVX    A,@DPTR
@@ -8382,7 +8382,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0601 120000      E     LCALL   _filter_ch2
 0604 D003              POP     AR3
 0606 D002              POP     AR2
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 132 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 132 
 
 0608 D001              POP     AR1
 060A D000              POP     AR0
@@ -8446,7 +8446,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0657 120000      E     LCALL   _LED_CTRL_Write
                                            ; SOURCE LINE # 1381
 065A E4                CLR     A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 133 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 133 
 
 065B FF                MOV     R7,A
 065C 120000      E     LCALL   _LED_BLINK_EN_Write
@@ -8510,7 +8510,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1404
 06A2 300005            JNB     interrupt_flag,?C0238
                                            ; SOURCE LINE # 1405
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 134 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 134 
 
 06A5 C200        E     CLR     interrupt_flag
                                            ; SOURCE LINE # 1406
@@ -8574,7 +8574,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 06F2 E0                MOVX    A,@DPTR
 06F3 FF                MOV     R7,A
 06F4 900000      E     MOV     DPTR,#g_ref+018H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 135 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 135 
 
 06F7 F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 1419
@@ -8638,7 +8638,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0736 EF                MOV     A,R7
 0737 6404              XRL     A,#04H
 0739 6004              JZ      ?C0248
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 136 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 136 
 
 073B EF                MOV     A,R7
 073C B40509            CJNE    A,#05H,?C0246
@@ -8702,7 +8702,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0789 E0                MOVX    A,@DPTR
 078A FE                MOV     R6,A
 078B A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 137 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 137 
 
 078C E0                MOVX    A,@DPTR
 078D FF                MOV     R7,A
@@ -8766,7 +8766,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 07EB FF                MOV     R7,A
 07EC 120000      E     LCALL   _LED_BLINK_EN_Write
                                            ; SOURCE LINE # 1478
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 138 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 138 
 
 07EF 800A              SJMP    ?C0249
 07F1         ?C0250:
@@ -8830,7 +8830,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0028 E0                MOVX    A,@DPTR
 0029 14                DEC     A
 002A F0                MOVX    @DPTR,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 139 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 139 
 
                                            ; SOURCE LINE # 1509
 002B 802D              SJMP    ?C0256
@@ -8894,7 +8894,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0074 EE                MOV     A,R6
 0075 F0                MOVX    @DPTR,A
                                            ; SOURCE LINE # 1520
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 140 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 140 
 
                                            ; SOURCE LINE # 1521
 0076         ?C0261:
@@ -8958,7 +8958,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0043 120000      E     LCALL   ?C?SLCMP
 0046 5007              JNC     ?C0264
                                            ; SOURCE LINE # 1536
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 141 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 141 
 
 0048 900000      E     MOV     DPTR,#dev_pwm_sat
 004B 7464              MOV     A,#064H
@@ -9022,7 +9022,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0004 FC                MOV     R4,A
 0005 A3                INC     DPTR
 0006 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 142 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 142 
 
 0007 FD                MOV     R5,A
 0008 A3                INC     DPTR
@@ -9086,7 +9086,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 005E A3                INC     DPTR
 005F E0                MOVX    A,@DPTR
 0060 FB                MOV     R3,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 143 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 143 
 
 0061 C000              PUSH    AR0
 0063 C001              PUSH    AR1
@@ -9150,7 +9150,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1569
 00AF 020000      R     LJMP    ?C0267
                                            ; SOURCE LINE # 1570
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 144 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 144 
 
 00B2         ?C0270:
                                            ; SOURCE LINE # 1571
@@ -9214,7 +9214,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00FD C3                CLR     C
 00FE 9B                SUBB    A,R3
 00FF FF                MOV     R7,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 145 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 145 
 
 0100 EE                MOV     A,R6
 0101 9A                SUBB    A,R2
@@ -9278,7 +9278,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0148 FF                MOV     R7,A
 0149 EE                MOV     A,R6
 014A 9A                SUBB    A,R2
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 146 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 146 
 
 014B FE                MOV     R6,A
 014C 120000      E     LCALL   _abs
@@ -9342,7 +9342,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 019D A3                INC     DPTR
 019E E0                MOVX    A,@DPTR
 019F FB                MOV     R3,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 147 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 147 
 
 01A0 900000      R     MOV     DPTR,#thr_pos
 01A3 E0                MOVX    A,@DPTR
@@ -9406,7 +9406,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01EE 5037              JNC     ?C0275
                                            ; SOURCE LINE # 1585
 01F0 EE                MOV     A,R6
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 148 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 148 
 
 01F1 25E0              ADD     A,ACC
 01F3 25E0              ADD     A,ACC
@@ -9470,7 +9470,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0241 120000      E     LCALL   ?C?LSTXDATA
                                            ; SOURCE LINE # 1590
 0244 900000      E     MOV     DPTR,#g_mem+069H
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 149 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 149 
 
 0247 E0                MOVX    A,@DPTR
 0248 FE                MOV     R6,A
@@ -9534,7 +9534,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 028F A3                INC     DPTR
 0290 E0                MOVX    A,@DPTR
 0291 FA                MOV     R2,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 150 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 150 
 
 0292 A3                INC     DPTR
 0293 E0                MOVX    A,@DPTR
@@ -9598,7 +9598,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1600
 02DA E4                CLR     A
 02DB 900000      R     MOV     DPTR,#i
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 151 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 151 
 
 02DE F0                MOVX    @DPTR,A
 02DF         ?C0279:
@@ -9662,7 +9662,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 033B E0                MOVX    A,@DPTR
 033C F8                MOV     R0,A
 033D A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 152 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 152 
 
 033E E0                MOVX    A,@DPTR
 033F F9                MOV     R1,A
@@ -9726,7 +9726,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 038D 2400        R     ADD     A,#LOW emg_cycle_status
 038F F582              MOV     DPL,A
 0391 E4                CLR     A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 153 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 153 
 
 0392 3400        R     ADDC    A,#HIGH emg_cycle_status
 0394 F583              MOV     DPH,A
@@ -9790,7 +9790,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 03DC 900000      R     MOV     DPTR,#i
 03DF E0                MOVX    A,@DPTR
 03E0 04                INC     A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 154 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 154 
 
 03E1 F0                MOVX    @DPTR,A
 03E2 020000      R     LJMP    ?C0279
@@ -9854,7 +9854,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0437 A3                INC     DPTR
 0438 E0                MOVX    A,@DPTR
 0439 FF                MOV     R7,A
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 155 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 155 
 
 043A 900000      R     MOV     DPTR,#timer_value_s
 043D E0                MOVX    A,@DPTR
@@ -9918,7 +9918,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0480 E0                MOVX    A,@DPTR
 0481 FA                MOV     R2,A
 0482 A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 156 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 156 
 
 0483 E0                MOVX    A,@DPTR
 0484 FB                MOV     R3,A
@@ -9982,7 +9982,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 04CD FD                MOV     R5,A
 04CE E8                MOV     A,R0
 04CF 3C                ADDC    A,R4
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 157 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 157 
 
 04D0 FC                MOV     R4,A
 04D1 900000      E     MOV     DPTR,#g_mem+0FCH
@@ -10046,7 +10046,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0013 7401              MOV     A,#01H
 0015 F0                MOVX    @DPTR,A
 0016 A3                INC     DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 158 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 158 
 
 0017 7400        E     MOV     A,#HIGH c_mem+0B0H
 0019 F0                MOVX    @DPTR,A
@@ -10110,7 +10110,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0068 F0                MOVX    @DPTR,A
 0069 A3                INC     DPTR
 006A EA                MOV     A,R2
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 159 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 159 
 
 006B F0                MOVX    @DPTR,A
 006C A3                INC     DPTR
@@ -10174,7 +10174,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 00B1 FF                MOV     R7,A
 00B2 900000      R     MOV     DPTR,#row_number
 00B5 E0                MOVX    A,@DPTR
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 160 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 160 
 
 00B6 C3                CLR     C
 00B7 9F                SUBB    A,R7
@@ -10238,7 +10238,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 1705
 00F6         ?C0307:
 00F6 22                RET     
-C51 COMPILER V9.51   INTERRUPTIONS                                                         02/27/2019 11:22:30 PAGE 161 
+C51 COMPILER V9.51   INTERRUPTIONS                                                         02/09/2021 12:48:44 PAGE 161 
 
              ; FUNCTION save_cycles_eeprom (END)
 

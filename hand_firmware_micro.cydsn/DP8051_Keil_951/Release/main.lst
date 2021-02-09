@@ -1,9 +1,9 @@
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 1   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\DP8051_Keil_951\Release\main.obj
-COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
                     -main.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(NDEBUG) WL(2) PR(.\DP8051_Keil_951
                     -\Release/main.lst) CD OT(8,SPEED) OJ(.\DP8051_Keil_951\Release\main.obj)
 
@@ -62,7 +62,7 @@ line level    source
   50          *
   51          */
   52          
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 2   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 2   
 
   53          
   54          // ----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ line level    source
  112   1          // CYCLES TIMER
  113   1          
  114   1          CYCLES_TIMER_Start();
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 3   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 3   
 
  115   1          ISR_CYCLES_StartEx(ISR_CYCLES_Handler);
  116   1          
@@ -190,7 +190,7 @@ line level    source
  167   1      
  168   1          CyDelay(10);                                        // Wait for encoders to have a valid value.
  169   1      
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 4   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 4   
 
  170   1          //---------------------------------------------------  Initialize referiment structure
  171   1          for (i = NUM_OF_MOTORS; i--;) 
@@ -254,7 +254,7 @@ line level    source
  229   3                  // On interrupt from RS485
  230   3                  if (interrupt_flag){
  231   4                      // Reset WDT
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 5   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 5   
 
  232   4                      WATCHDOG_REFRESH_Write(0x01);
  233   4                      // Reset flags
@@ -289,7 +289,7 @@ line level    source
  262          
  263          
  264          /* [] END OF FILE */
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 6   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 6   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -353,7 +353,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0050 7F00        E     MOV     R7,#LOW ISR_WATCHDOG_Handler
 0052 120000      E     LCALL   _ISR_WATCHDOG_StartEx
                                            ; SOURCE LINE # 126
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 7   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 7   
 
 0055 120000      E     LCALL   PWM_MOTORS_Start
                                            ; SOURCE LINE # 127
@@ -417,7 +417,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 150
 00AD 7B01              MOV     R3,#01H
 00AF 7A00        E     MOV     R2,#HIGH ADC_buf
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 8   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 8   
 
 00B1 7900        E     MOV     R1,#LOW ADC_buf
 00B3 E9                MOV     A,R1
@@ -481,7 +481,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0103 FF                MOV     R7,A
 0104 FE                MOV     R6,A
 0105 FD                MOV     R5,A
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 9   
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 9   
 
 0106 FC                MOV     R4,A
 0107 EB                MOV     A,R3
@@ -545,7 +545,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
                                            ; SOURCE LINE # 188
 015B 7B03              MOV     R3,#03H
 015D         ?C0008:
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 10  
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 10  
 
 015D AF03              MOV     R7,AR3
 015F 1B                DEC     R3
@@ -609,7 +609,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 01B1 FE                MOV     R6,A
 01B2 FD                MOV     R5,A
 01B3 FC                MOV     R4,A
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 11  
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 11  
 
 01B4 900000      E     MOV     DPTR,#g_meas+01BH
 01B7 120000      E     LCALL   ?C?LSTXDATA
@@ -673,7 +673,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0203 C200        E     CLR     interrupt_flag
                                            ; SOURCE LINE # 235
 0205 C200        E     CLR     watchdog_flag
-C51 COMPILER V9.51   MAIN                                                                  02/27/2019 11:22:31 PAGE 12  
+C51 COMPILER V9.51   MAIN                                                                  02/09/2021 12:48:44 PAGE 12  
 
                                            ; SOURCE LINE # 237
 0207 120000      E     LCALL   interrupt_manager

@@ -1,8 +1,8 @@
-C:\Users\MattiaCP\Documents\GITHUB\SoftHand\hand_firmware_micro.cydsn\hand_firmware_micro.cyprj|515c0454-d972-4ff5-975c-13673623ed58
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|2d69f4f1-b944-4d7b-aa6d-6f4ad76d2c3f
-C:\Users\MattiaCP\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|4f2d104b-3950-4243-b6f3-17c6ee056d7e
-C:\Users\MattiaCP\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|3a8ae6fc-832d-4458-9268-2f684f03cabf
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|c6c27cf5-50d3-4120-9718-b2292e5e9933
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|23f91c64-4886-4b8c-be06-c1c783c962cd
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|a15068de-6387-49c7-824c-bd5452dfe5ea
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|36d9fb4e-9423-465c-8294-a1575f3cca25
+D:\Program Files\Google Drive\HapticLab\3_Utils\qbrobotics\SoftHand_Board_1.0\SH_Firmware\hand_firmware_micro.cydsn\hand_firmware_micro.cyprj|4b0ac790-1218-4269-b817-7bda6a925b7e
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|13e5c866-9d1f-4a82-875a-e050beca388c
+C:\Users\Cino\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|efdaad54-665d-420d-b51e-31b4fb4261c0
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|bdc1b73f-0a4a-4f53-9fc5-9277eac2b636
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|8cbaa149-92a2-4a81-bb04-b178346038a6
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|8fafca4c-b361-4f1e-84df-6605e9d23592
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|6fc8c054-40af-4f22-b4ed-8cc994ddf487
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\dev\psoc3\AnalogDevice\PSoC35AnalogDevice.cylib\PSoC35AnalogDevice.cyprj|b87a7f72-f534-4add-8c93-abe4569c1f28
